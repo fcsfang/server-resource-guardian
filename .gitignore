@@ -6,6 +6,7 @@
 snapshots/
 reports/*
 !reports/.gitkeep
+experiments/*/raw/
 dist/
 build/
 

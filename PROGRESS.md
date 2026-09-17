@@ -16,6 +16,10 @@
 - 阶段 2 Guardian 与人工处置：⚪ 未开始（src/ 为空）
 - 阶段 3 有限自动化 / 阶段 4 灰度推广：⚪ 远期
 
+## 当前活动目标
+
+[Goal 1：两层资源保护方案测试](goals/resource-protection.md#goal-1-两层资源保护方案测试)（`PLANNED`）。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+
 ## 电脑分工与环境差异
 
 | 项 | 公司电脑（当前操作机，D:\Project_Codex） | 本地电脑（Windows + WSL2） |

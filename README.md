@@ -15,6 +15,8 @@
 ## 文档导航
 
 - [文档总目录与管理规范](docs/README.md)（唯一总入口）
+- [目标与任务目录](goals/README.md)（当前 Goal 1）
+- [实验日志与核心数据](experiments/README.md)
 - [双机进度同步档案](PROGRESS.md)
 - [Leader 最新测试交接](docs/13-leader-test-handoff.md)
 - [PoC 验证蓝图](docs/07-poc-blueprint.md)
@@ -47,7 +49,9 @@
 server-resource-guardian/
 |-- config/        # 配置样例，危险动作默认关闭
 |-- deploy/        # 后续存放 systemd、容器和监控部署文件
+|-- goals/         # 跨 agent 可接手的目标与任务
 |-- docs/          # 需求、架构、调研和安全策略
+|-- experiments/   # 实验日志与脱敏核心数据
 |-- reports/       # 本地环境报告，不提交版本库
 |-- scripts/       # 环境采集和后续 PoC 辅助脚本
 |-- src/           # 后续存放 Guardian 源代码
