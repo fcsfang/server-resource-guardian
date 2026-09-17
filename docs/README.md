@@ -54,22 +54,22 @@ README.md
 | [12-leader-discussion-research.md](12-leader-discussion-research.md) | 围绕 leader 原始问题形成的讨论、路线和技术解释 | 讨论背景；最新行动方向以 13 号交接文档为准 |
 | [13-leader-test-handoff.md](13-leader-test-handoff.md) | leader 最新反馈、两层方案、测试顺序、授权前提和办公电脑接续方式 | **当前下一步工作的最新入口** |
 
-## 3. 本地调研补充材料
+## 3. 补充研究材料
 
-[`local-research/`](local-research/README.md) 保存本地电脑形成的补充研究、资料复核和汇报重排依据。它们适合查证背景和比较方案，但不是新的决策总账。
+[`research-notes/`](research-notes/README.md) 保存补充研究、资料复核和汇报重排依据。它们适合查证背景和比较方案，但不是新的决策总账；目录名称不绑定某一台电脑，便于双机协作。
 
 | 文件 | 作用 | 使用定位 |
 | --- | --- | --- |
-| [服务器资源保护服务-综合调研报告.md](local-research/服务器资源保护服务-综合调研报告.md) | 综合阅读、资源类型和方案路线汇总 | 汇报和研究参考 |
-| [技术调研与初步选型.md](local-research/技术调研与初步选型.md) | Ubuntu、Docker、cgroup、PSI、oomd 等技术比较 | 技术细节参考 |
-| [监控数据能力对比与守卫取数建议.md](local-research/监控数据能力对比与守卫取数建议.md) | Beszel、Prometheus、Zabbix 等取数能力比较 | 观测方案参考 |
-| [五台服务器的方案收敛.md](local-research/五台服务器的方案收敛.md) | 多服务器统一实现、逐机配置的收敛建议 | 规模化配置参考 |
-| [需求确认与验证计划.md](local-research/需求确认与验证计划.md) | 补充的需求确认、证据包和验证路径 | 与 07 号蓝图交叉参考，验收总线以 07 为准 |
-| [组长决策摘要与覆盖范围.md](local-research/组长决策摘要与覆盖范围.md) | 面向 leader 的完整性说明、方案路线和缺口 | 决策背景；当前测试行动以 13 为准 |
-| [现成资源保护策略-调研与汇报重排建议.md](local-research/现成资源保护策略-调研与汇报重排建议.md) | 现成策略核验和 PPT 重排依据 | 汇报修订参考 |
-| [定位与处置-同题比较与修订依据.md](local-research/定位与处置-同题比较与修订依据.md) | 定位、处置页面的比较和修订依据 | 汇报修订参考 |
-| [Anysearch复核与新增发现.md](local-research/Anysearch复核与新增发现.md) | 资料复核、新发现及其对验证优先级的影响 | 证据补充；不可替代正式环境实测 |
-| [Prometheus路线补充-来源与边界.md](local-research/Prometheus路线补充-来源与边界.md) | Prometheus、采集器、告警和查询边界 | 方案证据补充 |
+| [服务器资源保护服务-综合调研报告.md](research-notes/服务器资源保护服务-综合调研报告.md) | 综合阅读、资源类型和方案路线汇总 | 汇报和研究参考 |
+| [技术调研与初步选型.md](research-notes/技术调研与初步选型.md) | Ubuntu、Docker、cgroup、PSI、oomd 等技术比较 | 技术细节参考 |
+| [监控数据能力对比与守卫取数建议.md](research-notes/监控数据能力对比与守卫取数建议.md) | Beszel、Prometheus、Zabbix 等取数能力比较 | 观测方案参考 |
+| [五台服务器的方案收敛.md](research-notes/五台服务器的方案收敛.md) | 多服务器统一实现、逐机配置的收敛建议 | 规模化配置参考 |
+| [需求确认与验证计划.md](research-notes/需求确认与验证计划.md) | 补充的需求确认、证据包和验证路径 | 与 07 号蓝图交叉参考，验收总线以 07 为准 |
+| [组长决策摘要与覆盖范围.md](research-notes/组长决策摘要与覆盖范围.md) | 面向 leader 的完整性说明、方案路线和缺口 | 决策背景；当前测试行动以 13 为准 |
+| [现成资源保护策略-调研与汇报重排建议.md](research-notes/现成资源保护策略-调研与汇报重排建议.md) | 现成策略核验和 PPT 重排依据 | 汇报修订参考 |
+| [定位与处置-同题比较与修订依据.md](research-notes/定位与处置-同题比较与修订依据.md) | 定位、处置页面的比较和修订依据 | 汇报修订参考 |
+| [Anysearch复核与新增发现.md](research-notes/Anysearch复核与新增发现.md) | 资料复核、新发现及其对验证优先级的影响 | 证据补充；不可替代正式环境实测 |
+| [Prometheus路线补充-来源与边界.md](research-notes/Prometheus路线补充-来源与边界.md) | Prometheus、采集器、告警和查询边界 | 方案证据补充 |
 
 ## 4. 汇报与生成素材
 
@@ -82,12 +82,14 @@ README.md
 | `汇报/doubao_html_20260917_134412.html` | 生成汇报素材时保留的 HTML 来源 | 生成记录；不是工程文档 |
 | `汇报/服务器资源保护-海报生图提示词.md` | 海报生成提示词和准确性约束 | 视觉素材参考 |
 
-## 5. 测试结果与环境数据的边界
+## 5. 实验结果与环境数据的边界
 
 - `reports/` 保存机器本地原始采集报告，可能含生产信息，默认不入库。
-- 脱敏、可复现、可审阅的测试结论放在 [`docs/test-results/`](test-results/README.md)，并在 `PROGRESS.md` 记录链接。
+- 脱敏、可复现、可审阅的实验和故障测试结论统一放在 [`experiments/`](../experiments/README.md) 对应的 `EXP-###` 目录，并在 `PROGRESS.md` 记录链接。
 - `deploy/beszel/.env`、Docker 容器、Beszel 运行态数据和本地 WSL2 状态不作为仓库事实；只在对应机器维护。
 - 生产事实必须区分“采集到的证据”“工程推断”和“待确认事项”，不能把 PoC 结果直接写成生产结论。
+
+目录边界遵循：按机器采集的环境原始资料进入 `reports/`；按实验产生的记录、核心数据和证据进入 `experiments/`。不再单独维护 `docs/test-results/`，避免同一测试结果出现两份权威记录。
 
 ## 6. 文档新增与更新规范
 
@@ -99,7 +101,7 @@ README.md
 | leader 新反馈、范围变化、测试前提 | `docs/13-leader-test-handoff.md`，必要时同步 `05`/`04` |
 | 未决问题得到答案 | `docs/05-open-questions.md`，并补充证据来源 |
 | 测试步骤、验收指标、停止条件变化 | `docs/07-poc-blueprint.md` |
-| 真实测试结果 | `docs/test-results/YYYY-MM-DD-<scenario>.md` |
+| 真实实验或故障测试结果 | `experiments/EXP-###-<date>-<scenario>/record.md` |
 | 生产环境新事实 | `docs/09-production-discovery.md`、`docs/10-production-baseline.md` |
 | 安全边界或动作策略变化 | `docs/06-safety-policy.md`，未经审批不得只改汇报材料 |
 | 方案结论已改变 | 更新对应主文档，并在 `PROGRESS.md` 记录原因和日期 |
@@ -114,12 +116,14 @@ README.md
 
 ## 7. 当前目录优化判断
 
-当前顶层目录按职责划分是合理的，暂时不建议大规模重命名或搬迁。优先级如下：
+当前顶层目录按职责划分基本合理，不合并 `goals/`、`PROGRESS.md`、`docs/`、`reports/`，以保持计划、状态、工程知识和原始数据的边界。已完成的收敛和后续规则如下：
 
-1. **已完成：**建立本文件作为唯一文档入口，收敛根目录 README 导航。
+1. **已完成：**建立根目录 README 作为项目总入口，`docs/README.md` 作为文档分类和权威关系入口。
 2. **已完成：**明确 `PROGRESS.md`、13 号交接、07 号蓝图、06 号安全策略之间的权威关系。
-3. **下一步建议：**每次真实测试后在 `docs/test-results/` 产生一份脱敏结果，并回链到 `PROGRESS.md`。
-4. **后续可选：**将 `汇报/` 再拆为 `final/`、`preview/`、`source/`；当前文件数量不多，且已有外部引用，暂不为整齐而搬迁。
-5. **暂不处理：**`src/` 和 `tests/` 目前是工程占位目录；在测试方案和实现边界确认前，不提前制造空的代码层级。
+3. **已完成：**将补充调研目录改名为 `docs/research-notes/`，去除对“本地电脑”的来源依赖。
+4. **已完成：**将实验和故障测试结果统一收敛到 `experiments/EXP-###-*/record.md`，不再新增 `docs/test-results/`。
+5. **下一步建议：**将 `deploy/beszel/` 明确视为本地 PoC 部署；出现生产部署文件后再按 `deploy/poc/`、`deploy/production/` 分层。
+6. **后续可选：**将 `汇报/` 再拆为 `final/`、`preview/`、`source/`；当前先保持既有外部引用稳定。
+7. **暂不处理：**`src/` 和 `tests/` 目前是工程占位目录；在测试方案和实现边界确认前，不提前制造空的代码层级。
 
-管理原则：**一个主题只保留一个当前决策源；补充材料保留证据和推导；测试结果单独归档；汇报材料不反向充当工程事实。**
+管理原则：**一个主题只保留一个当前决策源；补充材料保留证据和推导；实验结果统一归档；汇报材料不反向充当工程事实。**

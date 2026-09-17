@@ -77,7 +77,7 @@
 - [分阶段实施计划](04-delivery-plan.md)
 - [PoC 验证蓝图](07-poc-blueprint.md)
 - [待确认问题](05-open-questions.md)
-- [组长决策摘要与覆盖范围](local-research/组长决策摘要与覆盖范围.md)
+- [组长决策摘要与覆盖范围](research-notes/组长决策摘要与覆盖范围.md)
 - [汇报讲稿](../汇报/服务器资源保护-现成策略优先-讲稿.md)
 - [最终汇报 PPT](../汇报/服务器资源保护-现成策略优先-重构版.pptx)
 

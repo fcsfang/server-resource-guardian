@@ -72,7 +72,7 @@
 | 目录 | 作用 | 管理边界 | 入口 |
 | --- | --- | --- | --- |
 | `config/` | Guardian 配置样例和默认策略 | 只放样例；危险动作默认关闭，不放真实凭据 | [guardian.example.yaml](config/guardian.example.yaml) |
-| `deploy/` | Beszel、systemd、容器等部署配置 | 放可复用部署定义；真实 `.env` 不提交 | [deploy/README.md](deploy/README.md) |
+| `deploy/` | Beszel、systemd、容器等部署配置 | 当前 `deploy/beszel/` 是本地 PoC；真实 `.env` 不提交 | [deploy/README.md](deploy/README.md) |
 | `goals/` | 跨 agent 可接手的目标、任务、依赖和完成标准 | Goal 编号只增不减；计划不等于实验结果 | [goals/README.md](goals/README.md) |
 | `docs/` | 需求、方案、架构、安全、测试、生产事实和证据 | 稳定知识与决策文档；以总目录标记权威关系 | [docs/README.md](docs/README.md) |
 | `experiments/` | 实验日志、脱敏核心数据和可审阅证据 | 每次实验使用唯一 `EXP-###`；失败实验也保留 | [experiments/README.md](experiments/README.md) |
@@ -115,7 +115,7 @@ README.md
 8. **本地运行事实：** [docs/11-local-beszel-poc.md](docs/11-local-beszel-poc.md)。
 9. **真实实验结论：** [experiments/](experiments/README.md) 中对应的 `EXP-###` 记录。
 
-`docs/local-research/` 是补充研究和证据材料；`汇报/` 是展示成品和生成素材。它们可以支持主文档，但不能绕过主文档单独改变项目范围、安全边界或验收结论。
+`docs/research-notes/` 是补充研究和证据材料；`汇报/` 是展示成品和生成素材。它们可以支持主文档，但不能绕过主文档单独改变项目范围、安全边界或验收结论。
 
 ## 标准行动流程
 

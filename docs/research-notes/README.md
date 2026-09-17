@@ -1,16 +1,16 @@
-# 本地电脑调研补充
+# 补充研究材料
 
-本目录保存本地电脑在桌面调研、资料复核和汇报准备阶段形成的补充材料。它们与编号工程文档保持来源分离；完整的权威关系请先看 [`docs/README.md`](../README.md)。公司电脑侧的生产环境事实以 `docs/09-production-discovery.md` 和 `docs/10-production-baseline.md` 为准；本地电脑侧的 WSL2 与 Beszel PoC 以 `docs/11-local-beszel-poc.md` 为准。
+本目录保存项目形成的补充研究、资料复核和汇报准备材料。它们与编号工程文档保持来源分离；完整的权威关系请先看 [`docs/README.md`](../README.md)。生产环境事实以 `docs/09-production-discovery.md` 和 `docs/10-production-baseline.md` 为准；WSL2 与 Beszel PoC 以 `docs/11-local-beszel-poc.md` 为准。
 
 ## 使用顺序
 
-1. 先看仓库根目录 `README.md`、`PROGRESS.md` 和 `docs/README.md`，了解当前权威入口与双机分工。
+1. 先看仓库根目录 `README.md`、`PROGRESS.md` 和 `docs/README.md`，了解当前权威入口、项目状态与双机分工。
 2. 当前 leader 测试任务优先看 `docs/13-leader-test-handoff.md` 和 `docs/07-poc-blueprint.md`。
-3. 汇报结论和本地调研细节再参考本目录的综合报告、方案比较和修订依据。
+3. 汇报结论和补充研究细节再参考本目录的综合报告、方案比较和修订依据。
 
-## 本地补充材料
+## 研究材料
 
-- `服务器资源保护服务-综合调研报告.md`：本地整理的综合阅读与汇报入口。
+- `服务器资源保护服务-综合调研报告.md`：综合阅读与汇报入口。
 - `技术调研与初步选型.md`、`监控数据能力对比与守卫取数建议.md`：方案和取数能力的补充比较。
 - `五台服务器的方案收敛.md`、`需求确认与验证计划.md`：多机配置和验证边界。
 - `组长决策摘要与覆盖范围.md`、`现成资源保护策略-调研与汇报重排建议.md`：讨论与汇报组织依据。
