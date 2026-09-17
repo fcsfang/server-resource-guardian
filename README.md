@@ -29,6 +29,15 @@
 - [配置样例](config/guardian.example.yaml)
 - [原始任务截图](docs/assets/task-screenshot.png)
 
+## 本地电脑补充与汇报
+
+- [本地调研补充索引](docs/local-research/README.md)
+- [最终汇报 PPT](汇报/服务器资源保护-现成策略优先-重构版.pptx)
+- [最终汇报讲稿](汇报/服务器资源保护-现成策略优先-讲稿.md)
+- [汇报预览](汇报/preview/strategy-first.html)
+
+本地电脑的调研补充和汇报材料已合并到仓库，但生产环境原始报告、`.env`、Docker 容器和 Beszel 运行数据仍按机器分别保留，不进入版本库。
+
 ## 建议的第一阶段范围
 
 1. 选取一台非生产 Linux 测试机部署采集端。
