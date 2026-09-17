@@ -10,22 +10,16 @@
 
 ## 当前状态
 
-当前已完成首轮官方资料调研、生产环境基线采集和本地 WSL2 环境初始化。隔离的 Beszel 0.19.0 Hub/Agent 已成功上线，项目进入只读监控 PoC 验证阶段，尚未进入生产代码开发。任何自动终止进程、重启容器或限制资源的能力默认关闭，必须在确认业务保护名单和审批策略后启用。
+当前已完成首轮官方资料调研、生产环境基线采集和本地 WSL2 环境初始化。隔离的 Beszel 0.19.0 Hub/Agent 已成功上线，项目处于只读监控 PoC 与两层方案测试准备阶段，尚未进入生产代码开发。leader 最新要求是分别验证第一层“救援能力保障”和第二层“自动资源保护”；任何自动终止进程、重启容器或限制资源的能力默认关闭，必须在确认测试授权、业务保护名单和审批策略后启用。
 
 ## 文档导航
 
-- [任务背景与需求基线](docs/01-requirements.md)
-- [成熟方案调研与选型](docs/02-solution-research.md)
-- [推荐架构](docs/03-architecture.md)
-- [分阶段实施计划](docs/04-delivery-plan.md)
-- [待确认问题](docs/05-open-questions.md)
-- [生产安全与处置策略](docs/06-safety-policy.md)
+- [文档总目录与管理规范](docs/README.md)（唯一总入口）
+- [双机进度同步档案](PROGRESS.md)
+- [Leader 最新测试交接](docs/13-leader-test-handoff.md)
 - [PoC 验证蓝图](docs/07-poc-blueprint.md)
-- [调研证据与官方资料](docs/08-research-evidence.md)
-- [生产环境采集与 WSL2 复现](docs/09-production-discovery.md)
-- [生产环境基线与风险分析](docs/10-production-baseline.md)
-- [本地 Beszel PoC 部署](docs/11-local-beszel-poc.md)
-- [资源耗尽救援方案：讨论与汇报笔记](docs/12-leader-discussion-research.md)
+- [生产安全与处置策略](docs/06-safety-policy.md)
+- [待确认问题](docs/05-open-questions.md)
 - [配置样例](config/guardian.example.yaml)
 - [原始任务截图](docs/assets/task-screenshot.png)
 

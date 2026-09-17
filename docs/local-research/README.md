@@ -1,12 +1,12 @@
 # 本地电脑调研补充
 
-本目录保存本地电脑在桌面调研、资料复核和汇报准备阶段形成的补充材料。它们与 `docs/01`–`docs/12` 的工程文档保持来源分离：公司电脑侧的生产环境事实以 `docs/09-production-discovery.md` 和 `docs/10-production-baseline.md` 为准；本地电脑侧的 WSL2 与 Beszel PoC 以 `docs/11-local-beszel-poc.md` 为准。
+本目录保存本地电脑在桌面调研、资料复核和汇报准备阶段形成的补充材料。它们与编号工程文档保持来源分离；完整的权威关系请先看 [`docs/README.md`](../README.md)。公司电脑侧的生产环境事实以 `docs/09-production-discovery.md` 和 `docs/10-production-baseline.md` 为准；本地电脑侧的 WSL2 与 Beszel PoC 以 `docs/11-local-beszel-poc.md` 为准。
 
 ## 使用顺序
 
-1. 先看仓库根目录 `README.md` 和 `PROGRESS.md`，了解双机分工与当前阶段。
-2. 工程实施问题优先看编号文档 `docs/01`–`docs/12`。
-3. 汇报结论和本地调研细节可参考本目录的综合报告、方案比较和修订依据。
+1. 先看仓库根目录 `README.md`、`PROGRESS.md` 和 `docs/README.md`，了解当前权威入口与双机分工。
+2. 当前 leader 测试任务优先看 `docs/13-leader-test-handoff.md` 和 `docs/07-poc-blueprint.md`。
+3. 汇报结论和本地调研细节再参考本目录的综合报告、方案比较和修订依据。
 
 ## 本地补充材料
 
@@ -15,6 +15,10 @@
 - `五台服务器的方案收敛.md`、`需求确认与验证计划.md`：多机配置和验证边界。
 - `组长决策摘要与覆盖范围.md`、`现成资源保护策略-调研与汇报重排建议.md`：讨论与汇报组织依据。
 - `Anysearch复核与新增发现.md`、`Prometheus路线补充-来源与边界.md`、`定位与处置-同题比较与修订依据.md`：后续资料复核与页面修订依据。
+
+## 权威性边界
+
+本目录是补充研究与证据材料，不是新的决策总账。若本目录与 `docs/05`、`docs/06`、`docs/07` 或 `docs/13` 出现范围、授权或测试顺序差异，以编号主文档和最新交接文档为准；差异应回填到主文档，不能长期只保留在本目录。
 
 ## 汇报材料
 

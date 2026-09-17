@@ -40,7 +40,7 @@
 
 ## 待办事项（按优先级）
 
-- [ ] 向 leader 汇报（讲稿已就绪），记录反馈并更新 docs/05-open-questions.md。
+- [ ] 将 leader 最新反馈中的测试授权、保护名单和动作边界回填到 docs/05-open-questions.md。
 - [ ] 根据 leader 最新反馈准备两层方案测试：第一层救援能力保障；第二层现成自动资源保护策略评估。
 - [ ] 阶段 1 收尾：Beszel 页面核验主机/Docker/systemd 指标完整性（hello-world 容器历史、systemd 服务列表）。
 - [ ] 阶段 1 收尾：受控压测验证指标完整性与 Agent 开销，建立首轮本地告警阈值。
