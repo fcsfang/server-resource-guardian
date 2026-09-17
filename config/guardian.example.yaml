@@ -1,0 +1,48 @@
+# 仅用于需求讨论和 PoC。字段会在技术选型后通过 schema 固化。
+version: 1
+
+agent:
+  mode: observe  # observe | manual | automatic
+  sample_interval: 5s
+  snapshot_directory: /var/lib/server-resource-guardian/snapshots
+  snapshot_max_total_size: 256MiB
+
+control_plane:
+  enabled: false
+  endpoint: ""
+  outbound_connection: true
+  mutual_tls: true
+
+alerts:
+  # 下列阈值是 PoC 占位值，不得直接用于生产。
+  cpu:
+    warning_utilization_percent: 85
+    warning_for: 5m
+  memory:
+    warning_available_percent: 15
+    warning_for: 3m
+  psi:
+    enabled: true
+
+actions:
+  enabled: false
+  require_approval: true
+  graceful_timeout: 30s
+  cooldown: 10m
+  max_actions_per_host_per_hour: 2
+  allow:
+    throttle: []
+    terminate: []
+    restart_container: []
+
+protection:
+  systemd_units:
+    - server-resource-guardian.service
+    - ssh.service
+    - sshd.service
+  executable_paths: []
+  container_labels: []
+
+audit:
+  local_buffer_enabled: true
+  remote_export_enabled: false

@@ -1,0 +1,19 @@
+# Runtime and local artifacts
+*.log
+*.pid
+*.tmp
+.env
+snapshots/
+reports/*
+!reports/.gitkeep
+dist/
+build/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# WorkBuddy local workspace data
+.workbuddy/

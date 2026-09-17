@@ -1,0 +1,100 @@
+<html style="margin:0;padding:0;">
+<div style="background-color:transparent;box-sizing:border-box;font-family:'Roboto','PingFang SC','Segoe UI',Arial,sans-serif;color:#1A1B1C;line-height:1.5;">
+  <div style="font-size:15px;font-weight:600;margin:0 0 2px;">内存 vs CPU：资源管理"全套方案"对照</div>
+  <div style="font-size:12px;color:#6B7280;margin:0 0 12px;">左列为本文档的内存兜底工具，右列为 CPU 的对应手段。处置范式不同：内存靠"杀"，CPU 靠"限"。</div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;">
+    <div style="flex:1 1 220px;min-width:0;padding:10px 12px;background:rgba(234,167,178,0.14);border-radius:12px;box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;color:#B04A63;">内存 = 存量资源 → 处置=杀</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">耗尽即灾难（分配失败→内核 OOM）；不释放就一直占用，必须"杀"来回收。</div>
+    </div>
+    <div style="flex:1 1 220px;min-width:0;padding:10px 12px;background:rgba(163,213,232,0.18);border-radius:12px;box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;color:#2E7FA8;">CPU = 可再生流量 → 处置=限</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">过载只是排队变慢、不崩溃不丢数据；限流/降权立即见效，无需杀。</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin:0 0 10px;">
+    <div style="flex:1 1 240px;min-width:0;padding:5px 10px;border-radius:8px;background:rgba(234,167,178,0.26);font-size:12px;font-weight:600;box-sizing:border-box;">内存（本文档）</div>
+    <div style="flex:1 1 240px;min-width:0;padding:5px 10px;border-radius:8px;background:rgba(163,213,232,0.30);font-size:12px;font-weight:600;box-sizing:border-box;">CPU（对应方案）</div>
+  </div>
+
+  <div style="font-size:11px;color:#6B7280;font-weight:600;margin:0 0 4px;">① 内核默认机制（兜底底座）</div>
+  <div style="display:flex;gap:8px;margin:0 0 10px;">
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(234,167,178,0.10);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">内核 OOM Killer</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">最后一道保险，按 oom_score 挑进程强杀。</div>
+    </div>
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(163,213,232,0.12);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">CFS 调度器 + nice + 负载均衡</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">默认公平分时，天然兜底，通常无需干预。</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#6B7280;font-weight:600;margin:0 0 4px;">② 监控 / 触发信号</div>
+  <div style="display:flex;gap:8px;margin:0 0 10px;">
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(234,167,178,0.10);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">内存 PSI、swap 用量、MemAvailable</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">压力信号触发处置。</div>
+    </div>
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(163,213,232,0.12);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">CPU PSI（/proc/pressure/cpu）、利用率、负载</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">同样有压力信号，可作触发源。</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#6B7280;font-weight:600;margin:0 0 4px;">③ 组级管控（cgroup）</div>
+  <div style="display:flex;gap:8px;margin:0 0 10px;">
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(234,167,178,0.10);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">systemd-oomd</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">按内存压力/swap 触发，处置整个 cgroup（组内全杀）。</div>
+    </div>
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(163,213,232,0.12);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">cgroup v2 cpu 控制器</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">cpu.max 硬上限、cpu.weight 权重；systemd 侧 CPUQuota= / CPUWeight= / AllowedCPUs=。</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#6B7280;font-weight:600;margin:0 0 4px;">④ 进程级工具</div>
+  <div style="display:flex;gap:8px;margin:0 0 10px;">
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(234,167,178,0.10);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">earlyoom</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">按 oom_score 挑进程，SIGTERM/SIGKILL。</div>
+    </div>
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(163,213,232,0.12);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">nice/renice · cpulimit · taskset</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">调优先级；限进程 CPU 占用率；绑核/亲和性。</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#6B7280;font-weight:600;margin:0 0 4px;">⑤ 复杂策略引擎</div>
+  <div style="display:flex;gap:8px;margin:0 0 10px;">
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(234,167,178,0.10);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">Meta oomd（Detector + Action 插件）</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">基于 PSI，而 PSI 本身覆盖 CPU/内存/IO，可扩展。</div>
+    </div>
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(163,213,232,0.12);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">systemd 统一资源控制 / 容器编排</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">K8s CPU requests &amp; limits、Docker --cpus。</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#6B7280;font-weight:600;margin:0 0 4px;">⑥ 最后兜底手段</div>
+  <div style="display:flex;gap:8px;margin:0 0 12px;">
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(234,167,178,0.10);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">SIGKILL 强杀（组内全杀）</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">紧急兜底，不给优雅停机机会。</div>
+    </div>
+    <div style="flex:1 1 240px;min-width:0;padding:8px 10px;border-radius:10px;background:rgba(163,213,232,0.12);box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">RT 节流（sched_rt_runtime_us）+ cpu.max 硬上限 + watchdog</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:2px;">防实时任务饿死他人；节流到趋近停止；防饿死检测。</div>
+    </div>
+  </div>
+
+  <div style="padding:10px 12px;border-radius:12px;background:rgba(0,0,0,0.04);box-sizing:border-box;">
+    <div style="font-size:12px;font-weight:600;">三条要点</div>
+    <div style="font-size:12px;color:#4B5563;margin-top:2px;">① 内核没有也不需要"CPU OOM Killer"：CPU 过载不触发不可恢复失败，CFS 天然公平。② 想抄本文档作业：systemd-oomd 没有 CPU 版官方守护进程，需基于 /proc/pressure/cpu 自建"监控+触发"（Meta oomd 的插件框架就是现成模板）。③ "只选一个主责"同样适用：CPUQuota、cpulimit、编排器限流叠着用会互相干扰，处置顺序要先设计。</div>
+  </div>
+</div>
+</html>
+<!-- （注：内容由AI生成） -->

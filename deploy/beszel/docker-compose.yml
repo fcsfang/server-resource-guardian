@@ -1,0 +1,53 @@
+name: server-resource-guardian-beszel-poc
+
+services:
+  beszel:
+    image: henrygd/beszel:0.19.0
+    container_name: beszel-poc
+    restart: unless-stopped
+    environment:
+      APP_URL: http://localhost:8090
+      CHECK_UPDATES: "false"
+      CONTAINER_DETAILS: "false"
+    ports:
+      - "127.0.0.1:8090:8090"
+    volumes:
+      - beszel_data:/beszel_data
+      - beszel_socket:/beszel_socket
+    healthcheck:
+      test: ["CMD", "/beszel", "health", "--url", "http://localhost:8090"]
+      interval: 120s
+      start_period: 10s
+      timeout: 5s
+      retries: 3
+
+  beszel-agent:
+    image: henrygd/beszel-agent:0.19.0
+    container_name: beszel-agent-poc
+    profiles: ["agent"]
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      beszel:
+        condition: service_healthy
+    environment:
+      LISTEN: /beszel_socket/beszel.sock
+      HUB_URL: http://localhost:8090
+      TOKEN: ${BESZEL_AGENT_TOKEN:-}
+      KEY: ${BESZEL_AGENT_KEY:-}
+    volumes:
+      - beszel_agent_data:/var/lib/beszel-agent
+      - beszel_socket:/beszel_socket
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro
+    healthcheck:
+      test: ["CMD", "/agent", "health"]
+      interval: 120s
+      start_period: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  beszel_data:
+  beszel_agent_data:
+  beszel_socket:
