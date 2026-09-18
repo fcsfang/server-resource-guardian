@@ -1,0 +1,6 @@
+metric,warning_threshold,critical_threshold,unit,basis_local_poc,note
+cpu_pct_1m,70,90,percent,EXP-001: idle 0.17%; 4/8core stress peak 50.20%; 70%=5.6cores busy; 90%=7.2cores,Local PoC calibration value only; not for production
+mem_pct,70,85,percent,EXP-001: idle 5.38%; 1GB stress peak 16.10%; 70%=8.4GB of 11.68GB; 85%=9.9GB,Local PoC calibration value only; production containers may differ significantly
+swap_used_mb,100,500,MB,EXP-001: idle 0MB; 1GB stress peak 69MB; sustained growth = real memory pressure,Local PoC calibration value only; 4GB swap total
+load_1m,4.0,6.0,index,EXP-001: idle 0.00; 4/8core stress peak 3.01; >4 means more runnable tasks than 8 cores,Local PoC calibration value only; production core count differs
+load_5m,3.0,5.0,index,EXP-001: idle 0.02; 4/8core stress 5m peak 1.27; smoothed trend indicator,Local PoC calibration value only; production core count differs
