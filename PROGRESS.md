@@ -41,6 +41,7 @@
 - 2026-09-17 将本地调研补充、最终汇报 PPT 与预览素材合并到仓库；远程仓库的工程文档、脚本和部署配置保持为主干。
 - 2026-09-17 leader 最新汇报后要求围绕两层方案开始测试：第一层验证资源高压下的 SSH 与人工救援链路，第二层先验证现成自动资源保护策略，再根据缺口评估 Guardian；交接与测试边界见 docs/13-leader-test-handoff.md。
 - 2026-09-18 确定总执行路线蓝图（docs/14：以 Beszel 为监控基础、现成机制优先、Guardian 仅补缺口），并统一为单一本地 WSL2 测试环境，移除旧文档中两台机器的分工描述。
+- 2026-09-18 完成 Goal 1 EXP-001：核验 Beszel 主机（CPU/内存/swap/磁盘/网络/load）、Docker 容器（2 个）和 systemd 服务（39 个含 docker/systemd-oomd）指标完整性；CPU 压测（4/8 核 x 120s）CPU 升至 50.20%、load 3.01；内存压测（1GB x 120s）内存升至 1.88 GB、swap 0.07 GB；Hub/Agent 负载开销可忽略（CPU <=0.03%，内存增量 <=2.3 MB）。结论和数据见 experiments/EXP-001-2026-09-18-beszel-metric-verification/record.md。
 
 ## 待办事项（按优先级）
 
@@ -67,3 +68,4 @@ git add PROGRESS.md && git commit -m "progress: <一句话>" && git push origin 
 - `deploy/beszel/.env`（本地 PoC 凭据）
 - `reports/*`（生产环境采集产物，含生产信息）
 - WSL2 内的 Docker 容器与 Beszel 指标数据（本地运行态，不属于仓库）
+
