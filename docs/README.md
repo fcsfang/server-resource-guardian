@@ -54,6 +54,7 @@ README.md
 | [11-local-beszel-poc.md](11-local-beszel-poc.md) | 本地 Beszel Hub/Agent 部署、认证、开销和生产差异 | 本地运行记录；不等同于生产验收 |
 | [12-leader-discussion-research.md](12-leader-discussion-research.md) | 围绕 leader 原始问题形成的讨论、路线和技术解释 | 讨论背景；最新行动方向以 13 号交接文档为准 |
 | [13-leader-test-handoff.md](13-leader-test-handoff.md) | leader 最新反馈、两层方案、测试顺序、授权前提和新会话接续方式 | **当前下一步工作的最新入口** |
+| [15-experiment-findings.md](15-experiment-findings.md) | 实验关键结论汇总：失效机制、管道时效、架构决策、Guardian 最小功能 | **实验结论的唯一汇总入口** |
 | [14-execution-roadmap.md](14-execution-roadmap.md) | 总执行蓝图：技术路线（Beszel 基础）、执行阶段和测试方式 | 执行目标与阶段的总纲 |
 
 ## 3. 补充研究材料
@@ -129,3 +130,4 @@ README.md
 7. **暂不处理：**`src/` 和 `tests/` 目前是工程占位目录；在测试方案和实现边界确认前，不提前制造空的代码层级。
 
 管理原则：**一个主题只保留一个当前决策源；补充材料保留证据和推导；实验结果统一归档；汇报材料不反向充当工程事实。**
+
