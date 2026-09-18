@@ -47,6 +47,7 @@
 - 2026-09-18 完成 Goal 3 EXP-003：第二层现成自动资源保护策略评估。核心发现：systemd-oomd 默认不 kill（ManagedOOM=auto）；Docker --memory 限制配合内核 OOM killer 是最可靠的自动保护（EXP-002 S4 已验证）；Monit 适合已知服务固定规则。缺口分析确认 4 个缺口（保护名单/动作分级/动作前快照/动作后验证），构成 Guardian 最小开发范围。Goal 3 状态改为 COMPLETED。
 - 2026-09-18 补充 EXP-004 极端压力测试：WSL2 减配至 4CPU/3.9GB/2GB，CPU 100% 持续、内存 92%+swap 98%（合计 95% 总内存资源）、CPU+内存同时极端、OOM 边界共 5 个场景。SSH 全程 0 失败（延迟峰值 488ms）。内核在资源耗尽时终止压力进程并恢复正常。结论和数据见 experiments/EXP-004-2026-09-18-extreme-stress-rescue/record.md。
 - 2026-09-18 补充 EXP-005 真实故障模式验证（完整版）：多容器竞争、I/O、PID 耗尽测试 + 宿主机级内存耗尽导致 WSL2 整机崩溃（两次复现）。关键发现：sshd 被 OOM killer 保护（oom_score_adj=-1000）；SSH 失效的真实场景是宿主机内存耗尽导致系统崩溃。项目价值定位调整为预防容器资源无界增长。（4×1.2GB→94%+swap85%）、磁盘 I/O 饱和（WSL2 NVMe 未能饱和）、PID 耗尽（12000 进程仅占内核上限 0.3%）。验证 Docker --pids-limit 有效性。结论：SSH 韧性来自内核 CFS+内存管理+OOM killer 多层保护；项目核心价值在预防（资源限制）而非救援。见 experiments/EXP-005-2026-09-18-realistic-failure-modes/record.md。
+- 2026-09-18 完成 EXP-006 检测-定位-处置-恢复管道时效性测试：模拟 20MB/s 内存泄漏，完整管道（检测→定位→处置→恢复）可在 15 秒内完成（docker kill 可缩至 ~3s）。泄漏到临界有 141s 预警窗口。docker stats 定位即时（<1s），docker stop 耗时 13s（瓶颈），恢复 2s。管道速度远快于崩溃时间。见 experiments/EXP-006-2026-09-18-detection-response-pipeline/record.md。
 
 ## 待办事项（按优先级）
 
@@ -71,6 +72,7 @@ git add PROGRESS.md && git commit -m "progress: <一句话>" && git push origin 
 - `deploy/beszel/.env`（本地 PoC 凭据）
 - `reports/*`（生产环境采集产物，含生产信息）
 - WSL2 内的 Docker 容器与 Beszel 指标数据（本地运行态，不属于仓库）
+
 
 
 
