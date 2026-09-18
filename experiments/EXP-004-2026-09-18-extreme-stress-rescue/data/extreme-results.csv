@@ -1,0 +1,24 @@
+scenario,config,timestamp,memory_pct,swap_mb,swap_pct,container_cpu_pct,container_mem,ssh_ms,ssh_ok,notes
+E1_baseline,4CPU/3.9GB/2GB,16:51:03,15,0,0,N/A,N/A,117,yes,pre-stress reference
+E1_t5s,4CPU/3.9GB/2GB,16:51:08,15,0,0,400.41,N/A,228,yes,CPU 100% begins
+E1_t20s,4CPU/3.9GB/2GB,16:51:23,15,0,0,400.25,N/A,231,yes,sustained 100% CPU
+E1_t40s,4CPU/3.9GB/2GB,16:51:43,15,0,0,398.59,N/A,483,yes,peak latency under CPU stress
+E1_t55s,4CPU/3.9GB/2GB,16:51:58,15,0,0,0.00,N/A,117,yes,stress ended recovery
+E2_t10s,4CPU/3.9GB/2GB,16:52:46,78,0,0,low,2.451GiB,140,yes,memory 2.5GB allocated
+E2_t30s,4CPU/3.9GB/2GB,16:53:06,79,0,0,low,2.451GiB,294,yes,stabilized at 79%
+E2_t50s,4CPU/3.9GB/2GB,16:53:26,79,0,0,low,2.451GiB,133,yes,normal SSH
+E2_t85s,4CPU/3.9GB/2GB,16:54:01,79,0,0,low,2.451GiB,140,yes,still normal
+E3_t5s,4CPU/3.9GB/2GB,16:54:19,92,489,24,low,3.038GiB,431,yes,memory 92% swap begins
+E3_t15s,4CPU/3.9GB/2GB,16:54:29,91,540,26,low,2.996GiB,139,yes,swap active
+E3_t45s,4CPU/3.9GB/2GB,16:54:59,90,557,27,low,2.975GiB,122,yes,sustained pressure
+E3_t75s,4CPU/3.9GB/2GB,16:55:29,88,646,32,low,2.889GiB,342,yes,still responsive
+E4_t10s,4CPU/3.9GB/2GB,16:56:12,85,89,4,403.16,2.755GiB,220,yes,CPU+MEM combined
+E4_t30s,4CPU/3.9GB/2GB,16:56:32,85,89,4,401.11,2.755GiB,444,yes,peak latency combined
+E4_t85s,4CPU/3.9GB/2GB,16:57:27,85,89,4,399.13,2.755GiB,228,yes,sustained combined
+E5v2_t5s,4CPU/3.9GB/2GB,17:03:10,93,1927,94,low,3.12GiB,216,yes,EXTREME: 93%+94%=95% total
+E5v2_t15s,4CPU/3.9GB/2GB,17:03:20,92,1971,96,low,3.103GiB,124,yes,EXTREME sustained
+E5v2_t25s,4CPU/3.9GB/2GB,17:03:30,92,1978,97,low,3.091GiB,123,yes,EXTREME sustained
+E5v2_t45s,4CPU/3.9GB/2GB,17:03:50,92,1977,97,low,3.086GiB,138,yes,EXTREME sustained
+E5v2_t55s,4CPU/3.9GB/2GB,17:04:00,92,1968,96,low,3.084GiB,488,yes,peak latency near OOM
+E5v2_t75s,4CPU/3.9GB/2GB,17:04:20,91,2016,98,low,3.044GiB,120,yes,98% swap used!
+E5v2_t85s,4CPU/3.9GB/2GB,17:04:30,12,100,5,low,0.006GiB,115,yes,stress process killed by kernel; system recovered
