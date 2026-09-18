@@ -1,7 +1,8 @@
 # 待确认问题
 
-## 已确认信息（2026-09-16）
+## 已确认信息
 
+- 技术路线已定（2026-09-18）：以 Beszel 为监控平台基础，救援与自动保护优先复用现成机制，Guardian 仅在缺口明确时开发；执行蓝图见 [docs/14-execution-roadmap.md](14-execution-roadmap.md)。
 - 公司当前监控平台为 Beszel。
 - 生产服务器为 Ubuntu 22.04.5、systemd 249、cgroup v2，运行 Docker Engine 29.1.3。
 - 本地 Windows 已安装 Ubuntu 26.04.1 WSL2，并按 8 CPU、12 GB 内存和 4 GB swap 配置；Docker Engine 29.1.3、Compose 2.40.3、systemd cgroup driver 已验证可用。

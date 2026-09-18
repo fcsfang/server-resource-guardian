@@ -4,7 +4,7 @@
 
 ## 使用顺序
 
-1. 先看仓库根目录 `README.md`、`PROGRESS.md` 和 `docs/README.md`，了解当前权威入口、项目状态与双机分工。
+1. 先看仓库根目录 `README.md`、`PROGRESS.md` 和 `docs/README.md`，了解当前权威入口、执行蓝图与项目状态。
 2. 当前 leader 测试任务优先看 `docs/13-leader-test-handoff.md` 和 `docs/07-poc-blueprint.md`。
 3. 汇报结论和补充研究细节再参考本目录的综合报告、方案比较和修订依据。
 
@@ -24,4 +24,4 @@
 
 最终汇报 PPT 与讲稿位于仓库根目录的 `汇报/`。HTML/SVG 预览位于 `汇报/preview/`，只作为视觉预览和素材来源，不替代 PPT 或工程文档。
 
-本目录不存放生产环境原始采集报告、`.env` 或 Beszel 运行数据；这些内容按根目录 `.gitignore` 和 `PROGRESS.md` 的双机同步约定处理。
+本目录不存放生产环境原始采集报告、`.env` 或 Beszel 运行数据；这些内容按根目录 `.gitignore` 和 `PROGRESS.md` 的同步约定处理。

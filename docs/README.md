@@ -8,13 +8,13 @@
 
 - [目标与任务目录](../goals/README.md)：记录跨 agent 可接手的目标组和任务清单；当前从 `Goal 1` 开始。
 - [实验日志与核心数据](../experiments/README.md)：记录真实实验过程、结果和脱敏核心数据；实验编号使用 `EXP-###`。
-- 当前执行目标：[Goal 1：两层资源保护方案测试](../goals/resource-protection.md#goal-1-两层资源保护方案测试)。
+- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 推进 [Goal 1：只观测 PoC 收尾](../goals/resource-protection.md#goal-1只观测-poc-收尾)。
 
 ## 1. 当前最新参考关系
 
 | 要回答的问题 | 当前首要参考 | 使用规则 |
 | --- | --- | --- |
-| 项目现在做到哪一步、两台电脑如何分工？ | [PROGRESS.md](../PROGRESS.md) | 双机进度、环境差异和待办的总账；每次阶段性工作后更新 |
+| 项目现在做到哪一步、环境如何？ | [PROGRESS.md](../PROGRESS.md) | 项目进度、环境差异和待办的总账；每次阶段性工作后更新 |
 | leader 最新要求是什么、下一步测什么？ | [Leader 测试交接](13-leader-test-handoff.md) | 当前两层方案测试的直接入口；与旧讨论笔记冲突时，以本文件为当前任务方向 |
 | 测试如何设计、怎样验收和何时停止？ | [PoC 验证蓝图](07-poc-blueprint.md) | 通用测试矩阵、指标、输出物和停止条件；按 13 号文档补充 leader 最新范围 |
 | 任何处置动作的安全边界是什么？ | [生产安全与处置策略](06-safety-policy.md) | 默认关闭危险动作；保护名单、审批、审计和熔断优先级最高 |
@@ -26,6 +26,7 @@
 
 ```text
 README.md
+  → docs/14-execution-roadmap.md
   → PROGRESS.md
   → docs/13-leader-test-handoff.md
   → docs/07-poc-blueprint.md
@@ -52,11 +53,12 @@ README.md
 | [10-production-baseline.md](10-production-baseline.md) | 生产版本、容器资源边界和主要风险 | 当前生产基线摘要；新增采集结果需更新 |
 | [11-local-beszel-poc.md](11-local-beszel-poc.md) | 本地 Beszel Hub/Agent 部署、认证、开销和生产差异 | 本地运行记录；不等同于生产验收 |
 | [12-leader-discussion-research.md](12-leader-discussion-research.md) | 围绕 leader 原始问题形成的讨论、路线和技术解释 | 讨论背景；最新行动方向以 13 号交接文档为准 |
-| [13-leader-test-handoff.md](13-leader-test-handoff.md) | leader 最新反馈、两层方案、测试顺序、授权前提和办公电脑接续方式 | **当前下一步工作的最新入口** |
+| [13-leader-test-handoff.md](13-leader-test-handoff.md) | leader 最新反馈、两层方案、测试顺序、授权前提和新会话接续方式 | **当前下一步工作的最新入口** |
+| [14-execution-roadmap.md](14-execution-roadmap.md) | 总执行蓝图：技术路线（Beszel 基础）、执行阶段和测试方式 | 执行目标与阶段的总纲 |
 
 ## 3. 补充研究材料
 
-[`research-notes/`](research-notes/README.md) 保存补充研究、资料复核和汇报重排依据。它们适合查证背景和比较方案，但不是新的决策总账；目录名称不绑定某一台电脑，便于双机协作。
+[`research-notes/`](research-notes/README.md) 保存补充研究、资料复核和汇报重排依据。它们适合查证背景和比较方案，但不是新的决策总账；目录名称不绑定特定环境。
 
 | 文件 | 作用 | 使用定位 |
 | --- | --- | --- |
@@ -86,7 +88,7 @@ README.md
 
 - `reports/` 保存机器本地原始采集报告，可能含生产信息，默认不入库。
 - 脱敏、可复现、可审阅的实验和故障测试结论统一放在 [`experiments/`](../experiments/README.md) 对应的 `EXP-###` 目录，并在 `PROGRESS.md` 记录链接。
-- `deploy/beszel/.env`、Docker 容器、Beszel 运行态数据和本地 WSL2 状态不作为仓库事实；只在对应机器维护。
+- `deploy/beszel/.env`、Docker 容器、Beszel 运行态数据和本地 WSL2 状态不作为仓库事实；只在本机维护。
 - 生产事实必须区分“采集到的证据”“工程推断”和“待确认事项”，不能把 PoC 结果直接写成生产结论。
 
 目录边界遵循：按机器采集的环境原始资料进入 `reports/`；按实验产生的记录、核心数据和证据进入 `experiments/`。不再单独维护 `docs/test-results/`，避免同一测试结果出现两份权威记录。
@@ -97,7 +99,7 @@ README.md
 
 | 变化类型 | 应更新的位置 |
 | --- | --- |
-| 阶段完成、电脑分工、下一步待办 | `PROGRESS.md` |
+| 阶段完成、环境变化、下一步待办 | `PROGRESS.md` |
 | leader 新反馈、范围变化、测试前提 | `docs/13-leader-test-handoff.md`，必要时同步 `05`/`04` |
 | 未决问题得到答案 | `docs/05-open-questions.md`，并补充证据来源 |
 | 测试步骤、验收指标、停止条件变化 | `docs/07-poc-blueprint.md` |
@@ -120,7 +122,7 @@ README.md
 
 1. **已完成：**建立根目录 README 作为项目总入口，`docs/README.md` 作为文档分类和权威关系入口。
 2. **已完成：**明确 `PROGRESS.md`、13 号交接、07 号蓝图、06 号安全策略之间的权威关系。
-3. **已完成：**将补充调研目录改名为 `docs/research-notes/`，去除对“本地电脑”的来源依赖。
+3. **已完成：**将补充调研目录改名为 `docs/research-notes/`，去除对特定机器的来源依赖。
 4. **已完成：**将实验和故障测试结果统一收敛到 `experiments/EXP-###-*/record.md`，不再新增 `docs/test-results/`。
 5. **下一步建议：**将 `deploy/beszel/` 明确视为本地 PoC 部署；出现生产部署文件后再按 `deploy/poc/`、`deploy/production/` 分层。
 6. **后续可选：**将 `汇报/` 再拆为 `final/`、`preview/`、`source/`；当前先保持既有外部引用稳定。

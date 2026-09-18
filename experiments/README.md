@@ -53,7 +53,7 @@ experiments/
 3. 实验前写授权、保护名单、停止条件和预期观测。
 4. 执行实验，核心数据实时或阶段性保存到 data/。
 5. 实验后补齐结论、证据、限制，并回链 Goal 与 PROGRESS.md。
-6. commit + push，另一台电脑 pull 后即可读取完整记录。
+6. commit + push，即可读取完整记录。
 ```
 
 记录模板见 [`_template.md`](_template.md)。

@@ -2,7 +2,7 @@
 
 服务器资源监控、危机预警与受控处置项目。
 
-> 本文件是项目总入口：用于让第一次接触项目的人、leader、协作者和新的 agent 快速理解项目内容，并知道下一步如何安全行动。细节以 [文档总目录](docs/README.md)、[双机进度](PROGRESS.md)、当前 [Goal](goals/README.md) 和 [实验记录](experiments/README.md) 为准。
+> 本文件是项目总入口：用于让第一次接触项目的人、leader、协作者和新的 agent 快速理解项目内容，并知道下一步如何安全行动。细节以 [文档总目录](docs/README.md)、[执行蓝图](docs/14-execution-roadmap.md)、[项目进度](PROGRESS.md)、当前 [Goal](goals/README.md) 和 [实验记录](experiments/README.md) 为准。
 
 更新时间：2026-09-17
 
@@ -49,10 +49,11 @@
 - 阶段 1：只观测 PoC，进行中。
 - 阶段 2：Guardian 与人工处置，尚未开始。
 - 阶段 3–4：有限自动化、灰度和生产推广，远期。
-- 当前活动目标：[Goal 1：两层资源保护方案测试](goals/resource-protection.md#goal-1-两层资源保护方案测试)。
-- 当前下一步：[Leader 最新测试交接](docs/13-leader-test-handoff.md)中的测试前提确认和非生产测试准备。
+- 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
+- 当前活动目标：[Goal 1：只观测 PoC 收尾](goals/resource-protection.md#goal-1只观测-poc-收尾)，随后进入 [Goal 2](goals/resource-protection.md#goal-2第一层救援能力保障验证) 与 [Goal 3](goals/resource-protection.md#goal-3第二层现成自动资源保护策略评估)。
+- 当前下一步：[Leader 最新测试交接](docs/13-leader-test-handoff.md)中的测试前提确认和本地 WSL2 测试准备。
 
-权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或某台电脑的运行态判断项目进度。
+权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
 ## 当前环境快照
 
@@ -60,10 +61,8 @@
 
 | 环境 | 已知情况 | 边界 |
 | --- | --- | --- |
-| 公司生产环境 | Ubuntu 22.04.5、systemd 249、cgroup v2、Docker Engine 29.1.3；68 个容器中 67 个没有资源边界 | 生产原始报告不入库；实际 SSH 故障表现、保护名单和测试授权仍需确认 |
-| 本地 PoC | Windows + WSL2，Ubuntu 26.04.1；Docker Engine 29.1.3；Beszel 0.19.0 Hub/Agent 已上线 | 用于功能和指标 PoC；systemd、内核等版本高于生产，不能替代 Ubuntu 22.04 测试机 |
-| 公司电脑 | 负责生产信息采集、leader 沟通、汇报和文档同步 | 无 WSL2/Docker，不承担本地 PoC 运行 |
-| 本地电脑 | 负责 Beszel PoC、测试准备和资料整理 | 运行态容器、`.env` 和指标数据不进入仓库 |
+| 生产环境 | Ubuntu 22.04.5、systemd 249、cgroup v2、Docker Engine 29.1.3；68 个容器中 67 个没有资源边界 | 生产原始报告不入库；实际 SSH 故障表现、保护名单和测试授权仍需确认 |
+| 本地 PoC（当前电脑 WSL2） | Windows + WSL2，Ubuntu 26.04.1；Docker Engine 29.1.3；Beszel 0.19.0 Hub/Agent 已上线 | 用于功能和指标 PoC；systemd、内核等版本高于生产，不能替代 Ubuntu 22.04 测试机 |
 
 ## 仓库结构与职责
 
@@ -76,7 +75,7 @@
 | `goals/` | 跨 agent 可接手的目标、任务、依赖和完成标准 | Goal 编号只增不减；计划不等于实验结果 | [goals/README.md](goals/README.md) |
 | `docs/` | 需求、方案、架构、安全、测试、生产事实和证据 | 稳定知识与决策文档；以总目录标记权威关系 | [docs/README.md](docs/README.md) |
 | `experiments/` | 实验日志、脱敏核心数据和可审阅证据 | 每次实验使用唯一 `EXP-###`；失败实验也保留 | [experiments/README.md](experiments/README.md) |
-| `reports/` | 本机原始采集报告、日志和快照 | 默认不入库，可能包含生产敏感信息 | 仅在对应机器查看 |
+| `reports/` | 本机原始采集报告、日志和快照 | 默认不入库，可能包含生产敏感信息 | 仅本机查看 |
 | `scripts/` | 环境采集和 PoC 辅助脚本 | 脚本需写明适用环境、权限和副作用 | 直接查看脚本头部说明 |
 | `src/` | Guardian 或其他项目源代码 | 当前为占位目录；实现边界确认后再扩展 | [src/README.md](src/README.md) |
 | `tests/` | 自动化测试、集成测试和故障演练 | 测试必须绑定环境、授权、停止和恢复条件 | [tests/README.md](tests/README.md) |
@@ -88,7 +87,7 @@
 | 文件 | 作用 | 更新时机 |
 | --- | --- | --- |
 | `README.md` | 项目总览和行动规则 | 项目目标、结构或基本行动方式变化时更新 |
-| `PROGRESS.md` | 双机协作的当前状态总账 | 阶段完成、阻塞、决策变化或任务交接后更新 |
+| `PROGRESS.md` | 项目当前状态总账 | 阶段完成、阻塞、决策变化或任务交接后更新 |
 | `.gitignore` | 凭据、运行态和原始敏感数据边界 | 新增本地敏感产物类型时更新 |
 
 ## 信息权威层级与阅读顺序
@@ -97,6 +96,7 @@
 
 ```text
 README.md
+  → docs/14-execution-roadmap.md（执行蓝图）
   → PROGRESS.md
   → goals/README.md → 当前 Goal 文件
   → docs/README.md → 当前任务对应的规范/方案/测试文档
@@ -105,15 +105,16 @@ README.md
 
 当前任务的具体参考关系：
 
-1. **项目状态、双机分工、当前待办：** [PROGRESS.md](PROGRESS.md)。
-2. **Leader 最新反馈和测试入口：** [docs/13-leader-test-handoff.md](docs/13-leader-test-handoff.md)。
-3. **目标、任务和接手说明：** [goals/resource-protection.md](goals/resource-protection.md)。
-4. **测试矩阵、验收和停止条件：** [docs/07-poc-blueprint.md](docs/07-poc-blueprint.md)。
-5. **处置安全边界：** [docs/06-safety-policy.md](docs/06-safety-policy.md)。
-6. **未知项和待确认授权：** [docs/05-open-questions.md](docs/05-open-questions.md)。
-7. **生产环境事实：** [docs/10-production-baseline.md](docs/10-production-baseline.md)。
-8. **本地运行事实：** [docs/11-local-beszel-poc.md](docs/11-local-beszel-poc.md)。
-9. **真实实验结论：** [experiments/](experiments/README.md) 中对应的 `EXP-###` 记录。
+1. **技术路线与执行阶段：** [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)。
+2. **项目状态、当前待办：** [PROGRESS.md](PROGRESS.md)。
+3. **Leader 最新反馈和测试入口：** [docs/13-leader-test-handoff.md](docs/13-leader-test-handoff.md)。
+4. **目标、任务和接手说明：** [goals/resource-protection.md](goals/resource-protection.md)。
+5. **测试矩阵、验收和停止条件：** [docs/07-poc-blueprint.md](docs/07-poc-blueprint.md)。
+6. **处置安全边界：** [docs/06-safety-policy.md](docs/06-safety-policy.md)。
+7. **未知项和待确认授权：** [docs/05-open-questions.md](docs/05-open-questions.md)。
+8. **生产环境事实：** [docs/10-production-baseline.md](docs/10-production-baseline.md)。
+9. **本地运行事实：** [docs/11-local-beszel-poc.md](docs/11-local-beszel-poc.md)。
+10. **真实实验结论：** [experiments/](experiments/README.md) 中对应的 `EXP-###` 记录。
 
 `docs/research-notes/` 是补充研究和证据材料；`汇报/` 是展示成品和生成素材。它们可以支持主文档，但不能绕过主文档单独改变项目范围、安全边界或验收结论。
 
@@ -142,7 +143,7 @@ README.md
 3. 更新 `PROGRESS.md`：记录完成内容、环境、阻塞和交接入口。
 4. 如果改变了需求、架构、安全边界或测试口径，更新对应 `docs/` 主文档并记录原因。
 5. 做最小必要验证，报告已验证和未验证范围。
-6. 提交并推送仓库，确保下一台电脑或下一位 agent 可以从文件继续。
+6. 提交并推送仓库，确保下一位 agent 可以从文件继续。
 
 ## 必须遵循的项目规则
 
@@ -152,14 +153,14 @@ README.md
 - **不依据单个瞬时阈值杀进程。**资源利用率、压力、持续时间、业务影响和对象身份需要组合判断。
 - **关键对象必须有保护名单。**系统关键进程、业务核心服务、不可中断任务和未知对象不能默认进入自动处置范围。
 - **高影响动作必须可停止、可恢复、可审计。**缺少授权、停止条件、回滚路径或恢复验证时，只执行安全只读检查。
-- **环境必须带边界。**开发机、测试机、生产机和办公电脑的版本、权限、凭据和运行态不能混写。
+- **环境必须带边界。**开发机、测试机、生产机与本机 WSL2 环境的版本、权限、凭据和运行态不能混写。
 - **失败实验必须保留。**失败、提前停止和不确定结果同样是证据，不能删除来美化结论。
 - **不提交敏感信息。**密码、token、`.env`、生产原始日志、未脱敏业务标识和无界运行态数据不能进入共享仓库。
 - **不要过度建设。**先完成当前 Goal 的最小闭环，只有实测证明现成能力不足时，才扩大代码、平台或自动化范围。
 
-## 双机协作与同步
+## 仓库与本地运行态
 
-两台电脑共享 GitHub 仓库，但不共享本地运行态、凭据和生产原始报告。
+GitHub 仓库保存工程文档、配置样例、实验记录和脚本；本地运行态（凭据、容器、指标数据）不进入仓库。
 
 开始工作：
 
@@ -178,27 +179,28 @@ git push origin main
 
 同步约定：
 
-- 推送前先拉取，避免覆盖另一台电脑的更新。
+- 推送前先拉取。
 - 不使用强制推送，不把未验证的本地运行态写成共享事实。
-- `PROGRESS.md` 记录跨电脑状态；生产原始报告、`.env`、Docker 容器和 Beszel 运行数据保留在对应机器。
+- `PROGRESS.md` 记录项目状态；生产原始报告、`.env`、Docker 容器和 Beszel 运行数据保留在本机，不入库。
 - 交接时必须写明：已经完成什么、证据在哪里、还缺什么、下一步先做什么。
 
 ## 当前第一步
 
-当前不要直接开发完整 Guardian，也不要直接在生产机做故障注入。应先按 [Goal 1](goals/resource-protection.md#goal-1-两层资源保护方案测试) 完成：
+当前不要直接开发完整 Guardian，也不要直接在生产机做故障注入。先按 [执行蓝图](docs/14-execution-roadmap.md) 和 [Goal 1](goals/resource-protection.md#goal-1只观测-poc-收尾) 完成：
 
-1. 确认非生产测试机和故障注入授权。
-2. 确认 SSH 失效的真实表现、测试对象、保护名单和停止条件。
+1. 核验 Beszel 主机/Docker/systemd 指标完整性，并做受控压测。
+2. 确认 SSH 失效的真实表现、测试对象、保护名单和停止条件（外部依赖，不阻塞本地先行）。
 3. 为第一层建立无保护基线，再测试 CPU 和内存资源保护。
 4. 对第二层先做只读/模拟验证，明确现成策略的覆盖范围和缺口。
 5. 用 `EXP-001` 开始记录第一轮真实实验，并把结论回写 Goal 和 `PROGRESS.md`。
 
 ## 相关入口
 
+- [执行路线蓝图](docs/14-execution-roadmap.md)
 - [项目文档总目录与管理规范](docs/README.md)
 - [目标与任务目录](goals/README.md)
 - [实验日志与核心数据目录](experiments/README.md)
-- [当前双机进度](PROGRESS.md)
+- [当前项目进度](PROGRESS.md)
 - [Leader 最新测试交接](docs/13-leader-test-handoff.md)
 - [PoC 验证蓝图](docs/07-poc-blueprint.md)
 - [生产安全与处置策略](docs/06-safety-policy.md)

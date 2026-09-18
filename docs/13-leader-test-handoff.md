@@ -2,7 +2,7 @@
 
 更新时间：2026-09-17
 
-用途：公司电脑与本地电脑之间同步 leader 最新反馈、两层技术范围和下一步测试入口。本文档是项目交接依据，不依赖某一台电脑上的 Codex 会话记忆。
+用途：记录 leader 最新反馈、两层技术范围和下一步测试入口。本文档是项目交接依据，不依赖某一次会话记忆。
 
 ## 1. 最新结论
 
@@ -81,7 +81,7 @@
 - [汇报讲稿](../汇报/服务器资源保护-现成策略优先-讲稿.md)
 - [最终汇报 PPT](../汇报/服务器资源保护-现成策略优先-重构版.pptx)
 
-## 5. 办公电脑接续方式
+## 5. 新会话接续方式
 
 ```bash
 git clone https://github.com/fcsfang/server-resource-guardian.git
@@ -90,6 +90,6 @@ git pull --rebase origin main
 sed -n '1,260p' docs/13-leader-test-handoff.md
 ```
 
-在办公电脑的 Codex 新会话中，可以直接使用下面的交接提示：
+在新的 Codex 会话中，可以直接使用下面的交接提示：
 
-> 请先阅读 `PROGRESS.md`、`docs/13-leader-test-handoff.md`、`docs/04-delivery-plan.md`、`docs/07-poc-blueprint.md` 和 `docs/05-open-questions.md`。当前 leader 已要求围绕“第一层救援能力保障、第二层自动资源保护”开始测试。请先根据交接文档检查测试前提和未决授权，不要假定生产环境可注入故障，不要启用真实自动终止或重启；先给出可执行的非生产测试清单，并指出需要我补充的机器信息。
+> 请先阅读 `docs/14-execution-roadmap.md`、`PROGRESS.md`、`docs/13-leader-test-handoff.md`、`docs/04-delivery-plan.md`、`docs/07-poc-blueprint.md` 和 `docs/05-open-questions.md`。当前 leader 已要求围绕”第一层救援能力保障、第二层自动资源保护”开始测试，执行蓝图已确定以 Beszel 为监控基础、在当前电脑 WSL2 中测试。请先根据交接文档检查测试前提和未决授权，不要假定生产环境可注入故障，不要启用真实自动终止或重启；先给出可执行的非生产测试清单，并指出需要我补充的机器信息。
