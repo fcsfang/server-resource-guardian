@@ -44,6 +44,7 @@
 - 2026-09-18 完成 Goal 1 EXP-001：核验 Beszel 主机（CPU/内存/swap/磁盘/网络/load）、Docker 容器（2 个）和 systemd 服务（39 个含 docker/systemd-oomd）指标完整性；CPU 压测（4/8 核 x 120s）CPU 升至 50.20%、load 3.01；内存压测（1GB x 120s）内存升至 1.88 GB、swap 0.07 GB；Hub/Agent 负载开销可忽略（CPU <=0.03%，内存增量 <=2.3 MB）。结论和数据见 experiments/EXP-001-2026-09-18-beszel-metric-verification/record.md。
 - 2026-09-18 Goal 1 全部完成（G1-T04）：基于 EXP-001 实测数据建立首轮本地告警阈值（CPU >70%/>90%、内存 >70%/>85%、Swap >100/>500 MB、Load 1m >4.0/>6.0），标注\u201c本地 PoC 校准值\u201d。Goal 1 状态改为 COMPLETED，下一步进入 Goal 2 第一层救援能力保障验证。
 - 2026-09-18 完成 Goal 2 EXP-002：第一层救援能力保障验证。5 个场景（基线/CPU 无限制/CPU 限制 2 核/内存无限制/内存限制 512m）全部通过。核心发现：Docker --cpus=2 完全保护 SSH（响应与基线无差异）；Docker --memory=512m 成功通过 cgroup OOM killer 保护宿主机；即使无资源限制，Linux CFS 在当前测试强度下仍保持 SSH 可用。生产复核清单已产出（G2-T06）。Goal 2 状态改为 COMPLETED，下一步进入 Goal 3。
+- 2026-09-18 完成 Goal 3 EXP-003：第二层现成自动资源保护策略评估。核心发现：systemd-oomd 默认不 kill（ManagedOOM=auto）；Docker --memory 限制配合内核 OOM killer 是最可靠的自动保护（EXP-002 S4 已验证）；Monit 适合已知服务固定规则。缺口分析确认 4 个缺口（保护名单/动作分级/动作前快照/动作后验证），构成 Guardian 最小开发范围。Goal 3 状态改为 COMPLETED。
 
 ## 待办事项（按优先级）
 
@@ -68,6 +69,7 @@ git add PROGRESS.md && git commit -m "progress: <一句话>" && git push origin 
 - `deploy/beszel/.env`（本地 PoC 凭据）
 - `reports/*`（生产环境采集产物，含生产信息）
 - WSL2 内的 Docker 容器与 Beszel 指标数据（本地运行态，不属于仓库）
+
 
 
 
