@@ -15,7 +15,7 @@
 | S05 | [Alertmanager HTTPS and Authentication](https://prometheus.io/docs/alerting/latest/https/) | 支持 TLS、客户端证书策略和 basic auth | 可保护告警管理入口 |
 | S06 | [cAdvisor README](https://github.com/google/cadvisor/blob/master/README.md) | 采集并导出容器资源隔离、历史资源和网络统计 | Docker 场景的主要归因组件 |
 | S07 | [process-exporter README](https://github.com/ncabatoff/process-exporter/blob/master/README.md) | 从 `/proc` 选择并分组进程；不建议用 PID/启动时间作为标签 | 只监控有限业务进程组，控制基数 |
-| S08 | [Docker Resource Constraints](https://docs.docker.com/engine/containers/resource_constraints/) | 容器默认没有资源限制；错误的 OOM 受害者可能使整机失效 | 资源限制是事前预防的第一优先级 |
+| S08 | [Docker Resource Constraints](https://docs.docker.com/engine/containers/resource_constraints/) | 容器默认没有资源限制；错误的 OOM 受害者可能使整机失效 | 资源限制是按业务选择的事前防线，不能替代风险检测和自动处置 |
 | S09 | [Docker Runtime Metrics](https://docs.docker.com/engine/containers/runmetrics/) | `docker stats` 和 cgroup 提供运行指标；v1/v2 文件布局不同 | 实施前确认 cgroup 版本 |
 | S10 | [Linux PSI](https://docs.kernel.org/accounting/psi.html) | PSI 描述 CPU、内存、I/O 竞争导致的停顿，提供 `some/full` 与阈值触发 | 作为危机判断核心信号，而非只看利用率 |
 | S11 | [systemd.resource-control 源文件](https://github.com/systemd/systemd/blob/main/man/systemd.resource-control.xml) | CPU/IO 权重为相对分配；内存保护依赖 cgroup 层级；推荐 MemoryHigh 主控、MemoryMax 兜底 | Guardian 和业务必须正确组织到 cgroup 层级 |
@@ -43,9 +43,9 @@ Prometheus、Alertmanager、Grafana、node_exporter 和 cAdvisor 已覆盖采集
 
 CPU 满载可能仍在完成有效工作；PSI `some/full`、业务延迟、运行队列和持续时间才能说明竞争是否造成停顿。内存同理，应使用 MemAvailable、swap 活动、memory PSI 与 OOM 事件组合判断。
 
-### 约束 C：资源边界优先于事后终止
+### 约束 C：资源边界是可选防线，不能替代风险处置
 
-Docker 默认无限制，意味着单个容器可以与系统服务竞争全部资源。先设置 cgroup/Docker 的 `MemoryHigh/MemoryMax`、CPU/IO 分配和服务边界，通常比危机后猜测应该杀谁更可靠。
+Docker 默认无限制，意味着单个容器可能与系统服务竞争全部资源。对业务明确允许的对象设置 cgroup/Docker 的 `MemoryHigh/MemoryMax`、CPU/IO 分配和服务边界，可以缩小故障影响范围；但限制可能改变应用行为，不能作为所有业务的默认前提。项目仍必须具备风险检测、对象识别、保护名单、分级处置和恢复验证。
 
 ### 约束 D：OOM 自动化必须以 cgroup 业务身份为基础
 

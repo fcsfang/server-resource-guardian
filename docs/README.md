@@ -1,6 +1,6 @@
 # 文档总目录与管理规范
 
-更新时间：2026-09-17
+更新时间：2026-09-18
 
 这是本项目文档的唯一总入口。阅读、修改或新增文档前，先从这里判断它属于哪一类，以及哪一份文档是当前生效依据。
 
@@ -8,14 +8,14 @@
 
 - [目标与任务目录](../goals/README.md)：记录跨 agent 可接手的目标组和任务清单；当前从 `Goal 1` 开始。
 - [实验日志与核心数据](../experiments/README.md)：记录真实实验过程、结果和脱敏核心数据；实验编号使用 `EXP-###`。
-- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 推进 [Goal 1：只观测 PoC 收尾](../goals/resource-protection.md#goal-1只观测-poc-收尾)。
+- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 推进 [Goal 4：Guardian 最小风险检测与自动处置实现](../goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
 
 ## 1. 当前最新参考关系
 
 | 要回答的问题 | 当前首要参考 | 使用规则 |
 | --- | --- | --- |
 | 项目现在做到哪一步、环境如何？ | [PROGRESS.md](../PROGRESS.md) | 项目进度、环境差异和待办的总账；每次阶段性工作后更新 |
-| leader 最新要求是什么、下一步测什么？ | [Leader 测试交接](13-leader-test-handoff.md) | 当前两层方案测试的直接入口；与旧讨论笔记冲突时，以本文件为当前任务方向 |
+| leader 最新要求是什么、下一步如何执行？ | [Leader 测试交接](13-leader-test-handoff.md) | 两层方案和授权边界入口；与旧讨论笔记冲突时，以本文件和 14 号蓝图为当前任务方向 |
 | 测试如何设计、怎样验收和何时停止？ | [PoC 验证蓝图](07-poc-blueprint.md) | 通用测试矩阵、指标、输出物和停止条件；按 13 号文档补充 leader 最新范围 |
 | 任何处置动作的安全边界是什么？ | [生产安全与处置策略](06-safety-policy.md) | 默认关闭危险动作；保护名单、审批、审计和熔断优先级最高 |
 | 生产服务器已经确认了什么？ | [生产环境基线与风险分析](10-production-baseline.md) | 只引用已采集事实；未知项仍看 [待确认问题](05-open-questions.md) |
@@ -29,6 +29,8 @@ README.md
   → docs/14-execution-roadmap.md
   → PROGRESS.md
   → docs/13-leader-test-handoff.md
+  → docs/15-experiment-findings.md
+  → goals/resource-protection.md → Goal 4
   → docs/07-poc-blueprint.md
   → docs/05-open-questions.md
   → docs/06-safety-policy.md
@@ -130,4 +132,3 @@ README.md
 7. **暂不处理：**`src/` 和 `tests/` 目前是工程占位目录；在测试方案和实现边界确认前，不提前制造空的代码层级。
 
 管理原则：**一个主题只保留一个当前决策源；补充材料保留证据和推导；实验结果统一归档；汇报材料不反向充当工程事实。**
-

@@ -2,7 +2,7 @@
 version: 1
 
 agent:
-  mode: observe  # observe | manual | automatic
+  mode: observe  # observe | simulate | enforce
   sample_interval: 5s
   snapshot_directory: /var/lib/server-resource-guardian/snapshots
   snapshot_max_total_size: 256MiB
@@ -31,6 +31,7 @@ actions:
   cooldown: 10m
   max_actions_per_host_per_hour: 2
   allow:
+    # 仅对业务明确允许的对象配置 throttle，不作为通用默认动作。
     throttle: []
     terminate: []
     restart_container: []
