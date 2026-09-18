@@ -43,11 +43,12 @@
 - 2026-09-18 确定总执行路线蓝图（docs/14：以 Beszel 为监控基础、现成机制优先、Guardian 仅补缺口），并统一为单一本地 WSL2 测试环境，移除旧文档中两台机器的分工描述。
 - 2026-09-18 完成 Goal 1 EXP-001：核验 Beszel 主机（CPU/内存/swap/磁盘/网络/load）、Docker 容器（2 个）和 systemd 服务（39 个含 docker/systemd-oomd）指标完整性；CPU 压测（4/8 核 x 120s）CPU 升至 50.20%、load 3.01；内存压测（1GB x 120s）内存升至 1.88 GB、swap 0.07 GB；Hub/Agent 负载开销可忽略（CPU <=0.03%，内存增量 <=2.3 MB）。结论和数据见 experiments/EXP-001-2026-09-18-beszel-metric-verification/record.md。
 - 2026-09-18 Goal 1 全部完成（G1-T04）：基于 EXP-001 实测数据建立首轮本地告警阈值（CPU >70%/>90%、内存 >70%/>85%、Swap >100/>500 MB、Load 1m >4.0/>6.0），标注\u201c本地 PoC 校准值\u201d。Goal 1 状态改为 COMPLETED，下一步进入 Goal 2 第一层救援能力保障验证。
+- 2026-09-18 完成 Goal 2 EXP-002：第一层救援能力保障验证。5 个场景（基线/CPU 无限制/CPU 限制 2 核/内存无限制/内存限制 512m）全部通过。核心发现：Docker --cpus=2 完全保护 SSH（响应与基线无差异）；Docker --memory=512m 成功通过 cgroup OOM killer 保护宿主机；即使无资源限制，Linux CFS 在当前测试强度下仍保持 SSH 可用。生产复核清单已产出（G2-T06）。Goal 2 状态改为 COMPLETED，下一步进入 Goal 3。
 
 ## 待办事项（按优先级）
 
 - [ ] 将 leader 最新反馈中的测试授权、保护名单和动作边界回填到 docs/05-open-questions.md。
-- [ ] 根据执行蓝图开始 Goal 2 第一层救援能力保障测试：本地 WSL2 CPU/内存高压下 SSH 救援链路验证。
+- [ ] 根据执行蓝图开始 Goal 3 第二层现成自动资源保护策略评估：systemd-oomd / Monit 只读与模拟验证。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
 - [ ] 生产兼容性复核：本地 WSL 版本高于生产（systemd 259 vs 249、内核 6.18 vs 6.8），结论需在 Ubuntu 22.04 测试机验证。
 
@@ -67,5 +68,6 @@ git add PROGRESS.md && git commit -m "progress: <一句话>" && git push origin 
 - `deploy/beszel/.env`（本地 PoC 凭据）
 - `reports/*`（生产环境采集产物，含生产信息）
 - WSL2 内的 Docker 容器与 Beszel 指标数据（本地运行态，不属于仓库）
+
 
 
