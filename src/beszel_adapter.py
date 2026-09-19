@@ -231,6 +231,89 @@ def normalize_beszel_event(
     return normalized
 
 
+def normalize_beszel_alert_history_record(
+    record: Mapping[str, Any],
+    *,
+    system_id: str | None = None,
+    received_at: dt.datetime | None = None,
+    now: dt.datetime | None = None,
+    ttl_seconds: int = 30,
+) -> dict[str, Any]:
+    """Map a known alerts_history record into the common event contract.
+
+    Beszel's alert history schema does not itself prove a Docker object
+    identity. A caller may provide the current system record ID, but a missing
+    ID deliberately produces a low-confidence host observation that cannot
+    become actionable.
+    """
+
+    if not isinstance(record, Mapping):
+        raise AdapterError("alert_record_object_required")
+    record_id = _first(record, "id")
+    if not record_id:
+        raise AdapterError("alert_record_id_required")
+    name = _first(record, "name")
+    resource = _first(record, "resource")
+    if resource is None and isinstance(name, str) and name in ALLOWED_RESOURCES:
+        resource = name
+    if resource not in ALLOWED_RESOURCES:
+        raise AdapterError("alert_resource_mapping_required")
+
+    resolved = _first(record, "resolved")
+    state = _first(record, "severity") or _first(record, "state")
+    if resolved:
+        severity = "recovered"
+        observed_at = resolved if isinstance(resolved, (str, int, float)) else _first(
+            record, "created"
+        )
+    else:
+        severity = state if state in ALLOWED_SEVERITIES else None
+        observed_at = _first(record, "created", "observed_at")
+    if severity is None:
+        raise AdapterError("alert_severity_mapping_required")
+    if observed_at is None:
+        raise AdapterError("alert_created_required")
+
+    expanded = _mapping(record.get("expand"))
+    expanded_system = _mapping(expanded.get("system"))
+    system_name = _first(expanded_system, "name") or _first(record, "system_name")
+    stable_system_id = system_id or _first(record, "system")
+    if stable_system_id is not None:
+        stable_system_id = str(stable_system_id)
+    payload = {
+        "event_id": f"beszel-alert:{record_id}:{severity}",
+        "observed_at": observed_at,
+        "source": {
+            "kind": "hub_alert",
+            "record_id": str(record_id),
+            "system_id": stable_system_id,
+        },
+        "system": {"name": system_name or "unknown"},
+        "object": {
+            "kind": "host",
+            "stable_id": stable_system_id,
+            "name": system_name,
+            "identity_source": "system_record" if stable_system_id else "alert_record",
+            "identity_confidence": "high" if stable_system_id else "low",
+        },
+        "signal": {
+            "resource": resource,
+            "metric": str(name or resource),
+            "value": _first(record, "value"),
+            "unit": _first(record, "unit"),
+            "severity": severity,
+            "reason_codes": [str(name)] if name else [],
+        },
+    }
+    return normalize_beszel_event(
+        payload,
+        received_at=received_at,
+        now=now,
+        ttl_seconds=ttl_seconds,
+        source_kind="hub_alert",
+    )
+
+
 def is_actionable_observation(event: Mapping[str, Any]) -> bool:
     """Return whether an event may enter Guardian re-evaluation.
 

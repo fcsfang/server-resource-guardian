@@ -8,6 +8,7 @@ from src.beszel_adapter import (
     BeszelEventWindow,
     BeszelHttpClient,
     is_actionable_observation,
+    normalize_beszel_alert_history_record,
     normalize_beszel_event,
 )
 
@@ -134,6 +135,61 @@ class BeszelAdapterTests(unittest.TestCase):
             client = BeszelHttpClient("http://127.0.0.1:8090")
             with self.assertRaisesRegex(AdapterTransportError, "beszel_get_failed"):
                 client.get_json("/api/health")
+
+    def test_alert_history_record_maps_active_host_alert_with_explicit_system_id(self):
+        record = {
+            "id": "history-1",
+            "name": "memory",
+            "value": 8.2,
+            "state": "critical",
+            "created": "2026-09-19T14:00:00Z",
+            "resolved": None,
+            "expand": {"system": {"name": "guardian-ubuntu"}},
+        }
+        event = normalize_beszel_alert_history_record(
+            record,
+            system_id="system-1",
+            received_at=RECEIVED,
+            now=RECEIVED,
+        )
+        self.assertEqual(event["event_id"], "beszel-alert:history-1:critical")
+        self.assertEqual(event["object"]["stable_id"], "system-1")
+        self.assertEqual(event["object"]["identity_confidence"], "high")
+        self.assertTrue(is_actionable_observation(event))
+
+    def test_alert_history_record_recovery_uses_resolved_time(self):
+        record = {
+            "id": "history-2",
+            "name": "disk",
+            "value": 92,
+            "state": "critical",
+            "created": "2026-09-19T14:00:00Z",
+            "resolved": "2026-09-19T14:01:00Z",
+            "expand": {"system": {"name": "guardian-ubuntu"}},
+        }
+        event = normalize_beszel_alert_history_record(
+            record,
+            system_id="system-1",
+            received_at=dt.datetime(2026, 9, 19, 14, 1, 2, tzinfo=UTC),
+            now=dt.datetime(2026, 9, 19, 14, 1, 2, tzinfo=UTC),
+        )
+        self.assertEqual(event["event_id"], "beszel-alert:history-2:recovered")
+        self.assertEqual(event["observed_at"], "2026-09-19T14:01:00Z")
+        self.assertEqual(event["signal"]["severity"], "recovered")
+        self.assertFalse(is_actionable_observation(event))
+
+    def test_alert_history_record_without_mapping_fails_closed(self):
+        record = {
+            "id": "history-3",
+            "name": "high-memory-alert",
+            "state": "active",
+            "created": "2026-09-19T14:00:00Z",
+        }
+        with self.assertRaisesRegex(AdapterError, "alert_resource_mapping_required"):
+            normalize_beszel_alert_history_record(
+                record,
+                received_at=RECEIVED,
+            )
 
     @patch("src.beszel_adapter.urllib.request.urlopen")
     def test_http_client_is_get_only_and_does_not_leak_token(self, urlopen):
