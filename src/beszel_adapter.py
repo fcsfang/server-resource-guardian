@@ -31,6 +31,7 @@ ALLOWED_RESOURCES = {
     "status",
 }
 ALLOWED_SEVERITIES = {"normal", "warning", "critical", "recovered"}
+ALERT_HISTORY_FIELDS = "id,name,value,state,created,resolved,expand.system.name"
 
 
 class AdapterError(ValueError):
@@ -312,6 +313,50 @@ def normalize_beszel_alert_history_record(
         ttl_seconds=ttl_seconds,
         source_kind="hub_alert",
     )
+
+
+def fetch_beszel_alert_history_events(
+    client: "BeszelHttpClient",
+    *,
+    page: int = 1,
+    per_page: int = 200,
+    system_id: str | None = None,
+    received_at: dt.datetime | None = None,
+    now: dt.datetime | None = None,
+    ttl_seconds: int = 30,
+) -> list[dict[str, Any]]:
+    """Read and normalize one alerts_history page using GET only."""
+
+    if page <= 0 or per_page <= 0 or per_page > 200:
+        raise AdapterError("alert_history_pagination_invalid")
+    response = client.get_json(
+        "/api/collections/alerts_history/records",
+        query={
+            "page": page,
+            "perPage": per_page,
+            "sort": "-created",
+            "expand": "system",
+            "fields": ALERT_HISTORY_FIELDS,
+        },
+    )
+    envelope = _mapping(response)
+    records = envelope.get("items")
+    if not isinstance(records, list):
+        raise AdapterError("alert_history_items_required")
+    events: list[dict[str, Any]] = []
+    for record in records:
+        if not isinstance(record, Mapping):
+            raise AdapterError("alert_history_record_object_required")
+        events.append(
+            normalize_beszel_alert_history_record(
+                record,
+                system_id=system_id,
+                received_at=received_at,
+                now=now,
+                ttl_seconds=ttl_seconds,
+            )
+        )
+    return events
 
 
 def is_actionable_observation(event: Mapping[str, Any]) -> bool:

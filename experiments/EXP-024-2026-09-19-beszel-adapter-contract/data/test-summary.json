@@ -3,13 +3,13 @@
   "status": "PASSED",
   "host_tests": {
     "command": "python3 -m unittest discover -s tests -p 'test_*.py'",
-    "passed": 47,
+    "passed": 48,
     "failed": 0
   },
   "multipass_adapter_tests": {
     "vm": "guardian-ubuntu",
     "command": "python3 -m unittest tests.test_beszel_adapter",
-    "passed": 10,
+    "passed": 11,
     "failed": 0
   },
   "local_hub_probe": {
@@ -27,6 +27,7 @@
     "Actual Beszel alert payload field mapping is pending.",
     "No UI login session was used.",
     "No action authorization is implied by adapter acceptance.",
-    "alerts_history fixture mapping uses the static field inventory and awaits a real redacted record."
+    "alerts_history fixture mapping uses the static field inventory and awaits a real redacted record.",
+    "The local unauthenticated alerts_history GET returned zero visible events."
   ]
 }

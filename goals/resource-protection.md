@@ -234,7 +234,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：Beszel 0.19.0 Hub/Agent 在 Mac Multipass `guardian-ubuntu` 部署并认证连接；建立 Goal 6，下一步从指标完整性验收开始。
 - 2026-09-19：G6-T01 完成底层运行态核验，页面级字段验收保留为未完成；EXP-023 记录为 INCONCLUSIVE，不把单次空载快照当作稳定开销结论。
 - 2026-09-19：完成 G6-T02 事件契约；G6-T03 形成 GET-only、白名单化、过期和身份校验的 fixture 版 Adapter，真实 Beszel 告警 payload 映射待补。
-- 2026-09-19：完成 EXP-024；Adapter 增加重复/乱序窗口和传输失败降级，并覆盖 alerts_history 活动/恢复/缺少映射字段 fixture；宿主机 47/47、Multipass Ubuntu 内 10/10 通过，真实 payload 映射仍待本地登录会话。
+- 2026-09-19：完成 EXP-024；Adapter 增加重复/乱序窗口和传输失败降级，覆盖 alerts_history 活动/恢复/缺少映射字段 fixture，并增加分页 GET 入口；宿主机 48/48、Multipass Ubuntu 内 11/11 通过，真实 payload 映射仍待本地登录会话。
 - 2026-09-19：补充 docs/22 字段清单和无凭据 API 边界；确认控制台字段基线，但登录态 UI 数值、真实数据可见性和动态延迟仍待验收。
 - 2026-09-19：完成 EXP-025 有界动态探针；1 CPU worker + 128 MiB 内存 worker 持续 12 秒，Hub 健康全程 200、内存 PSI full 为 0，G6-T01 页面/告警闭环仍待登录态验收。
 

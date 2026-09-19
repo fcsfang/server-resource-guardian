@@ -5,8 +5,10 @@ from unittest.mock import patch
 from src.beszel_adapter import (
     AdapterError,
     AdapterTransportError,
+    ALERT_HISTORY_FIELDS,
     BeszelEventWindow,
     BeszelHttpClient,
+    fetch_beszel_alert_history_events,
     is_actionable_observation,
     normalize_beszel_alert_history_record,
     normalize_beszel_event,
@@ -190,6 +192,29 @@ class BeszelAdapterTests(unittest.TestCase):
                 record,
                 received_at=RECEIVED,
             )
+
+    @patch("src.beszel_adapter.urllib.request.urlopen")
+    def test_alert_history_fetch_uses_get_only_and_normalizes_page(self, urlopen):
+        response = urlopen.return_value.__enter__.return_value
+        response.read.return_value = (
+            b'{"items":[{"id":"history-4","name":"memory","value":8.2,'
+            b'"state":"critical","created":"2026-09-19T14:00:00Z",'
+            b'"resolved":null,"expand":{"system":{"name":"guardian-ubuntu"}}}]}'
+        )
+        client = BeszelHttpClient("http://127.0.0.1:8090")
+        events = fetch_beszel_alert_history_events(
+            client,
+            system_id="system-1",
+            received_at=RECEIVED,
+            now=RECEIVED,
+        )
+        request = urlopen.call_args.args[0]
+        self.assertEqual(request.method, "GET")
+        self.assertIn("fields=", request.full_url)
+        self.assertIn("alerts_history", request.full_url)
+        self.assertEqual(events[0]["source"]["record_id"], "history-4")
+        self.assertEqual(events[0]["signal"]["resource"], "memory")
+        self.assertIn("expand.system.name", ALERT_HISTORY_FIELDS)
 
     @patch("src.beszel_adapter.urllib.request.urlopen")
     def test_http_client_is_get_only_and_does_not_leak_token(self, urlopen):
