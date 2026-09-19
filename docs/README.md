@@ -8,7 +8,7 @@
 
 - [目标与任务目录](../goals/README.md)：记录跨 agent 可接手的目标组和任务清单；当前从 `Goal 1` 开始。
 - [实验日志与核心数据](../experiments/README.md)：记录真实实验过程、结果和脱敏核心数据；实验编号使用 `EXP-###`。
-- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 推进 Guardian 与 Beszel 的本地联调；Goal 4/5 的本地闭环和生产仿真报告已完成。
+- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 和 [自动执行路线](16-autonomous-execution-roadmap.md) 推进 Goal 6 Beszel 二次开发集成；Goal 4/5 的本地闭环和生产仿真报告已完成。
 - 后续自动执行总路线：[自动化执行路线与 Agent 接手协议](16-autonomous-execution-roadmap.md)。
 - 当前风险信号设计：[Guardian 风险信号规范](17-risk-signal-specification.md)。
 - 当前对象策略设计：[Guardian 对象策略规范](18-object-policy-specification.md)。

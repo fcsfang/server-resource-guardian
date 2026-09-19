@@ -44,7 +44,7 @@
 
 ## 5. 下一步
 
-1. 在 Beszel 控制台确认 `guardian-ubuntu` 在线。
-2. 等待至少两个采集周期，核验 CPU、内存、swap、磁盘、网络、load、Docker 和 systemd 指标。
-3. 记录本地空载 Hub/Agent 开销，再决定 Beszel 与 Guardian 的事件/数据接口；不要把 Beszel 告警直接等同于自动处置授权。
+1. **G6-T01**：在 Beszel 控制台确认 `guardian-ubuntu` 在线，等待至少两个采集周期，核验 CPU、内存、swap、磁盘、网络、load、Docker 和 systemd 指标，并记录空载开销。
+2. 按 [`Goal 6`](../goals/resource-protection.md#goal-6beszel-二次开发集成) 和 [`docs/16`](16-autonomous-execution-roadmap.md) 完成事件契约、只读 Adapter 和双路径对照。
+3. 不要把 Beszel 告警直接等同于自动处置授权；`observe/simulate` 证据完成前不进入 `enforce`。
 4. 生产部署必须另行设计网络、认证、密钥管理、最小权限、备份和升级回滚方案。

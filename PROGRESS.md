@@ -9,7 +9,7 @@
 
 ## 当前阶段
 
-**阶段 5：本地生产仿真性能报告 — ✅ 已完成**（生产交接仍待外部条件；执行蓝图见 [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，自动执行路线见 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)）
+**阶段 6：Beszel 二次开发集成 — 🚧 进行中**（Goal 1–5 本地验证已完成；执行蓝图见 [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，自动执行路线见 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)）
 
 - 阶段 0 需求与环境确认：✅ 已完成
 - 阶段 1 只观测 PoC：✅ 本地已完成
@@ -17,10 +17,11 @@
 - 阶段 3 自动风险处置评估：✅ 本地已完成，业务动作策略待确认
 - 阶段 4 Guardian 最小实现与受控灰度：✅ 本地已完成
 - 阶段 5 本地生产仿真性能报告：✅ 已完成，生产测试权限待申请
+- 阶段 6 Beszel 二次开发集成：🚧 进行中，按 G6-T01～G6-T07 执行
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 推进：Goal 1–3 的本地 WSL2 PoC、Goal 4 本地 Guardian 闭环和 Goal 5 本地生产仿真报告均已完成。当前等待非生产 x86_64 Ubuntu 22.04 测试机与最小授权范围，生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 从 Goal 6 的 G6-T01 开始：先完成 Beszel 指标验收，再做只读 Adapter、双路径对照和 Guardian `observe/simulate` 联调。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
@@ -75,6 +76,7 @@
 - 2026-09-19 完成 EXP-021/Goal 5：补足真实有效性对照。同一无界内存泄漏下，无 Guardian 复现 global OOM，健康探针、dockerd、sshd 和多个 systemd 服务受 OOM 影响；Guardian 在 critical 阈值执行授权 graceful_stop，目标退出 0、内存恢复、健康探针保持可用。主证据见 experiments/EXP-021-2026-09-19-failure-prevention-comparison/report.md。
 - 2026-09-19 完成 EXP-022/Goal 5：补充多对象歧义、保护对象、CPU/IO 误报和恢复失败熔断边界；全部使用 observe/simulate 或纯 fixture，无新增真实动作。见 experiments/EXP-022-2026-09-19-policy-boundary-scenarios/record.md。
 - 2026-09-19 完成 Mac Multipass Beszel 本地部署：Hub/Agent 0.19.0 镜像离线导入 `guardian-ubuntu`，Hub/Agent 均为 healthy；用户完成系统登记后，Agent 日志出现 WebSocket connected，连接后短窗口无新的 401/错误。当前运行状态和后续指标核验见 [docs/20](docs/20-local-beszel-multipass-deployment.md)。
+- 2026-09-19 建立 Goal 6：Beszel 二次开发集成；后续按 G6-T01～G6-T07 执行，先只读集成和双路径对照，再评估 UI 与受控 enforce。
 
 ## 待办事项（按优先级）
 
@@ -85,6 +87,7 @@
 - [x] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；证据见 EXP-022，不把统一 Docker 内存限制作为默认方案。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
 - [ ] 生产兼容性复核：本地 WSL 版本高于生产（systemd 259 vs 249、内核 6.18 vs 6.8），结论需在 Ubuntu 22.04 测试机验证。
+- [ ] Goal 6：按 `docs/16-autonomous-execution-roadmap.md` 执行 Beszel 指标验收、只读 Adapter、双路径对照和 Guardian 联调。
 
 
 ## 仓库同步备忘

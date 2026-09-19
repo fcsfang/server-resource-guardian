@@ -21,6 +21,7 @@
 | [Goal 3：第二层自动风险处置评估](resource-protection.md#goal-3第二层自动风险处置评估) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 现成机制和检测-定位-处置-恢复管道评估，Guardian 缺口已明确 | [实验结论](../docs/15-experiment-findings.md) |
 | [Goal 4：Guardian 最小风险检测与自动处置实现](resource-protection.md#goal-4guardian最小风险检测与自动处置实现) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 在可丢弃测试对象上实现并验证自动处置闭环 | [自动执行路线](../docs/16-autonomous-execution-roadmap.md)、[执行蓝图](../docs/14-execution-roadmap.md) |
 | [Goal 5：本地生产仿真性能报告](resource-protection.md#goal-5本地生产仿真性能报告) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 在不接触生产的前提下复刻关键运行时、负载和故障模式，形成可交给 leader 的性能与有效性报告 | [EXP-021 真实故障对照](../experiments/EXP-021-2026-09-19-failure-prevention-comparison/report.md)、[自动执行路线](../docs/16-autonomous-execution-roadmap.md) |
+| [Goal 6：Beszel 二次开发集成](resource-protection.md#goal-6beszel-二次开发集成) | [resource-protection.md](resource-protection.md) | `IN_PROGRESS` | 将 Beszel 监控基础与 Guardian 风险检测、策略和处置能力安全联调 | [自动执行路线](../docs/16-autonomous-execution-roadmap.md)、[Mac Beszel 部署记录](../docs/20-local-beszel-multipass-deployment.md) |
 
 ## 新增 Goal 的最小模板
 

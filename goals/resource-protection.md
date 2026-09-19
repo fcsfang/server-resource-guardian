@@ -12,8 +12,10 @@
 | [Goal 2](#goal-2第一层救援能力保障验证) | 第一层救援能力保障 | `COMPLETED` | 本地高压下 SSH/诊断/停止链路已验证，生产复核待授权 |
 | [Goal 3](#goal-3第二层自动风险处置评估) | 第二层自动风险处置评估 | `COMPLETED` | 现成机制和检测-定位-处置-恢复管道已评估，Guardian 缺口已明确 |
 | [Goal 4](#goal-4guardian最小风险检测与自动处置实现) | Guardian 最小风险检测与自动处置 | `COMPLETED` | 在可丢弃测试对象上实现并验证自动处置闭环，生产交接另列为外部依赖 |
+| [Goal 5](#goal-5本地生产仿真性能报告) | 本地生产仿真性能报告 | `COMPLETED` | 在不接触生产的前提下复刻关键运行时、负载和故障模式，形成可交给 leader 的性能与有效性报告 |
+| [Goal 6](#goal-6beszel-二次开发集成) | Beszel 二次开发集成 | `IN_PROGRESS` | 将 Beszel 监控基础与 Guardian 风险检测、策略和处置能力安全联调 |
 
-依赖关系：Goal 1 的观测能力是 Goal 2/3 的共同前提；Goal 2 建立的压力场景复用给 Goal 3；Goal 3 的缺口分析是 Goal 4 的实现输入；Goal 5 将 Goal 4 的本地闭环扩展为生产仿真性能报告。所有 Goal 都按 `experiments/` 的 `EXP-###` 规范记录，失败实验同样保留。
+依赖关系：Goal 1 的观测能力是 Goal 2/3 的共同前提；Goal 2 建立的压力场景复用给 Goal 3；Goal 3 的缺口分析是 Goal 4 的实现输入；Goal 5 将 Goal 4 的本地闭环扩展为生产仿真性能报告；Goal 6 将 Beszel 监控基础与 Guardian 联调。所有 Goal 都按 `experiments/` 的 `EXP-###` 规范记录，失败实验同样保留。
 
 ## Goal 1：只观测 PoC 收尾
 
@@ -191,6 +193,45 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：EXP-020 完成 5 轮有效重复、CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下自身开销测量；性能报告已生成，生产交接仍需外部授权。
 - 2026-09-19：根据对照证据复核，EXP-020 降级为安全性/性能基线；新增 EXP-021 真实故障预防对照，复现无 Guardian global OOM，并验证 Guardian 在 critical 阈值前后止损、恢复和健康探针保活。
 - 2026-09-19：完成 EXP-022，补充多对象身份歧义、保护对象、CPU/IO 误报和恢复失败熔断边界；所有场景保持 observe/simulate 或纯 fixture，不执行真实动作。
+
+## Goal 6：Beszel 二次开发集成
+
+- 状态：`IN_PROGRESS`
+- 创建日期：2026-09-19
+- 最近更新：2026-09-19（Beszel Mac Multipass Hub/Agent 已部署并认证连接）
+- 负责人：当前 Agent；主测试环境为 Mac Multipass `guardian-ubuntu`
+- 来源：组长要求基于 Beszel 二次开发资源自动管理能力；当前项目路线收敛结果
+
+### 目标结果
+
+在不破坏 Beszel 原有监控能力、不过早修改上游核心的前提下，建立 Beszel 与 Guardian 的安全集成：Beszel 负责采集、历史、可视化和常规告警；Guardian 负责本机低延迟风险检测、对象定位、保护策略、分级处置和恢复验证。第一阶段只读，第二阶段 `observe/simulate`，最后才评估受控 `enforce`。
+
+### 任务清单
+
+- [ ] **G6-T01**：在 `guardian-ubuntu` 的 Beszel 控制台逐项核验主机、Docker、systemd 指标；记录采集周期、缺失字段、延迟和 Hub/Agent 空载开销。
+- [ ] **G6-T02**：冻结 Beszel → Guardian 事件契约：事件 ID、来源、时间戳、风险信号、对象身份、置信度、过期时间和原始证据引用；建立 Beszel system/container 与 Guardian object 的映射。
+- [ ] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；不得调用 Docker/systemd 变更接口。
+- [ ] **G6-T04**：同一可丢弃故障场景下，对照 Beszel 告警路径与 Guardian 本机检测路径，测量检测延迟、漏报、误报、数据中断和降级行为。
+- [ ] **G6-T05**：将 Adapter 接入 Guardian `observe/simulate`；验证多对象、保护对象、未知对象、重复事件、过期事件和对象身份变化均 fail-closed。
+- [ ] **G6-T06**：设计 Beszel UI 集成方案：风险等级、风险对象、策略原因、动作计划、动作结果、恢复状态和人工确认；先形成设计和接口，不直接覆盖上游核心代码。
+- [ ] **G6-T07**：在 G6-T01～T06 有完整证据后，才评估本地可丢弃对象上的受控 `enforce` 联调；restart/terminate 和生产接入必须单独授权。
+
+### 接手入口
+
+先读 `README.md` → `PROGRESS.md` → 本文件 → [`docs/16-autonomous-execution-roadmap.md`](../docs/16-autonomous-execution-roadmap.md) → [`docs/20-local-beszel-multipass-deployment.md`](../docs/20-local-beszel-multipass-deployment.md) → [`docs/17-risk-signal-specification.md`](../docs/17-risk-signal-specification.md) → [`docs/18-object-policy-specification.md`](../docs/18-object-policy-specification.md)。从 G6-T01 开始，不要把 Beszel 告警直接当成动作授权，不要连接生产。
+
+### 完成标准
+
+- [ ] Beszel 主机、Docker、systemd 指标在当前本地环境逐项验收并有可复查证据。
+- [ ] 事件契约、对象映射、时间窗口和过期策略冻结并有测试。
+- [ ] 只读 Adapter 在 Hub 可用和不可用时均能安全运行，不产生资源变更。
+- [ ] Beszel 告警路径与 Guardian 本机检测路径完成同一故障场景对照。
+- [ ] `observe/simulate` 对重复、过期、多对象、保护对象和未知对象保持 fail-closed。
+- [ ] UI 集成方案可评审；任何 `enforce`、重启、终止和生产接入均有独立授权记录。
+
+### 更新记录
+
+- 2026-09-19：Beszel 0.19.0 Hub/Agent 在 Mac Multipass `guardian-ubuntu` 部署并认证连接；建立 Goal 6，下一步从指标完整性验收开始。
 
 ## 全局边界（所有 Goal 共同遵守）
 
