@@ -50,7 +50,7 @@
 3. **已完成 G6-T03**：只读 `beszel_adapter` 已覆盖真实用户范围空数据、fixture 字段、分页、重复/乱序/过期、恢复和 Hub 不可用边界；真实 payload 为空时保持 fail-closed，不执行动作。
 4. **已完成 G6-T04**：EXP-028 的两次有界内存运行均有 Guardian 与 Beszel 持久化告警证据；Guardian 约 6.15/6.18 秒发现，Beszel 约 16.378/33.159 秒触发并最终恢复。低阈值正向控制、负向基线、Hub 健康和 Adapter Hub 不可用 fail-closed 均有记录；详见 `live-alert-path-readback.json`。结论仅限本地 ARM64，通知投递未纳入验证。
 5. **已完成 G6-T05**：`guardian_beszel_bridge.py` 已将 Adapter 事件接入 Guardian `observe/simulate`；EXP-029 宿主机与 Multipass 全量 56/56、bridge 7/7 通过，重复/过期/乱序/低置信度/恢复/多对象均 fail-closed，Beszel 事件不获得动作授权。
-6. **G6-T06**：形成 Beszel UI 集成设计：风险等级、对象、策略、动作记录、恢复结果和人工确认；先设计，不直接修改上游核心。
+6. **G6-T06**：形成 Beszel UI 集成设计：风险等级、对象、策略、动作记录、恢复结果和人工确认；设计稿已形成于 [docs/23](23-beszel-guardian-ui-integration-design.md)，当前 `DESIGN-READY-FOR-REVIEW`，先完成评审再实现旁路 view-model endpoint，不直接修改上游核心。
 7. **G6-T07**：只有 G6-T01～T06 在本地完成并有证据后，才评估受控 `enforce` 联调；生产交接仍需外部授权。
 8. 将 EXP-020/EXP-021 报告交给 leader，申请非生产 x86_64 Ubuntu 22.04 测试机和最小 observe 授权；不得把 ARM64 本地结果直接写成生产结论。
 

@@ -53,7 +53,7 @@
 - 阶段 5：本地生产仿真性能报告，已完成；报告已形成，生产测试权限待申请。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
 - 当前活动目标：执行 Goal 6 Beszel 二次开发集成；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 和 [Goal 6](goals/resource-protection.md#goal-6beszel-二次开发集成)。
-- 当前下一步：执行 G6-T06，形成 Beszel UI 集成设计。G6-T05 已由 EXP-029 完成：只读 Adapter 已接入 Guardian 的 `observe/simulate`，宿主机与 Multipass 全量 56/56、bridge 7/7 通过，重复、过期、乱序、低置信度、恢复和多对象输入均 fail-closed，外部事件不获得动作授权。G6-T07 的 `enforce`、生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
+- 当前下一步：完成 G6-T06 设计评审。设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已冻结风险/对象/策略/计划/结果/恢复 view model、降级状态和人工确认边界，状态为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 endpoint。G6-T07 的 `enforce`、生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 

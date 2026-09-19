@@ -70,6 +70,7 @@ README.md
 | [20-local-beszel-multipass-deployment.md](20-local-beszel-multipass-deployment.md) | 当前 Mac Multipass Hub/Agent 部署、认证证据和后续指标核验 | 当前本地运行状态 |
 | [21-beszel-guardian-event-contract.md](21-beszel-guardian-event-contract.md) | Beszel → Guardian 事件格式、身份映射、过期和 fail-closed 规则 | Goal 6 联调契约 |
 | [22-beszel-dashboard-field-inventory.md](22-beszel-dashboard-field-inventory.md) | 静态 bundle 字段基线与未登录 API 边界 | G6-T01 页面验收前置清单 |
+| [23-beszel-guardian-ui-integration-design.md](23-beszel-guardian-ui-integration-design.md) | Beszel 与 Guardian 的旁路 UI、view model、策略状态和人工确认设计 | G6-T06 设计稿，评审前不修改 Beszel 上游 |
 
 ## 3. 补充研究材料
 

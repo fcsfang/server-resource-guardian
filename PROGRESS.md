@@ -21,7 +21,7 @@
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01～G6-T05 已完成；EXP-029 已将只读 Adapter 接入 `observe/simulate`，宿主机与 Multipass 全量 56/56、bridge 7/7 通过，外部事件不获得动作授权。下一步进入 G6-T06，形成 Beszel UI 集成设计；G6-T07 的 `enforce` 仍未开始。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01～G6-T05 已完成；EXP-029 已将只读 Adapter 接入 `observe/simulate`，宿主机与 Multipass 全量 56/56、bridge 7/7 通过，外部事件不获得动作授权。G6-T06 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已形成，状态为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 endpoint，G6-T07 的 `enforce` 仍未开始。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
@@ -93,6 +93,7 @@
 - 2026-09-20 追加 EXP-028 源码只读诊断：基于 `henrygd/beszel` `v0.19.0`（commit `ffcdb041670a501611727848649d28d886beb231`）确认默认 60 秒更新周期、Memory 使用 `Info.MemPct`、`alerts.triggered` 更新钩子创建/恢复 `alerts_history`；未执行上游 Go 测试，下一步做同窗三方只读核对。
 - 2026-09-20 完成 EXP-028 最终只读复核：从本地 `data.db` 确认 3 条已恢复 `alerts_history`（15%/12% 两次压力、1% 空闲正向控制），两次压力均无漏报，低于阈值基线无非预期事件，Hub 健康全程 200；G6-T04 完成，下一步 G6-T05。
 - 2026-09-20 完成 EXP-029/G6-T05：新增 `guardian_beszel_bridge.py`，以本机观测和对象身份为最终判断依据；宿主机与 Multipass 全量 56/56、bridge 7/7 通过，重复/过期/乱序/低置信度/恢复/多对象输入 fail-closed，未执行 Docker/systemd 变更。下一步 G6-T06。
+- 2026-09-20 形成 G6-T06 UI 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md)：包含风险/对象/策略/计划/结果/恢复 view model、降级状态和人工确认门禁；不修改 Beszel 上游核心，等待评审。
 
 ## 待办事项（按优先级）
 
