@@ -53,7 +53,7 @@
 - 阶段 5：本地生产仿真性能报告，已完成；报告已形成，生产测试权限待申请。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
 - 当前活动目标：执行 Goal 6 Beszel 二次开发集成；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 和 [Goal 6](goals/resource-protection.md#goal-6beszel-二次开发集成)。
-- 当前下一步：完成 Beszel 页面级指标验收，随后用 [事件契约](docs/21-beszel-guardian-event-contract.md) 推进只读 Adapter 的实际 payload 映射；生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
+- 当前下一步：依据 [Beszel 字段清单](docs/22-beszel-dashboard-field-inventory.md) 完成登录态页面指标和动态负载验收，随后用 [事件契约](docs/21-beszel-guardian-event-contract.md) 推进只读 Adapter 的实际 payload 映射；生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 

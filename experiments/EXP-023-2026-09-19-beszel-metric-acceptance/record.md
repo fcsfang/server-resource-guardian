@@ -30,6 +30,11 @@ http://192.168.252.2:8090/ 后进入 Beszel 登录页，未登录会话无法读
 systemd、历史曲线或告警字段；未填写账号、密码，也未读取或保存凭据。该结果进一步确认了
 页面级验收的外部会话依赖，不能替代已完成的底层运行态核验。
 
+随后对本地 Hub 返回的前端静态 bundle 做了只读字段盘点，确认控制台代码使用
+system_details、containers、systemd_services、system_stats、container_stats 和
+alerts_history 集合，并记录了字段和历史视图周期。盘点结果见
+docs/22-beszel-dashboard-field-inventory.md。这补强了字段基线，但不替代登录后的 UI 数值验收。
+
 ## 3. 关键数据
 
 脱敏结构化数据见 [data/baseline.json](data/baseline.json)。
@@ -60,6 +65,7 @@ systemd、历史曲线或告警字段；未填写账号、密码，也未读取�
 2. 指标采集周期、页面刷新延迟和历史数据落盘完整性。
 3. 受控 CPU/内存负载下指标是否按预期变化。
 4. 当前自动化浏览器没有登录态，因此不能从 UI 验证页面字段和历史数据。
+5. 静态 bundle 暴露的是前端请求约定，不是当前账号可见数据或端到端延迟测量。
 
 ## 5. 后续动作
 

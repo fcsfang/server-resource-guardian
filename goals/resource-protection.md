@@ -208,7 +208,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 ### 任务清单
 
-- [ ] **G6-T01**：在 `guardian-ubuntu` 的 Beszel 控制台逐项核验主机、Docker、systemd 指标；记录采集周期、缺失字段、延迟和 Hub/Agent 空载开销。（底层运行态已核验，页面级字段和动态负载待补）
+- [ ] **G6-T01**：在 `guardian-ubuntu` 的 Beszel 控制台逐项核验主机、Docker、systemd 指标；记录采集周期、缺失字段、延迟和 Hub/Agent 空载开销。（底层运行态和静态 bundle 字段基线已核验，登录态页面数值与动态负载待补）
 - [x] **G6-T02**：冻结 Beszel → Guardian 事件契约：事件 ID、来源、时间戳、风险信号、对象身份、置信度、过期时间和原始证据引用；文档见 [docs/21](../docs/21-beszel-guardian-event-contract.md)。
 - [ ] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；fixture 版已实现，实际告警 payload 映射待补；不得调用 Docker/systemd 变更接口。
 - [ ] **G6-T04**：同一可丢弃故障场景下，对照 Beszel 告警路径与 Guardian 本机检测路径，测量检测延迟、漏报、误报、数据中断和降级行为。
@@ -235,6 +235,8 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：G6-T01 完成底层运行态核验，页面级字段验收保留为未完成；EXP-023 记录为 INCONCLUSIVE，不把单次空载快照当作稳定开销结论。
 - 2026-09-19：完成 G6-T02 事件契约；G6-T03 形成 GET-only、白名单化、过期和身份校验的 fixture 版 Adapter，真实 Beszel 告警 payload 映射待补。
 - 2026-09-19：完成 EXP-024；Adapter 增加重复/乱序窗口和传输失败降级，宿主机 44/44、Multipass Ubuntu 内 7/7 通过；真实 payload 映射仍待本地登录会话。
+- 2026-09-19：补充 docs/22 字段清单和无凭据 API 边界；确认控制台字段基线，但登录态 UI 数值、真实数据可见性和动态延迟仍待验收。
+- 2026-09-19：完成 EXP-025 有界动态探针；1 CPU worker + 128 MiB 内存 worker 持续 12 秒，Hub 健康全程 200、内存 PSI full 为 0，G6-T01 页面/告警闭环仍待登录态验收。
 
 ## 全局边界（所有 Goal 共同遵守）
 

@@ -69,6 +69,7 @@ README.md
 | [19-action-adapter-contract.md](19-action-adapter-contract.md) | G4-T05 授权校验、mock executor 和 Docker 动作参数契约 | 真实动作前的安全边界 |
 | [20-local-beszel-multipass-deployment.md](20-local-beszel-multipass-deployment.md) | 当前 Mac Multipass Hub/Agent 部署、认证证据和后续指标核验 | 当前本地运行状态 |
 | [21-beszel-guardian-event-contract.md](21-beszel-guardian-event-contract.md) | Beszel → Guardian 事件格式、身份映射、过期和 fail-closed 规则 | Goal 6 联调契约 |
+| [22-beszel-dashboard-field-inventory.md](22-beszel-dashboard-field-inventory.md) | 静态 bundle 字段基线与未登录 API 边界 | G6-T01 页面验收前置清单 |
 
 ## 3. 补充研究材料
 

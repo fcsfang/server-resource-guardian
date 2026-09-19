@@ -45,6 +45,29 @@
   "limitations": [
     "The Beszel dashboard fields were not independently enumerated in this run.",
     "This is a single idle snapshot, not a stable resource-overhead baseline.",
-    "No production host, credential, fault injection, or mutating action was used."
-  ]
+    "No production host, credential, fault injection, or mutating action was used.",
+    "The local frontend bundle was inventoried for collection and field names, but no logged-in UI values were read.",
+    "Unauthenticated collection queries returned empty lists and cannot distinguish missing data from permission filtering."
+  ],
+  "frontend_field_inventory": {
+    "source_assets": [
+      "assets/index-CZQtfejN.js",
+      "assets/system-DXM3m_Rc.js",
+      "assets/containers-table-CUaw4bEs.js",
+      "assets/alerts-history-data-table-RYSRlk-c.js"
+    ],
+    "collections": {
+      "system_details": ["hostname", "kernel", "cores", "threads", "cpu", "os", "os_name", "arch", "memory", "podman"],
+      "containers": ["id", "name", "image", "ports", "cpu", "memory", "net", "health", "status", "system", "updated"],
+      "systemd_services": ["name", "state", "sub", "cpu", "cpuPeak", "memory", "memPeak", "updated"],
+      "system_stats": ["created", "stats"],
+      "container_stats": ["created", "stats"],
+      "alerts_history": ["id", "name", "value", "state", "created", "resolved", "expand.system.name"]
+    },
+    "api_probe": {
+      "health_status": 200,
+      "collection_status": 200,
+      "collection_total_items_visible_without_login": 0
+    }
+  }
 }
