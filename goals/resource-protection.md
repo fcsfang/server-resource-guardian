@@ -183,3 +183,4 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：完成 EXP-016 真实跨进程冷却：第一次动作成功写入 ledger，第二次请求在 Docker executor 前被 `cooldown_active` 拒绝；G4-T06 的冷却子项完成。
 - 2026-09-19：完成 EXP-017：真实 Docker 恢复失败连续两次后升级，第三次请求在执行器前被失败熔断；注入 runner 验证动作超时与恢复窗口超时；G4-T06 剩余多对象、误报和业务健康检查。
 - 2026-09-19：完成 EXP-018：双 disposable 容器实机 observe/simulate 对多对象竞争升级，且验证无稳定身份和 unhealthy 健康状态 fail-closed；Goal 4 本地闭环完成，生产交接保留外部依赖。
+- 2026-09-19：完成 EXP-019：测量 Mac Multipass Ubuntu 空载 Guardian 资源基线；单次峰值约 25.8 MiB，持续采样峰值约 26.5 MiB，生产多容器开销仍待复核。

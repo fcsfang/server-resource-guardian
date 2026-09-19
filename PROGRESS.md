@@ -68,6 +68,7 @@
 - 2026-09-19 完成 EXP-016：第一次真实动作成功写入持久化 ledger，第二次独立 CLI 调用在 Docker executor 前被 `cooldown_active` 拒绝；跨进程冷却验证通过。见 experiments/EXP-016-2026-09-19-persistent-cooldown-real-action/record.md。
 - 2026-09-19 完成 EXP-017：复用已退出的本地 disposable 容器验证真实 Docker 恢复失败连续两次后升级，第三次请求在执行器前被失败熔断；注入 runner 验证动作超时与恢复窗口超时 fail-closed。见 experiments/EXP-017-2026-09-19-failure-escalation-timeout-contract/record.md。
 - 2026-09-19 完成 EXP-018：双 disposable 容器实机 observe/simulate 将多对象竞争升级为 `ambiguous_object_identity`；无稳定 ID 和 unhealthy 健康状态测试均 fail-closed，临时容器已清理。见 experiments/EXP-018-2026-09-19-multi-object-health-observe/record.md。
+- 2026-09-19 完成 EXP-019：在 Mac Multipass Ubuntu 空载测得 Guardian 单次 observe 峰值约 25.8 MiB、32 秒持续采样峰值约 26.5 MiB，CPU 累计约 0.12 秒；结果仅作为 0 容器基线。见 experiments/EXP-019-2026-09-19-guardian-local-resource-overhead/record.md。
 
 ## 待办事项（按优先级）
 
