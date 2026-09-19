@@ -84,6 +84,7 @@
 - 2026-09-19 补充 docs/22：从本地 Beszel 前端 bundle 提取主机、Docker、systemd、历史统计和告警历史字段基线；无凭据 API 列表为空，不能据此判定 Hub 无数据。
 - 2026-09-19 完成 EXP-025：在 Mac Multipass 上执行 12 秒有界动态探针；Hub 健康全程 200、内存 PSI full 为 0，Hub 约 11.42–11.44 MiB、Agent 约 3.977 MiB。见 experiments/EXP-025-2026-09-19-beszel-bounded-dynamic-probe/record.md。
 - 2026-09-19 23:39–23:41 补充 EXP-023 登录态 UI 证据：主机在线概览、1 小时历史曲线、两个容器实时字段和 15 类告警类别均可见；告警开关全部关闭，未修改设置。systemd 服务具体值、实际刷新延迟和真实告警时延仍待专项核验。
+- 2026-09-19 23:51 补查登录态 systemd 入口：Beszel 命令搜索 `service` 无结果，首页“服务”列无可读值；该 UI/集成缺口已记录在 EXP-023，G6-T01 仍未完成。
 
 ## 待办事项（按优先级）
 
