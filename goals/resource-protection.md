@@ -210,7 +210,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 - [x] **G6-T01**：在 `guardian-ubuntu` 的 Beszel 控制台逐项核验主机、Docker、systemd 指标；记录采集周期、缺失字段、延迟和 Hub/Agent 空载开销。（主机/Docker 可见；systemd_services 登录态 GET 为 `totalItems=0`，缺失项已证据化；更新间隔约 60 秒；EXP-023/025/026）
 - [x] **G6-T02**：冻结 Beszel → Guardian 事件契约：事件 ID、来源、时间戳、风险信号、对象身份、置信度、过期时间和原始证据引用；文档见 [docs/21](../docs/21-beszel-guardian-event-contract.md)。
-- [x] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；`alerts_history` fixture、分页 GET、恢复边界和已登录空数据 fail-closed 均有证据；真实脱敏告警 payload 因当前用户范围为空暂不可取得，不猜测映射；不得调用 Docker/systemd 变更接口。
+- [x] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；`alerts_history` fixture、分页 GET、恢复边界和已登录空数据 fail-closed 均有证据。EXP-028 进一步从本地 `data.db` 确认实际 Memory 历史记录字段，但不保存或回显登录态原始 payload；不得调用 Docker/systemd 变更接口。
 - [x] **G6-T04**：同一可丢弃故障场景下，对照 Beszel 告警路径与 Guardian 本机检测路径，测量检测延迟、漏报、误报、数据中断和降级行为。EXP-028 的两次有界内存运行均被 Guardian 约 6.15/6.18 秒发现，Beszel 通过本地 `data.db` 只读复核确认触发延迟约 16.378/33.159 秒并最终恢复；1% 空闲正向控制按预期触发，低于 12%/15% 的空闲样本无非预期历史事件，Hub 全程健康，Adapter 的 Hub 不可用 fail-closed 见 EXP-024。结论仅限本地 ARM64，详见 `live-alert-path-readback.json`。
 - [x] **G6-T05**：将 Adapter 接入 Guardian `observe/simulate`；验证多对象、保护对象、未知对象、重复事件、过期事件和对象身份变化均 fail-closed。EXP-029 宿主机与 Multipass 全量 56/56 通过，bridge 7/7 通过；不执行真实动作。
 - [ ] **G6-T06**：设计 Beszel UI 集成方案：风险等级、风险对象、策略原因、动作计划、动作结果、恢复状态和人工确认；设计稿 [docs/23](../docs/23-beszel-guardian-ui-integration-design.md) 已形成并自检通过，当前状态 `DESIGN-READY-FOR-REVIEW`，待 leader/协作者评审后再实现旁路 view-model endpoint。
