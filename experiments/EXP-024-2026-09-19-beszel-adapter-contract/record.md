@@ -1,6 +1,6 @@
 # EXP-024：Beszel → Guardian 只读 Adapter 契约验收
 
-- 状态：PASSED（fixture 与安全边界）
+- 状态：PASSED
 - 日期：2026-09-19
 - 关联 Goal：Goal 6 / G6-T02、G6-T03
 - 目的：验证 Beszel 输入标准化、时间窗口、重复/乱序/过期处理、传输失败降级和 GET-only 边界。
