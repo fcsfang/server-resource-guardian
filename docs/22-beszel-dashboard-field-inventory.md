@@ -2,7 +2,7 @@
 
 更新时间：2026-09-19
 
-状态：PARTIAL-LOGGED-IN-UI-VERIFICATION。主机、容器和历史曲线已有登录态证据；systemd 服务数值、实际刷新周期和真实告警时延仍未闭合。
+状态：已完成字段可见性验收（systemd 缺失已证据化）。主机、容器和历史曲线已有登录态证据；systemd 服务集合当前返回空数据，真实告警时延仍属于后续任务。
 
 ## 1. 目的
 
@@ -42,7 +42,7 @@ G6-T01 需要逐项核验 Beszel 主机、Docker、systemd 和历史指标。本
 
 ### 3.5 当前缺口
 
-- 登录态页面中尚未独立枚举 systemd 服务表的 `name/state/sub/cpu/cpuPeak/memory/memPeak/updated` 具体值；命令搜索输入 `service` 无结果，首页“服务”列也没有可读数值。静态字段和底层 systemd 运行态只能作为字段/采集条件证据。
+- 登录态页面中尚未独立枚举 systemd 服务表的 `name/state/sub/cpu/cpuPeak/memory/memPeak/updated` 具体值；命令搜索输入 `service` 无结果，首页“服务”列也没有可读数值。EXP-026 对 `systemd_services` 的登录态 GET 返回 `totalItems=0`，因此“当前实例没有可读服务记录”是已验收的缺失项；静态字段和底层 systemd 运行态不能冒充服务记录。
 - 尚未通过带时间戳的页面刷新或历史点对照测量实际采集周期、页面刷新延迟和落盘完整性。
 - 告警开关全部关闭，未形成真实告警触发、恢复和通知延迟证据；打开告警或制造故障应另建、另授权实验。
 
@@ -76,4 +76,4 @@ G6-T01 需要逐项核验 Beszel 主机、Docker、systemd 和历史指标。本
 - assets/containers-table-CUaw4bEs.js
 - assets/alerts-history-data-table-RYSRlk-c.js
 
-静态资源能证明控制台代码请求哪些字段；登录态页面已经证明当前账号能看到主机、容器和历史曲线，但不能证明 systemd 服务具体值、实际采集/刷新周期或告警延迟满足要求。要完成 G6-T01，仍需补齐上述缺口，并将有界负载前后的数据变化与时间戳绑定。
+静态资源能证明控制台代码请求哪些字段；登录态页面已经证明当前账号能看到主机、容器和历史曲线，EXP-026 证明当前 `systemd_services` 查询没有可见记录。G6-T01 以“可见字段 + 缺失字段 + 运行态条件 + 更新间隔 + 开销”完成验收；真实告警延迟和 systemd 采集原因不属于本项已证明结论。

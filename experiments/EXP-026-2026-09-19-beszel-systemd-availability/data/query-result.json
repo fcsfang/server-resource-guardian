@@ -1,0 +1,22 @@
+{
+  "experiment_id": "EXP-026",
+  "observed_at": "2026-09-19T23:54:00+08:00",
+  "request": {
+    "method": "GET",
+    "path": "/api/collections/systemd_services/records",
+    "query": {
+      "perPage": 5,
+      "sort": "-updated"
+    }
+  },
+  "response": {
+    "page": 1,
+    "perPage": 5,
+    "totalItems": 0,
+    "totalPages": 0,
+    "items": []
+  },
+  "mutations_performed": false,
+  "credentials_read_or_saved": false,
+  "interpretation": "authenticated_local_query_returned_no_visible_systemd_service_records"
+}

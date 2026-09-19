@@ -6,7 +6,7 @@
 
 本记录描述 Mac Apple Silicon 上 `guardian-ubuntu` Multipass 虚拟机中的本地 Beszel Hub/Agent 部署。它只用于项目本地观测与后续 Guardian 联调，不连接生产环境，不包含任何 Token、Key、管理员密码或指标数据。
 
-当前状态：**Hub/Agent 已部署，认证连接已验证；登录态主机、容器和历史曲线 UI 已核验，静态字段基线和有界动态运行态已补充；systemd 服务数值、实际刷新延迟和真实告警仍待专项核验。**
+当前状态：**Hub/Agent 已部署，认证连接已验证；G6-T01 已完成主机、Docker、systemd 缺失项、更新间隔和运行态开销验收；systemd_services 当前返回空记录，真实告警仍待专项核验。**
 
 ## 2. 运行环境
 
@@ -44,7 +44,7 @@
 
 ## 5. 下一步
 
-1. **G6-T01**：依据 [字段清单](22-beszel-dashboard-field-inventory.md) 补齐 systemd 服务表具体值、实际采集/刷新延迟和经授权的告警触发对照；登录态主机、容器、历史曲线和告警类别证据见 EXP-023，底层运行态和有界动态探针见 EXP-025。
+1. **G6-T03**：依据 [事件契约](21-beszel-guardian-event-contract.md) 处理 `systemd_services`/`alerts_history` 空数据和真实用户范围边界；G6-T01 的综合验收见 EXP-023、EXP-025、EXP-026。
 2. 按 [`Goal 6`](../goals/resource-protection.md#goal-6beszel-二次开发集成) 和 [`docs/16`](16-autonomous-execution-roadmap.md) 完成事件契约、只读 Adapter 和双路径对照。
 3. 不要把 Beszel 告警直接等同于自动处置授权；`observe/simulate` 证据完成前不进入 `enforce`。
 4. 生产部署必须另行设计网络、认证、密钥管理、最小权限、备份和升级回滚方案。

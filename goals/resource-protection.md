@@ -208,7 +208,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 ### 任务清单
 
-- [ ] **G6-T01**：在 `guardian-ubuntu` 的 Beszel 控制台逐项核验主机、Docker、systemd 指标；记录采集周期、缺失字段、延迟和 Hub/Agent 空载开销。（登录态主机、容器、历史曲线和告警类别已核验；systemd 服务具体值、实际刷新延迟和真实告警仍待补）
+- [x] **G6-T01**：在 `guardian-ubuntu` 的 Beszel 控制台逐项核验主机、Docker、systemd 指标；记录采集周期、缺失字段、延迟和 Hub/Agent 空载开销。（主机/Docker 可见；systemd_services 登录态 GET 为 `totalItems=0`，缺失项已证据化；更新间隔约 60 秒；EXP-023/025/026）
 - [x] **G6-T02**：冻结 Beszel → Guardian 事件契约：事件 ID、来源、时间戳、风险信号、对象身份、置信度、过期时间和原始证据引用；文档见 [docs/21](../docs/21-beszel-guardian-event-contract.md)。
 - [ ] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；已覆盖 alerts_history 字段 fixture、分页 GET 和恢复边界，实际脱敏告警 payload 映射待补；不得调用 Docker/systemd 变更接口。
 - [ ] **G6-T04**：同一可丢弃故障场景下，对照 Beszel 告警路径与 Guardian 本机检测路径，测量检测延迟、漏报、误报、数据中断和降级行为。
@@ -218,7 +218,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 ### 接手入口
 
-先读 `README.md` → `PROGRESS.md` → 本文件 → [`docs/16-autonomous-execution-roadmap.md`](../docs/16-autonomous-execution-roadmap.md) → [`docs/20-local-beszel-multipass-deployment.md`](../docs/20-local-beszel-multipass-deployment.md) → [`docs/17-risk-signal-specification.md`](../docs/17-risk-signal-specification.md) → [`docs/18-object-policy-specification.md`](../docs/18-object-policy-specification.md)。从 G6-T01 开始，不要把 Beszel 告警直接当成动作授权，不要连接生产。
+先读 `README.md` → `PROGRESS.md` → 本文件 → [`docs/16-autonomous-execution-roadmap.md`](../docs/16-autonomous-execution-roadmap.md) → [`docs/20-local-beszel-multipass-deployment.md`](../docs/20-local-beszel-multipass-deployment.md) → [`docs/17-risk-signal-specification.md`](../docs/17-risk-signal-specification.md) → [`docs/18-object-policy-specification.md`](../docs/18-object-policy-specification.md)。从 G6-T03 开始，不要把 Beszel 告警直接当成动作授权，不要连接生产。
 
 ### 完成标准
 
@@ -236,10 +236,11 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：完成 G6-T02 事件契约；G6-T03 形成 GET-only、白名单化、过期和身份校验的 fixture 版 Adapter，真实 Beszel 告警 payload 映射待补。
 - 2026-09-19：完成 EXP-024；Adapter 增加重复/乱序窗口和传输失败降级，覆盖 alerts_history 活动/恢复/缺少映射字段 fixture，并增加分页 GET 入口；宿主机 49/49、Multipass Ubuntu 内 12/12 通过，真实 payload 映射仍待本地登录会话。
 - 2026-09-19：补充 docs/22 字段清单和无凭据 API 边界；确认控制台字段基线，但登录态 UI 数值、真实数据可见性和动态延迟仍待验收。
-- 2026-09-19：完成 EXP-025 有界动态探针；1 CPU worker + 128 MiB 内存 worker 持续 12 秒，Hub 健康全程 200、内存 PSI full 为 0，G6-T01 页面/告警闭环仍待登录态验收。
+- 2026-09-19：完成 EXP-025 有界动态探针；1 CPU worker + 128 MiB 内存 worker 持续 12 秒，Hub 健康全程 200、内存 PSI full 为 0；当时页面验收仍待登录态补充，后由 EXP-026 与 EXP-023 合并闭合 G6-T01。
 - 2026-09-19：G6-T03 的只读获取和标准化边界已扩展到 alerts_history 分页 GET；真实用户范围记录和脱敏 payload 仍待本地登录态。
 - 2026-09-19：通过用户已登录的本地 Chrome 补充 EXP-023；确认主机在线概览、1 小时历史曲线、两个容器的 CPU/内存/网络/健康/镜像字段和告警类别可见，全部告警开关保持关闭；systemd 具体服务值、实际刷新延迟和真实告警时延仍未验证。
-- 2026-09-19 23:51：补查 Beszel 登录态命令搜索和首页“服务”列；搜索 `service` 无结果，服务列无可读值。将 systemd 服务明细列为当前 UI/集成缺口，G6-T01 保持未完成。
+- 2026-09-19 23:51：补查 Beszel 登录态命令搜索和首页“服务”列；搜索 `service` 无结果，服务列无可读值。
+- 2026-09-19 23:54：EXP-026 通过登录态 GET 核验 `systemd_services` 返回 `totalItems=0`；将“systemd 服务记录缺失”作为可复查验收结果，完成 G6-T01。真实告警时延仍留给 G6-T04。
 
 ## 全局边界（所有 Goal 共同遵守）
 

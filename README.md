@@ -53,7 +53,7 @@
 - 阶段 5：本地生产仿真性能报告，已完成；报告已形成，生产测试权限待申请。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
 - 当前活动目标：执行 Goal 6 Beszel 二次开发集成；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 和 [Goal 6](goals/resource-protection.md#goal-6beszel-二次开发集成)。
-- 当前下一步：依据 [Beszel 字段清单](docs/22-beszel-dashboard-field-inventory.md) 补齐 systemd 服务具体值、实际刷新延迟和经授权的真实告警核验；登录态主机、容器、历史曲线和告警类别已记录，随后继续用 [事件契约](docs/21-beszel-guardian-event-contract.md) 做只读 Adapter 的实际脱敏 payload 映射。生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
+- 当前下一步：依据 [事件契约](docs/21-beszel-guardian-event-contract.md) 继续完善只读 Adapter 的真实用户范围和空数据 fail-closed 边界，再进入 Beszel 告警路径与 Guardian 本机检测对照；G6-T01 已完成指标可见性、缺失项、更新间隔和开销验收。生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
