@@ -53,7 +53,7 @@
 - 阶段 5：本地生产仿真性能报告，已完成；报告已形成，生产测试权限待申请。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
 - 当前活动目标：执行 Goal 6 Beszel 二次开发集成；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 和 [Goal 6](goals/resource-protection.md#goal-6beszel-二次开发集成)。
-- 当前下一步：继续 G6-T04 的告警链路专项诊断；EXP-028 已在本地完成两次有界内存对照和一次低阈值 idle baseline，Guardian 约 6.1 秒发现并恢复，但 Beszel 未出现 active/history 事件，因此结果为 `INCONCLUSIVE`，尚不能定位具体内部故障。生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
+- 当前下一步：执行 G6-T06，形成 Beszel UI 集成设计。G6-T05 已由 EXP-029 完成：只读 Adapter 已接入 Guardian 的 `observe/simulate`，宿主机与 Multipass 全量 56/56、bridge 7/7 通过，重复、过期、乱序、低置信度、恢复和多对象输入均 fail-closed，外部事件不获得动作授权。G6-T07 的 `enforce`、生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 

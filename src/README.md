@@ -1,8 +1,8 @@
 # 源代码目录
 
-Goal 6 新增的 beszel_adapter.py 是只读集成边界：只允许 HTTP GET，白名单化 Beszel payload，标准化为 guardian.beszel.v1，检查时间新鲜度和对象身份，并拒绝把外部事件直接转成动作授权。当前已用脱敏 fixture 和本地 Hub health 接口验证；真实告警 payload 映射仍待 G6-T01/G6-T03 补齐。
+Goal 6 新增的 beszel_adapter.py 是只读集成边界：只允许 HTTP GET，白名单化 Beszel payload，标准化为 guardian.beszel.v1，检查时间新鲜度和对象身份，并拒绝把外部事件直接转成动作授权。guardian_beszel_bridge.py 将标准化事件接入 Guardian 的 observe/simulate：Guardian 必须用本机观测重新判断风险，Beszel 对象不会直接成为动作目标，重复/过期/乱序/低置信度输入全部保持 fail-closed。
 
-Adapter 还提供 alerts_history 活动/恢复记录的安全映射和 GET-only 分页读取入口；缺少资源、严重级别或稳定系统身份时保持 fail-closed。真实脱敏告警记录仍待本地登录态取得。
+Adapter 还提供 alerts_history 活动/恢复记录的安全映射和 GET-only 分页读取入口；缺少资源、严重级别或稳定系统身份时保持 fail-closed。EXP-028 已在本地数据层确认实际 Memory 历史记录字段；GET-only 接口的实时登录态读取仍不保存或回显凭据。
 
 当前第一版原型使用 Python 标准库实现只读 `observe`：[`guardian_observer.py`](guardian_observer.py) 采集 `/proc`、PSI、cgroup v2 和 Docker stats，使用连续采样窗口去抖，并输出 JSONL 事件和可选快照/审计记录。它不包含停止、重启、kill 或资源变更代码。
 

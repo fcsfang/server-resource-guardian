@@ -48,8 +48,8 @@
 1. **已完成 G6-T01**：主机/Docker 页面字段、systemd 底层条件、缺失记录、约 60 秒更新间隔和 Hub/Agent 运行态开销均有证据；登录态 `systemd_services` 查询返回 `totalItems=0`，真实告警时延不属于本项。
 2. **已完成 G6-T02**：冻结 Beszel → Guardian 的事件格式、对象 ID 映射、时间戳、来源、置信度和过期策略。
 3. **已完成 G6-T03**：只读 `beszel_adapter` 已覆盖真实用户范围空数据、fixture 字段、分页、重复/乱序/过期、恢复和 Hub 不可用边界；真实 payload 为空时保持 fail-closed，不执行动作。
-4. **G6-T04**：完成 Beszel 告警路径与 Guardian 本机检测路径的延迟、准确性和 Hub 不可用对照；EXP-028 已完成两次本地有界内存运行和一次 1%/1 分钟 idle baseline，Guardian 约 6.1 秒发现并恢复，但 Beszel 未产生 active/history 事件，当前为 `INCONCLUSIVE`。已追加对部署版本 `v0.19.0` 的只读源码路径诊断，确认 60 秒更新周期、`Info.MemPct` evaluator 和 `alerts.triggered → alerts_history` 写入链路；下一步只做同一时间窗的系统记录/alerts 记录/Hub 日志三方只读核对。
-5. **G6-T05**：把 Adapter 接入 Guardian `observe/simulate`，验证重复事件、过期事件、多对象、保护对象和未知对象边界。
+4. **已完成 G6-T04**：EXP-028 的两次有界内存运行均有 Guardian 与 Beszel 持久化告警证据；Guardian 约 6.15/6.18 秒发现，Beszel 约 16.378/33.159 秒触发并最终恢复。低阈值正向控制、负向基线、Hub 健康和 Adapter Hub 不可用 fail-closed 均有记录；详见 `live-alert-path-readback.json`。结论仅限本地 ARM64，通知投递未纳入验证。
+5. **已完成 G6-T05**：`guardian_beszel_bridge.py` 已将 Adapter 事件接入 Guardian `observe/simulate`；EXP-029 宿主机与 Multipass 全量 56/56、bridge 7/7 通过，重复/过期/乱序/低置信度/恢复/多对象均 fail-closed，Beszel 事件不获得动作授权。
 6. **G6-T06**：形成 Beszel UI 集成设计：风险等级、对象、策略、动作记录、恢复结果和人工确认；先设计，不直接修改上游核心。
 7. **G6-T07**：只有 G6-T01～T06 在本地完成并有证据后，才评估受控 `enforce` 联调；生产交接仍需外部授权。
 8. 将 EXP-020/EXP-021 报告交给 leader，申请非生产 x86_64 Ubuntu 22.04 测试机和最小 observe 授权；不得把 ARM64 本地结果直接写成生产结论。

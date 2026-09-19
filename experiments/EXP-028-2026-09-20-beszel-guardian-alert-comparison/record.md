@@ -1,7 +1,7 @@
 # EXP-028：Beszel 告警路径与 Guardian 检测路径对照
 
 - 实验 ID：`EXP-028`
-- 状态：`INCONCLUSIVE`
+- 状态：`COMPLETED`
 - 创建日期：2026-09-20
 - 关联 Goal：`Goal 6 / G6-T04`
 - 目的：在同一台本地 `guardian-ubuntu` 和同一类可丢弃有限压力对象上，对照 Beszel 告警历史路径与 Guardian 本机检测路径的检测延迟、漏报、误报、数据中断和降级行为。
@@ -51,8 +51,9 @@
 - 只读前端 bundle 进一步确认：用户告警配置通过 `POST/DELETE /api/beszel/user-alerts` 写入；运行态告警由 `alerts` 集合提供，告警历史页读取 `alerts_history` 集合。在一次不注入压力的配置核验中，UI 开关可见为 `on`，运行态 `alerts` 仍为 `totalItems=0`，随后已恢复为 `off`；这表示未观测到 active alert，不等于配置写入失败。该配置接口的 GET 形式返回 404，当前没有只读配置回读入口。
 - 追加低阈值 idle baseline：空闲内存约 10.6%，配置为 1%/1 分钟且等待约 90 秒；完整刷新后配置仍显示为启用，但 `alerts` 和 `alerts_history` 仍均为 0。随后关闭告警并再次刷新，首页不再显示启用告警。该结果将未解决问题收敛到告警 evaluator、Agent 指标资格或历史/通知写入链路，仍不猜测具体内部原因。
 - 追加 Beszel `v0.19.0` 上游源码只读诊断：确认默认系统更新间隔为 60 秒；`system_stats` 先写入、`system` 最后保存以触发告警；Memory 告警读取 `data.Info.MemPct`；`min=1` 走即时路径，`min>1` 依赖 `type=1m` 历史窗口；`alerts_history` 由 `alerts.triggered` 更新钩子创建或恢复。源码证据和精确版本记录在 [`beszel-v0.19.0-source-path.json`](data/beszel-v0.19.0-source-path.json)；本次未执行上游 Go 测试，因此不把源码行为当作当前部署的 live 证明。
+- 随后对本地 Beszel `data.db` 做只读复核，发现 3 条已恢复的 `alerts_history`：两条分别对应 15%/12% 压力运行，一条对应 1% 空闲正向控制；当前 `alerts` 活动记录为 0 是因为实验结束后已关闭告警。事件与 `system_stats` 的同秒内存值、Guardian 时间线对齐结果见 [`live-alert-path-readback.json`](data/live-alert-path-readback.json)。此前登录态 API 的空结果作为时间点快照保留，不再作为最终持久化结论。
 - 原始采样见 [`runtime-result.json`](data/runtime-result.json) 与 [`runtime-result-2.json`](data/runtime-result-2.json)，管线回读见 [`alert-pipeline-readback.json`](data/alert-pipeline-readback.json)，汇总见 [`result-summary.json`](data/result-summary.json)。
 
 ## 6. 当前结论
 
-实验状态为 `INCONCLUSIVE`。本实验提供了“同一有界内存压力下 Guardian 本机路径能够发现并恢复”的直接证据；Beszel 在两次压力窗口和一次低阈值 idle baseline 中均未产生可见 active/history 事件，因此 Beszel 告警事件路径未被观测到，但尚不能据此断言具体故障位置或把空记录直接当成完整漏报结论。G6-T04 仍未完成，下一步需要已知 live alert payload 或更底层的 Agent/Hub evaluator 证据；在此之前不进入 `simulate/enforce` 联动。
+实验状态为 `COMPLETED`（本地范围）。两次相同的 256 MiB 有界内存压力均被 Guardian 约 6.15/6.18 秒发现，并被 Beszel 持久化为 Memory 告警；Beszel 触发延迟约 16.378/33.159 秒，取决于 60 秒采样周期相位。两次事件均在 worker 自然退出后恢复，Beszel 历史记录最终标记 resolved。低于阈值的空闲样本没有产生非预期历史事件，1% 空闲正向控制按预期触发；Hub 全程 HTTP 200，memory PSI full 无非零样本，Adapter 的 Hub 不可用 fail-closed 证据见 EXP-024。由此 G6-T04 的本地对照验收完成，但结果不代表生产或 ARM64 之外的实时性保证；通知投递未读取或修改。

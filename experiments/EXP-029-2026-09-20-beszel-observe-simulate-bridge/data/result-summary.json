@@ -1,0 +1,19 @@
+{
+  "experiment_id": "EXP-029",
+  "status": "PASSED",
+  "scope": "local_fixture_only",
+  "host_tests": {"bridge_tests": 7, "all_tests": 56, "result": "passed"},
+  "multipass_tests": {"bridge_tests": 7, "all_tests": 56, "result": "passed"},
+  "mutating_commands_executed": false,
+  "enforce_entered": false,
+  "scenarios": [
+    "accepted_high_confidence_alert_simulate_only",
+    "external_alert_does_not_override_normal_local_observation",
+    "duplicate_stale_out_of_order_fail_closed",
+    "low_confidence_observation_only",
+    "recovered_observation_only",
+    "ambiguous_local_object_identity",
+    "paged_events_share_dedupe_window"
+  ],
+  "conclusion": "Beszel events enter Guardian observe/simulate only after freshness and ordering checks; local Guardian evidence and object identity remain authoritative, and no action is authorized or executed."
+}
