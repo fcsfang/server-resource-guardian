@@ -19,7 +19,8 @@
 | [Goal 1：只观测 PoC 收尾](resource-protection.md#goal-1只观测-poc-收尾) | [resource-protection.md](resource-protection.md) | `COMPLETED` | Beszel 指标完整性核验、受控压测与首轮本地阈值 | [执行蓝图](../docs/14-execution-roadmap.md)、[本地 Beszel PoC](../docs/11-local-beszel-poc.md) |
 | [Goal 2：第一层救援能力保障验证](resource-protection.md#goal-2第一层救援能力保障验证) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 本地高压下 SSH 救援链路验证，生产复核待授权 | [实验结论](../docs/15-experiment-findings.md) |
 | [Goal 3：第二层自动风险处置评估](resource-protection.md#goal-3第二层自动风险处置评估) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 现成机制和检测-定位-处置-恢复管道评估，Guardian 缺口已明确 | [实验结论](../docs/15-experiment-findings.md) |
-| [Goal 4：Guardian 最小风险检测与自动处置实现](resource-protection.md#goal-4guardian最小风险检测与自动处置实现) | [resource-protection.md](resource-protection.md) | `IN_PROGRESS` | 在可丢弃测试对象上实现并验证自动处置闭环 | [自动执行路线](../docs/16-autonomous-execution-roadmap.md)、[执行蓝图](../docs/14-execution-roadmap.md) |
+| [Goal 4：Guardian 最小风险检测与自动处置实现](resource-protection.md#goal-4guardian最小风险检测与自动处置实现) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 在可丢弃测试对象上实现并验证自动处置闭环 | [自动执行路线](../docs/16-autonomous-execution-roadmap.md)、[执行蓝图](../docs/14-execution-roadmap.md) |
+| [Goal 5：本地生产仿真性能报告](resource-protection.md#goal-5本地生产仿真性能报告) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 在不接触生产的前提下复刻关键运行时、负载和故障模式，形成可交给 leader 的性能与有效性报告 | [生产基线](../docs/10-production-baseline.md)、[自动执行路线](../docs/16-autonomous-execution-roadmap.md) |
 
 ## 新增 Goal 的最小模板
 

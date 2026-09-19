@@ -9,17 +9,18 @@
 
 ## 当前阶段
 
-**阶段 4：Guardian 最小实现与本地受控闭环 — 🟡 生产交接待外部条件**（本地阶段 1–4 已完成；执行蓝图见 [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，自动执行路线见 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)）
+**阶段 5：本地生产仿真性能报告 — ✅ 已完成**（生产交接仍待外部条件；执行蓝图见 [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，自动执行路线见 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)）
 
 - 阶段 0 需求与环境确认：✅ 已完成
 - 阶段 1 只观测 PoC：✅ 本地已完成
 - 阶段 2 救援韧性验证：✅ 本地已完成，生产复核待授权
 - 阶段 3 自动风险处置评估：✅ 本地已完成，业务动作策略待确认
-- 阶段 4 Guardian 最小实现与受控灰度：🟡 进行中
+- 阶段 4 Guardian 最小实现与受控灰度：✅ 本地已完成
+- 阶段 5 本地生产仿真性能报告：✅ 已完成，生产测试权限待申请
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 推进：Goal 1–3 的本地 WSL2 PoC 已完成，当前在 Mac + Multipass Ubuntu 22.04 ARM64 环境进入 Goal 4，开展 Guardian 最小风险检测与自动处置实现。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 推进：Goal 1–3 的本地 WSL2 PoC、Goal 4 本地 Guardian 闭环和 Goal 5 本地生产仿真报告均已完成。当前等待非生产 x86_64 Ubuntu 22.04 测试机与最小授权范围，生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
@@ -69,6 +70,8 @@
 - 2026-09-19 完成 EXP-017：复用已退出的本地 disposable 容器验证真实 Docker 恢复失败连续两次后升级，第三次请求在执行器前被失败熔断；注入 runner 验证动作超时与恢复窗口超时 fail-closed。见 experiments/EXP-017-2026-09-19-failure-escalation-timeout-contract/record.md。
 - 2026-09-19 完成 EXP-018：双 disposable 容器实机 observe/simulate 将多对象竞争升级为 `ambiguous_object_identity`；无稳定 ID 和 unhealthy 健康状态测试均 fail-closed，临时容器已清理。见 experiments/EXP-018-2026-09-19-multi-object-health-observe/record.md。
 - 2026-09-19 完成 EXP-019：在 Mac Multipass Ubuntu 空载测得 Guardian 单次 observe 峰值约 25.8 MiB、32 秒持续采样峰值约 26.5 MiB，CPU 累计约 0.12 秒；结果仅作为 0 容器基线。见 experiments/EXP-019-2026-09-19-guardian-local-resource-overhead/record.md。
+- 2026-09-19 建立 Goal 5：在本地复刻生产关键运行时、容器角色和故障模式，完成无 Guardian/Guardian 对照及性能报告；不连接生产。
+- 2026-09-19 完成 EXP-020/Goal 5：5 轮有效重复、CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下资源开销测量完成；老板报告见 experiments/EXP-020-2026-09-19-production-like-benchmark/report.md。
 
 ## 待办事项（按优先级）
 

@@ -43,16 +43,17 @@
 
 ## 当前状态
 
-当前项目已完成本地监控、救援韧性和现成自动保护机制的 PoC 验证，进入**Guardian 风险检测与自动处置的最小实现阶段**，尚未进入生产部署。
+当前项目已完成本地监控、救援韧性、现成自动保护机制评估、Guardian 最小闭环和本地生产仿真报告，尚未进入生产部署。
 
 - 阶段 0：需求与环境确认，已完成。
 - 阶段 1：只观测 PoC，已完成本地验证。
 - 阶段 2：救援韧性验证，已完成本地验证，生产复核待授权。
 - 阶段 3：自动风险处置机制评估，已完成本地验证。
 - 阶段 4：Guardian 最小实现与本地受控闭环，已完成；生产交接待外部条件。
+- 阶段 5：本地生产仿真性能报告，已完成；报告已形成，生产测试权限待申请。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
-- 当前活动目标：维护已完成的 Goal 4 本地闭环并准备生产交接前置材料；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md)、[风险信号规范](docs/17-risk-signal-specification.md)、[对象策略规范](docs/18-object-policy-specification.md) 和 [Goal 4](goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
-- 当前下一步：整理本地 Guardian 闭环验收材料，并等待生产测试授权、保护名单和 x86_64 兼容性复核；本地真实 `graceful_stop` 闭环见 EXP-015，失败升级/超时见 EXP-017，多对象/健康状态见 EXP-018。
+- 当前活动目标：将 Goal 5 报告交给 leader，申请非生产 x86_64 Ubuntu 22.04 测试权限；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 和 [Goal 5](goals/resource-protection.md#goal-5本地生产仿真性能报告)。
+- 当前下一步：将 EXP-020 报告交给 leader，申请最小只读 observe 权限；生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 

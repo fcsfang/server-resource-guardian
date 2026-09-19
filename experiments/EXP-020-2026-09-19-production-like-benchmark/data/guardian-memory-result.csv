@@ -1,0 +1,2 @@
+state,action_result_returncode,recovery_state,recovery_reasons,breaker
+recovered,0,recovered,target_stopped,False
