@@ -136,7 +136,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] **G4-T02**：定义对象模型和策略配置：保护名单、可处理对象、业务动作级别、冷却、熔断和未知对象默认行为。见 [`docs/18-object-policy-specification.md`](../docs/18-object-policy-specification.md)。
 - [x] **G4-T03**：实现第一版 `observe` 模式：实时采样、风险判定、对象定位、现场快照和 JSONL 审计记录，不执行变更。趋势窗口、快照和审计已在宿主机单元测试与 Ubuntu 实机 smoke test 中通过；更丰富的 Docker events 和业务对象解析留给后续增强。
 - [x] **G4-T04**：实现 `simulate` 模式：生成动作计划，验证保护名单、动作分级和恢复判断，不执行真实终止或重启。7 个单元测试和 Ubuntu 实机验证通过，输出明确标记 `execution=not_executed`。
-- [ ] **G4-T05**：在可丢弃测试对象上实现并验证 `enforce` 的受控动作适配器，优先优雅停止/重启，终止动作必须显式授权。授权校验、Docker 参数适配器、mock executor、`GuardianController` 和单次运行桥接已完成；EXP-014 已完成首次真实尝试但发现 exit 137 强制 kill，需修正测试进程并重新授权复测。
+- [x] **G4-T05**：在可丢弃测试对象上实现并验证 `enforce` 的受控动作适配器，完成一次真实优雅停止闭环；授权校验、Docker 参数适配器、mock executor、`GuardianController`、单次运行桥接和 `ExitCode` fail-closed 判定已完成。EXP-014 的 exit 137 失败由 EXP-015 以 exit 0 修正验证；restart/terminate 仍需独立授权。
 - [ ] **G4-T06**：完成恢复验证、冷却、失败升级和误报测试；纯逻辑、mock/fake 控制路径和只读恢复探测已由 EXP-008/009/010 验证，真实动作后的恢复、多对象竞争和业务健康检查仍待授权实验。
 
 ### 接手入口
@@ -179,3 +179,4 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：完成 EXP-012 实机 observe/simulate：本地自动退出容器被稳定定位，合成风险阈值下生成 `graceful_stop` 计划并保持 `execution=not_executed`；容器自然退出，真实 enforce 仍待授权。
 - 2026-09-19：完成 EXP-013 结构化审计记录：动作前事件与动作后执行、恢复、冷却和失败熔断结果统一输出为 `guardian.enforce.v1`；宿主机与 Ubuntu 虚拟机 29/29 通过，真实 Docker 动作仍待授权。
 - 2026-09-19：执行 EXP-014 真实 `graceful_stop`：授权和 Docker 调用通过，但目标以 exit 137 结束；修正恢复判定为强制 kill 并 fail-closed，宿主机与 Ubuntu 测试 30/30 通过；成功复测仍待新的本地动作授权。
+- 2026-09-19：完成 EXP-015 真实 `graceful_stop` 复测：目标 exit 0、OOMKilled=false，审计返回 `recovered / target_stopped`；G4-T05 标记完成，G4-T06 进入失败恢复/冷却/熔断验证。

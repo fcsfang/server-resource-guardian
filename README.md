@@ -52,7 +52,7 @@
 - 阶段 4：Guardian 最小实现与受控灰度，进行中。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
 - 当前活动目标：推进 Goal 4，完成 Guardian 最小风险检测与自动处置闭环；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md)、[风险信号规范](docs/17-risk-signal-specification.md)、[对象策略规范](docs/18-object-policy-specification.md) 和 [Goal 4](goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
-- 当前下一步：使用 `guardian_enforce.py` 在明确的本地可丢弃对象授权下完成一次真实 `graceful_stop` 闭环；授权前只运行 mock/fake 路径。
+- 当前下一步：验证真实动作失败后的冷却、连续失败熔断、多对象竞争和业务健康检查；真实 `graceful_stop` 闭环已由 EXP-015 完成。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 

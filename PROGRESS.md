@@ -64,11 +64,12 @@
 - 2026-09-19 完成 EXP-012：在本地自动退出容器上完成 Ubuntu 实机 `observe/simulate`，成功定位稳定容器 ID，并在合成风险阈值下生成 `graceful_stop` 计划且保持 `execution=not_executed`；容器自然退出，真实动作未执行。见 experiments/EXP-012-2026-09-19-live-observe-simulate-object/record.md。
 - 2026-09-19 完成 EXP-013：新增 `guardian.enforce.v1` 结构化审计记录，将动作前事件与动作后执行、恢复、冷却和失败熔断结果统一输出；宿主机与 Ubuntu 虚拟机 29/29 通过，真实 Docker 动作未执行。见 experiments/EXP-013-2026-09-19-enforce-audit-record/record.md。
 - 2026-09-19 执行 EXP-014：在用户授权的本地 disposable 容器上真实调用一次 `graceful_stop`；Docker 返回 0 但目标以 exit 137 结束，修正后的恢复判定为 `target_force_killed`，实验 FAILED。随后修正 `ExitCode` fail-closed 判定和 `--timeout` 参数，宿主机与 Ubuntu 测试 30/30 通过；未重复真实动作。见 experiments/EXP-014-2026-09-19-real-graceful-stop-closed-loop/record.md。
+- 2026-09-19 完成 EXP-015：在修正后的 SIGTERM trap 测试进程上再次执行真实 `graceful_stop`，目标 exit 0、OOMKilled=false，Guardian 审计返回 `recovered / target_stopped`；真实闭环通过。见 experiments/EXP-015-2026-09-19-real-graceful-stop-retry/record.md。
 
 ## 待办事项（按优先级）
 
 - [ ] 将 leader 最新反馈中的测试授权、保护名单和动作边界回填到 docs/05-open-questions.md。
-- [ ] Goal 4-T05：修正测试进程后重新获得本地可丢弃对象授权，使用 `guardian_enforce.py` 复测成功的 `graceful_stop` 闭环；EXP-014 已完成首次真实尝试但发现强制 kill，不能算优雅恢复。
+- [x] Goal 4-T05：使用 `guardian_enforce.py` 完成真实 `graceful_stop` 闭环；EXP-014 的强制 kill 失败已修正并由 EXP-015 以 exit 0 验证成功。
 - [ ] Goal 4-T06：在真实动作授权后验证动作后恢复、冷却、失败升级、误报和多对象竞争；纯逻辑、mock/fake 控制路径和只读恢复探测已由 EXP-008/009/010 覆盖。
 - [ ] 在可丢弃测试对象上验证“检测 → 定位 → 保护判断 → 分级处置 → 恢复/升级”闭环。
 - [ ] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；不把统一 Docker 内存限制作为默认方案。
