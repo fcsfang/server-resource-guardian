@@ -9,6 +9,7 @@ discover production targets or manufacture authorization.
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import subprocess
 import time
@@ -125,6 +126,17 @@ def serialize_result(result: ControllerResult) -> dict[str, Any]:
     }
 
 
+def serialize_audit_record(event: dict[str, Any], result: ControllerResult) -> dict[str, Any]:
+    """Combine the pre-action event and post-action result into one audit record."""
+
+    return {
+        "schema": "guardian.enforce.v1",
+        "recorded_at": dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z"),
+        "event": event,
+        "result": serialize_result(result),
+    }
+
+
 def run_enforce(
     event: dict[str, Any],
     authorization: Authorization,
@@ -189,8 +201,9 @@ def main() -> None:
     args = parser.parse_args()
 
     try:
+        event = load_json(args.event_file)
         result = run_enforce(
-            load_json(args.event_file),
+            event,
             load_authorization(args.authorization_file),
             args.allow_action,
             executor_kind=args.executor,
@@ -200,7 +213,7 @@ def main() -> None:
         )
     except (ActionDenied, OSError, ValueError, json.JSONDecodeError) as exc:
         parser.error(str(exc))
-    serialized = json.dumps(serialize_result(result), ensure_ascii=False, indent=2) + "\n"
+    serialized = json.dumps(serialize_audit_record(event, result), ensure_ascii=False, indent=2) + "\n"
     if args.output:
         args.output.write_text(serialized, encoding="utf-8")
     print(serialized, end="")

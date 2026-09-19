@@ -8,6 +8,7 @@ from src.guardian_enforce import (
     load_authorization,
     probe_container_recovery,
     run_enforce,
+    serialize_audit_record,
     serialize_result,
 )
 
@@ -43,6 +44,14 @@ class GuardianEnforceTests(unittest.TestCase):
         self.assertFalse(result.action_result.executed)
         output = serialize_result(result)
         self.assertEqual(output["action_result"]["reason"], "mock_only_not_executed")
+
+    def test_audit_record_contains_event_and_result(self):
+        result = run_enforce(event(), authorization(), ["graceful_stop"], executor_kind="mock", now=1000.0)
+        record = serialize_audit_record(event(), result)
+        self.assertEqual(record["schema"], "guardian.enforce.v1")
+        self.assertEqual(record["event"]["event_id"], "event-enforce-1")
+        self.assertEqual(record["result"]["state"], "planned")
+        self.assertTrue(record["recorded_at"].endswith("Z"))
 
     def test_docker_executor_requires_explicit_local_confirmation(self):
         with self.assertRaisesRegex(ActionDenied, "local_disposable_confirmation_required"):
