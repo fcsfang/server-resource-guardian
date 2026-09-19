@@ -21,7 +21,7 @@
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01～G6-T05 已完成；EXP-029 已将只读 Adapter 接入 `observe/simulate`，宿主机与 Multipass 全量 56/56、bridge 7/7 通过，外部事件不获得动作授权。G6-T06 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已形成，状态为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 endpoint，G6-T07 的 `enforce` 仍未开始。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01～G6-T05 已完成；EXP-029 的 bridge 7/7、宿主机与 Multipass UI 相关全量测试当前为 61/61，外部事件不获得动作授权。G6-T06 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已形成，本地离线演示、一页式效果对照和现场 Runbook 已准备，正式状态仍为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 Beszel 上游修改或生产 endpoint，G6-T07 的 `enforce` 仍未开始。Goal 1–5 的本地验证均已完成；生产动作仍未执行。交付路线见 [docs/25](docs/25-leader-review-delivery-roadmap.md)，真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
@@ -97,6 +97,8 @@
 - 2026-09-20 为 G6-T06 增加纯函数 `guardian_ui_model.py`：验证 `guardian.ui.v1` 的模拟计划、拒绝事件和多对象降级，宿主机与 Multipass 新增测试均通过；未提供 endpoint，仍等待设计评审。
 - 2026-09-20 完成本地 UI 契约自检：新增 2 个测试锁定 `guardian.ui.v1` 顶层字段、模拟不执行和缺失对象身份 fail-closed；宿主机与 Multipass 全量测试均通过。G6-T06 的 leader/协作者评审仍未完成，未实现 endpoint。
 
+- 2026-09-20 进入组长评审交付准备：修正文档状态口径，形成一页式效果对照、离线可点击演示页和现场 Runbook；演示使用脱敏静态数据，不连接 Beszel 登录态、不调用执行器。G6-T06 仍等待正式评审，G6-T07 未开始。
+
 ## 待办事项（按优先级）
 
 - [ ] 将 leader 最新反馈中的测试授权、保护名单和动作边界回填到 docs/05-open-questions.md。
@@ -106,7 +108,7 @@
 - [x] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；证据见 EXP-022，不把统一 Docker 内存限制作为默认方案。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
 - [ ] 生产兼容性复核：本地 WSL 版本高于生产（systemd 259 vs 249、内核 6.18 vs 6.8），结论需在 Ubuntu 22.04 测试机验证。
-- [ ] Goal 6：按 `docs/16-autonomous-execution-roadmap.md` 执行 Beszel 指标验收、只读 Adapter、双路径对照和 Guardian 联调；当前 G6-T04 仍在告警链路诊断阶段。
+- [ ] Goal 6：G6-T01～G6-T05 已完成；当前整理 Guardian 效果、Beszel 集成和 UI 设计的组长评审交付包，G6-T06 正式评审和 G6-T07 enforce 仍未完成。
 
 
 ## 仓库同步备忘

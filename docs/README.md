@@ -1,6 +1,6 @@
 # 文档总目录与管理规范
 
-更新时间：2026-09-19
+更新时间：2026-09-20
 
 这是本项目文档的唯一总入口。阅读、修改或新增文档前，先从这里判断它属于哪一类，以及哪一份文档是当前生效依据。
 
@@ -71,6 +71,9 @@ README.md
 | [21-beszel-guardian-event-contract.md](21-beszel-guardian-event-contract.md) | Beszel → Guardian 事件格式、身份映射、过期和 fail-closed 规则 | Goal 6 联调契约 |
 | [22-beszel-dashboard-field-inventory.md](22-beszel-dashboard-field-inventory.md) | 静态 bundle 字段基线与未登录 API 边界 | G6-T01 页面验收前置清单 |
 | [23-beszel-guardian-ui-integration-design.md](23-beszel-guardian-ui-integration-design.md) | Beszel 与 Guardian 的旁路 UI、view model、策略状态和人工确认设计 | G6-T06 设计稿，评审前不修改 Beszel 上游 |
+| [24-guardian-effectiveness-one-page.md](24-guardian-effectiveness-one-page.md) | Guardian 故障预防效果、Beszel 集成效果和组长评审结论一页纸 | 当前组长评审材料 |
+| [25-leader-review-delivery-roadmap.md](25-leader-review-delivery-roadmap.md) | 交付前文档、页面、演示、验收和同步路线 | 当前交付执行路线 |
+| [26-guardian-beszel-live-demo-runbook.md](26-guardian-beszel-live-demo-runbook.md) | 明早验收和组长现场演示步骤、话术和安全边界 | 当前现场演示入口 |
 
 ## 3. 补充研究材料
 

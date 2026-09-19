@@ -9,6 +9,7 @@ reports/*
 experiments/*/raw/
 dist/
 build/
+.playwright-cli/
 __pycache__/
 *.py[cod]
 

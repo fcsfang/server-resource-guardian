@@ -213,7 +213,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；`alerts_history` fixture、分页 GET、恢复边界和已登录空数据 fail-closed 均有证据。EXP-028 进一步从本地 `data.db` 确认实际 Memory 历史记录字段，但不保存或回显登录态原始 payload；不得调用 Docker/systemd 变更接口。
 - [x] **G6-T04**：同一可丢弃故障场景下，对照 Beszel 告警路径与 Guardian 本机检测路径，测量检测延迟、漏报、误报、数据中断和降级行为。EXP-028 的两次有界内存运行均被 Guardian 约 6.15/6.18 秒发现，Beszel 通过本地 `data.db` 只读复核确认触发延迟约 16.378/33.159 秒并最终恢复；1% 空闲正向控制按预期触发，低于 12%/15% 的空闲样本无非预期历史事件，Hub 全程健康，Adapter 的 Hub 不可用 fail-closed 见 EXP-024。结论仅限本地 ARM64，详见 `live-alert-path-readback.json`。
 - [x] **G6-T05**：将 Adapter 接入 Guardian `observe/simulate`；验证多对象、保护对象、未知对象、重复事件、过期事件和对象身份变化均 fail-closed。EXP-029 宿主机与 Multipass 全量 56/56 通过，bridge 7/7 通过；不执行真实动作。
-- [ ] **G6-T06**：设计 Beszel UI 集成方案：风险等级、风险对象、策略原因、动作计划、动作结果、恢复状态和人工确认；设计稿 [docs/23](../docs/23-beszel-guardian-ui-integration-design.md) 已形成并自检通过，当前状态 `DESIGN-READY-FOR-REVIEW`，待 leader/协作者评审后再实现旁路 view-model endpoint。
+- [ ] **G6-T06**：设计 Beszel UI 集成方案：风险等级、风险对象、策略原因、动作计划、动作结果、恢复状态和人工确认；设计稿 [docs/23](../docs/23-beszel-guardian-ui-integration-design.md)、[一页式效果对照](../docs/24-guardian-effectiveness-one-page.md)、[离线演示页](../demo/guardian-beszel-review/index.html) 和 [现场 Runbook](../docs/26-guardian-beszel-live-demo-runbook.md) 已形成并自检通过，当前状态 `DESIGN-READY-FOR-REVIEW`，待 leader/协作者评审后再实现旁路 view-model endpoint。
 - [ ] **G6-T07**：在 G6-T01～T06 有完整证据后，才评估本地可丢弃对象上的受控 `enforce` 联调；restart/terminate 和生产接入必须单独授权。
 
 ### 接手入口
@@ -227,7 +227,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] 只读 Adapter 在 Hub 可用和不可用时均能安全运行，不产生资源变更；alerts_history 空数据保持 fail-closed。
 - [x] Beszel 告警路径与 Guardian 本机检测路径完成同一故障场景对照；本地延迟、恢复、负向基线、正向控制和 Hub/Adapter 降级证据见 EXP-028/EXP-024。
 - [x] `observe/simulate` 对重复、过期、多对象、保护对象和未知对象保持 fail-closed；EXP-029 覆盖重复、过期、乱序、低置信度、恢复和多候选对象，保护对象沿用 Observer/Controller 既有门禁。
-- [ ] UI 集成方案可评审；任何 `enforce`、重启、终止和生产接入均有独立授权记录。
+- [ ] UI 集成方案通过 leader/协作者评审；当前已具备一页式材料、离线页面和现场 Runbook。任何 `enforce`、重启、终止和生产接入仍需独立授权记录。
 
 ### 更新记录
 
@@ -249,6 +249,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：完成 EXP-029/G6-T05：新增 `guardian_beszel_bridge.py`，将 Beszel 标准化事件接入 Guardian `observe/simulate`；宿主机和 Multipass 全量 56/56、bridge 7/7 通过，外部事件不获得动作授权，下一步进入 G6-T06 UI 集成设计。
 - 2026-09-20：形成 G6-T06 设计稿 [docs/23](../docs/23-beszel-guardian-ui-integration-design.md)：冻结旁路 UI、`guardian.ui.v1` view model、降级状态和人工确认边界；不修改 Beszel 上游核心，状态为 `DESIGN-READY-FOR-REVIEW`。
 - 2026-09-20：完成 G6-T06 本地契约自检：5 个 UI 纯函数测试覆盖字段冻结、模拟不执行、多对象和缺失身份 fail-closed；leader/协作者评审仍是完成门槛，未实现 endpoint。
+- 2026-09-20：形成组长评审交付包：一页式 Guardian/Beszel 效果对照、离线可点击页面和现场演示 Runbook；页面只使用脱敏静态数据，正式评审和 G6-T07 仍未完成。
 
 ## 全局边界（所有 Goal 共同遵守）
 
