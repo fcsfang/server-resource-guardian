@@ -180,6 +180,24 @@ class BeszelAdapterTests(unittest.TestCase):
         self.assertEqual(event["signal"]["severity"], "recovered")
         self.assertFalse(is_actionable_observation(event))
 
+    def test_boolean_resolved_flag_does_not_become_unix_timestamp(self):
+        record = {
+            "id": "history-boolean-recovery",
+            "name": "memory",
+            "value": 8.2,
+            "state": "critical",
+            "created": "2026-09-19T14:00:00Z",
+            "resolved": True,
+        }
+        event = normalize_beszel_alert_history_record(
+            record,
+            system_id="system-1",
+            received_at=RECEIVED,
+            now=RECEIVED,
+        )
+        self.assertEqual(event["observed_at"], "2026-09-19T14:00:00Z")
+        self.assertEqual(event["signal"]["severity"], "recovered")
+
     def test_alert_history_record_without_mapping_fails_closed(self):
         record = {
             "id": "history-3",

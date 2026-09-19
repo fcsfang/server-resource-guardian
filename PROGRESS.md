@@ -80,7 +80,7 @@
 - 2026-09-19 执行 EXP-023：核验 Mac Multipass Beszel Hub/Agent、主机观测来源和初始开销；底层运行态通过，页面级指标未逐项闭合，实验标记 INCONCLUSIVE。见 experiments/EXP-023-2026-09-19-beszel-metric-acceptance/record.md。
 - 2026-09-19 完成 G6-T02：冻结 Beszel → Guardian 事件契约；G6-T03 形成 fixture 版只读 Adapter 并通过 42 个单元测试，实际 Beszel 告警 payload 映射待补。
 - 2026-09-19 补充 EXP-023 页面核验：Playwright 只能到达未登录的 Beszel 登录页，未填写凭据；页面级指标和历史数据继续保持待验收。
-- 2026-09-19 完成 EXP-024：只读 Adapter 增加重复、乱序、过期和传输失败的 fail-closed 处理，覆盖 alerts_history 活动/恢复/缺少映射字段 fixture，并增加分页 GET 入口；宿主机 48/48、Multipass Ubuntu Adapter 测试 11/11，通过本地 Hub GET /api/health 200。见 experiments/EXP-024-2026-09-19-beszel-adapter-contract/record.md。
+- 2026-09-19 完成 EXP-024：只读 Adapter 增加重复、乱序、过期和传输失败的 fail-closed 处理，覆盖 alerts_history 活动/恢复/缺少映射字段 fixture，并增加分页 GET 入口；宿主机 49/49、Multipass Ubuntu Adapter 测试 12/12，通过本地 Hub GET /api/health 200，并验证 Hub 不可用时只返回脱敏错误码。见 experiments/EXP-024-2026-09-19-beszel-adapter-contract/record.md。
 - 2026-09-19 补充 docs/22：从本地 Beszel 前端 bundle 提取主机、Docker、systemd、历史统计和告警历史字段基线；无凭据 API 列表为空，不能据此判定 Hub 无数据。
 - 2026-09-19 完成 EXP-025：在 Mac Multipass 上执行 12 秒有界动态探针；Hub 健康全程 200、内存 PSI full 为 0，Hub 约 11.42–11.44 MiB、Agent 约 3.977 MiB。见 experiments/EXP-025-2026-09-19-beszel-bounded-dynamic-probe/record.md。
 

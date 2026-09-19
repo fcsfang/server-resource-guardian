@@ -18,9 +18,10 @@
 - 缺少时间戳、时间反转、未知对象/资源/严重级别和不安全来源 URL 均 fail-closed。
 - BeszelEventWindow 对重复事件返回 duplicate_event，对乱序事件返回 out_of_order_event，对过期事件返回 stale_event；这些结果都不能直接触发动作。
 - HTTP 客户端只构造 GET 请求；传输错误统一为不含原始异常内容的 beszel_get_failed。
-- 宿主机测试 48/48 通过；Multipass Ubuntu 内 Adapter 测试 11/11 通过；真实本地 Hub 健康 GET 返回 200。
+- 宿主机测试 49/49 通过；Multipass Ubuntu 内 Adapter 测试 12/12 通过；真实本地 Hub 健康 GET 返回 200。
 - 根据本地前端 bundle 已知的 alerts_history 字段，增加了活动告警、恢复告警和缺少映射字段的 fixture 处理；缺少稳定系统 ID 时仍只产生低置信度观测。
 - 新增 alerts_history 分页 GET 入口；对本地 Hub 的无凭据只读轮询返回 0 条可见事件，没有尝试绕过权限。
+- 对本机未监听端口执行真实 Hub 不可用探针，Adapter 只返回 beszel_get_failed，不泄露底层异常内容。
 
 ## 3. 验收结果
 
@@ -35,6 +36,8 @@
 | GET-only HTTP 请求 | 通过 |
 | alerts_history 活动/恢复/缺少映射字段 | 通过 |
 | alerts_history 分页 GET 与事件标准化 | 通过 |
+| resolved 布尔标记的恢复时间边界 | 通过 |
+| Hub 不可用时的脱敏错误 | 通过 |
 | 本地 Hub /api/health | 200，API is healthy |
 
 ## 4. 结论与限制

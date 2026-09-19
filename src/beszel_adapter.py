@@ -264,8 +264,12 @@ def normalize_beszel_alert_history_record(
     state = _first(record, "severity") or _first(record, "state")
     if resolved:
         severity = "recovered"
-        observed_at = resolved if isinstance(resolved, (str, int, float)) else _first(
-            record, "created"
+        observed_at = (
+            _first(record, "created")
+            if isinstance(resolved, bool)
+            else resolved
+            if isinstance(resolved, (str, int, float))
+            else _first(record, "created")
         )
     else:
         severity = state if state in ALLOWED_SEVERITIES else None

@@ -3,13 +3,13 @@
   "status": "PASSED",
   "host_tests": {
     "command": "python3 -m unittest discover -s tests -p 'test_*.py'",
-    "passed": 48,
+    "passed": 49,
     "failed": 0
   },
   "multipass_adapter_tests": {
     "vm": "guardian-ubuntu",
     "command": "python3 -m unittest tests.test_beszel_adapter",
-    "passed": 11,
+    "passed": 12,
     "failed": 0
   },
   "local_hub_probe": {
@@ -17,6 +17,11 @@
     "path": "/api/health",
     "status_code": 200,
     "message": "API is healthy."
+  },
+  "hub_unavailable_probe": {
+    "endpoint": "http://127.0.0.1:1/api/health",
+    "error_code": "beszel_get_failed",
+    "raw_transport_error_exposed": false
   },
   "safety": {
     "credentials_read": false,
