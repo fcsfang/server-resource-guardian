@@ -1,10 +1,12 @@
-# 本地生产仿真性能与 Guardian 有效性报告
+# 本地生产仿真性能与 Guardian 安全性基线报告
 
 报告日期：2026-09-19  
 实验：EXP-020  
 用途：申请生产测试权限前的技术依据
 
 ## 1. 结论摘要
+
+> 证据修订：本实验的无 Guardian 组没有出现真实系统错误，因此它不能单独证明 Guardian 的有效性。它证明的是正常压力下不误动作、动作链路可运行和自身开销较低；真正的“无 Guardian 失败、Guardian 止损”对照见 [EXP-021](../EXP-021-2026-09-19-failure-prevention-comparison/report.md)。
 
 在本地 Multipass Ubuntu 22.04 ARM64 中，Guardian 已完成一轮有界的生产仿真对照：
 
@@ -14,7 +16,7 @@
 - 单目标 observe 事件生成耗时约 P50 `1.06s`、近似 P95 `1.17s`；enforce 加恢复验证约 P50 `638ms`、近似 P95 `707ms`。
 - 多对象场景不会盲选目标，而是升级 `ambiguous_object_identity`；无稳定身份和不健康业务状态也会 fail-closed。
 
-因此，Guardian 在本地已经证明“风险出现后能够检测、定位、受控处置并验证恢复”的技术有效性；但这不是生产容量或生产业务恢复的等价证明。
+因此，本实验只证明 Guardian 的安全性和运行基线，不把“风险出现后能够阻止真实错误”作为本实验结论；该结论由 EXP-021 提供。
 
 ## 2. 环境对照
 
@@ -83,12 +85,14 @@
 
 在 14 个代表性容器和 CPU/IO 压力下持续采样 32 秒的补充测量：峰值 RSS `28,292 KiB`（约 27.6 MiB），user+sys CPU `0.12s`；结束后运行中容器为 0。
 
-## 5. 能向 leader 证明什么
+## 5. 本实验能向 leader 证明什么
 
 1. Guardian 不是单纯的阈值告警，而是有检测、对象身份、保护判断、动作授权、恢复验证、冷却和失败升级的闭环。
 2. 在代表性多容器和正常压力下，默认 observe 不会因为“容器多”或 CPU/IO 忙就自动停止对象。
 3. 在目标明确、授权存在且目标可优雅退出时，Guardian 能在秒级完成一次受控恢复；目标不符合安全退出条件时会 fail-closed 并升级。
 4. Guardian 自身空载资源占用较低，不需要通过给所有业务容器设置内存上限来实现保护。
+
+本实验不能证明无 Guardian 时一定会失败；请将 [EXP-021](../EXP-021-2026-09-19-failure-prevention-comparison/report.md) 作为有效性对照主证据。
 
 ## 6. 不能向 leader 声称的内容
 
@@ -110,4 +114,4 @@
 
 - 核心数据：本目录 `data/`。
 - 可复现实验脚本：[`scripts/run-production-like-benchmark.sh`](../../scripts/run-production-like-benchmark.sh)。
-- 相关实验：EXP-014～EXP-019。
+- 相关实验：EXP-014～EXP-019；真实故障预防对照见 [EXP-021](../EXP-021-2026-09-19-failure-prevention-comparison/report.md)。

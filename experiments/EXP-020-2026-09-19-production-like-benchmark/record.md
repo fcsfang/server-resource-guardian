@@ -1,4 +1,4 @@
-# EXP-020：本地生产仿真性能与 Guardian 有效性对照
+# EXP-020：本地生产仿真性能与 Guardian 安全性基线
 
 - 实验 ID：`EXP-020`
 - 状态：`PASSED`
@@ -7,9 +7,11 @@
 - 关联 Goal：`Goal 5 / G5-T01~G5-T06`
 - 实验负责人：当前 Agent
 
+> 证据修订：本实验的无 Guardian 组没有真实失败，因此不单独作为 Guardian 有效性证明；真实失败预防对照见 EXP-021。
+
 ## 1. 实验目的
 
-在没有生产访问权限的前提下，使用与生产一致的 Ubuntu 22.04/systemd 249/cgroup v2/Docker 29.1.3 用户空间，复刻代表性多容器角色和可控资源危机场景，比较无 Guardian、observe/simulate 和经授权的本地 enforce，形成可交给 leader 的性能与有效性报告。
+在没有生产访问权限的前提下，使用与生产一致的 Ubuntu 22.04/systemd 249/cgroup v2/Docker 29.1.3 用户空间，复刻代表性多容器角色和可控资源危机场景，建立 Guardian 的安全性/性能基线；真实“无 Guardian 失败、Guardian 止损”对照由 EXP-021 补充。
 
 ## 2. 仿真边界
 
@@ -55,7 +57,7 @@
 
 ## 6. 结论
 
-- 验收状态：通过，详细报告见本目录 [`report.md`](report.md)。
+- 验收状态：通过（安全性/性能基线）；详细报告见本目录 [`report.md`](report.md)，有效性对照见 [EXP-021](../EXP-021-2026-09-19-failure-prevention-comparison/report.md)。
 - 本地实测：正常 fleet、CPU/IO 压力和 churn 未误触发；无 Guardian 对照目标保持运行；Guardian 对可优雅退出目标完成恢复。
 - 容量缩放推断：本地 12–14 个容器的流程可运行，不代表生产 55 个运行容器下的绝对性能。
 - 生产待复核：x86_64、真实业务健康、生产网络/磁盘、保护名单、业务 SLO 和长期稳定性。

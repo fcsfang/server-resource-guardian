@@ -1,0 +1,157 @@
+{
+  "schema": "guardian.enforce.v1",
+  "recorded_at": "2026-09-19T12:48:32.531606Z",
+  "event": {
+    "event_id": "8fbb6d7e-c3ab-49c2-9629-f01a080cd4e3",
+    "observed_at": "2026-09-19T12:48:30.526903Z",
+    "state": "critical",
+    "host_id": "guardian-ubuntu",
+    "signals": {
+      "observed_at": "2026-09-19T12:48:30.526903Z",
+      "memory": {
+        "total_bytes": 4100427776,
+        "available_bytes": 2428551168,
+        "available_ratio_percent": 59.227,
+        "swap_total_bytes": 0,
+        "swap_free_bytes": 0,
+        "swap_used_ratio_percent": null
+      },
+      "psi": {
+        "cpu": {
+          "some": {
+            "avg10": 0.52,
+            "avg60": 0.25,
+            "avg300": 0.39,
+            "total": 3816623.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "memory": {
+          "some": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "io": {
+          "some": {
+            "avg10": 0.0,
+            "avg60": 0.02,
+            "avg300": 0.08,
+            "total": 654139.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.01,
+            "avg300": 0.04,
+            "total": 441502.0
+          }
+        }
+      },
+      "cgroup": {
+        "memory_current_bytes": null,
+        "memory_max": null,
+        "memory_events": {},
+        "pids_current": null,
+        "pids_max": null
+      },
+      "docker": {
+        "available": true,
+        "containers": [
+          {
+            "BlockIO": "0B / 0B",
+            "CPUPerc": "11.22%",
+            "Container": "6141bfdacfe5fb180994354ef83963b0d80a16d36d7617a3905c796d2af5fe59",
+            "ID": "6141bfdacfe5",
+            "MemPerc": "37.74%",
+            "MemUsage": "1.441GiB / 3.819GiB",
+            "Name": "guardian-exp021-leaker",
+            "NetIO": "806B / 126B",
+            "PIDs": "2"
+          }
+        ]
+      }
+    },
+    "risk": {
+      "state": "critical",
+      "candidate_state": "critical",
+      "candidate_for_seconds": 0.0,
+      "required_for_seconds": 0.0,
+      "reasons": [
+        "host_memory_available_critical",
+        "enforce_requires_controller"
+      ],
+      "memory_available_growth_bytes_per_second": null
+    },
+    "object_candidates": [
+      {
+        "kind": "container",
+        "id": "6141bfdacfe5",
+        "name": "guardian-exp021-leaker",
+        "raw": {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "11.22%",
+          "Container": "6141bfdacfe5fb180994354ef83963b0d80a16d36d7617a3905c796d2af5fe59",
+          "ID": "6141bfdacfe5",
+          "MemPerc": "37.74%",
+          "MemUsage": "1.441GiB / 3.819GiB",
+          "Name": "guardian-exp021-leaker",
+          "NetIO": "806B / 126B",
+          "PIDs": "2"
+        },
+        "confidence": "observed"
+      }
+    ],
+    "decision": {
+      "mode": "enforce",
+      "action": "graceful_stop",
+      "reason_codes": [
+        "host_memory_available_critical",
+        "enforce_requires_controller"
+      ],
+      "protected": false,
+      "execution": "pending_controller"
+    },
+    "evidence": {
+      "snapshot_path": null,
+      "sample_window": null
+    }
+  },
+  "result": {
+    "state": "recovered",
+    "event_id": "8fbb6d7e-c3ab-49c2-9629-f01a080cd4e3",
+    "action_result": {
+      "executed": true,
+      "action": "graceful_stop",
+      "target_id": "6141bfdacfe5",
+      "returncode": 0,
+      "stdout": "6141bfdacfe5",
+      "stderr": "",
+      "reason": "authorized_runtime_call"
+    },
+    "recovery": {
+      "state": "recovered",
+      "recovered": true,
+      "reason_codes": [
+        "target_stopped"
+      ]
+    },
+    "reason_codes": [
+      "action_succeeded"
+    ],
+    "cooldown_state": "recorded",
+    "failure_breaker_tripped": false
+  }
+}

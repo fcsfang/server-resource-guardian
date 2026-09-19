@@ -1,0 +1,112 @@
+Sep 19 20:49:36 guardian-ubuntu kernel: dd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-500
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      686    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=docker-258472a8d88570a0e2a328364e97d648b955d45a00015ac346332a07aeb5b340.scope,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/session-12.scope,task=python3,pid=8940,uid=1000
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 8940 (python3) total-vm:100720kB, anon-rss:9152kB, file-rss:1440kB, shmem-rss:0kB, UID:1000 pgtables:88kB oom_score_adj:1000
+Sep 19 20:49:39 guardian-ubuntu kernel: systemd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      701    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=init.scope,mems_allowed=0,global_oom,task_memcg=/system.slice/networkd-dispatcher.service,task=networkd-dispat,pid=624,uid=0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 624 (networkd-dispat) total-vm:33064kB, anon-rss:8836kB, file-rss:2164kB, shmem-rss:0kB, UID:0 pgtables:104kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: docker invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      490    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=user.slice,mems_allowed=0,global_oom,task_memcg=/system.slice/unattended-upgrades.service,task=unattended-upgr,pid=785,uid=0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 785 (unattended-upgr) total-vm:110016kB, anon-rss:8112kB, file-rss:2264kB, shmem-rss:0kB, UID:0 pgtables:120kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: containerd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-999
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      567    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=containerd.service,mems_allowed=0,global_oom,task_memcg=/system.slice/systemd-resolved.service,task=systemd-resolve,pid=580,uid=101
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 580 (systemd-resolve) total-vm:25532kB, anon-rss:4292kB, file-rss:1236kB, shmem-rss:0kB, UID:101 pgtables:88kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: systemd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      506    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=init.scope,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/user@1000.service/init.scope,task=(sd-pam),pid=1145,uid=1000
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 1145 ((sd-pam)) total-vm:105492kB, anon-rss:3492kB, file-rss:832kB, shmem-rss:0kB, UID:1000 pgtables:100kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: containerd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-999
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      480    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=containerd.service,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/session-12.scope,task=docker,pid=9926,uid=1000
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 9926 (docker) total-vm:1624488kB, anon-rss:4128kB, file-rss:136kB, shmem-rss:0kB, UID:1000 pgtables:184kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: systemd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      588    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=init.scope,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/session-12.scope,task=sshd,pid=8820,uid=0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 8820 (sshd) total-vm:18292kB, anon-rss:1900kB, file-rss:2320kB, shmem-rss:0kB, UID:0 pgtables:80kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: systemd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      565    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=init.scope,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/session-1.scope,task=sshd,pid=1141,uid=0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 1141 (sshd) total-vm:18296kB, anon-rss:1904kB, file-rss:1844kB, shmem-rss:0kB, UID:0 pgtables:72kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: systemd-oomd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-900
+Sep 19 20:49:39 guardian-ubuntu kernel: CPU: 1 PID: 529 Comm: systemd-oomd Not tainted 5.15.0-191-generic #201-Ubuntu
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      496    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=systemd-oomd.service,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/session-1.scope,task=sshd,pid=1217,uid=1000
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 1217 (sshd) total-vm:18592kB, anon-rss:2188kB, file-rss:1380kB, shmem-rss:0kB, UID:1000 pgtables:72kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: systemd invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+Sep 19 20:49:39 guardian-ubuntu kernel:  oom_kill_process+0x25c/0x260
+Sep 19 20:49:39 guardian-ubuntu kernel:  __alloc_pages_may_oom+0x120/0x1a0
+Sep 19 20:49:39 guardian-ubuntu kernel: [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Sep 19 20:49:39 guardian-ubuntu kernel: [    529]   113   529     3792      496    73728        0          -900 systemd-oomd
+Sep 19 20:49:39 guardian-ubuntu kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=user.slice,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/session-12.scope,task=sshd,pid=8915,uid=1000
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 8915 (sshd) total-vm:18588kB, anon-rss:2132kB, file-rss:1380kB, shmem-rss:0kB, UID:1000 pgtables:80kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 1144 (systemd) total-vm:17432kB, anon-rss:1644kB, file-rss:1940kB, shmem-rss:0kB, UID:1000 pgtables:68kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 625 (rsyslogd) total-vm:222072kB, anon-rss:1228kB, file-rss:2356kB, shmem-rss:0kB, UID:104 pgtables:76kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 578 (systemd-network) total-vm:16568kB, anon-rss:1012kB, file-rss:2112kB, shmem-rss:0kB, UID:100 pgtables:72kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 530 (systemd-timesyn) total-vm:88828kB, anon-rss:824kB, file-rss:2112kB, shmem-rss:0kB, UID:103 pgtables:68kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 631 (systemd-logind) total-vm:15908kB, anon-rss:996kB, file-rss:1924kB, shmem-rss:0kB, UID:0 pgtables:72kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 614 (cron) total-vm:6932kB, anon-rss:248kB, file-rss:1712kB, shmem-rss:0kB, UID:0 pgtables:48kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 622 (irqbalance) total-vm:82148kB, anon-rss:392kB, file-rss:1276kB, shmem-rss:0kB, UID:0 pgtables:56kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 8916 (bash) total-vm:7668kB, anon-rss:632kB, file-rss:968kB, shmem-rss:0kB, UID:1000 pgtables:60kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 656 (agetty) total-vm:5612kB, anon-rss:76kB, file-rss:468kB, shmem-rss:0kB, UID:0 pgtables:48kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 650 (agetty) total-vm:5656kB, anon-rss:76kB, file-rss:428kB, shmem-rss:0kB, UID:0 pgtables:48kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 9935 (sshd) total-vm:7128kB, anon-rss:100kB, file-rss:0kB, shmem-rss:0kB, UID:0 pgtables:48kB oom_score_adj:0
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 389 (systemd-journal) total-vm:40080kB, anon-rss:1056kB, file-rss:1652kB, shmem-rss:4kB, UID:0 pgtables:96kB oom_score_adj:-250
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 871 (dockerd) total-vm:2126280kB, anon-rss:28284kB, file-rss:1128kB, shmem-rss:0kB, UID:0 pgtables:388kB oom_score_adj:-500
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 9934 (dd) total-vm:3084kB, anon-rss:1092kB, file-rss:0kB, shmem-rss:0kB, UID:0 pgtables:40kB oom_score_adj:-500
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 9936 (busybox) total-vm:2056kB, anon-rss:64kB, file-rss:0kB, shmem-rss:0kB, UID:0 pgtables:36kB oom_score_adj:-500
+Sep 19 20:49:39 guardian-ubuntu kernel: Out of memory: Killed process 8981 (busybox) total-vm:2056kB, anon-rss:64kB, file-rss:0kB, shmem-rss:0kB, UID:0 pgtables:36kB oom_score_adj:-500
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: ssh.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: serial-getty@ttyAMA0.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: getty@tty1.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: session-12.scope: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: irqbalance.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: cron.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-logind.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-timesyncd.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-networkd.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: rsyslog.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: user@1000.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-resolved.service: A process of this unit has been killed by the OOM killer.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-journald.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-timesyncd.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-networkd.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-resolved.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: cron.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: irqbalance.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: networkd-dispatcher.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: rsyslog.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: systemd-logind.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: serial-getty@ttyAMA0.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: getty@tty1.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: unattended-upgrades.service: Failed with result 'oom-kill'.
+Sep 19 20:49:39 guardian-ubuntu systemd[1]: ssh.service: Failed with result 'oom-kill'.

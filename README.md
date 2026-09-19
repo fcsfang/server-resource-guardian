@@ -53,7 +53,7 @@
 - 阶段 5：本地生产仿真性能报告，已完成；报告已形成，生产测试权限待申请。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
 - 当前活动目标：将 Goal 5 报告交给 leader，申请非生产 x86_64 Ubuntu 22.04 测试权限；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 和 [Goal 5](goals/resource-protection.md#goal-5本地生产仿真性能报告)。
-- 当前下一步：将 EXP-020 报告交给 leader，申请最小只读 observe 权限；生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
+- 当前下一步：将 EXP-020 安全性/性能基线和 EXP-021 有效性对照一起交给 leader，申请最小只读 observe 权限；生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 

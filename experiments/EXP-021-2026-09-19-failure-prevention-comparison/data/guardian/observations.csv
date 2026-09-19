@@ -1,0 +1,5 @@
+unix_time,iteration,mem_available_kb,service_alive,health_response,target_state
+1789822104,1,3556800,1,health-ok,running/0
+1789822106,2,3229756,1,health-ok,running/0
+1789822108,3,2778692,1,health-ok,running/0
+1789822110,4,2377428,1,health-ok,running/0

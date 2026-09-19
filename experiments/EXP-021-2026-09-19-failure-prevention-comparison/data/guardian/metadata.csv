@@ -1,0 +1,2 @@
+mode,run_id,warning_available_percent,critical_available_percent,shm_size
+guardian,20260919T125000Z,70,60,3800m
