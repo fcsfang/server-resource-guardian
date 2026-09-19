@@ -14,7 +14,7 @@
 
 - Goal 1–3 的本地 WSL2 实验已经完成，历史证据保留在 `experiments/EXP-001` 至 `EXP-006`。
 - Goal 4 的本地最小风险检测与自动处置闭环已完成，当前仅保留生产交接外部依赖。
-- 当前 Mac Multipass 上的 Beszel 0.19.0 Hub/Agent 已部署并完成认证连接；部署证据见 [docs/20](20-local-beszel-multipass-deployment.md)。
+- 当前 Mac Multipass 上的 Beszel 0.19.0 Hub/Agent 已部署并完成认证连接；底层运行态、静态字段基线和有界动态探针已记录，部署证据见 [docs/20](20-local-beszel-multipass-deployment.md)，字段清单见 [docs/22](22-beszel-dashboard-field-inventory.md)。
 - 最新参考路线：[docs/14-execution-roadmap.md](14-execution-roadmap.md)。
 - 实验事实只能写入 [`experiments/`](../experiments/README.md)，不能用计划文件代替实验证据。
 
@@ -45,7 +45,7 @@
 
 按顺序推进，完成一项再进入下一项：
 
-1. **G6-T01**：完成当前 Beszel 控制台的主机、Docker、systemd 指标完整性和空载开销验收。
+1. **G6-T01**：完成当前 Beszel 控制台的主机、Docker、systemd 指标完整性和空载开销验收；静态字段基线与有界动态探针已完成，登录态页面数值、历史数据和真实告警仍待补。
 2. **G6-T02**：冻结 Beszel → Guardian 的事件格式、对象 ID 映射、时间戳、来源、置信度和过期策略。
 3. **G6-T03**：实现只读 `beszel_adapter`，先获取数据、标准化事件和写入审计，不执行动作。
 4. **G6-T04**：完成 Beszel 告警路径与 Guardian 本机检测路径的延迟、准确性和 Hub 不可用对照。

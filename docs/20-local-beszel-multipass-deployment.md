@@ -6,7 +6,7 @@
 
 本记录描述 Mac Apple Silicon 上 `guardian-ubuntu` Multipass 虚拟机中的本地 Beszel Hub/Agent 部署。它只用于项目本地观测与后续 Guardian 联调，不连接生产环境，不包含任何 Token、Key、管理员密码或指标数据。
 
-当前状态：**Hub/Agent 已部署，认证连接已验证；指标字段完整性仍需在控制台页面继续核验。**
+当前状态：**Hub/Agent 已部署，认证连接已验证；静态字段基线和有界动态运行态已补充，登录态页面指标与真实告警仍需继续核验。**
 
 ## 2. 运行环境
 
@@ -44,7 +44,7 @@
 
 ## 5. 下一步
 
-1. **G6-T01**：在 Beszel 控制台确认 `guardian-ubuntu` 在线，等待至少两个采集周期，核验 CPU、内存、swap、磁盘、网络、load、Docker 和 systemd 指标，并记录空载开销。
+1. **G6-T01**：依据 [字段清单](22-beszel-dashboard-field-inventory.md) 在 Beszel 控制台确认 `guardian-ubuntu` 在线，等待至少两个采集周期，核验 CPU、内存、swap、磁盘、网络、load、Docker 和 systemd 指标，并补充登录态页面与告警数据；底层运行态和有界动态探针见 EXP-023/EXP-025。
 2. 按 [`Goal 6`](../goals/resource-protection.md#goal-6beszel-二次开发集成) 和 [`docs/16`](16-autonomous-execution-roadmap.md) 完成事件契约、只读 Adapter 和双路径对照。
 3. 不要把 Beszel 告警直接等同于自动处置授权；`observe/simulate` 证据完成前不进入 `enforce`。
 4. 生产部署必须另行设计网络、认证、密钥管理、最小权限、备份和升级回滚方案。
