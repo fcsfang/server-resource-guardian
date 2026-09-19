@@ -21,7 +21,7 @@
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01～G6-T05 已完成；EXP-029 的 bridge 7/7、宿主机与 Multipass UI 相关全量测试当前为 61/61，外部事件不获得动作授权。G6-T06 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已形成，本地离线演示、一页式效果对照和现场 Runbook 已准备，正式状态仍为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 Beszel 上游修改或生产 endpoint，G6-T07 的 `enforce` 仍未开始。Goal 1–5 的本地验证均已完成；生产动作仍未执行。交付路线见 [docs/25](docs/25-leader-review-delivery-roadmap.md)，真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01～G6-T05 已完成；EXP-029 的 bridge 7/7、宿主机与 Multipass 当前全量测试为 66/66，外部事件不获得动作授权。G6-T06 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已形成，本地离线演示、一页式效果对照和现场 Runbook 已准备，正式状态仍为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 Beszel 上游修改或生产 endpoint，G6-T07 的 `enforce` 仍未开始。Goal 1–5 的本地验证均已完成；生产动作仍未执行。交付路线见 [docs/25](docs/25-leader-review-delivery-roadmap.md)，真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
@@ -98,6 +98,7 @@
 - 2026-09-20 完成本地 UI 契约自检：新增 2 个测试锁定 `guardian.ui.v1` 顶层字段、模拟不执行和缺失对象身份 fail-closed；宿主机与 Multipass 全量测试均通过。G6-T06 的 leader/协作者评审仍未完成，未实现 endpoint。
 
 - 2026-09-20 进入组长评审交付准备：修正文档状态口径，形成一页式效果对照、离线可点击演示页和现场 Runbook；演示使用脱敏静态数据，不连接 Beszel 登录态、不调用执行器。G6-T06 仍等待正式评审，G6-T07 未开始。
+- 2026-09-20 完成交付包离线/只读约束自检：新增 `test_review_delivery.py`，宿主机与 Multipass 全量测试均为 66/66；验证演示页不调用网络或执行器，Runbook、路线和一页式材料均可读取。
 
 ## 待办事项（按优先级）
 

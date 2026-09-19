@@ -250,6 +250,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：形成 G6-T06 设计稿 [docs/23](../docs/23-beszel-guardian-ui-integration-design.md)：冻结旁路 UI、`guardian.ui.v1` view model、降级状态和人工确认边界；不修改 Beszel 上游核心，状态为 `DESIGN-READY-FOR-REVIEW`。
 - 2026-09-20：完成 G6-T06 本地契约自检：5 个 UI 纯函数测试覆盖字段冻结、模拟不执行、多对象和缺失身份 fail-closed；leader/协作者评审仍是完成门槛，未实现 endpoint。
 - 2026-09-20：形成组长评审交付包：一页式 Guardian/Beszel 效果对照、离线可点击页面和现场演示 Runbook；页面只使用脱敏静态数据，正式评审和 G6-T07 仍未完成。
+- 2026-09-20：新增交付材料离线/只读约束测试 `test_review_delivery.py`；宿主机与 Multipass 全量测试 66/66 通过，确认演示页不访问网络、不调用 Docker/systemd 执行器。
 
 ## 全局边界（所有 Goal 共同遵守）
 

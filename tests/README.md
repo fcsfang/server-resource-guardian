@@ -7,7 +7,7 @@
 - 故障演练：CPU、内存、PSI、I/O、磁盘满、中心失联和动作失败。
 - 安全测试：未授权请求、任意命令注入、PID 重用和保护对象误操作。
 
-当前单元测试使用 Python 标准库 `unittest`，覆盖 Observer、动作边界、mock executor、恢复验证和冷却熔断，可运行：
+当前单元测试使用 Python 标准库 `unittest`，覆盖 Observer、动作边界、mock executor、恢复验证、冷却熔断，以及组长评审静态演示材料的离线/只读约束，可运行：
 
 ```bash
 python3 -m unittest discover -s tests -v

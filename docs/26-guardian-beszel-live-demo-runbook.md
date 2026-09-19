@@ -74,7 +74,7 @@ python3 -m http.server 8765 --directory demo/guardian-beszel-review
 python3 -m unittest discover -s tests -q
 ```
 
-预期：宿主机全量测试 `61 tests ... OK`。
+预期：宿主机全量测试 `66 tests ... OK`。
 
 Multipass 验证：
 
@@ -82,7 +82,7 @@ Multipass 验证：
 multipass exec guardian-ubuntu -- bash -lc 'cd /home/ubuntu/server-resource-guardian && python3 -m unittest discover -s tests -q'
 ```
 
-预期：虚拟机全量测试同样 `61 tests ... OK`。
+预期：虚拟机全量测试同样 `66 tests ... OK`。
 
 运行态只读检查：
 
