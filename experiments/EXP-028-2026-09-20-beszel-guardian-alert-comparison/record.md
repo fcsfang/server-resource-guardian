@@ -1,7 +1,7 @@
 # EXP-028：Beszel 告警路径与 Guardian 检测路径对照
 
 - 实验 ID：`EXP-028`
-- 状态：`RUNNING`
+- 状态：`INCONCLUSIVE`
 - 创建日期：2026-09-20
 - 关联 Goal：`Goal 6 / G6-T04`
 - 目的：在同一台本地 `guardian-ubuntu` 和同一类可丢弃有限压力对象上，对照 Beszel 告警历史路径与 Guardian 本机检测路径的检测延迟、漏报、误报、数据中断和降级行为。
@@ -50,6 +50,7 @@
 - 第二次运行后再次等待一个采样周期复核，仍无历史记录；最后已关闭内存告警，首页核验全部告警类别均为 `off`。
 - 只读前端 bundle 进一步确认：用户告警配置通过 `POST/DELETE /api/beszel/user-alerts` 写入；运行态告警由 `alerts` 集合提供，告警历史页读取 `alerts_history` 集合。在一次不注入压力的配置核验中，UI 开关可见为 `on`，运行态 `alerts` 仍为 `totalItems=0`，随后已恢复为 `off`；这表示未观测到 active alert，不等于配置写入失败。该配置接口的 GET 形式返回 404，当前没有只读配置回读入口。
 - 追加低阈值 idle baseline：空闲内存约 10.6%，配置为 1%/1 分钟且等待约 90 秒；完整刷新后配置仍显示为启用，但 `alerts` 和 `alerts_history` 仍均为 0。随后关闭告警并再次刷新，首页不再显示启用告警。该结果将未解决问题收敛到告警 evaluator、Agent 指标资格或历史/通知写入链路，仍不猜测具体内部原因。
+- 追加 Beszel `v0.19.0` 上游源码只读诊断：确认默认系统更新间隔为 60 秒；`system_stats` 先写入、`system` 最后保存以触发告警；Memory 告警读取 `data.Info.MemPct`；`min=1` 走即时路径，`min>1` 依赖 `type=1m` 历史窗口；`alerts_history` 由 `alerts.triggered` 更新钩子创建或恢复。源码证据和精确版本记录在 [`beszel-v0.19.0-source-path.json`](data/beszel-v0.19.0-source-path.json)；本次未执行上游 Go 测试，因此不把源码行为当作当前部署的 live 证明。
 - 原始采样见 [`runtime-result.json`](data/runtime-result.json) 与 [`runtime-result-2.json`](data/runtime-result-2.json)，管线回读见 [`alert-pipeline-readback.json`](data/alert-pipeline-readback.json)，汇总见 [`result-summary.json`](data/result-summary.json)。
 
 ## 6. 当前结论
