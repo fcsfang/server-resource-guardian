@@ -72,7 +72,7 @@ class GuardianActionTests(unittest.TestCase):
         result = DockerActionAdapter(fake_runner).execute(request, now=1000.0)
         self.assertTrue(result.executed)
         self.assertEqual(result.returncode, 0)
-        self.assertEqual(calls[0][0], ["docker", "stop", "--time", "30", "abcdef123456"])
+        self.assertEqual(calls[0][0], ["docker", "stop", "--timeout", "30", "abcdef123456"])
         self.assertFalse(calls[0][1].get("shell", False))
 
     def test_invalid_target_and_unallowlisted_action_are_denied(self):

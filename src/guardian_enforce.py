@@ -54,24 +54,29 @@ def load_authorization(path: Path) -> Authorization:
         raise ValueError(f"invalid authorization file: {path}") from exc
 
 
-def _state_from_inspect(result: subprocess.CompletedProcess[str]) -> tuple[bool, str | None, str]:
+def _state_from_inspect(result: subprocess.CompletedProcess[str]) -> tuple[bool, str | None, str, int | None]:
     if result.returncode != 0:
-        return False, None, "absent"
+        return False, None, "absent", None
     try:
         state = json.loads(result.stdout)
     except (TypeError, json.JSONDecodeError):
-        return False, None, "invalid"
+        return False, None, "invalid", None
     if not isinstance(state, dict):
-        return False, None, "invalid"
+        return False, None, "invalid", None
     running = bool(state.get("Running", False))
     status = str(state.get("Status") or ("running" if running else "exited"))
+    raw_exit_code = state.get("ExitCode")
+    try:
+        exit_code = int(raw_exit_code) if raw_exit_code is not None else None
+    except (TypeError, ValueError):
+        exit_code = None
     health: str | None = None
     health_data = state.get("Health")
     if isinstance(health_data, dict) and health_data.get("Status") is not None:
         health = str(health_data["Status"])
     if health is None:
         health = "running" if running else status
-    return running, health, status
+    return running, health, status, exit_code
 
 
 def probe_container_recovery(
@@ -94,7 +99,7 @@ def probe_container_recovery(
             timeout=3,
             check=False,
         )
-        running, health, status = _state_from_inspect(result)
+        running, health, status, exit_code = _state_from_inspect(result)
         elapsed = max(clock() - started, 0.0)
         present = result.returncode == 0 and status != "absent"
         if request.action in {"graceful_stop", "terminate"}:
@@ -110,6 +115,7 @@ def probe_container_recovery(
                 health_status=health,
                 risk_state=risk_state,
                 observed_after_seconds=elapsed,
+                exit_code=exit_code,
             )
         sleep(min(max(poll_interval_seconds, 0.0), max_wait_seconds - elapsed))
 

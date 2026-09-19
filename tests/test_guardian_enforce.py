@@ -69,7 +69,7 @@ class GuardianEnforceTests(unittest.TestCase):
             return type(
                 "Result",
                 (),
-                {"returncode": 0, "stdout": json.dumps({"Running": False, "Status": "exited"}), "stderr": ""},
+                {"returncode": 0, "stdout": json.dumps({"Running": False, "Status": "exited", "ExitCode": 0}), "stderr": ""},
             )()
 
         result = run_enforce(
@@ -86,7 +86,7 @@ class GuardianEnforceTests(unittest.TestCase):
         self.assertEqual(result.state, "recovered")
         self.assertTrue(result.action_result.executed)
         self.assertEqual(result.recovery.reason_codes, ("target_stopped",))
-        self.assertEqual(calls[0][0], ["docker", "stop", "--time", "5", "abcdef123456"])
+        self.assertEqual(calls[0][0], ["docker", "stop", "--timeout", "5", "abcdef123456"])
         self.assertEqual(calls[1][0][:3], ["docker", "inspect", "--format"])
         self.assertFalse(calls[0][1].get("shell", False))
 
@@ -95,7 +95,7 @@ class GuardianEnforceTests(unittest.TestCase):
             return type(
                 "Result",
                 (),
-                {"returncode": 0, "stdout": json.dumps({"Running": False, "Status": "exited"}), "stderr": ""},
+                {"returncode": 0, "stdout": json.dumps({"Running": False, "Status": "exited", "ExitCode": 0}), "stderr": ""},
             )()
 
         observation = probe_container_recovery(
@@ -108,6 +108,7 @@ class GuardianEnforceTests(unittest.TestCase):
         )
         self.assertFalse(observation.target_running)
         self.assertEqual(observation.health_status, "exited")
+        self.assertEqual(observation.exit_code, 0)
 
     def test_authorization_file_is_parsed_without_extra_fields(self):
         with tempfile.TemporaryDirectory() as temp:

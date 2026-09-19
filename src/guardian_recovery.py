@@ -26,6 +26,7 @@ class RecoveryObservation:
     health_status: str | None
     risk_state: str
     observed_after_seconds: float
+    exit_code: int | None = None
 
 
 @dataclass(frozen=True)
@@ -45,7 +46,19 @@ def assess_recovery(policy: RecoveryPolicy, observation: RecoveryObservation) ->
 
     if policy.action in {"graceful_stop", "terminate"}:
         recovered = not observation.target_present or not observation.target_running
-        reasons = ("target_stopped",) if recovered else ("target_still_running",)
+        if recovered and policy.action == "graceful_stop" and observation.exit_code is not None:
+            if observation.exit_code == 137:
+                return RecoveryResult("failed", False, ("target_force_killed",))
+            if observation.exit_code not in {0, 143}:
+                return RecoveryResult("failed", False, ("target_stopped_nonzero_exit",))
+        if recovered:
+            reasons = (
+                "target_stopped_sigterm"
+                if policy.action == "graceful_stop" and observation.exit_code == 143
+                else "target_stopped",
+            )
+        else:
+            reasons = ("target_still_running",)
     elif policy.action == "restart":
         recovered = (
             observation.target_present

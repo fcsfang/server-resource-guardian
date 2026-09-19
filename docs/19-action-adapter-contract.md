@@ -24,7 +24,7 @@
 
 - `MockActionExecutor` 只记录请求并返回 `mock_only_not_executed`，用于单元测试和 simulate 验证。
 - `DockerActionAdapter` 只接受已经通过校验的请求，并以参数数组调用 Docker，不经过 shell 字符串拼接。
-- `graceful_stop` 使用 `docker stop --time`；`restart` 使用 `docker restart --time`；`terminate` 使用 `docker kill`。
+- `graceful_stop` 使用 `docker stop --timeout`；`restart` 使用 `docker restart --timeout`；`terminate` 使用 `docker kill`。
 - `terminate` 不是默认动作，必须同时通过动作白名单和短期授权。
 - 本模块不负责决定风险等级、保护名单或恢复成功；这些由上层策略和恢复验证负责。
 - `GuardianController` 负责把 `enforce` 事件接入动作适配器：只有显式 `enforce`、单一稳定对象、可行动风险、授权和策略校验全部通过，才会调用注入式执行器。
@@ -41,5 +41,5 @@
 - [x] `enforce` 控制层集成：门禁、mock/fake 执行器、恢复和冷却路径，见 EXP-009。
 - [x] 单次 `enforce` 运行桥接和只读恢复探测，见 EXP-010。
 - [x] 动作前事件与动作后结果的统一审计记录，见 EXP-013。
-- [ ] 在获得明确本地可丢弃对象授权后，执行一次 `graceful_stop` 并记录 EXP。
+- [ ] 在修正测试进程并重新获得明确本地可丢弃对象授权后，复测一次 `graceful_stop`；EXP-014 已发现 exit 137 强制 kill，不能算作优雅恢复。
 - [ ] 完成动作后的资源恢复、健康检查、冷却和失败升级。

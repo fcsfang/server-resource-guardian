@@ -88,9 +88,9 @@ def docker_command(request: ActionRequest) -> list[str]:
     """Build an argument vector; never interpolate a target into a shell."""
 
     if request.action == "graceful_stop":
-        return ["docker", "stop", "--time", str(request.timeout_seconds), request.target_id]
+        return ["docker", "stop", "--timeout", str(request.timeout_seconds), request.target_id]
     if request.action == "restart":
-        return ["docker", "restart", "--time", str(request.timeout_seconds), request.target_id]
+        return ["docker", "restart", "--timeout", str(request.timeout_seconds), request.target_id]
     if request.action == "terminate":
         return ["docker", "kill", request.target_id]
     raise ActionDenied("unsupported_action")

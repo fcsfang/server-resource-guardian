@@ -43,6 +43,21 @@ class GuardianRecoveryTests(unittest.TestCase):
         )
         self.assertEqual(unknown.reason_codes, ("unsupported_recovery_action",))
 
+    def test_graceful_stop_does_not_treat_forced_kill_as_recovered(self):
+        forced = assess_recovery(
+            RecoveryPolicy("graceful_stop"),
+            RecoveryObservation("abcdef123456", True, False, "exited", "normal", 5.0, exit_code=137),
+        )
+        self.assertEqual(forced.state, "failed")
+        self.assertEqual(forced.reason_codes, ("target_force_killed",))
+
+        term = assess_recovery(
+            RecoveryPolicy("graceful_stop"),
+            RecoveryObservation("abcdef123456", True, False, "exited", "normal", 2.0, exit_code=143),
+        )
+        self.assertEqual(term.state, "recovered")
+        self.assertEqual(term.reason_codes, ("target_stopped_sigterm",))
+
     def test_cooldown_and_action_limit_fail_closed(self):
         ledger = CooldownLedger()
         self.assertEqual(ledger.allow(0.0, 10.0, 2, 3600.0), (True, "allowed"))
