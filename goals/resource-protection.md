@@ -210,7 +210,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 - [ ] **G6-T01**：在 `guardian-ubuntu` 的 Beszel 控制台逐项核验主机、Docker、systemd 指标；记录采集周期、缺失字段、延迟和 Hub/Agent 空载开销。（底层运行态和静态 bundle 字段基线已核验，登录态页面数值与动态负载待补）
 - [x] **G6-T02**：冻结 Beszel → Guardian 事件契约：事件 ID、来源、时间戳、风险信号、对象身份、置信度、过期时间和原始证据引用；文档见 [docs/21](../docs/21-beszel-guardian-event-contract.md)。
-- [ ] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；fixture 版已实现，实际告警 payload 映射待补；不得调用 Docker/systemd 变更接口。
+- [ ] **G6-T03**：实现只读 `beszel_adapter`：获取或接收 Beszel 数据，标准化事件，处理认证失败、重复、乱序、过期和 Hub 不可用；已覆盖 alerts_history 字段 fixture、分页 GET 和恢复边界，实际脱敏告警 payload 映射待补；不得调用 Docker/systemd 变更接口。
 - [ ] **G6-T04**：同一可丢弃故障场景下，对照 Beszel 告警路径与 Guardian 本机检测路径，测量检测延迟、漏报、误报、数据中断和降级行为。
 - [ ] **G6-T05**：将 Adapter 接入 Guardian `observe/simulate`；验证多对象、保护对象、未知对象、重复事件、过期事件和对象身份变化均 fail-closed。
 - [ ] **G6-T06**：设计 Beszel UI 集成方案：风险等级、风险对象、策略原因、动作计划、动作结果、恢复状态和人工确认；先形成设计和接口，不直接覆盖上游核心代码。
@@ -237,6 +237,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：完成 EXP-024；Adapter 增加重复/乱序窗口和传输失败降级，覆盖 alerts_history 活动/恢复/缺少映射字段 fixture，并增加分页 GET 入口；宿主机 49/49、Multipass Ubuntu 内 12/12 通过，真实 payload 映射仍待本地登录会话。
 - 2026-09-19：补充 docs/22 字段清单和无凭据 API 边界；确认控制台字段基线，但登录态 UI 数值、真实数据可见性和动态延迟仍待验收。
 - 2026-09-19：完成 EXP-025 有界动态探针；1 CPU worker + 128 MiB 内存 worker 持续 12 秒，Hub 健康全程 200、内存 PSI full 为 0，G6-T01 页面/告警闭环仍待登录态验收。
+- 2026-09-19：G6-T03 的只读获取和标准化边界已扩展到 alerts_history 分页 GET；真实用户范围记录和脱敏 payload 仍待本地登录态。
 
 ## 全局边界（所有 Goal 共同遵守）
 
