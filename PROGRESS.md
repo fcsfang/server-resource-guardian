@@ -21,7 +21,7 @@
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01 指标验收已完成（包括 systemd 记录缺失的证据化），下一步为只读 Adapter 的真实用户范围边界，再做双路径对照和 Guardian `observe/simulate` 联调。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01 指标验收和 G6-T03 只读 Adapter 已完成（包括 systemd/alerts_history 空记录的证据化与 fail-closed），下一步为 G6-T04 的 Beszel 告警路径与 Guardian 本机检测对照。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
@@ -86,6 +86,7 @@
 - 2026-09-19 23:39–23:41 补充 EXP-023 登录态 UI 证据：主机在线概览、1 小时历史曲线、两个容器实时字段和 15 类告警类别均可见；告警开关全部关闭，未修改设置。systemd 服务具体值、实际刷新延迟和真实告警时延仍待专项核验。
 - 2026-09-19 23:51 补查登录态 systemd 入口：Beszel 命令搜索 `service` 无结果，首页“服务”列无可读值；该 UI/集成缺口已记录在 EXP-023，随后由 EXP-026 完成缺失项验收。
 - 2026-09-19 23:54 完成 EXP-026：登录态 GET 查询 `systemd_services` 返回 `items=[]` / `totalItems=0`，确认当前本地 Beszel 没有可读 systemd 服务记录；结合 EXP-023/025 完成 G6-T01，下一步转入 G6-T03 的 fail-closed 处理。
+- 2026-09-19 23:59 完成 EXP-027：登录态 GET 查询 `alerts_history` 返回 `items=[]` / `totalItems=0`；Adapter 对空数据保持 fail-closed，结合 EXP-024 完成 G6-T03，下一步转入 G6-T04。
 
 ## 待办事项（按优先级）
 

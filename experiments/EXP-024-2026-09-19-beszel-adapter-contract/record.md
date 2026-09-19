@@ -42,7 +42,7 @@
 
 ## 4. 结论与限制
 
-本实验可以证明 Adapter 的输入安全契约和本地 fixture 行为满足当前设计，并覆盖了已从前端 bundle 识别的 alerts_history 记录形状和分页 GET 方式，但不能证明 Beszel 0.19.0 的真实告警 payload 字段已经完成映射。真实 payload、用户范围内的记录和控制台告警路径仍需在取得本地 Beszel 登录会话后补齐；在此之前不进入 G6-T04 的告警路径对照。
+本实验可以证明 Adapter 的输入安全契约和本地 fixture 行为满足当前设计，并覆盖了已从前端 bundle 识别的 alerts_history 记录形状和分页 GET 方式。EXP-027 进一步用已登录本地会话确认当前用户范围 `alerts_history` 为空，因此真实 payload 暂时不可取得；Adapter 保持空数据 fail-closed，不猜测字段，也不把 fixture 当成真实告警。控制台告警路径仍需 G6-T04 的单独对照。
 
 Adapter 的 accepted 只表示“可进入 Guardian 本机重新核验”，不表示动作已授权。Guardian 仍需独立确认本机风险、对象身份、保护名单、动作白名单和恢复条件。
 

@@ -44,7 +44,7 @@
 
 ## 5. 下一步
 
-1. **G6-T03**：依据 [事件契约](21-beszel-guardian-event-contract.md) 处理 `systemd_services`/`alerts_history` 空数据和真实用户范围边界；G6-T01 的综合验收见 EXP-023、EXP-025、EXP-026。
+1. **G6-T04**：设计并申请单独授权的本地告警路径对照；G6-T03 已用 EXP-024/EXP-027 完成只读 Adapter、真实用户范围空数据和 fail-closed 验收，G6-T01 综合验收见 EXP-023、EXP-025、EXP-026。
 2. 按 [`Goal 6`](../goals/resource-protection.md#goal-6beszel-二次开发集成) 和 [`docs/16`](16-autonomous-execution-roadmap.md) 完成事件契约、只读 Adapter 和双路径对照。
 3. 不要把 Beszel 告警直接等同于自动处置授权；`observe/simulate` 证据完成前不进入 `enforce`。
 4. 生产部署必须另行设计网络、认证、密钥管理、最小权限、备份和升级回滚方案。
