@@ -1,0 +1,50 @@
+{
+  "experiment_id": "EXP-023",
+  "status": "INCONCLUSIVE",
+  "observed_at": "2026-09-19T22:28:40+08:00",
+  "environment": {
+    "vm": "guardian-ubuntu",
+    "os": "Ubuntu 22.04.5 LTS",
+    "architecture": "aarch64",
+    "kernel": "5.15.0-191-generic",
+    "cgroup": "cgroup2fs",
+    "systemd": "running",
+    "docker": "29.1.3",
+    "beszel_hub": "0.19.0",
+    "beszel_agent": "0.19.0"
+  },
+  "host": {
+    "memory_total_bytes": 4100427776,
+    "memory_available_bytes": 3700727808,
+    "swap_total_bytes": 0,
+    "root_disk_capacity_bytes": 41433624576,
+    "root_disk_used_bytes": 2554441728,
+    "load_average_1m": 0.09,
+    "psi_memory": "present",
+    "psi_io": "present",
+    "systemd_unit_count": 139,
+    "key_services": {
+      "docker": "active",
+      "systemd-oomd": "active",
+      "ssh": "active"
+    }
+  },
+  "beszel_runtime": {
+    "hub_api": "200 API is healthy",
+    "hub_container": "healthy",
+    "agent_container": "healthy",
+    "agent_health": "ok",
+    "hub_memory_usage": "10.43MiB",
+    "agent_memory_usage": "3.996MiB",
+    "agent_mounts_verified": [
+      "docker_socket_read_only",
+      "system_dbus_read_only",
+      "beszel_socket_shared"
+    ]
+  },
+  "limitations": [
+    "The Beszel dashboard fields were not independently enumerated in this run.",
+    "This is a single idle snapshot, not a stable resource-overhead baseline.",
+    "No production host, credential, fault injection, or mutating action was used."
+  ]
+}

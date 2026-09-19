@@ -1,0 +1,31 @@
+{
+  "experiment_id": "EXP-024",
+  "status": "PASSED",
+  "host_tests": {
+    "command": "python3 -m unittest discover -s tests -p 'test_*.py'",
+    "passed": 44,
+    "failed": 0
+  },
+  "multipass_adapter_tests": {
+    "vm": "guardian-ubuntu",
+    "command": "python3 -m unittest tests.test_beszel_adapter",
+    "passed": 7,
+    "failed": 0
+  },
+  "local_hub_probe": {
+    "method": "GET",
+    "path": "/api/health",
+    "status_code": 200,
+    "message": "API is healthy."
+  },
+  "safety": {
+    "credentials_read": false,
+    "mutating_requests": false,
+    "production_access": false
+  },
+  "limitations": [
+    "Actual Beszel alert payload field mapping is pending.",
+    "No UI login session was used.",
+    "No action authorization is implied by adapter acceptance."
+  ]
+}

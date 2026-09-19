@@ -77,6 +77,10 @@
 - 2026-09-19 完成 EXP-022/Goal 5：补充多对象歧义、保护对象、CPU/IO 误报和恢复失败熔断边界；全部使用 observe/simulate 或纯 fixture，无新增真实动作。见 experiments/EXP-022-2026-09-19-policy-boundary-scenarios/record.md。
 - 2026-09-19 完成 Mac Multipass Beszel 本地部署：Hub/Agent 0.19.0 镜像离线导入 `guardian-ubuntu`，Hub/Agent 均为 healthy；用户完成系统登记后，Agent 日志出现 WebSocket connected，连接后短窗口无新的 401/错误。当前运行状态和后续指标核验见 [docs/20](docs/20-local-beszel-multipass-deployment.md)。
 - 2026-09-19 建立 Goal 6：Beszel 二次开发集成；后续按 G6-T01～G6-T07 执行，先只读集成和双路径对照，再评估 UI 与受控 enforce。
+- 2026-09-19 执行 EXP-023：核验 Mac Multipass Beszel Hub/Agent、主机观测来源和初始开销；底层运行态通过，页面级指标未逐项闭合，实验标记 INCONCLUSIVE。见 experiments/EXP-023-2026-09-19-beszel-metric-acceptance/record.md。
+- 2026-09-19 完成 G6-T02：冻结 Beszel → Guardian 事件契约；G6-T03 形成 fixture 版只读 Adapter 并通过 42 个单元测试，实际 Beszel 告警 payload 映射待补。
+- 2026-09-19 补充 EXP-023 页面核验：Playwright 只能到达未登录的 Beszel 登录页，未填写凭据；页面级指标和历史数据继续保持待验收。
+- 2026-09-19 完成 EXP-024：只读 Adapter 增加重复、乱序、过期和传输失败的 fail-closed 处理；宿主机 44/44、Multipass Ubuntu Adapter 测试 7/7，通过本地 Hub GET /api/health 200。见 experiments/EXP-024-2026-09-19-beszel-adapter-contract/record.md。
 
 ## 待办事项（按优先级）
 

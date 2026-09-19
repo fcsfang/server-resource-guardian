@@ -68,6 +68,7 @@ README.md
 | [18-object-policy-specification.md](18-object-policy-specification.md) | G4-T02 对象身份、保护名单、动作等级、冷却和熔断 | 当前策略设计入口 |
 | [19-action-adapter-contract.md](19-action-adapter-contract.md) | G4-T05 授权校验、mock executor 和 Docker 动作参数契约 | 真实动作前的安全边界 |
 | [20-local-beszel-multipass-deployment.md](20-local-beszel-multipass-deployment.md) | 当前 Mac Multipass Hub/Agent 部署、认证证据和后续指标核验 | 当前本地运行状态 |
+| [21-beszel-guardian-event-contract.md](21-beszel-guardian-event-contract.md) | Beszel → Guardian 事件格式、身份映射、过期和 fail-closed 规则 | Goal 6 联调契约 |
 
 ## 3. 补充研究材料
 
