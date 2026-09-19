@@ -1,0 +1,5 @@
+scenario,state,action,execution,reason_or_result,candidate_count
+multi-object-simulate,critical,escalate,not_executed,host_memory_available_critical+ambiguous_object_identity,2
+protected-object-simulate,critical,escalate,not_executed,host_memory_available_critical+protected_object,1
+normal-pressure-observe,normal,none,not_applicable,,2
+recovery-failure-and-breaker,fixture,not_applicable,not_executed,failure_breaker_tripped,0

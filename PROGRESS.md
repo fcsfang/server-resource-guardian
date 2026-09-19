@@ -73,6 +73,7 @@
 - 2026-09-19 建立 Goal 5：在本地复刻生产关键运行时、容器角色和故障模式，完成无 Guardian/Guardian 对照及性能报告；不连接生产。
 - 2026-09-19 完成 EXP-020/Goal 5：5 轮有效重复、CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下资源开销测量完成；老板报告见 experiments/EXP-020-2026-09-19-production-like-benchmark/report.md。
 - 2026-09-19 完成 EXP-021/Goal 5：补足真实有效性对照。同一无界内存泄漏下，无 Guardian 复现 global OOM，健康探针、dockerd、sshd 和多个 systemd 服务受 OOM 影响；Guardian 在 critical 阈值执行授权 graceful_stop，目标退出 0、内存恢复、健康探针保持可用。主证据见 experiments/EXP-021-2026-09-19-failure-prevention-comparison/report.md。
+- 2026-09-19 完成 EXP-022/Goal 5：补充多对象歧义、保护对象、CPU/IO 误报和恢复失败熔断边界；全部使用 observe/simulate 或纯 fixture，无新增真实动作。见 experiments/EXP-022-2026-09-19-policy-boundary-scenarios/record.md。
 
 ## 待办事项（按优先级）
 
@@ -80,7 +81,7 @@
 - [x] Goal 4-T05：使用 `guardian_enforce.py` 完成真实 `graceful_stop` 闭环；EXP-014 的强制 kill 失败已修正并由 EXP-015 以 exit 0 验证成功。
 - [x] Goal 4-T06：恢复、冷却、失败升级、超时、多对象竞争、误报边界和业务健康状态均已完成本地验证；证据见 EXP-014 至 EXP-018。
 - [x] 在可丢弃测试对象上验证“检测 → 定位 → 保护判断 → 分级处置 → 恢复/升级”闭环；真实成功见 EXP-015，失败升级见 EXP-017，多对象升级见 EXP-018。
-- [ ] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；不把统一 Docker 内存限制作为默认方案。
+- [x] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；证据见 EXP-022，不把统一 Docker 内存限制作为默认方案。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
 - [ ] 生产兼容性复核：本地 WSL 版本高于生产（systemd 259 vs 249、内核 6.18 vs 6.8），结论需在 Ubuntu 22.04 测试机验证。
 

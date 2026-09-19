@@ -1,0 +1,1 @@
+{"state": "critical", "action": "escalate", "execution": "not_executed", "reasons": ["host_memory_available_critical", "protected_object"], "candidate_count": 1}
