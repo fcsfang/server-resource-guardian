@@ -4,7 +4,7 @@
 
 > 本文件是项目总入口：用于让第一次接触项目的人、leader、协作者和新的 agent 快速理解项目内容，并知道下一步如何安全行动。细节以 [文档总目录](docs/README.md)、[执行蓝图](docs/14-execution-roadmap.md)、[项目进度](PROGRESS.md)、当前 [Goal](goals/README.md) 和 [实验记录](experiments/README.md) 为准。
 
-更新时间：2026-09-18
+更新时间：2026-09-19
 
 ## 30 秒理解项目
 
@@ -43,16 +43,16 @@
 
 ## 当前状态
 
-当前项目已完成本地监控、救援韧性和现成自动保护机制的 PoC 验证，进入**Guardian 风险检测与自动处置的最小实现设计阶段**，尚未进入生产部署。
+当前项目已完成本地监控、救援韧性和现成自动保护机制的 PoC 验证，进入**Guardian 风险检测与自动处置的最小实现阶段**，尚未进入生产部署。
 
 - 阶段 0：需求与环境确认，已完成。
 - 阶段 1：只观测 PoC，已完成本地验证。
 - 阶段 2：救援韧性验证，已完成本地验证，生产复核待授权。
 - 阶段 3：自动风险处置机制评估，已完成本地验证。
-- 阶段 4：Guardian 最小实现与受控灰度，尚未开始。
+- 阶段 4：Guardian 最小实现与受控灰度，进行中。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
-- 当前活动目标：推进 Goal 4，完成 Guardian 最小风险检测与自动处置设计；详见 [执行蓝图](docs/14-execution-roadmap.md)、[实验结论](docs/15-experiment-findings.md) 和 [Goal 4](goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
-- 当前下一步：定义风险信号、对象策略、分级动作和恢复验证，并在可丢弃测试对象上验证自动闭环。
+- 当前活动目标：推进 Goal 4，完成 Guardian 最小风险检测与自动处置闭环；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md)、[风险信号规范](docs/17-risk-signal-specification.md)、[对象策略规范](docs/18-object-policy-specification.md) 和 [Goal 4](goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
+- 当前下一步：补齐 `observe` 的趋势窗口、快照和审计持久化，再实现只生成计划的 `simulate`。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
@@ -63,7 +63,8 @@
 | 环境 | 已知情况 | 边界 |
 | --- | --- | --- |
 | 生产环境 | Ubuntu 22.04.5、systemd 249、cgroup v2、Docker Engine 29.1.3；68 个容器中 67 个没有资源边界 | 生产原始报告不入库；实际 SSH 故障表现、保护名单和测试授权仍需确认 |
-| 本地 PoC（当前电脑 WSL2） | Windows + WSL2，Ubuntu 26.04.1；Docker Engine 29.1.3；Beszel 0.19.0 Hub/Agent 已上线 | 用于功能和指标 PoC；systemd、内核等版本高于生产，不能替代 Ubuntu 22.04 测试机 |
+| 当前主测试环境（Mac Multipass） | Ubuntu 22.04.5 ARM64；2 vCPU/4GB；Docker Engine 29.1.3；systemd/cgroup v2/PSI 可用 | 用于 Goal 4 功能和有界压力实验；虚拟机访问 GitHub/Docker Hub 仍不稳定，不能替代生产 x86_64 测试机 |
+| 历史本地 PoC（Windows WSL2） | Ubuntu 26.04.1；Docker Engine 29.1.3；Beszel 0.19.0 Hub/Agent 已上线 | Goal 1–3 的实验环境；结果不改写为 Mac 或生产结论 |
 
 ## 仓库结构与职责
 
@@ -189,15 +190,18 @@ git push origin main
 
 当前不要直接开发完整平台，也不要直接在生产机做故障注入。先按 [执行蓝图](docs/14-execution-roadmap.md) 定义 Guardian 的最小风险检测和自动处置闭环：
 
-1. 明确主机/容器风险信号、趋势窗口和误报抑制规则。
-2. 定义对象分类、保护名单、允许动作和 `observe/simulate/enforce` 模式。
-3. 实现实时检测、对象定位、动作前快照、分级处置和恢复验证。
+1. 已完成主机/容器风险信号、趋势窗口和误报抑制规则的第一版设计。
+2. 已完成对象分类、保护名单、允许动作和 `observe/simulate/enforce` 边界设计。
+3. 补齐只读 `observe` 的趋势窗口、快照和审计，再实现 `simulate`。
 4. 在可丢弃测试对象上验证自动闭环，禁止把通用 Docker 内存限制作为默认动作。
 5. 在 Ubuntu 22.04 非生产环境复核后，再讨论生产灰度。
 
 ## 相关入口
 
 - [执行路线蓝图](docs/14-execution-roadmap.md)
+- [自动化执行路线与 Agent 接手协议](docs/16-autonomous-execution-roadmap.md)
+- [Guardian 风险信号规范](docs/17-risk-signal-specification.md)
+- [Guardian 对象策略规范](docs/18-object-policy-specification.md)
 - [项目文档总目录与管理规范](docs/README.md)
 - [目标与任务目录](goals/README.md)
 - [实验日志与核心数据目录](experiments/README.md)

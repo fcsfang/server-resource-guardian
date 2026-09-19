@@ -9,27 +9,29 @@
 
 ## 当前阶段
 
-**阶段 4：Guardian 最小实现设计 — 🟡 尚未开始**（本地阶段 1–3 PoC 已完成；执行蓝图见 [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)）
+**阶段 4：Guardian 最小实现设计 — 🟡 进行中**（本地阶段 1–3 PoC 已完成；执行蓝图见 [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，自动执行路线见 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)）
 
 - 阶段 0 需求与环境确认：✅ 已完成
 - 阶段 1 只观测 PoC：✅ 本地已完成
 - 阶段 2 救援韧性验证：✅ 本地已完成，生产复核待授权
 - 阶段 3 自动风险处置评估：✅ 本地已完成，业务动作策略待确认
-- 阶段 4 Guardian 最小实现与受控灰度：🟡 尚未开始
+- 阶段 4 Guardian 最小实现与受控灰度：🟡 进行中
 
 ## 当前活动目标
 
-按 [执行蓝图](docs/14-execution-roadmap.md) 推进：Goal 1–3 的本地 PoC 已完成，当前进入 Goal 4，开展 Guardian 最小风险检测与自动处置实现。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 推进：Goal 1–3 的本地 WSL2 PoC 已完成，当前在 Mac + Multipass Ubuntu 22.04 ARM64 环境进入 Goal 4，开展 Guardian 最小风险检测与自动处置实现。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
-| 项 | 生产环境 | 本地 PoC（当前电脑 WSL2） |
+| 项 | 生产环境 | 当前主测试环境（Mac Multipass） |
 | --- | --- | --- |
 | 用途 | 目标生产服务器 | 功能和指标 PoC、压测与阈值校准 |
-| 版本 | Ubuntu 22.04.5 / systemd 249 / cgroup v2 / Docker 29.1.3 | Ubuntu 26.04.1 / systemd 259 / 内核 6.18 / Docker 29.1.3 |
-| 资源边界 | 68 个容器中 67 个无资源边界 | 8C/12G/4G swap |
-| Beszel 0.19.0 | 待生产部署评估 | Hub/Agent 已上线，认证通过 |
+| 版本 | Ubuntu 22.04.5 / systemd 249 / cgroup v2 / Docker 29.1.3 | Ubuntu 22.04.5 / systemd 249 / cgroup v2 / Docker 29.1.3 / ARM64 |
+| 资源边界 | 68 个容器中 67 个无资源边界 | 2 vCPU / 4GB 内存 / 40GB 虚拟磁盘上限 |
+| Beszel 0.19.0 | 待生产部署评估 | Mac 环境待迁移；历史 WSL2 Hub/Agent 已上线且认证通过 |
 | 数据边界 | 生产原始报告不入库 | 运行态容器、`.env`、指标数据不入库 |
+
+> 历史 WSL2 实验环境：Ubuntu 26.04.1 / systemd 259 / 内核 6.18 / Docker 29.1.3 / 8C/12G/4G swap。Goal 1–3 的实验结果仍以该环境为准，不改写为 Mac 实验。
 
 ## 已完成事项时间线
 
@@ -49,13 +51,16 @@
 - 2026-09-18 补充 EXP-004 极端压力测试：WSL2 减配至 4CPU/3.9GB/2GB，CPU 100% 持续、内存 92%+swap 98%（合计 95% 总内存资源）、CPU+内存同时极端、OOM 边界共 5 个场景。SSH 全程 0 失败（延迟峰值 488ms）。内核在资源耗尽时终止压力进程并恢复正常。结论和数据见 experiments/EXP-004-2026-09-18-extreme-stress-rescue/record.md。
 - 2026-09-18 补充 EXP-005 真实故障模式验证（完整版）：多容器竞争、I/O、PID 耗尽测试 + 宿主机级内存耗尽导致 WSL2 整机崩溃（两次复现）。关键发现：sshd 被 OOM killer 保护（oom_score_adj=-1000）；SSH 失效的真实场景是宿主机内存耗尽导致系统崩溃。项目价值定位调整为提前发现风险并自动处置，资源限制仅作为按业务选择的可选防线。见 experiments/EXP-005-2026-09-18-realistic-failure-modes/record.md。
 - 2026-09-18 完成 EXP-006 检测-定位-处置-恢复管道时效性测试：模拟 20MB/s 内存泄漏，完整管道（检测→定位→处置→恢复）可在 15 秒内完成（docker kill 可缩至 ~3s）。泄漏到临界有 141s 预警窗口。docker stats 定位即时（<1s），docker stop 耗时 13s（瓶颈），恢复 2s。管道速度远快于崩溃时间。见 experiments/EXP-006-2026-09-18-detection-response-pipeline/record.md。
+- 2026-09-19 在 Mac Apple Silicon 上建立 `guardian-ubuntu` Multipass Ubuntu 22.04.5 ARM64 主测试机：2 vCPU、4GB 内存、40GB 虚拟磁盘上限；systemd、cgroup v2、Docker 29.1.3、Compose 2.40.3、systemd-oomd 和 PSI 验证通过。GitHub/Docker Hub 在虚拟机内出网不稳定，项目先通过宿主机文件传输同步；当前环境边界见 docs/16。
+- 2026-09-19 完成 EXP-007 Mac Ubuntu 测试环境基线；完成 G4-T01 风险信号规范，定义 P0 内存风险、P1 对象定位、P2 辅助信号和风险状态机，设计稿见 docs/17-risk-signal-specification.md。
+- 2026-09-19 完成 G4-T02 对象策略规范：定义稳定对象身份、永久保护名单、L0–L5 动作等级、冷却、熔断、执行前后检查和未知对象默认升级人工，设计稿见 docs/18-object-policy-specification.md。
+- 2026-09-19 完成 G4-T03 只读 Observer 原型：采集 `/proc`、CPU/内存/I/O PSI、cgroup v2、Docker stats 并输出 JSONL；宿主机单元测试 4/4、Ubuntu 虚拟机真实 `--once` 验证通过，当前不执行任何动作。完整趋势窗口、持久化审计和更强对象定位仍待补齐。
 
 ## 待办事项（按优先级）
 
 - [ ] 将 leader 最新反馈中的测试授权、保护名单和动作边界回填到 docs/05-open-questions.md。
-- [ ] 开始 Goal 4：Guardian 最小风险检测与自动处置实现，明确 `observe/simulate/enforce` 三种模式。
-- [ ] 设计实时风险判定：主机/容器指标、增长趋势、持续时间、PSI/OOM 事件和误报抑制。
-- [ ] 设计对象策略：保护名单、可处理对象、动作分级、冷却、熔断、审计和恢复验证。
+- [ ] Goal 4-T03：补齐 `observe` 趋势窗口、快照持久化和审计记录；当前只读原型已通过 4 个单元测试和 Ubuntu 实机 smoke test。
+- [ ] Goal 4-T04：实现 `simulate`，默认不执行破坏性动作。
 - [ ] 在可丢弃测试对象上验证“检测 → 定位 → 保护判断 → 分级处置 → 恢复/升级”闭环。
 - [ ] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；不把统一 Docker 内存限制作为默认方案。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
@@ -77,8 +82,3 @@ git add PROGRESS.md && git commit -m "progress: <一句话>" && git push origin 
 - `deploy/beszel/.env`（本地 PoC 凭据）
 - `reports/*`（生产环境采集产物，含生产信息）
 - WSL2 内的 Docker 容器与 Beszel 指标数据（本地运行态，不属于仓库）
-
-
-
-
-

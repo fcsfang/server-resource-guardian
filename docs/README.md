@@ -9,6 +9,9 @@
 - [目标与任务目录](../goals/README.md)：记录跨 agent 可接手的目标组和任务清单；当前从 `Goal 1` 开始。
 - [实验日志与核心数据](../experiments/README.md)：记录真实实验过程、结果和脱敏核心数据；实验编号使用 `EXP-###`。
 - 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 推进 [Goal 4：Guardian 最小风险检测与自动处置实现](../goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
+- 后续自动执行总路线：[自动化执行路线与 Agent 接手协议](16-autonomous-execution-roadmap.md)。
+- 当前风险信号设计：[Guardian 风险信号规范](17-risk-signal-specification.md)。
+- 当前对象策略设计：[Guardian 对象策略规范](18-object-policy-specification.md)。
 
 ## 1. 当前最新参考关系
 
@@ -58,6 +61,9 @@ README.md
 | [13-leader-test-handoff.md](13-leader-test-handoff.md) | leader 最新反馈、两层方案、测试顺序、授权前提和新会话接续方式 | **当前下一步工作的最新入口** |
 | [15-experiment-findings.md](15-experiment-findings.md) | 实验关键结论汇总：失效机制、管道时效、架构决策、Guardian 最小功能 | **实验结论的唯一汇总入口** |
 | [14-execution-roadmap.md](14-execution-roadmap.md) | 总执行蓝图：技术路线（Beszel 基础）、执行阶段和测试方式 | 执行目标与阶段的总纲 |
+| [16-autonomous-execution-roadmap.md](16-autonomous-execution-roadmap.md) | 后续阶段、任务顺序、无监督执行循环和 Agent 交接协议 | **当前自动执行入口** |
+| [17-risk-signal-specification.md](17-risk-signal-specification.md) | G4-T01 风险信号、状态机和事件输出结构 | 当前实现设计入口 |
+| [18-object-policy-specification.md](18-object-policy-specification.md) | G4-T02 对象身份、保护名单、动作等级、冷却和熔断 | 当前策略设计入口 |
 
 ## 3. 补充研究材料
 

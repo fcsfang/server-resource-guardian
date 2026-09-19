@@ -9,6 +9,8 @@ reports/*
 experiments/*/raw/
 dist/
 build/
+__pycache__/
+*.py[cod]
 
 # Editors and operating systems
 .idea/

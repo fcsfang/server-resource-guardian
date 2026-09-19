@@ -2,7 +2,7 @@
 
 本文件按“资源保护与故障救援”主题维护多个 Goal。目标编号遵循 [`goals/README.md`](README.md) 的全局规则：编号全局递增不复用；Goal 是执行计划，不是实验事实，实验结果只能进入 [`experiments/`](../experiments/README.md)。
 
-执行统一按总蓝图 [`docs/14-execution-roadmap.md`](../docs/14-execution-roadmap.md) 推进：以 Beszel 为监控基础，以 Guardian 的实时风险检测与自动处置为主线；Docker/systemd 资源限制只在具体业务明确允许时作为可选防线。所有实验在当前电脑 WSL2 环境进行。
+执行统一按总蓝图 [`docs/14-execution-roadmap.md`](../docs/14-execution-roadmap.md) 和 [`docs/16-autonomous-execution-roadmap.md`](../docs/16-autonomous-execution-roadmap.md) 推进：以 Beszel 为监控基础，以 Guardian 的实时风险检测与自动处置为主线；Docker/systemd 资源限制只在具体业务明确允许时作为可选防线。Goal 1–3 为历史 WSL2 实验，Goal 4 起以 Mac 上的 Multipass Ubuntu 22.04 ARM64 为主测试环境。
 
 ## Goal 分工总览
 
@@ -11,7 +11,7 @@
 | [Goal 1](#goal-1只观测-poc-收尾) | 只观测 PoC 收尾 | `COMPLETED` | 本地 Beszel 指标核验、受控压测与首轮本地阈值 |
 | [Goal 2](#goal-2第一层救援能力保障验证) | 第一层救援能力保障 | `COMPLETED` | 本地高压下 SSH/诊断/停止链路已验证，生产复核待授权 |
 | [Goal 3](#goal-3第二层自动风险处置评估) | 第二层自动风险处置评估 | `COMPLETED` | 现成机制和检测-定位-处置-恢复管道已评估，Guardian 缺口已明确 |
-| [Goal 4](#goal-4guardian最小风险检测与自动处置实现) | Guardian 最小风险检测与自动处置 | `PLANNED` | 在可丢弃测试对象上实现并验证自动处置闭环 |
+| [Goal 4](#goal-4guardian最小风险检测与自动处置实现) | Guardian 最小风险检测与自动处置 | `IN_PROGRESS` | 在可丢弃测试对象上实现并验证自动处置闭环 |
 
 依赖关系：Goal 1 的观测能力是 Goal 2/3 的共同前提；Goal 2 建立的压力场景复用给 Goal 3；Goal 3 的缺口分析是 Goal 4 的实现输入。四个 Goal 都按 `experiments/` 的 `EXP-###` 规范记录，失败实验同样保留。
 
@@ -120,10 +120,10 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 ## Goal 4：Guardian 最小风险检测与自动处置实现
 
-- 状态：`PLANNED`
+- 状态：`IN_PROGRESS`
 - 创建日期：2026-09-18
-- 最近更新：2026-09-18
-- 负责人：当前电脑 WSL2 先行实现；生产动作授权和业务策略由外部补齐
+- 最近更新：2026-09-19（切换至 Mac Multipass Ubuntu 主测试环境）
+- 负责人：Mac Multipass Ubuntu 22.04 ARM64 先行实现；生产动作授权和业务策略由外部补齐
 - 来源：[实验关键结论](../docs/15-experiment-findings.md)、[执行路线蓝图](../docs/14-execution-roadmap.md)
 
 ### 目标结果
@@ -132,16 +132,16 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 ### 任务清单
 
-- [ ] **G4-T01**：定义风险信号和判定窗口：主机内存、swap、PSI、cgroup/OOM 事件、容器增长速率和持续时间。
-- [ ] **G4-T02**：定义对象模型和策略配置：保护名单、可处理对象、业务动作级别、冷却、熔断和未知对象默认行为。
-- [ ] **G4-T03**：实现 `observe` 模式：实时采样、风险判定、对象定位、现场快照和审计记录，不执行变更。
+- [x] **G4-T01**：定义风险信号和判定窗口：主机内存、swap、PSI、cgroup/OOM 事件、容器增长速率和持续时间。见 [`docs/17-risk-signal-specification.md`](../docs/17-risk-signal-specification.md)；具体数值仍需本地实验校准。
+- [x] **G4-T02**：定义对象模型和策略配置：保护名单、可处理对象、业务动作级别、冷却、熔断和未知对象默认行为。见 [`docs/18-object-policy-specification.md`](../docs/18-object-policy-specification.md)。
+- [ ] **G4-T03**：实现 `observe` 模式：实时采样、风险判定、对象定位、现场快照和审计记录，不执行变更。只读原型已完成，趋势窗口、持久化审计和完整对象定位仍待补齐。
 - [ ] **G4-T04**：实现 `simulate` 模式：生成动作计划，验证保护名单、动作分级和恢复判断，不执行真实终止或重启。
 - [ ] **G4-T05**：在可丢弃测试对象上实现并验证 `enforce` 的受控动作适配器，优先优雅停止/重启，终止动作必须显式授权。
 - [ ] **G4-T06**：完成恢复验证、冷却、失败升级和误报测试；记录多容器同时泄漏和保护对象命中场景。
 
 ### 接手入口
 
-先读 `PROGRESS.md`、本文件、[`docs/14-execution-roadmap.md`](../docs/14-execution-roadmap.md)、[`docs/15-experiment-findings.md`](../docs/15-experiment-findings.md) 和 [`docs/06-safety-policy.md`](../docs/06-safety-policy.md)。先实现 `observe`/`simulate`，不要把 Docker 内存限制作为默认动作，也不要连接生产服务器。
+先读 `PROGRESS.md`、本文件、[`docs/16-autonomous-execution-roadmap.md`](../docs/16-autonomous-execution-roadmap.md)、[`docs/14-execution-roadmap.md`](../docs/14-execution-roadmap.md)、[`docs/15-experiment-findings.md`](../docs/15-experiment-findings.md) 和 [`docs/06-safety-policy.md`](../docs/06-safety-policy.md)。先实现 `observe`/`simulate`，不要把 Docker 内存限制作为默认动作，也不要连接生产服务器。
 
 ### 完成标准
 
@@ -159,15 +159,13 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 不默认启用自动终止、重启容器或资源变更；`observe` 模式是默认模式。
 - 不把 Docker/systemd 资源限制作为所有业务的必选方案；只有业务明确允许时才纳入对象策略。
 - 本地 WSL2 结论只代表本地环境，生产兼容性必须在 Ubuntu 22.04 测试机复核。
-- 环境边界：PoC 只在当前电脑 WSL2 运行；生产原始报告不入库。
+- 环境边界：Goal 1–3 的 PoC 只代表历史 WSL2；Goal 4 起以 Mac Multipass Ubuntu 为主测试环境；生产原始报告不入库。
 
 ## 更新记录
 
 - 2026-09-17：建立 Goal 1《两层资源保护方案测试》（原 G1-T01~T09）。
 - 2026-09-18：按用户决定拆分为 Goal 1/2/3。任务映射：原 G1-T01/T02（测试机、SSH 表现确认）转为 Goal 2 外部依赖（Q-006/Q-009/Q-010）；原 G1-T03~T05（基线与压测）拆入 Goal 1/2；原 G1-T06/T07（只读/模拟验证）归入 Goal 3；原 G1-T08 实验记录要求适用于全部 Goal；原 G1-T09 缺口判定归入 Goal 3 的 G3-T05。
 - 2026-09-18：根据实验结果修订路线：核心目标改为发现宕机风险并自动处置；资源限制降级为按业务选择的可选防线；新增 Goal 4 负责 Guardian 最小实现。
-
-
-
-
-
+- 2026-09-19：建立自动化执行路线；Goal 4 进入 `IN_PROGRESS`，主测试环境切换为 Mac Multipass Ubuntu 22.04 ARM64，历史 WSL2 结果保持不变。
+- 2026-09-19：完成 G4-T01 风险信号规范，确定 P0 内存风险、P1 对象定位、P2 辅助退化信号和 `normal/warning/critical/recovered/escalated` 状态边界。
+- 2026-09-19：完成 G4-T02 对象策略规范，确定稳定身份、永久保护、L0–L5 动作等级、冷却、熔断和未知对象默认升级人工。
