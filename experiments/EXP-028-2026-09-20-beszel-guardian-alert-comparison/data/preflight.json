@@ -9,6 +9,15 @@
   "notification_delivery_configured": true,
   "notification_destination_recorded": false,
   "user_action_confirmation_required": true,
+  "guardian_observe_baseline": {
+    "state": "normal",
+    "memory_available_ratio_percent": 90.041,
+    "memory_psi_full_avg10": 0.0,
+    "docker_read_only_available": true,
+    "beszel_container_count": 2,
+    "action": "none",
+    "execution": "not_applicable"
+  },
   "pressure_started": false,
   "mutations_performed": false,
   "credentials_read_or_saved": false
