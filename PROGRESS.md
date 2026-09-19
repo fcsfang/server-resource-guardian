@@ -21,7 +21,7 @@
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01 指标验收和 G6-T03 只读 Adapter 已完成（包括 systemd/alerts_history 空记录的证据化与 fail-closed），下一步为 G6-T04 的 Beszel 告警路径与 Guardian 本机检测对照。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01 指标验收和 G6-T03 只读 Adapter 已完成（包括 systemd/alerts_history 空记录的证据化与 fail-closed）；G6-T04 的 EXP-028 已完成两次本地有界对照，但 Beszel `alerts_history` 仍为空，当前为 `INCONCLUSIVE`，下一步转入告警聚合/历史写入链路专项诊断。Goal 1–5 的本地验证均已完成；生产动作仍未执行。目标任务记录、接手入口和完成标准见目标文件；真实实验结果见 [`experiments/`](experiments/README.md)。
 
 ## 环境清单
 
@@ -88,6 +88,8 @@
 - 2026-09-19 23:54 完成 EXP-026：登录态 GET 查询 `systemd_services` 返回 `items=[]` / `totalItems=0`，确认当前本地 Beszel 没有可读 systemd 服务记录；结合 EXP-023/025 完成 G6-T01，下一步转入 G6-T03 的 fail-closed 处理。
 - 2026-09-19 23:59 完成 EXP-027：登录态 GET 查询 `alerts_history` 返回 `items=[]` / `totalItems=0`；Adapter 对空数据保持 fail-closed，结合 EXP-024 完成 G6-T03，下一步转入 G6-T04。
 - 2026-09-20 建立 EXP-028 G6-T04 预检：告警类别全 off、告警历史为空，但通知投递字段已有配置；未开启告警、未注入压力，等待动作时确认后再做本地对照。
+- 2026-09-20 完成 EXP-028 两次本地有界内存对照：256 MiB、最长 75 秒、Beszel 内存告警阈值分别为 15%/12% 且持续 1 分钟；Guardian 两次约 6.1 秒进入 warning、约 77.2–77.3 秒恢复，Hub 全程 HTTP 200、memory PSI full 为 0、worker 自然退出。登录态 `alerts_history` 两次均为 0 条，告警开关已恢复全 off；实验结论为 `INCONCLUSIVE`，G6-T04 未完成。
+- 2026-09-20 继续做 EXP-028 管线只读诊断：前端 bundle 显示用户告警配置通过 `POST/DELETE /api/beszel/user-alerts` 写入，运行态告警使用 `alerts` 集合，历史页使用 `alerts_history`；两次压力窗口和一次 1%/1 分钟 idle baseline 均未产生 active/history 事件，但低阈值配置在完整刷新后可见且最终已恢复全 off。当前确认 Beszel 告警事件路径未被观测到，具体 evaluator/Agent 指标资格/历史链路原因待查。
 
 ## 待办事项（按优先级）
 
@@ -98,7 +100,7 @@
 - [x] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；证据见 EXP-022，不把统一 Docker 内存限制作为默认方案。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
 - [ ] 生产兼容性复核：本地 WSL 版本高于生产（systemd 259 vs 249、内核 6.18 vs 6.8），结论需在 Ubuntu 22.04 测试机验证。
-- [ ] Goal 6：按 `docs/16-autonomous-execution-roadmap.md` 执行 Beszel 指标验收、只读 Adapter、双路径对照和 Guardian 联调。
+- [ ] Goal 6：按 `docs/16-autonomous-execution-roadmap.md` 执行 Beszel 指标验收、只读 Adapter、双路径对照和 Guardian 联调；当前 G6-T04 仍在告警链路诊断阶段。
 
 
 ## 仓库同步备忘

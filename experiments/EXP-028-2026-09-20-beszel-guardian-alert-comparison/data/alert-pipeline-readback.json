@@ -1,0 +1,35 @@
+{
+  "experiment_id": "EXP-028",
+  "observed_at": "2026-09-20",
+  "scope": "local_multipass_only",
+  "frontend_static_evidence": {
+    "user_alert_configuration_endpoint": "/api/beszel/user-alerts",
+    "user_alert_configuration_methods": ["POST", "DELETE"],
+    "alert_state_collection": "alerts",
+    "alert_state_fields": ["id", "name", "system", "value", "min", "triggered"],
+    "alert_history_collection": "alerts_history",
+    "alert_history_fields": ["id", "name", "value", "state", "created", "resolved", "expand.system.name"],
+    "source_assets": [
+      "assets/index-CZQtfejN.js",
+      "assets/alerts-history-data-table-RYSRlk-c.js"
+    ]
+  },
+  "authenticated_readback": {
+    "alerts_total_items_after_ui_toggle_on": 0,
+    "alerts_history_total_items_after_two_pressure_runs": 0,
+    "low_threshold_baseline": {
+      "threshold_percent": 1,
+      "duration_minutes": 1,
+      "idle_memory_usage_percent_observed": 10.6,
+      "wait_seconds": 90,
+      "alerts_total_items": 0,
+      "alerts_history_total_items": 0,
+      "configuration_visible_after_full_reload": true,
+      "configuration_visible_off_after_restore_reload": true
+    },
+    "ui_toggle_visible_on_before_restore": true,
+    "ui_toggle_visible_off_after_restore": true,
+    "all_alert_categories_off_after_restore": true
+  },
+  "interpretation": "The logged-in UI visibly accepted and persisted the temporary memory-alert configuration after a full page reload. However, an idle baseline with memory usage around 10.6%, threshold 1%, and duration 1 minute still produced no active alert or history record after about 90 seconds. The frontend bundle shows configuration is written through POST/DELETE /api/beszel/user-alerts, while the alerts collection is the runtime alert-state stream. This narrows the unresolved issue to Beszel's alert evaluation/history delivery path in this deployment, without proving the exact internal cause. The GET form of /api/beszel/user-alerts is not exposed (404). No further notification or mutation was attempted."
+}

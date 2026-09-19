@@ -44,7 +44,7 @@ G6-T01 需要逐项核验 Beszel 主机、Docker、systemd 和历史指标。本
 
 - 登录态页面中尚未独立枚举 systemd 服务表的 `name/state/sub/cpu/cpuPeak/memory/memPeak/updated` 具体值；命令搜索输入 `service` 无结果，首页“服务”列也没有可读数值。EXP-026 对 `systemd_services` 的登录态 GET 返回 `totalItems=0`，因此“当前实例没有可读服务记录”是已验收的缺失项；静态字段和底层 systemd 运行态不能冒充服务记录。
 - 尚未通过带时间戳的页面刷新或历史点对照测量实际采集周期、页面刷新延迟和落盘完整性。
-- 告警开关全部关闭，未形成真实告警触发、恢复和通知延迟证据；打开告警或制造故障应另建、另授权实验。
+- 告警开关全部关闭，未形成真实告警触发、恢复和通知延迟证据；打开告警或制造故障应另建、另授权实验。EXP-028 在本地授权后短时打开过单项内存告警，UI 显示 `on`，但登录态 GET 的 `alerts` 集合仍为 `totalItems=0`，随后恢复 `off`；这记录为当前部署/账号范围的回读缺口，不推断写入失败。
 
 ## 4. 历史采集周期
 
@@ -75,5 +75,7 @@ G6-T01 需要逐项核验 Beszel 主机、Docker、systemd 和历史指标。本
 - assets/system-DXM3m_Rc.js
 - assets/containers-table-CUaw4bEs.js
 - assets/alerts-history-data-table-RYSRlk-c.js
+
+静态 bundle 还显示用户告警配置通过 `POST/DELETE /api/beszel/user-alerts` 写入；运行态告警由 `alerts` 集合订阅（字段 `id,name,system,value,min,triggered`），告警历史页由 `alerts_history` 订阅。因而 `alerts` 为空表示当前未观测到 active alert，不等于用户配置不存在；该配置接口的 GET 形式未暴露。
 
 静态资源能证明控制台代码请求哪些字段；登录态页面已经证明当前账号能看到主机、容器和历史曲线，EXP-026 证明当前 `systemd_services` 查询没有可见记录。G6-T01 以“可见字段 + 缺失字段 + 运行态条件 + 更新间隔 + 开销”完成验收；真实告警延迟和 systemd 采集原因不属于本项已证明结论。

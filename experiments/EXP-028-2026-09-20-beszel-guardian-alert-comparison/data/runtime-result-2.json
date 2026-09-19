@@ -1,0 +1,664 @@
+{
+  "experiment_id": "EXP-028",
+  "scope": "local_multipass_only",
+  "started_at_unix": 1789835439.8511662,
+  "memory_bytes": 268435456,
+  "max_duration_seconds": 75.0,
+  "sample_interval_seconds": 2.0,
+  "guardian_thresholds": {
+    "warning_available_percent": 85.0,
+    "critical_available_percent": 75.0,
+    "warning_for_seconds": 0,
+    "critical_for_seconds": 0
+  },
+  "stop_reason": "deadline",
+  "worker_exit_code": 0,
+  "worker_exited_naturally": true,
+  "records": [
+    {
+      "phase": "before",
+      "elapsed_seconds_from_pressure_start": null,
+      "event_id": "bccff04b-61cc-4223-9df5-e8aefd2efd86",
+      "observed_at": "2026-09-19T16:30:39.851281Z",
+      "guardian_state": "normal",
+      "guardian_candidate_state": "normal",
+      "guardian_reasons": [],
+      "memory_available_ratio_percent": 89.868,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 2.068,
+      "event_id": "b9f71d58-7c44-49f9-9ac6-b344700a2267",
+      "observed_at": "2026-09-19T16:30:41.962324Z",
+      "guardian_state": "normal",
+      "guardian_candidate_state": "normal",
+      "guardian_reasons": [],
+      "memory_available_ratio_percent": 89.788,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 6.18,
+      "event_id": "b20e65d9-2b2c-4e1d-9b22-6015653c77e1",
+      "observed_at": "2026-09-19T16:30:46.072188Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 83.338,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 10.312,
+      "event_id": "c4193dc5-c88c-4b9d-9b78-4cd1b6ed6f34",
+      "observed_at": "2026-09-19T16:30:50.183166Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 83.22,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 13.362,
+      "event_id": "c5c4fddc-b88f-4ece-b2b8-e5b7dc569cfd",
+      "observed_at": "2026-09-19T16:30:54.287179Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 83.082,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 17.418,
+      "event_id": "2e10dd8a-968b-4a27-9f90-7ce19c4a949e",
+      "observed_at": "2026-09-19T16:30:57.327300Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.937,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 21.516,
+      "event_id": "d5fecc8f-076b-4787-a46a-29401066f6a8",
+      "observed_at": "2026-09-19T16:31:01.406932Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.78,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 25.629,
+      "event_id": "6ecc1007-aeaf-4de8-a4e4-e7c6ee6ef0d6",
+      "observed_at": "2026-09-19T16:31:05.480565Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.724,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 29.697,
+      "event_id": "fd0fe546-2bbd-487e-a9f4-f2b576d924c4",
+      "observed_at": "2026-09-19T16:31:09.592523Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.56,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 33.821,
+      "event_id": "2502791f-dfc8-46a8-af45-65b5e6cc6de1",
+      "observed_at": "2026-09-19T16:31:13.735333Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.56,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 37.886,
+      "event_id": "802a5527-5cb0-4533-89cc-8c775e8265f3",
+      "observed_at": "2026-09-19T16:31:17.791850Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.536,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 42.019,
+      "event_id": "967b2930-74ba-4703-8e33-8a5405d7c670",
+      "observed_at": "2026-09-19T16:31:21.849539Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.423,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 46.136,
+      "event_id": "48e59f4c-e7a6-4465-9096-fc9d91f15065",
+      "observed_at": "2026-09-19T16:31:25.982622Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.416,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 50.206,
+      "event_id": "1aaa83ea-09c9-4096-b12e-f322264dbb86",
+      "observed_at": "2026-09-19T16:31:30.098314Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.416,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 54.367,
+      "event_id": "9b1d23fb-465e-4bda-bbf9-52cd4bd77cbc",
+      "observed_at": "2026-09-19T16:31:34.189649Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.41,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 58.546,
+      "event_id": "856dd167-00d1-4949-95e8-86ab72d542d3",
+      "observed_at": "2026-09-19T16:31:38.400021Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.404,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 61.719,
+      "event_id": "6bfd15c1-47c7-417c-a792-59f174f7ca07",
+      "observed_at": "2026-09-19T16:31:42.582438Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.397,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 65.857,
+      "event_id": "fad0b8a0-f0a3-4486-a9b3-3f9236ec15e0",
+      "observed_at": "2026-09-19T16:31:45.721131Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.423,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 69.929,
+      "event_id": "9bd4ec0d-8357-405e-9936-b98382aa4175",
+      "observed_at": "2026-09-19T16:31:49.823766Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.405,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "during",
+      "elapsed_seconds_from_pressure_start": 74.113,
+      "event_id": "3cb909b9-5bbb-4dfb-9f71-160ac53258ea",
+      "observed_at": "2026-09-19T16:31:53.902948Z",
+      "guardian_state": "warning",
+      "guardian_candidate_state": "warning",
+      "guardian_reasons": [
+        "host_memory_available_warning"
+      ],
+      "memory_available_ratio_percent": 82.387,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    },
+    {
+      "phase": "after",
+      "elapsed_seconds_from_pressure_start": 77.222,
+      "event_id": "33936c6e-fa6e-4663-aeb1-249d88f5b227",
+      "observed_at": "2026-09-19T16:31:58.140675Z",
+      "guardian_state": "recovered",
+      "guardian_candidate_state": "normal",
+      "guardian_reasons": [],
+      "memory_available_ratio_percent": 89.076,
+      "memory_psi": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "hub_health": {
+        "status": 200
+      },
+      "docker_read_only_available": true,
+      "docker_container_count": 2
+    }
+  ]
+}

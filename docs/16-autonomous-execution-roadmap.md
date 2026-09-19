@@ -48,7 +48,7 @@
 1. **已完成 G6-T01**：主机/Docker 页面字段、systemd 底层条件、缺失记录、约 60 秒更新间隔和 Hub/Agent 运行态开销均有证据；登录态 `systemd_services` 查询返回 `totalItems=0`，真实告警时延不属于本项。
 2. **已完成 G6-T02**：冻结 Beszel → Guardian 的事件格式、对象 ID 映射、时间戳、来源、置信度和过期策略。
 3. **已完成 G6-T03**：只读 `beszel_adapter` 已覆盖真实用户范围空数据、fixture 字段、分页、重复/乱序/过期、恢复和 Hub 不可用边界；真实 payload 为空时保持 fail-closed，不执行动作。
-4. **G6-T04**：完成 Beszel 告警路径与 Guardian 本机检测路径的延迟、准确性和 Hub 不可用对照；EXP-028 已完成只读预检，开启告警及可能通知前等待动作时确认。
+4. **G6-T04**：完成 Beszel 告警路径与 Guardian 本机检测路径的延迟、准确性和 Hub 不可用对照；EXP-028 已完成两次本地有界内存运行和一次 1%/1 分钟 idle baseline，Guardian 约 6.1 秒发现并恢复，但 Beszel 未产生 active/history 事件，当前为 `INCONCLUSIVE`。下一步先取得已知 live payload 或更底层 Agent/Hub evaluator 证据，再决定是否补充实验。
 5. **G6-T05**：把 Adapter 接入 Guardian `observe/simulate`，验证重复事件、过期事件、多对象、保护对象和未知对象边界。
 6. **G6-T06**：形成 Beszel UI 集成设计：风险等级、对象、策略、动作记录、恢复结果和人工确认；先设计，不直接修改上游核心。
 7. **G6-T07**：只有 G6-T01～T06 在本地完成并有证据后，才评估受控 `enforce` 联调；生产交接仍需外部授权。
