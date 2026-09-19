@@ -1,6 +1,6 @@
 # 文档总目录与管理规范
 
-更新时间：2026-09-18
+更新时间：2026-09-19
 
 这是本项目文档的唯一总入口。阅读、修改或新增文档前，先从这里判断它属于哪一类，以及哪一份文档是当前生效依据。
 
@@ -8,11 +8,12 @@
 
 - [目标与任务目录](../goals/README.md)：记录跨 agent 可接手的目标组和任务清单；当前从 `Goal 1` 开始。
 - [实验日志与核心数据](../experiments/README.md)：记录真实实验过程、结果和脱敏核心数据；实验编号使用 `EXP-###`。
-- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 推进 [Goal 4：Guardian 最小风险检测与自动处置实现](../goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
+- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 推进 Guardian 与 Beszel 的本地联调；Goal 4/5 的本地闭环和生产仿真报告已完成。
 - 后续自动执行总路线：[自动化执行路线与 Agent 接手协议](16-autonomous-execution-roadmap.md)。
 - 当前风险信号设计：[Guardian 风险信号规范](17-risk-signal-specification.md)。
 - 当前对象策略设计：[Guardian 对象策略规范](18-object-policy-specification.md)。
 - 当前动作边界设计：[Guardian 受控动作适配器契约](19-action-adapter-contract.md)。
+- 当前 Mac Beszel 运行状态：[Mac Multipass 本地 Beszel 部署记录](20-local-beszel-multipass-deployment.md)。
 
 ## 1. 当前最新参考关系
 
@@ -23,7 +24,7 @@
 | 测试如何设计、怎样验收和何时停止？ | [PoC 验证蓝图](07-poc-blueprint.md) | 通用测试矩阵、指标、输出物和停止条件；按 13 号文档补充 leader 最新范围 |
 | 任何处置动作的安全边界是什么？ | [生产安全与处置策略](06-safety-policy.md) | 默认关闭危险动作；保护名单、审批、审计和熔断优先级最高 |
 | 生产服务器已经确认了什么？ | [生产环境基线与风险分析](10-production-baseline.md) | 只引用已采集事实；未知项仍看 [待确认问题](05-open-questions.md) |
-| 本地 PoC 已经验证了什么？ | [本地 Beszel PoC 部署](11-local-beszel-poc.md) | 仅代表本地 WSL2/PoC 环境，不直接代表生产兼容性 |
+| 本地 Beszel 已经部署和验证了什么？ | [Mac Multipass 本地 Beszel 部署记录](20-local-beszel-multipass-deployment.md) + [本地 Beszel PoC 部署](11-local-beszel-poc.md) | 20 号文档是当前 Mac 运行状态；11 号文档保留历史 WSL2 验证和通用步骤 |
 | 最终向 leader 展示什么？ | [最终 PPT](../汇报/服务器资源保护-现成策略优先-重构版.pptx) + [配套讲稿](../汇报/服务器资源保护-现成策略优先-讲稿.md) | 汇报成品；不能替代工程测试记录 |
 
 ### 当前推荐阅读顺序
@@ -66,6 +67,7 @@ README.md
 | [17-risk-signal-specification.md](17-risk-signal-specification.md) | G4-T01 风险信号、状态机和事件输出结构 | 当前实现设计入口 |
 | [18-object-policy-specification.md](18-object-policy-specification.md) | G4-T02 对象身份、保护名单、动作等级、冷却和熔断 | 当前策略设计入口 |
 | [19-action-adapter-contract.md](19-action-adapter-contract.md) | G4-T05 授权校验、mock executor 和 Docker 动作参数契约 | 真实动作前的安全边界 |
+| [20-local-beszel-multipass-deployment.md](20-local-beszel-multipass-deployment.md) | 当前 Mac Multipass Hub/Agent 部署、认证证据和后续指标核验 | 当前本地运行状态 |
 
 ## 3. 补充研究材料
 

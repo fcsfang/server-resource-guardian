@@ -9,8 +9,10 @@ services:
       APP_URL: http://localhost:8090
       CHECK_UPDATES: "false"
       CONTAINER_DETAILS: "false"
+    # Multipass 本地 PoC：绑定 VM 私有网卡，便于宿主机完成首次初始化。
+    # 生产环境仍应使用独立的反向代理、认证和网络策略。
     ports:
-      - "127.0.0.1:8090:8090"
+      - "0.0.0.0:8090:8090"
     volumes:
       - beszel_data:/beszel_data
       - beszel_socket:/beszel_socket

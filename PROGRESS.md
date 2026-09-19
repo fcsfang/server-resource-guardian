@@ -29,7 +29,7 @@
 | 用途 | 目标生产服务器 | 功能和指标 PoC、压测与阈值校准 |
 | 版本 | Ubuntu 22.04.5 / systemd 249 / cgroup v2 / Docker 29.1.3 | Ubuntu 22.04.5 / systemd 249 / cgroup v2 / Docker 29.1.3 / ARM64 |
 | 资源边界 | 68 个容器中 67 个无资源边界 | 2 vCPU / 4GB 内存 / 40GB 虚拟磁盘上限 |
-| Beszel 0.19.0 | 待生产部署评估 | Mac 环境待迁移；历史 WSL2 Hub/Agent 已上线且认证通过 |
+| Beszel 0.19.0 | 待生产部署评估 | Mac Multipass Hub/Agent 已部署且认证连接通过；指标字段核验待完成；历史 WSL2 结果仍单独保留 |
 | 数据边界 | 生产原始报告不入库 | 运行态容器、`.env`、指标数据不入库 |
 
 > 历史 WSL2 实验环境：Ubuntu 26.04.1 / systemd 259 / 内核 6.18 / Docker 29.1.3 / 8C/12G/4G swap。Goal 1–3 的实验结果仍以该环境为准，不改写为 Mac 实验。
@@ -74,6 +74,7 @@
 - 2026-09-19 完成 EXP-020/Goal 5：5 轮有效重复、CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下资源开销测量完成；老板报告见 experiments/EXP-020-2026-09-19-production-like-benchmark/report.md。
 - 2026-09-19 完成 EXP-021/Goal 5：补足真实有效性对照。同一无界内存泄漏下，无 Guardian 复现 global OOM，健康探针、dockerd、sshd 和多个 systemd 服务受 OOM 影响；Guardian 在 critical 阈值执行授权 graceful_stop，目标退出 0、内存恢复、健康探针保持可用。主证据见 experiments/EXP-021-2026-09-19-failure-prevention-comparison/report.md。
 - 2026-09-19 完成 EXP-022/Goal 5：补充多对象歧义、保护对象、CPU/IO 误报和恢复失败熔断边界；全部使用 observe/simulate 或纯 fixture，无新增真实动作。见 experiments/EXP-022-2026-09-19-policy-boundary-scenarios/record.md。
+- 2026-09-19 完成 Mac Multipass Beszel 本地部署：Hub/Agent 0.19.0 镜像离线导入 `guardian-ubuntu`，Hub/Agent 均为 healthy；用户完成系统登记后，Agent 日志出现 WebSocket connected，连接后短窗口无新的 401/错误。当前运行状态和后续指标核验见 [docs/20](docs/20-local-beszel-multipass-deployment.md)。
 
 ## 待办事项（按优先级）
 
