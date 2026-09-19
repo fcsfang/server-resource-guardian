@@ -1,0 +1,15 @@
+{
+  "experiment_id": "EXP-028",
+  "status": "PLANNED",
+  "observed_at": "2026-09-20",
+  "scope": "local_multipass_only",
+  "beszel_health_http": 200,
+  "alert_toggles_enabled": false,
+  "alerts_history_visible_items": 0,
+  "notification_delivery_configured": true,
+  "notification_destination_recorded": false,
+  "user_action_confirmation_required": true,
+  "pressure_started": false,
+  "mutations_performed": false,
+  "credentials_read_or_saved": false
+}

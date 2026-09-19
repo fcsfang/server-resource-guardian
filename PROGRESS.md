@@ -87,6 +87,7 @@
 - 2026-09-19 23:51 补查登录态 systemd 入口：Beszel 命令搜索 `service` 无结果，首页“服务”列无可读值；该 UI/集成缺口已记录在 EXP-023，随后由 EXP-026 完成缺失项验收。
 - 2026-09-19 23:54 完成 EXP-026：登录态 GET 查询 `systemd_services` 返回 `items=[]` / `totalItems=0`，确认当前本地 Beszel 没有可读 systemd 服务记录；结合 EXP-023/025 完成 G6-T01，下一步转入 G6-T03 的 fail-closed 处理。
 - 2026-09-19 23:59 完成 EXP-027：登录态 GET 查询 `alerts_history` 返回 `items=[]` / `totalItems=0`；Adapter 对空数据保持 fail-closed，结合 EXP-024 完成 G6-T03，下一步转入 G6-T04。
+- 2026-09-20 建立 EXP-028 G6-T04 预检：告警类别全 off、告警历史为空，但通知投递字段已有配置；未开启告警、未注入压力，等待动作时确认后再做本地对照。
 
 ## 待办事项（按优先级）
 
