@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
-from typing import Any, Protocol
+from typing import Any, Callable, Protocol
 
 from .guardian_actions import (
     ActionDenied,
@@ -32,6 +32,9 @@ from .guardian_recovery import (
 class ActionExecutor(Protocol):
     def execute(self, request: ActionRequest, now: float | None = None) -> ActionResult:
         """Execute or record one already-authorized action request."""
+
+
+RecoveryProbe = Callable[[ActionRequest, ActionResult], RecoveryObservation | None]
 
 
 @dataclass(frozen=True)
@@ -63,6 +66,7 @@ class GuardianController:
         now: float | None = None,
         recovery_observation: RecoveryObservation | None = None,
         recovery_policy: RecoveryPolicy | None = None,
+        recovery_probe: RecoveryProbe | None = None,
         cooldown_seconds: float = 30.0,
         max_actions: int = 1,
         window_seconds: float = 300.0,
@@ -166,6 +170,18 @@ class GuardianController:
                 recovery = RecoveryResult("failed", False, ("recovery_policy_missing",))
             else:
                 recovery = assess_recovery(recovery_policy, recovery_observation)
+        elif recovery_probe is not None and recovery_policy is not None and action_result.executed:
+            try:
+                probed_observation = recovery_probe(request, action_result)
+            except (OSError, TimeoutError, ValueError) as exc:
+                recovery = RecoveryResult("failed", False, ("recovery_probe_error", str(exc)))
+            else:
+                if probed_observation is None:
+                    recovery = RecoveryResult("failed", False, ("recovery_observation_missing",))
+                elif probed_observation.target_id != target_id:
+                    recovery = RecoveryResult("failed", False, ("recovery_target_mismatch",))
+                else:
+                    recovery = assess_recovery(recovery_policy, probed_observation)
 
         if not action_result.executed:
             # A mock/planning adapter does not mutate runtime state and must

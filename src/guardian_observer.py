@@ -385,7 +385,12 @@ def run(args: argparse.Namespace) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Read-only Guardian observe prototype")
     parser.add_argument("--once", action="store_true", help="emit one observation and exit")
-    parser.add_argument("--mode", choices=("observe", "simulate"), default="observe")
+    parser.add_argument(
+        "--mode",
+        choices=("observe", "simulate", "enforce"),
+        default="observe",
+        help="enforce 只生成待控制层接管的计划；真实动作必须另行调用 guardian_enforce",
+    )
     parser.add_argument("--interval", type=float, default=5.0, help="sampling interval in seconds")
     parser.add_argument("--warning-available", type=float, default=15.0, help="PoC warning threshold")
     parser.add_argument("--critical-available", type=float, default=10.0, help="PoC critical threshold")
