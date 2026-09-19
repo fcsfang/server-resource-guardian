@@ -4,7 +4,7 @@
 
 > 本文件是项目总入口：用于让第一次接触项目的人、leader、协作者和新的 agent 快速理解项目内容，并知道下一步如何安全行动。细节以 [文档总目录](docs/README.md)、[执行蓝图](docs/14-execution-roadmap.md)、[项目进度](PROGRESS.md)、当前 [Goal](goals/README.md) 和 [实验记录](experiments/README.md) 为准。
 
-更新时间：2026-09-19
+更新时间：2026-09-20
 
 ## 30 秒理解项目
 

@@ -30,7 +30,7 @@
 | 用途 | 目标生产服务器 | 功能和指标 PoC、压测与阈值校准 |
 | 版本 | Ubuntu 22.04.5 / systemd 249 / cgroup v2 / Docker 29.1.3 | Ubuntu 22.04.5 / systemd 249 / cgroup v2 / Docker 29.1.3 / ARM64 |
 | 资源边界 | 68 个容器中 67 个无资源边界 | 2 vCPU / 4GB 内存 / 40GB 虚拟磁盘上限 |
-| Beszel 0.19.0 | 待生产部署评估 | Mac Multipass Hub/Agent 已部署且认证连接通过；指标字段核验待完成；历史 WSL2 结果仍单独保留 |
+| Beszel 0.19.0 | 待生产部署评估 | Mac Multipass Hub/Agent 已部署且认证连接通过；主机/Docker 字段、systemd/alerts_history 空记录、更新间隔和只读 Adapter 已完成本地验收；历史 WSL2 结果仍单独保留 |
 | 数据边界 | 生产原始报告不入库 | 运行态容器、`.env`、指标数据不入库 |
 
 > 历史 WSL2 实验环境：Ubuntu 26.04.1 / systemd 259 / 内核 6.18 / Docker 29.1.3 / 8C/12G/4G swap。Goal 1–3 的实验结果仍以该环境为准，不改写为 Mac 实验。
