@@ -201,13 +201,93 @@ def _candidate_state(observation: dict[str, Any], warning_available: float, crit
     return "normal", reasons
 
 
+class RiskEvaluator:
+    """Stateful, read-only risk evaluator with de-bounce windows."""
+
+    def __init__(self, warning_for: float = 180.0, critical_for: float = 30.0) -> None:
+        self.warning_for = warning_for
+        self.critical_for = critical_for
+        self._candidate_level = "normal"
+        self._candidate_since: float | None = None
+        self._last_emitted = "normal"
+        self._previous_available: int | None = None
+        self._previous_at: float | None = None
+
+    def evaluate(
+        self,
+        observation: dict[str, Any],
+        warning_available: float,
+        critical_available: float,
+        now: float | None = None,
+    ) -> dict[str, Any]:
+        timestamp = time.monotonic() if now is None else now
+        candidate, reasons = _candidate_state(observation, warning_available, critical_available)
+        memory = observation.get("memory", {})
+        available = memory.get("available_bytes")
+        growth_rate = None
+        if (
+            isinstance(available, int)
+            and self._previous_available is not None
+            and self._previous_at is not None
+            and timestamp > self._previous_at
+        ):
+            growth_rate = max((self._previous_available - available) / (timestamp - self._previous_at), 0.0)
+        self._previous_available = available if isinstance(available, int) else None
+        self._previous_at = timestamp
+
+        if candidate != self._candidate_level:
+            self._candidate_level = candidate
+            self._candidate_since = timestamp
+        if self._candidate_since is None:
+            self._candidate_since = timestamp
+        candidate_for = max(timestamp - self._candidate_since, 0.0)
+
+        if candidate == "normal":
+            state = "recovered" if self._last_emitted in {"warning", "critical"} else "normal"
+            required_for = 0.0
+        else:
+            required_for = self.critical_for if candidate == "critical" else self.warning_for
+            state = candidate if candidate_for >= required_for else "normal"
+
+        if state == "recovered":
+            self._last_emitted = "normal"
+        elif state != "normal":
+            self._last_emitted = state
+
+        return {
+            "state": state,
+            "candidate_state": candidate,
+            "candidate_for_seconds": round(candidate_for, 3),
+            "required_for_seconds": required_for,
+            "reasons": reasons,
+            "memory_available_growth_bytes_per_second": growth_rate,
+        }
+
+
 def build_event(
     observation: dict[str, Any],
     warning_available: float = 15.0,
     critical_available: float = 10.0,
     mode: str = "observe",
+    evaluator: RiskEvaluator | None = None,
+    simulate_action: str = "graceful_stop",
+    protected: bool = True,
+    allowed_actions: Iterable[str] = (),
 ) -> dict[str, Any]:
-    candidate, reasons = _candidate_state(observation, warning_available, critical_available)
+    if evaluator is None:
+        candidate, reasons = _candidate_state(observation, warning_available, critical_available)
+        risk = {
+            "state": candidate,
+            "candidate_state": candidate,
+            "candidate_for_seconds": None,
+            "required_for_seconds": None,
+            "reasons": reasons,
+            "memory_available_growth_bytes_per_second": None,
+        }
+    else:
+        risk = evaluator.evaluate(observation, warning_available, critical_available)
+        candidate = risk["state"]
+        reasons = risk["reasons"]
     containers = observation["docker"].get("containers", [])
     candidates = []
     for container in containers:
@@ -220,19 +300,39 @@ def build_event(
             "raw": container,
             "confidence": "observed" if container.get("ID") or container.get("Container") else "low",
         })
+    decision: dict[str, Any] = {
+        "mode": mode,
+        "action": "none",
+        "reason_codes": reasons,
+        "protected": protected,
+        "execution": "not_applicable" if mode == "observe" else "not_executed",
+    }
+    if mode == "simulate":
+        allowed = set(allowed_actions)
+        if candidate not in {"warning", "critical"}:
+            decision["reason_codes"].append("risk_not_actionable")
+        elif not candidates:
+            decision["action"] = "escalate"
+            decision["reason_codes"].append("no_stable_object_identity")
+        elif protected:
+            decision["action"] = "escalate"
+            decision["reason_codes"].append("protected_object")
+        elif simulate_action not in allowed:
+            decision["action"] = "escalate"
+            decision["reason_codes"].append("action_not_allowlisted")
+        else:
+            decision["action"] = simulate_action
+            decision["reason_codes"].append("simulate_only")
+
     return {
         "event_id": str(uuid.uuid4()),
         "observed_at": observation["observed_at"],
         "state": candidate,
         "host_id": os.uname().nodename,
         "signals": observation,
+        "risk": risk,
         "object_candidates": candidates,
-        "decision": {
-            "mode": mode,
-            "action": "none",
-            "reason_codes": reasons,
-            "protected": True,
-        },
+        "decision": decision,
         "evidence": {"snapshot_path": None, "sample_window": None},
     }
 
@@ -244,16 +344,30 @@ def write_snapshot(event: dict[str, Any], directory: Path) -> str:
     return str(path)
 
 
+def append_audit(event: dict[str, Any], path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(event, ensure_ascii=False) + "\n")
+
+
 def run(args: argparse.Namespace) -> None:
+    evaluator = RiskEvaluator(warning_for=args.warning_for, critical_for=args.critical_for)
     while True:
         observation = collect_observation()
         event = build_event(
             observation,
             warning_available=args.warning_available,
             critical_available=args.critical_available,
+            mode=args.mode,
+            simulate_action=args.simulate_action,
+            protected=not args.allow_unprotected,
+            allowed_actions=args.allow_action,
+            evaluator=evaluator,
         )
-        if args.snapshot_dir:
+        if args.snapshot_dir and (args.snapshot_all or event["state"] in {"warning", "critical", "recovered", "escalated"}):
             event["evidence"]["snapshot_path"] = write_snapshot(event, Path(args.snapshot_dir))
+        if args.audit_file:
+            append_audit(event, Path(args.audit_file))
         print(json.dumps(event, ensure_ascii=False), flush=True)
         if args.once:
             return
@@ -263,10 +377,18 @@ def run(args: argparse.Namespace) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Read-only Guardian observe prototype")
     parser.add_argument("--once", action="store_true", help="emit one observation and exit")
+    parser.add_argument("--mode", choices=("observe", "simulate"), default="observe")
     parser.add_argument("--interval", type=float, default=5.0, help="sampling interval in seconds")
     parser.add_argument("--warning-available", type=float, default=15.0, help="PoC warning threshold")
     parser.add_argument("--critical-available", type=float, default=10.0, help="PoC critical threshold")
+    parser.add_argument("--warning-for", type=float, default=180.0, help="warning persistence window in seconds")
+    parser.add_argument("--critical-for", type=float, default=30.0, help="critical persistence window in seconds")
     parser.add_argument("--snapshot-dir", help="optional directory for JSON snapshots")
+    parser.add_argument("--snapshot-all", action="store_true", help="snapshot normal observations too")
+    parser.add_argument("--audit-file", help="optional JSONL audit file")
+    parser.add_argument("--simulate-action", default="graceful_stop", choices=("notify", "snapshot", "graceful_stop", "restart", "terminate", "escalate"))
+    parser.add_argument("--allow-action", action="append", default=[], help="action allowed in simulate policy; repeatable")
+    parser.add_argument("--allow-unprotected", action="store_true", help="fixture-only switch to simulate a non-protected target")
     run(parser.parse_args())
 
 

@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from src.guardian_observer import (
+    RiskEvaluator,
     build_event,
     collect_observation,
     parse_meminfo,
@@ -70,6 +71,63 @@ class GuardianObserverTests(unittest.TestCase):
             saved = json.loads(path.read_text())
             self.assertEqual(saved["decision"]["mode"], "observe")
             self.assertEqual(saved["decision"]["action"], "none")
+
+    def test_risk_evaluator_requires_persistence_window_and_emits_recovery(self):
+        observation = {
+            "observed_at": "2026-09-19T00:00:00Z",
+            "memory": {"available_ratio_percent": 5.0, "available_bytes": 500},
+            "cgroup": {"memory_events": {}},
+            "psi": {},
+            "docker": {"containers": []},
+        }
+        evaluator = RiskEvaluator(warning_for=2.0, critical_for=4.0)
+        first = evaluator.evaluate(observation, 15.0, 10.0, now=0.0)
+        self.assertEqual(first["candidate_state"], "critical")
+        self.assertEqual(first["state"], "normal")
+        second = evaluator.evaluate(observation, 15.0, 10.0, now=4.0)
+        self.assertEqual(second["state"], "critical")
+        recovered = dict(observation)
+        recovered["memory"] = {"available_ratio_percent": 90.0, "available_bytes": 9000}
+        third = evaluator.evaluate(recovered, 15.0, 10.0, now=5.0)
+        self.assertEqual(third["state"], "recovered")
+
+    def test_simulate_never_executes_and_protects_by_default(self):
+        observation = {
+            "observed_at": "2026-09-19T00:00:00Z",
+            "memory": {"available_ratio_percent": 5.0, "available_bytes": 500},
+            "cgroup": {"memory_events": {"oom": 1}},
+            "psi": {},
+            "docker": {"containers": [{"ID": "abc123", "Name": "discardable"}]},
+        }
+        event = build_event(
+            observation,
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=True,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(event["decision"]["action"], "escalate")
+        self.assertEqual(event["decision"]["execution"], "not_executed")
+        self.assertIn("protected_object", event["decision"]["reason_codes"])
+
+    def test_simulate_generates_allowlisted_plan_without_execution(self):
+        observation = {
+            "observed_at": "2026-09-19T00:00:00Z",
+            "memory": {"available_ratio_percent": 5.0, "available_bytes": 500},
+            "cgroup": {"memory_events": {"oom": 1}},
+            "psi": {},
+            "docker": {"containers": [{"ID": "abc123", "Name": "discardable"}]},
+        }
+        event = build_event(
+            observation,
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(event["decision"]["action"], "graceful_stop")
+        self.assertEqual(event["decision"]["execution"], "not_executed")
+        self.assertIn("simulate_only", event["decision"]["reason_codes"])
 
 
 if __name__ == "__main__":

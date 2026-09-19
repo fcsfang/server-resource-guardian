@@ -52,7 +52,7 @@
 - 阶段 4：Guardian 最小实现与受控灰度，进行中。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
 - 当前活动目标：推进 Goal 4，完成 Guardian 最小风险检测与自动处置闭环；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md)、[风险信号规范](docs/17-risk-signal-specification.md)、[对象策略规范](docs/18-object-policy-specification.md) 和 [Goal 4](goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
-- 当前下一步：补齐 `observe` 的趋势窗口、快照和审计持久化，再实现只生成计划的 `simulate`。
+- 当前下一步：设计受限动作适配器和 mock executor；真实 `enforce` 动作必须等待明确授权。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
@@ -192,8 +192,8 @@ git push origin main
 
 1. 已完成主机/容器风险信号、趋势窗口和误报抑制规则的第一版设计。
 2. 已完成对象分类、保护名单、允许动作和 `observe/simulate/enforce` 边界设计。
-3. 补齐只读 `observe` 的趋势窗口、快照和审计，再实现 `simulate`。
-4. 在可丢弃测试对象上验证自动闭环，禁止把通用 Docker 内存限制作为默认动作。
+3. 已实现只生成计划的 `simulate`，不执行真实终止、重启或资源变更。
+4. 设计受限动作适配器并在可丢弃测试对象上验证，禁止把通用 Docker 内存限制作为默认动作。
 5. 在 Ubuntu 22.04 非生产环境复核后，再讨论生产灰度。
 
 ## 相关入口

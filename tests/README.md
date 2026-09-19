@@ -13,4 +13,4 @@
 python3 -m unittest discover -s tests -v
 ```
 
-所有资源耗尽和终止测试必须在获得授权的非生产环境执行。`observe` 原型的测试不得执行 Docker stop、restart、kill 或资源变更。
+所有资源耗尽和终止测试必须在获得授权的非生产环境执行。`observe` 和 `simulate` 的测试不得执行 Docker stop、restart、kill 或资源变更。
