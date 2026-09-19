@@ -83,6 +83,7 @@
 - 2026-09-19 完成 EXP-024：只读 Adapter 增加重复、乱序、过期和传输失败的 fail-closed 处理，覆盖 alerts_history 活动/恢复/缺少映射字段 fixture，并增加分页 GET 入口；宿主机 49/49、Multipass Ubuntu Adapter 测试 12/12，通过本地 Hub GET /api/health 200，并验证 Hub 不可用时只返回脱敏错误码。见 experiments/EXP-024-2026-09-19-beszel-adapter-contract/record.md。
 - 2026-09-19 补充 docs/22：从本地 Beszel 前端 bundle 提取主机、Docker、systemd、历史统计和告警历史字段基线；无凭据 API 列表为空，不能据此判定 Hub 无数据。
 - 2026-09-19 完成 EXP-025：在 Mac Multipass 上执行 12 秒有界动态探针；Hub 健康全程 200、内存 PSI full 为 0，Hub 约 11.42–11.44 MiB、Agent 约 3.977 MiB。见 experiments/EXP-025-2026-09-19-beszel-bounded-dynamic-probe/record.md。
+- 2026-09-19 23:39–23:41 补充 EXP-023 登录态 UI 证据：主机在线概览、1 小时历史曲线、两个容器实时字段和 15 类告警类别均可见；告警开关全部关闭，未修改设置。systemd 服务具体值、实际刷新延迟和真实告警时延仍待专项核验。
 
 ## 待办事项（按优先级）
 
