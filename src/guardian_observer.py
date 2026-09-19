@@ -305,9 +305,15 @@ def build_event(
         "action": "none",
         "reason_codes": reasons,
         "protected": protected,
-        "execution": "not_applicable" if mode == "observe" else "not_executed",
+        "execution": (
+            "not_applicable"
+            if mode == "observe"
+            else "not_executed"
+            if mode == "simulate"
+            else "pending_controller"
+        ),
     }
-    if mode == "simulate":
+    if mode in {"simulate", "enforce"}:
         allowed = set(allowed_actions)
         if candidate not in {"warning", "critical"}:
             decision["reason_codes"].append("risk_not_actionable")
@@ -322,7 +328,9 @@ def build_event(
             decision["reason_codes"].append("action_not_allowlisted")
         else:
             decision["action"] = simulate_action
-            decision["reason_codes"].append("simulate_only")
+            decision["reason_codes"].append(
+                "simulate_only" if mode == "simulate" else "enforce_requires_controller"
+            )
 
     return {
         "event_id": str(uuid.uuid4()),

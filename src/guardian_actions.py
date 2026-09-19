@@ -102,8 +102,8 @@ class MockActionExecutor:
     def __init__(self) -> None:
         self.requests: list[ActionRequest] = []
 
-    def execute(self, request: ActionRequest) -> ActionResult:
-        validate_request(request, now=0.0)
+    def execute(self, request: ActionRequest, now: float | None = None) -> ActionResult:
+        validate_request(request, now=now)
         self.requests.append(request)
         return ActionResult(
             executed=False,

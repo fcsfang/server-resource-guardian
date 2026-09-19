@@ -129,6 +129,24 @@ class GuardianObserverTests(unittest.TestCase):
         self.assertEqual(event["decision"]["execution"], "not_executed")
         self.assertIn("simulate_only", event["decision"]["reason_codes"])
 
+    def test_enforce_plan_requires_controller_and_is_not_runtime_execution(self):
+        observation = {
+            "observed_at": "2026-09-19T00:00:00Z",
+            "memory": {"available_ratio_percent": 5.0, "available_bytes": 500},
+            "cgroup": {"memory_events": {"oom": 1}},
+            "psi": {},
+            "docker": {"containers": [{"ID": "abcdef123456", "Name": "discardable"}]},
+        }
+        event = build_event(
+            observation,
+            mode="enforce",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(event["decision"]["action"], "graceful_stop")
+        self.assertEqual(event["decision"]["execution"], "pending_controller")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,3 +1,4 @@
+import time
 import unittest
 
 from src.guardian_actions import (
@@ -18,7 +19,7 @@ class GuardianActionTests(unittest.TestCase):
             environment="local-disposable",
             target_id=target,
             action=action,
-            expires_at=2000.0,
+            expires_at=time.time() + 300,
         )
 
     def request(self, action="graceful_stop", protected=False, target="abcdef123456", authorization=None):

@@ -27,6 +27,8 @@
 - `graceful_stop` 使用 `docker stop --time`；`restart` 使用 `docker restart --time`；`terminate` 使用 `docker kill`。
 - `terminate` 不是默认动作，必须同时通过动作白名单和短期授权。
 - 本模块不负责决定风险等级、保护名单或恢复成功；这些由上层策略和恢复验证负责。
+- `GuardianController` 负责把 `enforce` 事件接入动作适配器：只有显式 `enforce`、单一稳定对象、可行动风险、授权和策略校验全部通过，才会调用注入式执行器。
+- `MockActionExecutor` 的计划结果不会消耗真实动作冷却或失败计数；只有真实执行器返回结果后才更新动作门禁。
 
 ## 3. 当前完成与未完成
 
@@ -35,5 +37,6 @@
 - [x] Docker 参数数组构造，禁止 shell 注入路径。
 - [x] 5 个动作安全单元测试。
 - [x] 恢复状态、冷却窗口和失败熔断的纯逻辑模型，见 EXP-008。
+- [x] `enforce` 控制层集成：门禁、mock/fake 执行器、恢复和冷却路径，见 EXP-009。
 - [ ] 在获得明确本地可丢弃对象授权后，执行一次 `graceful_stop` 并记录 EXP。
 - [ ] 完成动作后的资源恢复、健康检查、冷却和失败升级。

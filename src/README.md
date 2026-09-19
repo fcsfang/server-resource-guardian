@@ -5,3 +5,5 @@
 当前也支持 `simulate`：它只根据风险状态、对象身份、保护状态和动作白名单生成计划，并明确标记 `execution=not_executed`。`guardian_actions.py` 提供授权校验、mock executor 和参数数组 Docker 适配器；没有显式的本地可丢弃环境授权时，不调用真实执行器。
 
 `guardian_recovery.py` 提供纯函数式恢复验证、冷却和失败熔断判断；它不主动重试动作，必须由上层在策略允许时决定是否升级。
+
+`guardian_controller.py` 是 `enforce` 的控制层：它要求事件显式标记为 `enforce`，在调用注入式执行器前再次校验授权、保护对象、稳定身份和风险状态，并串联冷却、失败熔断和恢复判断。当前控制层只通过 mock/fake executor 验证，真实 Docker 执行仍需单独授权。
