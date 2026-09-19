@@ -95,6 +95,7 @@
 - 2026-09-20 完成 EXP-029/G6-T05：新增 `guardian_beszel_bridge.py`，以本机观测和对象身份为最终判断依据；宿主机与 Multipass 全量 56/56、bridge 7/7 通过，重复/过期/乱序/低置信度/恢复/多对象输入 fail-closed，未执行 Docker/systemd 变更。下一步 G6-T06。
 - 2026-09-20 形成 G6-T06 UI 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md)：包含风险/对象/策略/计划/结果/恢复 view model、降级状态和人工确认门禁；不修改 Beszel 上游核心，等待评审。
 - 2026-09-20 为 G6-T06 增加纯函数 `guardian_ui_model.py`：验证 `guardian.ui.v1` 的模拟计划、拒绝事件和多对象降级，宿主机与 Multipass 新增测试均通过；未提供 endpoint，仍等待设计评审。
+- 2026-09-20 完成本地 UI 契约自检：新增 2 个测试锁定 `guardian.ui.v1` 顶层字段、模拟不执行和缺失对象身份 fail-closed；宿主机与 Multipass 全量测试均通过。G6-T06 的 leader/协作者评审仍未完成，未实现 endpoint。
 
 ## 待办事项（按优先级）
 

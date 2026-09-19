@@ -174,7 +174,7 @@ UI 只消费脱敏后的 `guardian.ui.v1` 视图模型，不直接消费 Beszel 
 - [x] `observe/simulate/enforce` 的展示和授权边界明确。
 - [x] Hub/Adapter/本机采样/对象身份/动作失败的降级状态明确。
 - [x] 不修改 Beszel 上游核心，不读取或保存通知凭据。
-- [x] `guardian_ui_model.py` 已用 3 个纯函数测试验证模拟计划、拒绝事件和多对象降级；宿主机与 Multipass 全量测试均通过。
+- [x] `guardian_ui_model.py` 已用 5 个纯函数测试验证冻结字段、模拟计划、拒绝事件、多对象和缺失身份降级；宿主机与 Multipass 全量测试均通过。
 - [ ] 由 leader 或项目协作者评审字段、页面入口和人工确认流程。
 - [ ] 评审通过后再实现旁路 view-model endpoint；在此之前不进入 G6-T07。
 

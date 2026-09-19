@@ -26,6 +26,47 @@ class GuardianUiModelTests(unittest.TestCase):
         self.assertEqual(model["object"]["stable_id"], "local-1")
         self.assertNotIn("raw", json.dumps(model))
 
+    def test_model_matches_frozen_contract_and_does_not_authorize_actions(self):
+        bridge = self.bridge()
+        model = build_ui_view_model(bridge, allowed_actions=["graceful_stop"])
+
+        self.assertEqual(
+            set(model),
+            {"schema", "system", "risk", "object", "policy", "plan", "result", "recovery"},
+        )
+        self.assertEqual(
+            set(model["risk"]),
+            {"state", "confidence", "entered_at", "expires_at", "signals"},
+        )
+        self.assertEqual(
+            set(model["object"]),
+            {"kind", "stable_id", "display_name", "identity_confidence", "protected", "candidates"},
+        )
+        self.assertEqual(
+            set(model["policy"]),
+            {"mode", "decision", "reason_codes", "allowed_actions", "policy_version"},
+        )
+        self.assertEqual(
+            set(model["plan"]),
+            {"action", "execution", "confirmation", "created_at"},
+        )
+        self.assertEqual(model["policy"]["mode"], "simulate")
+        self.assertEqual(model["policy"]["decision"], "plan_generated")
+        self.assertEqual(model["policy"]["allowed_actions"], ["graceful_stop"])
+        self.assertEqual(model["plan"]["execution"], "not_executed")
+        self.assertFalse(bridge["bridge"]["action_authorized"])
+
+    def test_missing_object_identity_is_fail_closed(self):
+        model = self.bridge(containers=[{"Name": "no-stable-id"}])
+        view = build_ui_view_model(model, allowed_actions=["graceful_stop"])
+
+        self.assertEqual(view["object"]["stable_id"], None)
+        self.assertEqual(view["policy"]["decision"], "observation_only")
+        self.assertEqual(view["policy"]["allowed_actions"], [])
+        self.assertEqual(view["plan"]["action"], "none")
+        self.assertEqual(view["plan"]["execution"], "not_executed")
+        self.assertIn("no_stable_object_identity", view["policy"]["reason_codes"])
+
     def test_rejected_event_is_observation_only(self):
         bridge = self.bridge(available=90.0)
         bridge["bridge"]["status"] = "rejected"

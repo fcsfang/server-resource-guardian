@@ -248,6 +248,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：完成 EXP-028 最终只读复核：本地 `data.db` 中确认两次压力告警和一次 1% 空闲正向控制共 3 条已恢复历史；Guardian 约 6.15/6.18 秒发现，Beszel 约 16.378/33.159 秒触发，低阈值以下基线无非预期事件，G6-T04 完成并进入 G6-T05。
 - 2026-09-20：完成 EXP-029/G6-T05：新增 `guardian_beszel_bridge.py`，将 Beszel 标准化事件接入 Guardian `observe/simulate`；宿主机和 Multipass 全量 56/56、bridge 7/7 通过，外部事件不获得动作授权，下一步进入 G6-T06 UI 集成设计。
 - 2026-09-20：形成 G6-T06 设计稿 [docs/23](../docs/23-beszel-guardian-ui-integration-design.md)：冻结旁路 UI、`guardian.ui.v1` view model、降级状态和人工确认边界；不修改 Beszel 上游核心，状态为 `DESIGN-READY-FOR-REVIEW`。
+- 2026-09-20：完成 G6-T06 本地契约自检：5 个 UI 纯函数测试覆盖字段冻结、模拟不执行、多对象和缺失身份 fail-closed；leader/协作者评审仍是完成门槛，未实现 endpoint。
 
 ## 全局边界（所有 Goal 共同遵守）
 
