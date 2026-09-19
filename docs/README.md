@@ -12,6 +12,7 @@
 - 后续自动执行总路线：[自动化执行路线与 Agent 接手协议](16-autonomous-execution-roadmap.md)。
 - 当前风险信号设计：[Guardian 风险信号规范](17-risk-signal-specification.md)。
 - 当前对象策略设计：[Guardian 对象策略规范](18-object-policy-specification.md)。
+- 当前动作边界设计：[Guardian 受控动作适配器契约](19-action-adapter-contract.md)。
 
 ## 1. 当前最新参考关系
 
@@ -64,6 +65,7 @@ README.md
 | [16-autonomous-execution-roadmap.md](16-autonomous-execution-roadmap.md) | 后续阶段、任务顺序、无监督执行循环和 Agent 交接协议 | **当前自动执行入口** |
 | [17-risk-signal-specification.md](17-risk-signal-specification.md) | G4-T01 风险信号、状态机和事件输出结构 | 当前实现设计入口 |
 | [18-object-policy-specification.md](18-object-policy-specification.md) | G4-T02 对象身份、保护名单、动作等级、冷却和熔断 | 当前策略设计入口 |
+| [19-action-adapter-contract.md](19-action-adapter-contract.md) | G4-T05 授权校验、mock executor 和 Docker 动作参数契约 | 真实动作前的安全边界 |
 
 ## 3. 补充研究材料
 

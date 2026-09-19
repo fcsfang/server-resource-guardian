@@ -56,11 +56,14 @@
 - 2026-09-19 完成 G4-T02 对象策略规范：定义稳定对象身份、永久保护名单、L0–L5 动作等级、冷却、熔断、执行前后检查和未知对象默认升级人工，设计稿见 docs/18-object-policy-specification.md。
 - 2026-09-19 完成 G4-T03 第一版只读 Observer：采集 `/proc`、CPU/内存/I/O PSI、cgroup v2、Docker stats，使用连续窗口去抖并输出 JSONL；宿主机 5/5 单元测试、Ubuntu 虚拟机真实 `--once`、快照和审计验证通过，当前不执行任何动作。
 - 2026-09-19 完成 G4-T04 `simulate`：根据风险状态、对象身份、保护状态和动作白名单生成动作计划；宿主机与 Ubuntu 虚拟机 7/7 测试通过，所有计划明确 `execution=not_executed`。
+- 2026-09-19 完成 G4-T05 第一版受控动作适配器：实现授权、环境、目标 ID、保护名单、动作白名单和超时校验，提供 mock executor 与参数数组 Docker adapter；宿主机与 Ubuntu 虚拟机 12/12 测试通过，真实 enforce 等待本地可丢弃对象授权。
+- 2026-09-19 完成 EXP-008：动作安全契约、mock executor、恢复状态、冷却窗口和失败熔断验证；宿主机与 Ubuntu 虚拟机 16/16 通过，真实 Docker 动作未执行。见 experiments/EXP-008-2026-09-19-guardian-safety-contract/record.md。
 
 ## 待办事项（按优先级）
 
 - [ ] 将 leader 最新反馈中的测试授权、保护名单和动作边界回填到 docs/05-open-questions.md。
-- [ ] Goal 4-T05：设计受限动作适配器和 mock executor；真实 `enforce` 动作必须等待明确授权。
+- [ ] Goal 4-T05：获得明确的本地可丢弃对象授权后，执行一次 `graceful_stop` 并记录结果；未授权前只允许 mock executor。
+- [ ] Goal 4-T06：在真实动作授权后验证动作后恢复、冷却、失败升级、误报和多对象竞争。
 - [ ] 在可丢弃测试对象上验证“检测 → 定位 → 保护判断 → 分级处置 → 恢复/升级”闭环。
 - [ ] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；不把统一 Docker 内存限制作为默认方案。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
