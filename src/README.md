@@ -10,6 +10,8 @@ Adapter 还提供 alerts_history 活动/恢复记录的安全映射和 GET-only 
 
 `guardian_recovery.py` 提供纯函数式恢复验证、冷却和失败熔断判断；它不主动重试动作，必须由上层在策略允许时决定是否升级。
 
+`guardian_ui_model.py` 只生成脱敏的 `guardian.ui.v1` 展示模型，不提供 HTTP endpoint、不推断风险、不授权动作；UI 设计和字段约束见 [`docs/23-beszel-guardian-ui-integration-design.md`](../docs/23-beszel-guardian-ui-integration-design.md)。
+
 `guardian_controller.py` 是 `enforce` 的控制层：它要求事件显式标记为 `enforce`，在调用注入式执行器前再次校验授权、保护对象、稳定身份和风险状态，并串联冷却、失败熔断和恢复判断。当前控制层只通过 mock/fake executor 验证，真实 Docker 执行仍需单独授权。
 
 `guardian_enforce.py` 提供单次运行桥接：读取事件快照和短期授权文件，默认走 mock；显式选择 Docker executor 并确认本地可丢弃环境后，才会调用动作适配器，随后使用只读 `docker inspect` 做恢复探测，并输出包含动作前事件与动作后结果的 `guardian.enforce.v1` 审计记录。

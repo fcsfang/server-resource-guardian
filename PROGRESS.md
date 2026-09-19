@@ -94,6 +94,7 @@
 - 2026-09-20 完成 EXP-028 最终只读复核：从本地 `data.db` 确认 3 条已恢复 `alerts_history`（15%/12% 两次压力、1% 空闲正向控制），两次压力均无漏报，低于阈值基线无非预期事件，Hub 健康全程 200；G6-T04 完成，下一步 G6-T05。
 - 2026-09-20 完成 EXP-029/G6-T05：新增 `guardian_beszel_bridge.py`，以本机观测和对象身份为最终判断依据；宿主机与 Multipass 全量 56/56、bridge 7/7 通过，重复/过期/乱序/低置信度/恢复/多对象输入 fail-closed，未执行 Docker/systemd 变更。下一步 G6-T06。
 - 2026-09-20 形成 G6-T06 UI 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md)：包含风险/对象/策略/计划/结果/恢复 view model、降级状态和人工确认门禁；不修改 Beszel 上游核心，等待评审。
+- 2026-09-20 为 G6-T06 增加纯函数 `guardian_ui_model.py`：验证 `guardian.ui.v1` 的模拟计划、拒绝事件和多对象降级，宿主机与 Multipass 新增测试均通过；未提供 endpoint，仍等待设计评审。
 
 ## 待办事项（按优先级）
 
