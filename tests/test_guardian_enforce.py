@@ -11,6 +11,7 @@ from src.guardian_enforce import (
     serialize_audit_record,
     serialize_result,
 )
+from src.guardian_recovery import CooldownLedger
 
 
 def event():
@@ -59,6 +60,12 @@ class GuardianEnforceTests(unittest.TestCase):
                 event(), authorization(), ["graceful_stop"], executor_kind="docker", now=1000.0
             )
 
+        with self.assertRaisesRegex(ActionDenied, "persistent_ledger_required"):
+            run_enforce(
+                event(), authorization(), ["graceful_stop"], executor_kind="docker",
+                confirm_local_disposable=True, now=1000.0,
+            )
+
     def test_real_adapter_path_uses_fake_runner_and_read_only_recovery_probe(self):
         calls = []
 
@@ -78,6 +85,7 @@ class GuardianEnforceTests(unittest.TestCase):
             ["graceful_stop"],
             executor_kind="docker",
             confirm_local_disposable=True,
+            ledger=CooldownLedger(),
             runner=fake_runner,
             now=1000.0,
             recovery_wait_seconds=1.0,

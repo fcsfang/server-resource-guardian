@@ -9,3 +9,5 @@
 `guardian_controller.py` 是 `enforce` 的控制层：它要求事件显式标记为 `enforce`，在调用注入式执行器前再次校验授权、保护对象、稳定身份和风险状态，并串联冷却、失败熔断和恢复判断。当前控制层只通过 mock/fake executor 验证，真实 Docker 执行仍需单独授权。
 
 `guardian_enforce.py` 提供单次运行桥接：读取事件快照和短期授权文件，默认走 mock；显式选择 Docker executor 并确认本地可丢弃环境后，才会调用动作适配器，随后使用只读 `docker inspect` 做恢复探测，并输出包含动作前事件与动作后结果的 `guardian.enforce.v1` 审计记录。
+
+真实 Docker executor 还必须提供持久化 `--ledger-file`；ledger 保存冷却时间、动作窗口和连续失败次数，防止独立 CLI 进程绕过冷却或失败熔断。

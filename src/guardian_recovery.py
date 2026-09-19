@@ -7,7 +7,9 @@ to test with fixtures before any real enforce experiment is authorized.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Iterable
 
 
@@ -98,3 +100,34 @@ class CooldownLedger:
 
     def tripped(self, max_consecutive_failures: int = 2) -> bool:
         return self.consecutive_failures >= max_consecutive_failures
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "last_action_at": self.last_action_at,
+            "action_times": list(self.action_times),
+            "consecutive_failures": self.consecutive_failures,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, object]) -> "CooldownLedger":
+        raw_times = data.get("action_times", [])
+        action_times = [float(value) for value in raw_times] if isinstance(raw_times, list) else []
+        raw_last = data.get("last_action_at")
+        return cls(
+            last_action_at=float(raw_last) if raw_last is not None else None,
+            action_times=action_times,
+            consecutive_failures=int(data.get("consecutive_failures", 0)),
+        )
+
+    @classmethod
+    def load(cls, path: Path) -> "CooldownLedger":
+        if not path.exists():
+            return cls()
+        value = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(value, dict):
+            raise ValueError("cooldown ledger must be a JSON object")
+        return cls.from_dict(value)
+
+    def save(self, path: Path) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(self.to_dict(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

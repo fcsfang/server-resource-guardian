@@ -30,6 +30,7 @@
 - `GuardianController` 负责把 `enforce` 事件接入动作适配器：只有显式 `enforce`、单一稳定对象、可行动风险、授权和策略校验全部通过，才会调用注入式执行器。
 - `MockActionExecutor` 的计划结果不会消耗真实动作冷却或失败计数；只有真实执行器返回结果后才更新动作门禁。
 - `guardian_enforce.py` 提供单次运行桥接：默认使用 mock；真实 Docker 路径还要求授权文件、`--executor docker` 和 `--confirm-local-disposable`，动作完成后只读探测容器状态，并输出 `guardian.enforce.v1` 结构化审计记录。
+- 真实 Docker 路径还必须提供持久化 `--ledger-file`；没有 ledger 时 fail-closed，避免独立进程绕过冷却和连续失败熔断。
 
 ## 3. 当前完成与未完成
 
@@ -41,5 +42,6 @@
 - [x] `enforce` 控制层集成：门禁、mock/fake 执行器、恢复和冷却路径，见 EXP-009。
 - [x] 单次 `enforce` 运行桥接和只读恢复探测，见 EXP-010。
 - [x] 动作前事件与动作后结果的统一审计记录，见 EXP-013。
+- [x] 真实动作后的跨进程冷却阻断，见 EXP-016。
 - [x] 在修正测试进程并重新获得明确本地可丢弃对象授权后，复测一次 `graceful_stop`；EXP-014 的 exit 137 已被识别为失败，EXP-015 以 exit 0 完成真实闭环。
 - [ ] 完成动作后的资源恢复、健康检查、冷却和失败升级。

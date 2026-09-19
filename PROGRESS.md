@@ -65,12 +65,13 @@
 - 2026-09-19 完成 EXP-013：新增 `guardian.enforce.v1` 结构化审计记录，将动作前事件与动作后执行、恢复、冷却和失败熔断结果统一输出；宿主机与 Ubuntu 虚拟机 29/29 通过，真实 Docker 动作未执行。见 experiments/EXP-013-2026-09-19-enforce-audit-record/record.md。
 - 2026-09-19 执行 EXP-014：在用户授权的本地 disposable 容器上真实调用一次 `graceful_stop`；Docker 返回 0 但目标以 exit 137 结束，修正后的恢复判定为 `target_force_killed`，实验 FAILED。随后修正 `ExitCode` fail-closed 判定和 `--timeout` 参数，宿主机与 Ubuntu 测试 30/30 通过；未重复真实动作。见 experiments/EXP-014-2026-09-19-real-graceful-stop-closed-loop/record.md。
 - 2026-09-19 完成 EXP-015：在修正后的 SIGTERM trap 测试进程上再次执行真实 `graceful_stop`，目标 exit 0、OOMKilled=false，Guardian 审计返回 `recovered / target_stopped`；真实闭环通过。见 experiments/EXP-015-2026-09-19-real-graceful-stop-retry/record.md。
+- 2026-09-19 完成 EXP-016：第一次真实动作成功写入持久化 ledger，第二次独立 CLI 调用在 Docker executor 前被 `cooldown_active` 拒绝；跨进程冷却验证通过。见 experiments/EXP-016-2026-09-19-persistent-cooldown-real-action/record.md。
 
 ## 待办事项（按优先级）
 
 - [ ] 将 leader 最新反馈中的测试授权、保护名单和动作边界回填到 docs/05-open-questions.md。
 - [x] Goal 4-T05：使用 `guardian_enforce.py` 完成真实 `graceful_stop` 闭环；EXP-014 的强制 kill 失败已修正并由 EXP-015 以 exit 0 验证成功。
-- [ ] Goal 4-T06：在真实动作授权后验证动作后恢复、冷却、失败升级、误报和多对象竞争；纯逻辑、mock/fake 控制路径和只读恢复探测已由 EXP-008/009/010 覆盖。
+- [ ] Goal 4-T06：继续验证真实动作失败升级、动作超时、误报和多对象竞争；恢复成功见 EXP-015，强制 kill 失败识别见 EXP-014，跨进程冷却见 EXP-016。
 - [ ] 在可丢弃测试对象上验证“检测 → 定位 → 保护判断 → 分级处置 → 恢复/升级”闭环。
 - [ ] 补充多容器同时泄漏、误报、保护名单和恢复失败场景；不把统一 Docker 内存限制作为默认方案。
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。

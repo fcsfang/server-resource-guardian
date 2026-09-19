@@ -1,4 +1,6 @@
+import tempfile
 import unittest
+from pathlib import Path
 
 from src.guardian_recovery import (
     CooldownLedger,
@@ -67,6 +69,14 @@ class GuardianRecoveryTests(unittest.TestCase):
         ledger.record(11.0, False)
         ledger.record(22.0, False)
         self.assertTrue(ledger.tripped())
+
+    def test_cooldown_ledger_round_trips_to_json(self):
+        ledger = CooldownLedger(last_action_at=12.5, action_times=[1.0, 12.5], consecutive_failures=1)
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "ledger.json"
+            ledger.save(path)
+            restored = CooldownLedger.load(path)
+        self.assertEqual(restored.to_dict(), ledger.to_dict())
 
 
 if __name__ == "__main__":

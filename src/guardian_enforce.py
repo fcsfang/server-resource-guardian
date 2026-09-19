@@ -27,7 +27,7 @@ from .guardian_actions import (
     SUPPORTED_ACTIONS,
 )
 from .guardian_controller import ControllerResult, GuardianController
-from .guardian_recovery import RecoveryObservation, RecoveryPolicy
+from .guardian_recovery import CooldownLedger, RecoveryObservation, RecoveryPolicy
 
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
@@ -154,13 +154,17 @@ def run_enforce(
     now: float | None = None,
     recovery_wait_seconds: float = 30.0,
     recovery_poll_seconds: float = 1.0,
+    ledger: CooldownLedger | None = None,
 ) -> ControllerResult:
     """Execute one event through a mock or explicitly enabled Docker adapter."""
 
     if executor_kind not in {"mock", "docker"}:
         raise ValueError("executor_kind must be mock or docker")
-    if executor_kind == "docker" and not confirm_local_disposable:
-        raise ActionDenied("local_disposable_confirmation_required")
+    if executor_kind == "docker":
+        if not confirm_local_disposable:
+            raise ActionDenied("local_disposable_confirmation_required")
+        if ledger is None:
+            raise ActionDenied("persistent_ledger_required")
 
     if executor_kind == "mock":
         executor = MockActionExecutor()
@@ -179,7 +183,7 @@ def run_enforce(
     action = event.get("decision", {}).get("action") if isinstance(event.get("decision"), dict) else None
     if action not in SUPPORTED_ACTIONS:
         raise ActionDenied("event_action_not_supported")
-    result = GuardianController(executor).enforce(
+    result = GuardianController(executor, ledger=ledger).enforce(
         event,
         authorization,
         allowed_actions,
@@ -203,10 +207,12 @@ def main() -> None:
     )
     parser.add_argument("--recovery-wait", type=float, default=30.0)
     parser.add_argument("--recovery-poll", type=float, default=1.0)
+    parser.add_argument("--ledger-file", type=Path, help="persistent cooldown/failure ledger; required for docker")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     try:
+        ledger = CooldownLedger.load(args.ledger_file) if args.ledger_file else None
         event = load_json(args.event_file)
         result = run_enforce(
             event,
@@ -216,7 +222,10 @@ def main() -> None:
             confirm_local_disposable=args.confirm_local_disposable,
             recovery_wait_seconds=args.recovery_wait,
             recovery_poll_seconds=args.recovery_poll,
+            ledger=ledger,
         )
+        if args.executor == "docker" and args.ledger_file is not None and ledger is not None:
+            ledger.save(args.ledger_file)
     except (ActionDenied, OSError, ValueError, json.JSONDecodeError) as exc:
         parser.error(str(exc))
     serialized = json.dumps(serialize_audit_record(event, result), ensure_ascii=False, indent=2) + "\n"
