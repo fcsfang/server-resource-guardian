@@ -153,6 +153,11 @@
     ],
     "alert_toggles_all_off": true,
     "systemd_ui_values": "not_independently_enumerated",
+    "systemd_ui_navigation": {
+      "command_palette_search": "service",
+      "command_palette_result": "no_result",
+      "home_services_column": "no_readable_value"
+    },
     "alert_latency": "not_measured_because_all_alert_toggles_were_off"
   }
 }

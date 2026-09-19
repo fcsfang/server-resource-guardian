@@ -42,7 +42,7 @@ G6-T01 需要逐项核验 Beszel 主机、Docker、systemd 和历史指标。本
 
 ### 3.5 当前缺口
 
-- 登录态页面中尚未独立枚举 systemd 服务表的 `name/state/sub/cpu/cpuPeak/memory/memPeak/updated` 具体值；静态字段和底层 systemd 运行态只能作为字段/采集条件证据。
+- 登录态页面中尚未独立枚举 systemd 服务表的 `name/state/sub/cpu/cpuPeak/memory/memPeak/updated` 具体值；命令搜索输入 `service` 无结果，首页“服务”列也没有可读数值。静态字段和底层 systemd 运行态只能作为字段/采集条件证据。
 - 尚未通过带时间戳的页面刷新或历史点对照测量实际采集周期、页面刷新延迟和落盘完整性。
 - 告警开关全部关闭，未形成真实告警触发、恢复和通知延迟证据；打开告警或制造故障应另建、另授权实验。
 
