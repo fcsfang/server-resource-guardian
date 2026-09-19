@@ -129,6 +129,45 @@ class GuardianObserverTests(unittest.TestCase):
         self.assertEqual(event["decision"]["execution"], "not_executed")
         self.assertIn("simulate_only", event["decision"]["reason_codes"])
 
+    def test_simulate_escalates_when_multiple_stable_objects_compete(self):
+        observation = {
+            "observed_at": "2026-09-19T00:00:00Z",
+            "memory": {"available_ratio_percent": 5.0, "available_bytes": 500},
+            "cgroup": {"memory_events": {"oom": 1}},
+            "psi": {},
+            "docker": {"containers": [
+                {"ID": "abcdef123456", "Name": "discardable-a"},
+                {"ID": "fedcba654321", "Name": "discardable-b"},
+            ]},
+        }
+        event = build_event(
+            observation,
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(event["decision"]["action"], "escalate")
+        self.assertIn("ambiguous_object_identity", event["decision"]["reason_codes"])
+
+    def test_simulate_escalates_when_candidate_has_no_stable_id(self):
+        observation = {
+            "observed_at": "2026-09-19T00:00:00Z",
+            "memory": {"available_ratio_percent": 5.0, "available_bytes": 500},
+            "cgroup": {"memory_events": {"oom": 1}},
+            "psi": {},
+            "docker": {"containers": [{"Name": "name-only"}]},
+        }
+        event = build_event(
+            observation,
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(event["decision"]["action"], "escalate")
+        self.assertIn("no_stable_object_identity", event["decision"]["reason_codes"])
+
     def test_enforce_plan_requires_controller_and_is_not_runtime_execution(self):
         observation = {
             "observed_at": "2026-09-19T00:00:00Z",

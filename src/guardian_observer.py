@@ -315,11 +315,19 @@ def build_event(
     }
     if mode in {"simulate", "enforce"}:
         allowed = set(allowed_actions)
+        stable_candidates = [
+            candidate
+            for candidate in candidates
+            if isinstance(candidate.get("id"), str) and candidate["id"]
+        ]
         if candidate not in {"warning", "critical"}:
             decision["reason_codes"].append("risk_not_actionable")
-        elif not candidates:
+        elif not stable_candidates:
             decision["action"] = "escalate"
             decision["reason_codes"].append("no_stable_object_identity")
+        elif len(stable_candidates) != 1:
+            decision["action"] = "escalate"
+            decision["reason_codes"].append("ambiguous_object_identity")
         elif protected:
             decision["action"] = "escalate"
             decision["reason_codes"].append("protected_object")

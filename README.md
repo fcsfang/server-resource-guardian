@@ -49,10 +49,10 @@
 - 阶段 1：只观测 PoC，已完成本地验证。
 - 阶段 2：救援韧性验证，已完成本地验证，生产复核待授权。
 - 阶段 3：自动风险处置机制评估，已完成本地验证。
-- 阶段 4：Guardian 最小实现与受控灰度，进行中。
+- 阶段 4：Guardian 最小实现与本地受控闭环，已完成；生产交接待外部条件。
 - 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
-- 当前活动目标：推进 Goal 4，完成 Guardian 最小风险检测与自动处置闭环；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md)、[风险信号规范](docs/17-risk-signal-specification.md)、[对象策略规范](docs/18-object-policy-specification.md) 和 [Goal 4](goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
-- 当前下一步：验证真实动作失败后的冷却、连续失败熔断、多对象竞争和业务健康检查；真实 `graceful_stop` 闭环已由 EXP-015 完成。
+- 当前活动目标：维护已完成的 Goal 4 本地闭环并准备生产交接前置材料；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md)、[风险信号规范](docs/17-risk-signal-specification.md)、[对象策略规范](docs/18-object-policy-specification.md) 和 [Goal 4](goals/resource-protection.md#goal-4guardian最小风险检测与自动处置实现)。
+- 当前下一步：整理本地 Guardian 闭环验收材料，并等待生产测试授权、保护名单和 x86_64 兼容性复核；本地真实 `graceful_stop` 闭环见 EXP-015，失败升级/超时见 EXP-017，多对象/健康状态见 EXP-018。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 

@@ -14,26 +14,26 @@ from src.guardian_enforce import (
 from src.guardian_recovery import CooldownLedger, RecoveryPolicy, assess_recovery
 
 
-def event():
+def event(action="graceful_stop"):
     return {
         "event_id": "event-enforce-1",
         "state": "critical",
         "object_candidates": [{"kind": "container", "id": "abcdef123456", "name": "discardable"}],
-        "decision": {
-            "mode": "enforce",
-            "action": "graceful_stop",
+            "decision": {
+                "mode": "enforce",
+                "action": action,
             "protected": False,
             "timeout_seconds": 5,
         },
     }
 
 
-def authorization():
+def authorization(action="graceful_stop"):
     return Authorization(
         approval_id="explicit-local-test",
         environment="local-disposable",
         target_id="abcdef123456",
-        action="graceful_stop",
+        action=action,
         expires_at=2000.0,
     )
 
@@ -160,6 +160,34 @@ class GuardianEnforceTests(unittest.TestCase):
         self.assertEqual(second.state, "failed")
         self.assertTrue(second.failure_breaker_tripped)
         self.assertEqual(ledger.consecutive_failures, 2)
+
+    def test_restart_requires_healthy_business_status_after_action(self):
+        def fake_runner(command, **kwargs):
+            return type(
+                "Result",
+                (),
+                {
+                    "returncode": 0,
+                    "stdout": json.dumps({
+                        "Running": True,
+                        "Status": "running",
+                        "Health": {"Status": "unhealthy"},
+                    }),
+                    "stderr": "",
+                },
+            )()
+
+        observation = probe_container_recovery(
+            type("Request", (), {"target_id": "abcdef123456", "action": "restart"})(),
+            fake_runner,
+            max_wait_seconds=0.0,
+            poll_interval_seconds=0.0,
+            clock=iter([10.0, 10.0]).__next__,
+            sleep=lambda _seconds: None,
+        )
+        recovery = assess_recovery(RecoveryPolicy("restart"), observation)
+        self.assertEqual(recovery.state, "pending")
+        self.assertEqual(recovery.reason_codes, ("target_not_healthy",))
 
     def test_authorization_file_is_parsed_without_extra_fields(self):
         with tempfile.TemporaryDirectory() as temp:
