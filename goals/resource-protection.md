@@ -175,3 +175,4 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-19：完成 EXP-008 安全契约验证：恢复状态、冷却窗口和失败熔断的纯逻辑测试通过；真实动作后的恢复验证仍待明确授权。
 - 2026-09-19：完成 EXP-009 控制层集成：`enforce` 事件、授权门禁、对象保护、冷却、失败熔断和恢复判断串联；宿主机与 Ubuntu 虚拟机 23/23 通过，真实 Docker 动作仍未执行。
 - 2026-09-19：完成 EXP-010 运行桥接：事件快照、授权文件、mock/真实适配器门禁和只读恢复探测；宿主机与 Ubuntu 虚拟机 28/28 通过，Ubuntu 实机 `--mode enforce` CLI smoke test 生成 `pending_controller` 快照，真实 Docker 动作仍未执行。
+- 2026-09-19：完成 EXP-011 本地测试镜像准备：Docker Hub 拉取超时后，使用 Ubuntu 自带静态 ARM64 BusyBox 构造 `guardian-test-base:local`；未创建、启动或停止容器，真实 enforce 仍待授权。

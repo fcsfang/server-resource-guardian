@@ -60,6 +60,7 @@
 - 2026-09-19 完成 EXP-008：动作安全契约、mock executor、恢复状态、冷却窗口和失败熔断验证；宿主机与 Ubuntu 虚拟机 16/16 通过，真实 Docker 动作未执行。见 experiments/EXP-008-2026-09-19-guardian-safety-contract/record.md。
 - 2026-09-19 完成 EXP-009：接入 `GuardianController`，串联 `enforce` 事件、授权门禁、对象保护、冷却、失败熔断和恢复判断；宿主机与 Ubuntu 虚拟机 23/23 通过，真实 Docker 动作未执行。见 experiments/EXP-009-2026-09-19-guardian-controller-integration/record.md。
 - 2026-09-19 完成 EXP-010：新增 `guardian_enforce.py` 单次运行桥接，验证事件快照、授权文件、mock/真实适配器门禁和只读恢复探测；宿主机与 Ubuntu 虚拟机 28/28 通过，Ubuntu 实机 `--mode enforce` CLI smoke test 生成 `pending_controller` 快照，真实 Docker 动作未执行。见 experiments/EXP-010-2026-09-19-enforce-bridge-recovery/record.md。
+- 2026-09-19 完成 EXP-011：Docker Hub 拉取超时后，使用 Ubuntu 自带静态 ARM64 BusyBox 构造 `guardian-test-base:local`；镜像已准备但未创建、启动或停止容器。见 experiments/EXP-011-2026-09-19-local-disposable-image-preparation/record.md。
 
 ## 待办事项（按优先级）
 
