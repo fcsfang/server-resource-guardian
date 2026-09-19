@@ -29,8 +29,9 @@
 - 本模块不负责决定风险等级、保护名单或恢复成功；这些由上层策略和恢复验证负责。
 - `GuardianController` 负责把 `enforce` 事件接入动作适配器：只有显式 `enforce`、单一稳定对象、可行动风险、授权和策略校验全部通过，才会调用注入式执行器。
 - `MockActionExecutor` 的计划结果不会消耗真实动作冷却或失败计数；只有真实执行器返回结果后才更新动作门禁。
-- `guardian_enforce.py` 提供单次运行桥接：默认使用 mock；真实 Docker 路径还要求授权文件、`--executor docker` 和 `--confirm-local-disposable`，动作完成后只读探测容器状态，并输出 `guardian.enforce.v1` 结构化审计记录。
+- `guardian_enforce.py` 提供单次运行桥接：默认使用 mock；真实 Docker 路径还要求授权文件、`--executor docker` 和 `--confirm-local-disposable`，动作完成后只读探测容器状态，并输出 `guardian.enforce.v1` 结构化审计记录。CLI 可显式配置冷却、动作窗口和连续失败阈值，实验参数不得直接当作生产默认值。
 - 真实 Docker 路径还必须提供持久化 `--ledger-file`；没有 ledger 时 fail-closed，避免独立进程绕过冷却和连续失败熔断。
+- Docker runner 超时会转换为 `action_timeout` 失败结果并计入 ledger；动作失败或超时不会继续调用恢复探针，避免二次错误覆盖原始故障。
 
 ## 3. 当前完成与未完成
 
@@ -43,5 +44,6 @@
 - [x] 单次 `enforce` 运行桥接和只读恢复探测，见 EXP-010。
 - [x] 动作前事件与动作后结果的统一审计记录，见 EXP-013。
 - [x] 真实动作后的跨进程冷却阻断，见 EXP-016。
+- [x] 连续真实恢复失败后的升级和执行器/恢复窗口超时 fail-closed，见 EXP-017。
 - [x] 在修正测试进程并重新获得明确本地可丢弃对象授权后，复测一次 `graceful_stop`；EXP-014 的 exit 137 已被识别为失败，EXP-015 以 exit 0 完成真实闭环。
-- [ ] 完成动作后的资源恢复、健康检查、冷却和失败升级。
+- [ ] 完成多对象竞争、误报和带业务语义的健康检查。

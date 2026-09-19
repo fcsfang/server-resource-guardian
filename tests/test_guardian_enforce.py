@@ -11,7 +11,7 @@ from src.guardian_enforce import (
     serialize_audit_record,
     serialize_result,
 )
-from src.guardian_recovery import CooldownLedger
+from src.guardian_recovery import CooldownLedger, RecoveryPolicy, assess_recovery
 
 
 def event():
@@ -117,6 +117,49 @@ class GuardianEnforceTests(unittest.TestCase):
         self.assertFalse(observation.target_running)
         self.assertEqual(observation.health_status, "exited")
         self.assertEqual(observation.exit_code, 0)
+
+    def test_recovery_probe_reports_window_expiry_when_target_stays_running(self):
+        def fake_runner(command, **kwargs):
+            return type(
+                "Result",
+                (),
+                {"returncode": 0, "stdout": json.dumps({"Running": True, "Status": "running"}), "stderr": ""},
+            )()
+
+        observation = probe_container_recovery(
+            type("Request", (), {"target_id": "abcdef123456", "action": "graceful_stop"})(),
+            fake_runner,
+            max_wait_seconds=1.0,
+            poll_interval_seconds=0.0,
+            clock=iter([10.0, 10.0, 12.0]).__next__,
+            sleep=lambda _seconds: None,
+        )
+        recovery = assess_recovery(RecoveryPolicy("graceful_stop", max_wait_seconds=1.0), observation)
+        self.assertEqual(recovery.state, "failed")
+        self.assertEqual(recovery.reason_codes, ("recovery_window_expired",))
+
+    def test_executor_timeout_is_recorded_and_repeated_timeout_trips_breaker(self):
+        import subprocess
+
+        def timeout_runner(_command, **_kwargs):
+            raise subprocess.TimeoutExpired(["docker", "stop"], 35)
+
+        ledger = CooldownLedger()
+        first = run_enforce(
+            event(), authorization(), ["graceful_stop"],
+            executor_kind="docker", confirm_local_disposable=True, ledger=ledger,
+            runner=timeout_runner, now=1000.0, cooldown_seconds=0.0, max_actions=10,
+        )
+        second = run_enforce(
+            event(), authorization(), ["graceful_stop"],
+            executor_kind="docker", confirm_local_disposable=True, ledger=ledger,
+            runner=timeout_runner, now=1001.0, cooldown_seconds=0.0, max_actions=10,
+        )
+        self.assertEqual(first.state, "failed")
+        self.assertEqual(first.reason_codes, ("action_timeout",))
+        self.assertEqual(second.state, "failed")
+        self.assertTrue(second.failure_breaker_tripped)
+        self.assertEqual(ledger.consecutive_failures, 2)
 
     def test_authorization_file_is_parsed_without_extra_fields(self):
         with tempfile.TemporaryDirectory() as temp:

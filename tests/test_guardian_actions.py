@@ -1,3 +1,4 @@
+import subprocess
 import time
 import unittest
 
@@ -74,6 +75,16 @@ class GuardianActionTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertEqual(calls[0][0], ["docker", "stop", "--timeout", "30", "abcdef123456"])
         self.assertFalse(calls[0][1].get("shell", False))
+
+    def test_docker_adapter_converts_runner_timeout_to_failed_action_result(self):
+        def timeout_runner(_command, **_kwargs):
+            raise subprocess.TimeoutExpired(["docker", "stop"], 35)
+
+        result = DockerActionAdapter(timeout_runner).execute(self.request(), now=1000.0)
+        self.assertTrue(result.executed)
+        self.assertIsNone(result.returncode)
+        self.assertEqual(result.reason, "executor_timeout")
+        self.assertEqual(result.stderr, "executor_timeout")
 
     def test_invalid_target_and_unallowlisted_action_are_denied(self):
         with self.assertRaisesRegex(ActionDenied, "unstable_or_invalid_container_id"):

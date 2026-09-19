@@ -123,7 +123,24 @@ class DockerActionAdapter:
     def execute(self, request: ActionRequest, now: float | None = None) -> ActionResult:
         validate_request(request, now=now)
         command = docker_command(request)
-        result = self.runner(command, capture_output=True, text=True, timeout=request.timeout_seconds + 5, check=False)
+        try:
+            result = self.runner(
+                command,
+                capture_output=True,
+                text=True,
+                timeout=request.timeout_seconds + 5,
+                check=False,
+            )
+        except subprocess.TimeoutExpired as exc:
+            return ActionResult(
+                executed=True,
+                action=request.action,
+                target_id=request.target_id,
+                returncode=None,
+                stdout=(exc.stdout or "").strip() if isinstance(exc.stdout, str) else "",
+                stderr="executor_timeout",
+                reason="executor_timeout",
+            )
         return ActionResult(
             executed=True,
             action=request.action,

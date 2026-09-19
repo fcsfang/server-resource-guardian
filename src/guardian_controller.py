@@ -170,7 +170,12 @@ class GuardianController:
                 recovery = RecoveryResult("failed", False, ("recovery_policy_missing",))
             else:
                 recovery = assess_recovery(recovery_policy, recovery_observation)
-        elif recovery_probe is not None and recovery_policy is not None and action_result.executed:
+        elif (
+            recovery_probe is not None
+            and recovery_policy is not None
+            and action_result.executed
+            and action_result.returncode == 0
+        ):
             try:
                 probed_observation = recovery_probe(request, action_result)
             except (OSError, TimeoutError, ValueError) as exc:
@@ -204,7 +209,11 @@ class GuardianController:
 
         if not successful_action:
             state = "failed"
-            reasons = ("action_failed",)
+            reasons = (
+                "action_timeout"
+                if action_result.reason == "executor_timeout"
+                else "action_failed",
+            )
         elif recovery is not None and not recovery.recovered:
             state = "escalated" if breaker_tripped else recovery.state
             reasons = recovery.reason_codes

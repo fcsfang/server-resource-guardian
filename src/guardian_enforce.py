@@ -155,6 +155,10 @@ def run_enforce(
     recovery_wait_seconds: float = 30.0,
     recovery_poll_seconds: float = 1.0,
     ledger: CooldownLedger | None = None,
+    cooldown_seconds: float = 30.0,
+    max_actions: int = 1,
+    action_window_seconds: float = 300.0,
+    max_consecutive_failures: int = 2,
 ) -> ControllerResult:
     """Execute one event through a mock or explicitly enabled Docker adapter."""
 
@@ -190,6 +194,10 @@ def run_enforce(
         now=now,
         recovery_policy=RecoveryPolicy(action, max_wait_seconds=recovery_wait_seconds),
         recovery_probe=probe,
+        cooldown_seconds=cooldown_seconds,
+        max_actions=max_actions,
+        window_seconds=action_window_seconds,
+        max_consecutive_failures=max_consecutive_failures,
     )
     return result
 
@@ -207,6 +215,10 @@ def main() -> None:
     )
     parser.add_argument("--recovery-wait", type=float, default=30.0)
     parser.add_argument("--recovery-poll", type=float, default=1.0)
+    parser.add_argument("--cooldown-seconds", type=float, default=30.0)
+    parser.add_argument("--max-actions", type=int, default=1)
+    parser.add_argument("--action-window-seconds", type=float, default=300.0)
+    parser.add_argument("--max-consecutive-failures", type=int, default=2)
     parser.add_argument("--ledger-file", type=Path, help="persistent cooldown/failure ledger; required for docker")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
@@ -223,6 +235,10 @@ def main() -> None:
             recovery_wait_seconds=args.recovery_wait,
             recovery_poll_seconds=args.recovery_poll,
             ledger=ledger,
+            cooldown_seconds=args.cooldown_seconds,
+            max_actions=args.max_actions,
+            action_window_seconds=args.action_window_seconds,
+            max_consecutive_failures=args.max_consecutive_failures,
         )
         if args.executor == "docker" and args.ledger_file is not None and ledger is not None:
             ledger.save(args.ledger_file)
