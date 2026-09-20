@@ -489,6 +489,16 @@ def append_audit(
     *,
     max_total_bytes: int | None = None,
 ) -> bool:
+    """Append one audit event and only report success after syncing it.
+
+    A successful ``write`` only means that bytes reached the process/file
+    buffers.  The observer uses this result as an action gate, so returning
+    success before ``flush``/``fsync`` would leave a crash window in which the
+    decision appears accepted but the corresponding audit record is missing.
+    A sync failure is deliberately fail-closed: callers must treat the event
+    as degraded and must not continue toward an executable action.
+    """
+
     payload = (json.dumps(event, ensure_ascii=False) + "\n").encode("utf-8")
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -496,7 +506,11 @@ def append_audit(
         if max_total_bytes is not None and current_size + len(payload) > max_total_bytes:
             return False
         with path.open("ab") as stream:
-            stream.write(payload)
+            written = stream.write(payload)
+            if written != len(payload):
+                return False
+            stream.flush()
+            os.fsync(stream.fileno())
     except (OSError, ValueError):
         return False
     return True

@@ -3,6 +3,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from src.guardian_observer import (
     RiskEvaluator,
@@ -120,6 +121,21 @@ class GuardianObserverTests(unittest.TestCase):
             directory = Path(temp) / "not-a-file"
             directory.mkdir()
             self.assertFalse(append_audit({"event_id": "bad"}, directory))
+
+    def test_audit_syncs_before_reporting_success(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "events.jsonl"
+            with patch("src.guardian_observer.os.fsync") as sync:
+                self.assertTrue(append_audit({"event_id": "durable"}, path))
+            sync.assert_called_once()
+            self.assertIn('"event_id": "durable"', path.read_text(encoding="utf-8"))
+
+    def test_audit_sync_failure_is_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "events.jsonl"
+            with patch("src.guardian_observer.os.fsync", side_effect=OSError("sync failed")):
+                self.assertFalse(append_audit({"event_id": "uncertain"}, path))
+            self.assertIn('"event_id": "uncertain"', path.read_text(encoding="utf-8"))
 
     def test_snapshot_write_error_returns_no_path_instead_of_raising(self):
         with tempfile.TemporaryDirectory() as temp:

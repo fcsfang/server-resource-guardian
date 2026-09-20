@@ -49,8 +49,8 @@
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |
-| 主机 Python 测试 | `123/123` 通过 | 包括 runtime、Observer 有界存储/依赖故障、配置、风险、归因、状态和恢复相关测试 |
-| VM 隔离相关测试 | `78/78` 基线通过；EXP-046 相关测试 `23/23` 通过 | 在临时目录运行，未安装 unit |
+| 主机 Python 测试 | `125/125` 通过 | 包括 runtime、Observer 有界存储/依赖故障、配置、风险、归因、状态和恢复相关测试；新增审计 fsync 正负向契约 |
+| VM 隔离相关测试 | `78/78` 既有基线通过；当前 Observer/Runtime 相关回归 `25/25` 通过 | 在临时目录运行，未安装 unit；EXP-047 首次夹具漏拷贝 unit/slice 的错误已修正后重跑 |
 | `systemd-analyze verify` | 退出码 `0` | Guardian unit/slice 无自身语法错误；VM 还输出了 `netplan-ovs-cleanup.service` 权限警告和系统 `snapd.service` 不认识 `RestartMode` 的无关警告 |
 | `observe --once` | 退出码 `0`，输出/审计各 1 条 | readiness 写入 `observe:degraded_observability`；首次样本因 OOM 基线和样本不足而降级，不执行动作 |
 | 有界常驻 smoke | 8 秒上限，按预期由 `timeout` 返回 `124` | 输出/审计各 2 条，readiness 正常写入；未安装 systemd、未改 Docker |
@@ -70,6 +70,8 @@ watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-syste
 模板与最大采样间隔的余量契约见 [EXP-045](../experiments/EXP-045-2026-09-20-watchdog-margin-contract/record.md)：持久 unit 模板使用 `WatchdogSec=90s`，严格大于配置允许的 60 秒采样间隔；这只是静态防回退约束，不等同于 watchdog 超时恢复证据。
 
 命令行采样间隔覆盖的 fail-closed 校验见 [EXP-046](../experiments/EXP-046-2026-09-20-interval-override-fail-closed/record.md)：Observer 在启动入口拒绝非有限值和超出 0.1–60 秒范围的覆盖参数，主机 `123/123`、相关 VM 测试 `23/23` 通过。
+
+审计追加的持久写入契约见 [EXP-047](../experiments/EXP-047-2026-09-20-audit-fsync-fail-closed/record.md)：Observer 只有在完整 payload 写入、`flush` 和 `fsync` 都成功后才把审计事件视为已写入；短写入或同步失败均返回失败，由上层保持降级/不执行动作。主机正负向测试已覆盖；EXP-039 当前运行进程是在该修正之前启动的，因此不能把本次契约直接写成该长跑的运行时证据。
 
 PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 556 个样本、5,567 秒窗口，RSS P99/最大值为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,426.115 KiB、FD 均值 3.619，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成。
 
