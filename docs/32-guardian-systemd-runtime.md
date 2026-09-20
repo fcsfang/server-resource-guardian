@@ -49,8 +49,8 @@
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |
-| 主机 Python 测试 | `132/132` 通过 | 包括 runtime、Observer 有界存储/依赖故障、配置、风险、归因、状态和恢复相关测试；覆盖审计 fsync、只读完整性校验和 watchdog 状态正负向契约 |
-| VM 隔离相关测试 | `78/78` 既有基线通过；当前 Observer/Runtime 相关回归 `28/28` 通过 | 在临时目录运行，未安装 unit；EXP-050 首次夹具漏拷贝 unit/slice 的错误已修正后重跑 |
+| 主机 Python 测试 | `134/134` 通过 | 包括 runtime、Observer 有界存储/依赖故障、配置、风险、归因、状态和恢复相关测试；覆盖审计 fsync、只读完整性校验、watchdog 状态和 ENOSPC 负向契约 |
+| VM 隔离相关测试 | `78/78` 既有基线通过；当前 Observer/Runtime 相关回归 `30/30` 通过 | 在临时目录运行，未安装 unit；EXP-050 首次夹具漏拷贝 unit/slice 的错误已修正后重跑 |
 | `systemd-analyze verify` | 退出码 `0` | Guardian unit/slice 无自身语法错误；VM 还输出了 `netplan-ovs-cleanup.service` 权限警告和系统 `snapd.service` 不认识 `RestartMode` 的无关警告 |
 | `observe --once` | 退出码 `0`，输出/审计各 1 条 | readiness 写入 `observe:degraded_observability`；首次样本因 OOM 基线和样本不足而降级，不执行动作 |
 | 有界常驻 smoke | 8 秒上限，按预期由 `timeout` 返回 `124` | 输出/审计各 2 条，readiness 正常写入；未安装 systemd、未改 Docker |
@@ -90,6 +90,8 @@ EXP-049 将审计 JSONL 的临时完整性扫描固化为只读校验器：主�
 EXP-050 将 watchdog 通知结果写入每轮事件证据：无 socket 为 `not_configured`、成功发送为 `sent`、已配置但发送失败为 `failed`；后一情况追加 `watchdog_notify_failed` 并强制 `escalate/not_executed`，不会继续执行动作。主机定向 `28/28`、全量 `132/132`，Multipass 定向 `28/28` 和 `systemd-analyze verify` 退出码 `0`；当前代码 VM smoke 为 `not_configured`、审计 `written`、无动作。该实验未触发真实 watchdog 超时，因此不替代超时重启恢复证据。
 
 EXP-051 对当前代码进行了独立 45 秒 observe soak：按预设返回 `124`，stdout/审计各 7 条，事件 ID 序列一致；每条 stdout 事件的 watchdog 状态为 `not_configured`，审计校验为 `7/7` 合法、无重复、54,344 bytes，动作均为 `none/not_applicable`。该实验明确记录 `audit_status` 只存在于追加成功后的 stdout 结果，不把事后字段误写成 JSONL 持久字段；EXP-039 Observer 和 sidecar 未受影响。
+
+EXP-052 对审计和快照写入分别注入 `OSError(errno.ENOSPC)`：审计返回 `False`、快照返回 `None`，已有历史文件保持不变；主机全量 `134/134`、Multipass Observer/Runtime `30/30`。这是写入异常 fixture，不是实际填满磁盘，因此真实磁盘高水位、journald/systemd 恢复仍未验证。
 
 资源汇总器与回归测试已同步到 Multipass 临时工作树，当前隔离测试为 `78/78` 通过；该结果用于确认 ARM64 VM 上的测试兼容性，不改变 24 小时 soak 或生产 P99 的完成门。
 

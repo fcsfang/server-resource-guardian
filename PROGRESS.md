@@ -136,6 +136,7 @@
 - 2026-09-20 完成 EXP-049：新增可复用的只读审计完整性校验器；主机全量 `129/129`、Multipass 定向 `4/4` 通过。对 EXP-039 当前审计文件核验为 `136/136` 条合法 JSON、事件 ID 无重复、`1,046,557/1,048,576` bytes，负向测试覆盖格式错误、缺失/重复 ID 和容量超限且输入不变；校验不改写长跑数据。证据见 [EXP-049](experiments/EXP-049-2026-09-20-audit-integrity-verifier/record.md)。
 - 2026-09-20 完成 EXP-050：新增 watchdog 通知状态分类和 fail-closed 事件门禁；主机全量 `132/132`、Multipass 相关回归 `28/28` 通过，当前代码 VM smoke 为 `watchdog_status=not_configured`、stdout `audit_status=written`、动作 `none/not_applicable`，systemd verify 退出码 0。已配置 socket 的失败路径由负向测试证明会 `escalate/not_executed`；未触发真实 watchdog 超时，不改变 EXP-039 长跑。
 - 2026-09-20 完成 EXP-051：当前代码在独立临时目录完成 45 秒 observe-only soak，按预设返回 `124`，输出/审计各 7 条，事件 ID 序列一致；stdout watchdog 均为 `not_configured`、stdout audit 状态均为 `written`，审计校验 `7/7` 合法、无重复、54,344 bytes，动作均为 `none/not_applicable`。明确记录 stdout 事后状态字段不回写 JSONL，EXP-039 Observer/sidecar 仍存活；不改变 24 小时、超时恢复和 P99 完成门。
+- 2026-09-20 完成 EXP-052：对审计/快照写入注入 `OSError(errno.ENOSPC)`，分别安全返回 `False`/`None` 且历史文件不变；主机全量 `134/134`、Multipass Observer/Runtime `30/30` 通过。未实际填满磁盘，真实磁盘高水位/恢复仍未验证。
 
 ## 待办事项（按优先级）
 
@@ -153,7 +154,7 @@
 - [x] Goal 7 / PG-P0-04：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [x] Goal 7 / PG-P0-05：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复；证据见 [EXP-032](experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md)。
 - [x] Goal 7 / PG-P0-06：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复；证据见 [EXP-033](experiments/EXP-033-2026-09-20-two-layer-recovery/record.md)。
-- [ ] Goal 7 / PG-P0-07：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照；主机全量 `132/132`、当前 Observer/Runtime 相关 VM 回归 `28/28`，静态/短时/通知接收基线、watchdog 状态 fail-closed、审计 `flush/fsync` fail-closed 与只读完整性门禁已完成，24 小时长跑、超时/崩溃恢复、剩余故障边界和 P99 校准未完成。
+- [ ] Goal 7 / PG-P0-07：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照；主机全量 `134/134`、当前 Observer/Runtime 相关 VM 回归 `30/30`，静态/短时/通知接收基线、watchdog 状态 fail-closed、ENOSPC 负向 fixture、审计 `flush/fsync` fail-closed 与只读完整性门禁已完成，24 小时长跑、超时/崩溃恢复、真实磁盘边界、剩余故障边界和 P99 校准未完成。
 - [ ] Goal 7 P0：依次完成组合风险、对象归因、耐久安全状态、两层恢复和 systemd 常驻；P0-01–07 全部通过前不做新真实动作。
 
 

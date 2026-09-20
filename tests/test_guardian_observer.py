@@ -1,3 +1,4 @@
+import errno
 import json
 import subprocess
 import tempfile
@@ -122,6 +123,22 @@ class GuardianObserverTests(unittest.TestCase):
             directory = Path(temp) / "not-a-file"
             directory.mkdir()
             self.assertFalse(append_audit({"event_id": "bad"}, directory))
+
+    def test_audit_no_space_error_is_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "events.jsonl"
+            with patch.object(Path, "open", side_effect=OSError(errno.ENOSPC, "No space left on device")):
+                self.assertFalse(append_audit({"event_id": "no-space"}, path))
+            self.assertFalse(path.exists())
+
+    def test_snapshot_no_space_error_is_fail_closed_without_overwriting_history(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            existing = directory / "history.json"
+            existing.write_text("history\n", encoding="utf-8")
+            with patch.object(Path, "write_text", side_effect=OSError(errno.ENOSPC, "No space left on device")):
+                self.assertIsNone(write_snapshot({"event_id": "no-space"}, directory))
+            self.assertEqual(existing.read_text(encoding="utf-8"), "history\n")
 
     def test_audit_syncs_before_reporting_success(self):
         with tempfile.TemporaryDirectory() as temp:

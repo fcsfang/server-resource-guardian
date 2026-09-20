@@ -1,0 +1,37 @@
+{
+  "experiment_id": "EXP-052",
+  "date": "2026-09-20",
+  "goal": "Goal 7 / PG-P0-07",
+  "status": "PASSED_ENOSPC_FAIL_CLOSED_FIXTURE",
+  "scope": "local-disposable-negative-fixture",
+  "injection": {
+    "exception": "OSError(errno.ENOSPC)",
+    "real_filesystem_fill": false
+  },
+  "tests": {
+    "host_observer_targeted": "25/25",
+    "host_full": "134/134",
+    "host_compileall_exit": 0,
+    "vm_observer_runtime": "30/30"
+  },
+  "assertions": {
+    "audit_returns_false_without_uncaught_error": true,
+    "snapshot_returns_none_without_overwriting_history": true,
+    "existing_history_preserved": true
+  },
+  "isolation": {
+    "exp039_touched": false,
+    "docker_action": false,
+    "systemd_action": false,
+    "resource_limits_changed": false,
+    "production_connection": false
+  },
+  "not_proven": [
+    "real_disk_full_end_to_end_recovery",
+    "journald_high_water_behavior",
+    "systemd_restart_after_disk_full",
+    "24h_soak_completion",
+    "final_resource_p99",
+    "production_readiness"
+  ]
+}
