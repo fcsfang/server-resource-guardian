@@ -75,7 +75,7 @@ PG-P0-01 至 PG-P0-06 已完成；当前正在执行 **PG-P0-07：systemd 常驻
 | 动作授权、冷却、失败计数 | 部分实现 | 授权无签名/一次性消费，ledger 非原子、无锁且粒度不足 |
 | 动作后恢复检查 | 部分实现 | 对 stop/terminate 主要验证对象已停；未通用重采样宿主风险与业务 SLI |
 | Beszel 只读 Adapter/Bridge/UI model | 已实现原型 | 无稳定 endpoint、运行管理、长期兼容性和身份映射验证 |
-| systemd 常驻服务和自身保护 | 尚未实现 | 无 unit、watchdog、独立 slice、资源预留、日志轮换、升级/回滚 |
+| systemd 常驻服务和自身保护 | 本地 MVP 部分实现 | 已有非 root observer unit/slice、readiness/watchdog、有界审计和自然失败重启；24h soak、watchdog 超时/SIGKILL/OOM 恢复、磁盘满边界、完整故障矩阵、P99 校准、日志轮换和升级/回滚仍未完成 |
 | 宿主机 PID 动作 | 未实现 | 保持未实现；不作为自动生产路线 |
 
 ### 2.2 已有证据能说明什么

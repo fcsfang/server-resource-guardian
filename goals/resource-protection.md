@@ -318,6 +318,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：PG-P0-07 完成 EXP-044；transient unit 首轮自然 `status=1` 后由 systemd `Restart=on-failure` 重启，`NRestarts=1`、第二轮 `ExecMainStatus=0`、readiness 再次生成、最终 success 回收，EXP-039 主进程未受影响；未验证 SIGKILL/OOM/watchdog 超时恢复。
 - 2026-09-20：PG-P0-07 将资源 P99 汇总器及测试同步至 Multipass 临时工作树，当前 VM 隔离回归 `78/78` 通过；EXP-039 长跑仍在运行。
 - 2026-09-20：PG-P0-07 为 EXP-039 增加运行中结构化摘要；Observer 约 2,175 秒、sidecar 201 样本/2,007 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计稳定在 1,046,557 bytes。摘要标记 `RUNNING`，未改变 24 小时完成门。
+- 2026-09-20：复核并修正 docs/27「当前事实基线」中 systemd 自身保护的过时表述；当前准确状态为本地 MVP 部分实现，生产准入仍受 24h soak、剩余故障边界和 P99 校准约束。
 
 ## 全局边界（所有 Goal 共同遵守）
 
