@@ -1,0 +1,49 @@
+{
+  "experiment_id": "EXP-050",
+  "date": "2026-09-20",
+  "goal": "Goal 7 / PG-P0-07",
+  "status": "PASSED_WATCHDOG_STATUS_FAIL_CLOSED",
+  "scope": "local-disposable-observe-only",
+  "implementation": {
+    "status_values": [
+      "sent",
+      "failed",
+      "not_configured"
+    ],
+    "configured_failure_action": "escalate",
+    "configured_failure_execution": "not_executed"
+  },
+  "tests": {
+    "host_targeted": "28/28",
+    "host_full": "132/132",
+    "host_compileall_exit": 0,
+    "vm_targeted_after_fixture_fix": "28/28",
+    "systemd_analyze_verify_exit": 0,
+    "first_vm_attempt": "inconclusive_fixture_missing_unit_slice"
+  },
+  "vm_observe_once": {
+    "watchdog_status": "not_configured",
+    "audit_status": "written",
+    "action": "none",
+    "execution": "not_applicable",
+    "audit_bytes": 7879
+  },
+  "mutations": {
+    "watchdog_timeout": false,
+    "sigkill": false,
+    "oom_injection": false,
+    "docker_action": false,
+    "persistent_systemd_unit": false,
+    "resource_limits_changed": false,
+    "production_connection": false,
+    "exp039_touched": false
+  },
+  "not_proven": [
+    "real_systemd_socket_failure_recovery",
+    "watchdog_timeout_restart",
+    "sigkill_or_oom_recovery",
+    "24h_soak_completion",
+    "final_resource_p99",
+    "production_readiness"
+  ]
+}

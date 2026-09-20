@@ -13,6 +13,7 @@ from src.guardian_observer import (
     collect_observation,
     parse_meminfo,
     parse_psi,
+    record_watchdog_status,
     resolve_process_cgroup_root,
     validate_interval_seconds,
     write_snapshot,
@@ -150,6 +151,32 @@ class GuardianObserverTests(unittest.TestCase):
         result = collect_docker_stats(timeout_runner)
         self.assertFalse(result["available"])
         self.assertIn("timed out", result["error"])
+
+    def test_configured_watchdog_failure_is_audited_and_blocks_execution(self):
+        event = {
+            "evidence": {},
+            "decision": {
+                "action": "graceful_stop",
+                "execution": "pending_controller",
+                "reason_codes": [],
+            },
+        }
+        status = record_watchdog_status(event, False, notify_socket="@guardian")
+        self.assertEqual(status, "failed")
+        self.assertEqual(event["evidence"]["watchdog_status"], "failed")
+        self.assertEqual(event["decision"]["action"], "escalate")
+        self.assertEqual(event["decision"]["execution"], "not_executed")
+        self.assertIn("watchdog_notify_failed", event["decision"]["reason_codes"])
+
+    def test_unconfigured_watchdog_is_explicit_without_escalation(self):
+        event = {
+            "evidence": {},
+            "decision": {"action": "none", "execution": "not_applicable", "reason_codes": []},
+        }
+        status = record_watchdog_status(event, False, notify_socket="")
+        self.assertEqual(status, "not_configured")
+        self.assertEqual(event["evidence"]["watchdog_status"], "not_configured")
+        self.assertEqual(event["decision"]["action"], "none")
 
     def test_risk_evaluator_requires_persistence_window_and_emits_recovery(self):
         observation = {

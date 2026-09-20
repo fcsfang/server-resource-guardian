@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.guardian_runtime import notify_ready, send_systemd_notification
+from src.guardian_runtime import notify_ready, send_systemd_notification, systemd_notification_status
 
 
 class FakeSocket:
@@ -39,6 +39,11 @@ class GuardianRuntimeTests(unittest.TestCase):
         self.assertTrue(send_systemd_notification("READY=1", notify_socket="@guardian", socket_factory=FakeSocket))
         self.assertEqual(FakeSocket.instances[0].connected, "\0guardian")
         self.assertEqual(FakeSocket.instances[0].messages, [b"READY=1"])
+
+    def test_notification_status_distinguishes_unconfigured_sent_and_failed(self):
+        self.assertEqual(systemd_notification_status(False, notify_socket=""), "not_configured")
+        self.assertEqual(systemd_notification_status(True, notify_socket="@guardian"), "sent")
+        self.assertEqual(systemd_notification_status(False, notify_socket="@guardian"), "failed")
 
     def test_ready_writes_atomic_readiness_file_and_notifies(self):
         with tempfile.TemporaryDirectory() as temp:

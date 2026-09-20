@@ -33,6 +33,15 @@ def send_systemd_notification(
     return True
 
 
+def systemd_notification_status(sent: bool, *, notify_socket: str | None = None) -> str:
+    """Classify a systemd notification without treating no-systemd as failure."""
+
+    configured_socket = notify_socket if notify_socket is not None else os.environ.get("NOTIFY_SOCKET")
+    if not configured_socket:
+        return "not_configured"
+    return "sent" if sent else "failed"
+
+
 def _write_readiness(value: str, readiness_file: str | None = None) -> bool:
     path_value = readiness_file if readiness_file is not None else os.environ.get("GUARDIAN_READY_FILE")
     if not path_value:
@@ -62,4 +71,9 @@ def notify_watchdog(status: str = "sampling") -> bool:
     return send_systemd_notification(f"WATCHDOG=1\nSTATUS={status}")
 
 
-__all__ = ["notify_ready", "notify_watchdog", "send_systemd_notification"]
+__all__ = [
+    "notify_ready",
+    "notify_watchdog",
+    "send_systemd_notification",
+    "systemd_notification_status",
+]

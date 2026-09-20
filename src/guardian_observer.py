@@ -22,7 +22,7 @@ from typing import Any, Callable, Iterable, Mapping
 from .guardian_attribution import ObjectAttributionEvaluator, collect_object_registry
 from .guardian_config import ConfigError, GuardianConfig, load_config, safe_defaults
 from .guardian_risk import CompositeRiskEvaluator
-from .guardian_runtime import notify_ready, notify_watchdog
+from .guardian_runtime import notify_ready, notify_watchdog, systemd_notification_status
 
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
@@ -456,6 +456,27 @@ def build_event(
     }
 
 
+def record_watchdog_status(
+    event: dict[str, Any],
+    sent: bool,
+    *,
+    notify_socket: str | None = None,
+) -> str:
+    """Persist watchdog delivery state and block execution on a configured failure."""
+
+    status = systemd_notification_status(sent, notify_socket=notify_socket)
+    evidence = event.setdefault("evidence", {})
+    evidence["watchdog_status"] = status
+    if status == "failed":
+        decision = event.setdefault("decision", {})
+        decision["action"] = "escalate"
+        decision["execution"] = "not_executed"
+        reason_codes = decision.setdefault("reason_codes", [])
+        if "watchdog_notify_failed" not in reason_codes:
+            reason_codes.append("watchdog_notify_failed")
+    return status
+
+
 def _regular_file_bytes(directory: Path) -> int:
     try:
         return sum(item.stat().st_size for item in directory.iterdir() if item.is_file())
@@ -570,6 +591,8 @@ def run(args: argparse.Namespace) -> None:
         )
         event["evidence"]["config_digest"] = config.config_digest
         event["evidence"]["config_source"] = config.source
+        watchdog_sent = notify_watchdog(f"observe:{event['state']}")
+        record_watchdog_status(event, watchdog_sent)
         if snapshot_dir and (args.snapshot_all or event["state"] in {"warning", "critical", "recovered", "escalated"}):
             snapshot_path = write_snapshot(
                 event,
@@ -598,7 +621,6 @@ def run(args: argparse.Namespace) -> None:
             # not that the first sample was normal. Risk state is reported via
             # the watchdog STATUS field and the persisted event.
             ready_notified = notify_ready("observe:ready")
-        notify_watchdog(f"observe:{event['state']}")
         print(json.dumps(event, ensure_ascii=False), flush=True)
         if args.once:
             return
