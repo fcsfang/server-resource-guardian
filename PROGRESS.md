@@ -132,9 +132,10 @@
 - 2026-09-20 补充 EXP-047 当前代码运行时 smoke：Multipass 临时目录连续两次 `observe --once` 均退出 `0`，审计 2 行且 `audit_status=written`，动作均为 `none/not_applicable`，stderr 为空；该证据仍不覆盖长跑崩溃恢复或磁盘满恢复。
 - 2026-09-20 补充 EXP-047 当前代码 45 秒连续 observe soak：`timeout` 按预设停止条件返回 `124`，输出/审计各 7 条，7/7 审计写入成功，首条降级后 6 条 normal，动作均为 `none/not_applicable`，最大 RSS 27,612 KiB，无 Python traceback；该证据不替代 24 小时长跑或剩余故障注入。
 - 2026-09-20 完成 EXP-048：transient wrapper 首轮自然返回退出码 `137`，systemd 记录 restart counter `1`，第二轮 Observer 重新 readiness/审计并最终 success 回收；首次 `NotifyAccess=main` 子进程通知夹具失败保留，结果仅是异常退出码模拟，不写成真实 SIGKILL/OOM 恢复证据。
-- 2026-09-20 运行中复核 EXP-039：Observer 约 7,219 秒、sidecar 706 样本/7,071 秒，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，审计 1,046,557 bytes；只读扫描确认 136/136 行合法 JSON、事件 ID 无重复，长跑继续保持 `RUNNING`。
+- 2026-09-20 再次只读复核 EXP-039：Observer 约 8,568 秒、sidecar 839 样本/8,404 秒，RSS P95/P99/最大值均为 17,752 KiB、均值 17,536.038 KiB，CPU/FD/线程 P99 为 0.0%/5/1，审计 1,046,557 bytes；只读扫描确认 136/136 行合法 JSON、事件 ID 无重复，长跑继续保持 `RUNNING`。
 - 2026-09-20 完成 EXP-049：新增可复用的只读审计完整性校验器；主机全量 `129/129`、Multipass 定向 `4/4` 通过。对 EXP-039 当前审计文件核验为 `136/136` 条合法 JSON、事件 ID 无重复、`1,046,557/1,048,576` bytes，负向测试覆盖格式错误、缺失/重复 ID 和容量超限且输入不变；校验不改写长跑数据。证据见 [EXP-049](experiments/EXP-049-2026-09-20-audit-integrity-verifier/record.md)。
-- 2026-09-20 完成 EXP-050：新增 watchdog 通知状态分类和 fail-closed 事件门禁；主机全量 `132/132`、Multipass 相关回归 `28/28` 通过，当前代码 VM smoke 为 `watchdog_status=not_configured`、`audit_status=written`、动作 `none/not_applicable`，systemd verify 退出码 0。已配置 socket 的失败路径由负向测试证明会 `escalate/not_executed`；未触发真实 watchdog 超时，不改变 EXP-039 长跑。
+- 2026-09-20 完成 EXP-050：新增 watchdog 通知状态分类和 fail-closed 事件门禁；主机全量 `132/132`、Multipass 相关回归 `28/28` 通过，当前代码 VM smoke 为 `watchdog_status=not_configured`、stdout `audit_status=written`、动作 `none/not_applicable`，systemd verify 退出码 0。已配置 socket 的失败路径由负向测试证明会 `escalate/not_executed`；未触发真实 watchdog 超时，不改变 EXP-039 长跑。
+- 2026-09-20 完成 EXP-051：当前代码在独立临时目录完成 45 秒 observe-only soak，按预设返回 `124`，输出/审计各 7 条，事件 ID 序列一致；stdout watchdog 均为 `not_configured`、stdout audit 状态均为 `written`，审计校验 `7/7` 合法、无重复、54,344 bytes，动作均为 `none/not_applicable`。明确记录 stdout 事后状态字段不回写 JSONL，EXP-039 Observer/sidecar 仍存活；不改变 24 小时、超时恢复和 P99 完成门。
 
 ## 待办事项（按优先级）
 

@@ -73,11 +73,11 @@ watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-syste
 
 审计追加的持久写入契约见 [EXP-047](../experiments/EXP-047-2026-09-20-audit-fsync-fail-closed/record.md)：Observer 只有在完整 payload 写入、`flush` 和 `fsync` 都成功后才把审计事件视为已写入；短写入或同步失败均返回失败，由上层保持降级/不执行动作。主机正负向测试已覆盖；EXP-039 当前运行进程是在该修正之前启动的，因此不能把本次契约直接写成该长跑的运行时证据。
 
-EXP-047 的当前代码 VM smoke 已补充运行时证据：独立临时目录连续执行两次 `observe --once`，两次退出码均为 `0`，审计 2 行/15,680 bytes，`audit_status=written`，动作均为 `none/not_applicable`，stderr 为空；这仍不等同于长跑崩溃恢复或磁盘满恢复。
+EXP-047 的当前代码 VM smoke 已补充运行时证据：独立临时目录连续执行两次 `observe --once`，两次退出码均为 `0`，审计 2 行/15,680 bytes；stdout 事件报告 `audit_status=written`，动作均为 `none/not_applicable`，stderr 为空。`audit_status` 是追加成功后的输出字段，不回写已经追加的同一 JSONL 行；这仍不等同于长跑崩溃恢复或磁盘满恢复。
 
-同一当前代码随后完成有界 45 秒 observe soak：`timeout` 按预设停止条件返回 `124`，输出/审计各 7 条，7 条审计均 `written`，首条 `degraded_observability` 后 6 条 `normal`，动作均为 `none/not_applicable`，最大 RSS 27,612 KiB，无 Python traceback。该结果补充 fsync 版本的连续运行证据，但不替代 EXP-039 的 24 小时长跑或剩余故障注入。
+同一当前代码随后完成有界 45 秒 observe soak：`timeout` 按预设停止条件返回 `124`，输出/审计各 7 条，7 条 stdout 事件均报告 `audit_status=written`，首条 `degraded_observability` 后 6 条 `normal`，动作均为 `none/not_applicable`，最大 RSS 27,612 KiB，无 Python traceback。该结果补充 fsync 版本的连续运行证据，但不替代 EXP-039 的 24 小时长跑或剩余故障注入。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 706 个样本、7,071 秒窗口，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,495.354 KiB、FD 均值 3.609，审计仍为 1,046,557 bytes。只读完整性扫描确认 136/136 行合法 JSON、事件 ID 无重复。24 小时主 soak 仍在运行，最终 P99 待完成；该长跑启动早于 EXP-047 的 fsync 修正。
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至最新中途快照，Observer 约 8,568 秒，sidecar 有 839 个样本、8,404 秒窗口，RSS P95/P99/最大值为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,536.038 KiB、FD 均值 3.615，审计仍为 1,046,557 bytes。只读完整性扫描确认 136/136 行合法 JSON、事件 ID 无重复。24 小时主 soak 仍在运行，最终 P99 待完成；该长跑启动早于 EXP-047 的 fsync 修正。
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。
 
@@ -88,6 +88,8 @@ EXP-048 进一步用 disposable wrapper 自然返回退出码 `137`，验证 tra
 EXP-049 将审计 JSONL 的临时完整性扫描固化为只读校验器：主机全量测试 `129/129`、Multipass 定向测试 `4/4`；对 malformed JSON、缺失/重复 `event_id` 和容量超限均 fail-closed，容量负向测试确认输入文件不被改写。对 EXP-039 当前审计快照的只读核验为 `136/136` 行合法、事件 ID 无重复、`1,046,557/1,048,576` bytes，状态 `valid`。这只证明该读取时刻的审计结构完整，不证明磁盘满恢复、24 小时长跑完成或 EXP-039 已使用 EXP-047 的新 fsync 代码。
 
 EXP-050 将 watchdog 通知结果写入每轮事件证据：无 socket 为 `not_configured`、成功发送为 `sent`、已配置但发送失败为 `failed`；后一情况追加 `watchdog_notify_failed` 并强制 `escalate/not_executed`，不会继续执行动作。主机定向 `28/28`、全量 `132/132`，Multipass 定向 `28/28` 和 `systemd-analyze verify` 退出码 `0`；当前代码 VM smoke 为 `not_configured`、审计 `written`、无动作。该实验未触发真实 watchdog 超时，因此不替代超时重启恢复证据。
+
+EXP-051 对当前代码进行了独立 45 秒 observe soak：按预设返回 `124`，stdout/审计各 7 条，事件 ID 序列一致；每条 stdout 事件的 watchdog 状态为 `not_configured`，审计校验为 `7/7` 合法、无重复、54,344 bytes，动作均为 `none/not_applicable`。该实验明确记录 `audit_status` 只存在于追加成功后的 stdout 结果，不把事后字段误写成 JSONL 持久字段；EXP-039 Observer 和 sidecar 未受影响。
 
 资源汇总器与回归测试已同步到 Multipass 临时工作树，当前隔离测试为 `78/78` 通过；该结果用于确认 ARM64 VM 上的测试兼容性，不改变 24 小时 soak 或生产 P99 的完成门。
 

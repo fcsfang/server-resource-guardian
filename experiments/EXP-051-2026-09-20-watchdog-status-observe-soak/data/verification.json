@@ -1,0 +1,55 @@
+{
+  "experiment_id": "EXP-051",
+  "date": "2026-09-20",
+  "goal": "Goal 7 / PG-P0-07",
+  "status": "PASSED_CURRENT_CODE_OBSERVE_SOAK",
+  "scope": "local-disposable-observe-only",
+  "run": {
+    "timeout_seconds": 45,
+    "exit_code": 124,
+    "output_records": 7,
+    "audit_records": 7,
+    "same_event_id_sequence": true,
+    "watchdog_statuses_in_output": [
+      "not_configured"
+    ],
+    "audit_statuses_in_output": [
+      "written"
+    ],
+    "audit_status_field_persisted_in_rows": false,
+    "actions": [
+      "none"
+    ],
+    "executions": [
+      "not_applicable"
+    ],
+    "stderr_bytes": 0,
+    "audit_bytes": 54344
+  },
+  "audit_verifier": {
+    "lines": 7,
+    "valid_json_records": 7,
+    "invalid_json_records": 0,
+    "missing_event_ids": 0,
+    "duplicate_event_ids": 0,
+    "max_bytes": 1048576,
+    "capacity_ok": true,
+    "status": "valid"
+  },
+  "isolation": {
+    "exp039_observer_alive_after": true,
+    "exp039_sidecar_alive_after": true,
+    "docker_action": false,
+    "systemd_action": false,
+    "resource_limits_changed": false,
+    "production_connection": false
+  },
+  "not_proven": [
+    "real_watchdog_timeout_recovery",
+    "sigkill_or_oom_recovery",
+    "disk_full_end_to_end_recovery",
+    "24h_soak_completion",
+    "final_resource_p99",
+    "production_readiness"
+  ]
+}
