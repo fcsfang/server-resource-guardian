@@ -28,6 +28,7 @@ from .guardian_actions import (
 )
 from .guardian_controller import ControllerResult, GuardianController
 from .guardian_recovery import CooldownLedger, RecoveryObservation, RecoveryPolicy
+from .guardian_state import GuardianStateStore
 
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
@@ -129,6 +130,7 @@ def serialize_result(result: ControllerResult) -> dict[str, Any]:
         "reason_codes": list(result.reason_codes),
         "cooldown_state": result.cooldown_state,
         "failure_breaker_tripped": result.failure_breaker_tripped,
+        "intent_id": result.intent_id,
     }
 
 
@@ -155,6 +157,7 @@ def run_enforce(
     recovery_wait_seconds: float = 30.0,
     recovery_poll_seconds: float = 1.0,
     ledger: CooldownLedger | None = None,
+    state_store: GuardianStateStore | None = None,
     cooldown_seconds: float = 30.0,
     max_actions: int = 1,
     action_window_seconds: float = 300.0,
@@ -169,6 +172,8 @@ def run_enforce(
             raise ActionDenied("local_disposable_confirmation_required")
         if ledger is None:
             raise ActionDenied("persistent_ledger_required")
+        if state_store is None:
+            raise ActionDenied("persistent_state_store_required")
 
     if executor_kind == "mock":
         executor = MockActionExecutor()
@@ -187,7 +192,7 @@ def run_enforce(
     action = event.get("decision", {}).get("action") if isinstance(event.get("decision"), dict) else None
     if action not in SUPPORTED_ACTIONS:
         raise ActionDenied("event_action_not_supported")
-    result = GuardianController(executor, ledger=ledger).enforce(
+    result = GuardianController(executor, ledger=ledger, state_store=state_store).enforce(
         event,
         authorization,
         allowed_actions,
@@ -220,11 +225,13 @@ def main() -> None:
     parser.add_argument("--action-window-seconds", type=float, default=300.0)
     parser.add_argument("--max-consecutive-failures", type=int, default=2)
     parser.add_argument("--ledger-file", type=Path, help="persistent cooldown/failure ledger; required for docker")
+    parser.add_argument("--state-db", type=Path, help="SQLite WAL capability/intent/audit state; required for docker")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     try:
         ledger = CooldownLedger.load(args.ledger_file) if args.ledger_file else None
+        state_store = GuardianStateStore(args.state_db) if args.state_db else None
         event = load_json(args.event_file)
         result = run_enforce(
             event,
@@ -235,6 +242,7 @@ def main() -> None:
             recovery_wait_seconds=args.recovery_wait,
             recovery_poll_seconds=args.recovery_poll,
             ledger=ledger,
+            state_store=state_store,
             cooldown_seconds=args.cooldown_seconds,
             max_actions=args.max_actions,
             action_window_seconds=args.action_window_seconds,

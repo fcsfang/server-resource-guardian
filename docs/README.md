@@ -80,6 +80,7 @@ README.md
 | [27-production-guardian-roadmap.md](27-production-guardian-roadmap.md) | 生产化主方案、安全不变量、P0/P1/P2 任务、实验门、生产准入和 Agent 交接 | **当前生产化唯一执行基线** |
 | [28-claim-evidence-boundary.md](28-claim-evidence-boundary.md) | 当前项目声称、源码/实验依据和不可扩大边界 | Goal 7 M0 事实口径；新增结论必须回链 |
 | [29-guardian-config-schema.md](29-guardian-config-schema.md) | Guardian JSON 配置、启动门禁、digest 和回滚边界 | Goal 7 PG-P0-02；组合风险现状回链 EXP-030 |
+| [30-guardian-durable-state.md](30-guardian-durable-state.md) | SQLite WAL、capability、intent/result、审计、冷却和崩溃恢复 | Goal 7 PG-P0-05 本地 MVP |
 
 ## 3. 补充研究材料
 

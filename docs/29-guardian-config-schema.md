@@ -39,7 +39,7 @@ python3 -m src.guardian_observer --once --config config/guardian.example.json
 
 - 组合风险的生产阈值校准、长跑耐久和 x86_64 兼容性仍待后续阶段验证；
 - 对象 registry、业务 owner 和动作合同仍由 PG-P0-04/05 接入；
-- capability 一次性消费、原子 intent/result 和崩溃恢复仍由 PG-P0-05 接入；
+- capability 一次性消费、原子 intent/result 和崩溃恢复已由 PG-P0-05 接入；生产 capability 发行仍待审批；
 - `guardian_enforce.py` 的恢复/冷却参数尚未全部从配置文件迁移；
 - 当前 schema 只提供本地 MVP 配置，不代表生产阈值或生产授权。
 

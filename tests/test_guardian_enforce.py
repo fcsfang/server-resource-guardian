@@ -12,11 +12,12 @@ from src.guardian_enforce import (
     serialize_result,
 )
 from src.guardian_recovery import CooldownLedger, RecoveryPolicy, assess_recovery
+from src.guardian_state import GuardianStateStore
 
 
-def event(action="graceful_stop"):
+def event(action="graceful_stop", event_id="event-enforce-1"):
     return {
-        "event_id": "event-enforce-1",
+        "event_id": event_id,
         "state": "critical",
         "object_candidates": [{"kind": "container", "id": "abcdef123456", "name": "discardable"}],
             "decision": {
@@ -28,9 +29,9 @@ def event(action="graceful_stop"):
     }
 
 
-def authorization(action="graceful_stop"):
+def authorization(action="graceful_stop", approval_id="explicit-local-test"):
     return Authorization(
-        approval_id="explicit-local-test",
+        approval_id=approval_id,
         environment="local-disposable",
         target_id="abcdef123456",
         action=action,
@@ -79,18 +80,20 @@ class GuardianEnforceTests(unittest.TestCase):
                 {"returncode": 0, "stdout": json.dumps({"Running": False, "Status": "exited", "ExitCode": 0}), "stderr": ""},
             )()
 
-        result = run_enforce(
-            event(),
-            authorization(),
-            ["graceful_stop"],
-            executor_kind="docker",
-            confirm_local_disposable=True,
-            ledger=CooldownLedger(),
-            runner=fake_runner,
-            now=1000.0,
-            recovery_wait_seconds=1.0,
-            recovery_poll_seconds=0.0,
-        )
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_enforce(
+                event(),
+                authorization(),
+                ["graceful_stop"],
+                executor_kind="docker",
+                confirm_local_disposable=True,
+                ledger=CooldownLedger(),
+                state_store=GuardianStateStore(Path(temp) / "state.db"),
+                runner=fake_runner,
+                now=1000.0,
+                recovery_wait_seconds=1.0,
+                recovery_poll_seconds=0.0,
+            )
         self.assertEqual(result.state, "recovered")
         self.assertTrue(result.action_result.executed)
         self.assertEqual(result.recovery.reason_codes, ("target_stopped",))
@@ -145,21 +148,24 @@ class GuardianEnforceTests(unittest.TestCase):
             raise subprocess.TimeoutExpired(["docker", "stop"], 35)
 
         ledger = CooldownLedger()
-        first = run_enforce(
-            event(), authorization(), ["graceful_stop"],
-            executor_kind="docker", confirm_local_disposable=True, ledger=ledger,
-            runner=timeout_runner, now=1000.0, cooldown_seconds=0.0, max_actions=10,
-        )
-        second = run_enforce(
-            event(), authorization(), ["graceful_stop"],
-            executor_kind="docker", confirm_local_disposable=True, ledger=ledger,
-            runner=timeout_runner, now=1001.0, cooldown_seconds=0.0, max_actions=10,
-        )
+        with tempfile.TemporaryDirectory() as temp:
+            state_store = GuardianStateStore(Path(temp) / "state.db")
+            first = run_enforce(
+                event(event_id="event-timeout-1"), authorization(approval_id="approval-timeout-1"), ["graceful_stop"],
+                executor_kind="docker", confirm_local_disposable=True, ledger=ledger,
+                state_store=state_store, runner=timeout_runner, now=1000.0, cooldown_seconds=0.0, max_actions=10,
+            )
+            second = run_enforce(
+                event(event_id="event-timeout-2"), authorization(approval_id="approval-timeout-2"), ["graceful_stop"],
+                executor_kind="docker", confirm_local_disposable=True, ledger=ledger,
+                state_store=state_store, runner=timeout_runner, now=1001.0, cooldown_seconds=0.0, max_actions=10,
+            )
+            persistent_breaker = state_store.failure_breaker("unknown-host", "abcdef123456", "graceful_stop", 2)
         self.assertEqual(first.state, "failed")
         self.assertEqual(first.reason_codes, ("action_timeout",))
         self.assertEqual(second.state, "failed")
         self.assertTrue(second.failure_breaker_tripped)
-        self.assertEqual(ledger.consecutive_failures, 2)
+        self.assertTrue(persistent_breaker)
 
     def test_restart_requires_healthy_business_status_after_action(self):
         def fake_runner(command, **kwargs):

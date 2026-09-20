@@ -21,7 +21,7 @@
 5. 开始实验前创建 `EXP-###` 记录；开始代码前先把验收条件落到测试。
 6. 完成后同时更新本文状态板、Goal 7、`PROGRESS.md` 和实验记录；不得只在对话中声称完成。
 
-PG-P0-01、PG-P0-02、PG-P0-03 和 PG-P0-04 已完成；当前首个可执行任务是 **PG-P0-05：策略、授权和耐久状态**。本文的状态板和 Goal 7 必须与代码、实验记录同步更新。
+PG-P0-01 至 PG-P0-05 已完成；当前首个可执行任务是 **PG-P0-06：恢复、冷却和失败熔断**。本文的状态板和 Goal 7 必须与代码、实验记录同步更新。
 
 ---
 
@@ -511,8 +511,8 @@ M0–M3 仅在当前 Multipass `local-disposable` 环境执行。M4 及以后每
 | PG-P0-02 配置 Schema | `DONE` | P0-01 | docs/29、JSON schema、校验器和 74 个测试已通过 | 已进入 PG-P0-03 |
 | PG-P0-03 组合风险引擎 | `DONE` | P0-02 | EXP-030；宿主 84/84、Multipass 隔离 20/20；cgroup v2 当前路径已解析 | 进入 PG-P0-04；长跑/阈值/x86_64 仍待后续阶段 |
 | PG-P0-04 对象归因 | `DONE` | P0-03 | EXP-031；宿主 91/91、Multipass 隔离 27/27；真实 Docker full ID↔cgroup 映射、无压力 NO_TARGET 已验证 | 进入 PG-P0-05；贡献阈值仍是本地校准值 |
-| PG-P0-05 策略/授权/耐久性 | `READY` | P0-02,P0-04 | ledger 无事务/并发安全；对象归因现已可提供目标证据 | 先实现 capability、原子 intent/result 和崩溃恢复 |
-| PG-P0-06 两层恢复 | `BACKLOG` | P0-03,P0-05 | 当前主要校验容器终态 | 等待依赖 |
+| PG-P0-05 策略/授权/耐久性 | `DONE` | P0-02,P0-04 | docs/30、EXP-032；101/101 宿主、52/52 Multipass 隔离；SQLite WAL/capability/intent/reconciliation 已接入 Docker enforce 门 | 进入 PG-P0-06；生产 capability 发行仍待审批 |
+| PG-P0-06 两层恢复 | `READY` | P0-03,P0-05 | 当前主要校验容器终态，尚无 host `MITIGATED` 与业务恢复分层 | 先拆分恢复状态和资源/业务 probe |
 | PG-P0-07 systemd/自身保护 | `BACKLOG` | P0-03,P0-05,P0-06 | 无常驻服务 | 等待依赖 |
 | PG-P0-08 本地新闭环 | `BACKLOG` | P0-01–07 | 需重新授权 | 等待依赖和用户单次授权 |
 | PG-P0-09 Beszel 旁路 endpoint | `BLOCKED` | P0-05–07, UI 评审 | docs/23 尚未经 leader 评审 | 评审后实现 |

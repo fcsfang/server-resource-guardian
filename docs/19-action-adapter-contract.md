@@ -30,7 +30,7 @@
 - `GuardianController` 负责把 `enforce` 事件接入动作适配器：只有显式 `enforce`、单一稳定对象、可行动风险、授权和策略校验全部通过，才会调用注入式执行器。
 - `MockActionExecutor` 的计划结果不会消耗真实动作冷却或失败计数；只有真实执行器返回结果后才更新动作门禁。
 - `guardian_enforce.py` 提供单次运行桥接：默认使用 mock；真实 Docker 路径还要求授权文件、`--executor docker` 和 `--confirm-local-disposable`，动作完成后只读探测容器状态，并输出 `guardian.enforce.v1` 结构化审计记录。CLI 可显式配置冷却、动作窗口和连续失败阈值，实验参数不得直接当作生产默认值。
-- 真实 Docker 路径还必须提供持久化 `--ledger-file`；没有 ledger 时 fail-closed，避免独立进程绕过冷却和连续失败熔断。
+- 真实 Docker 路径还必须同时提供持久化 `--ledger-file` 和 SQLite WAL `--state-db`；缺少任一项时 fail-closed，避免独立进程绕过 capability、intent、冷却和连续失败熔断。
 - Docker runner 超时会转换为 `action_timeout` 失败结果并计入 ledger；动作失败或超时不会继续调用恢复探针，避免二次错误覆盖原始故障。
 
 ## 3. 当前完成与未完成
@@ -48,4 +48,4 @@
 - [x] 在修正测试进程并重新获得明确本地可丢弃对象授权后，复测一次 `graceful_stop`；EXP-014 的 exit 137 已被识别为失败，EXP-015 以 exit 0 完成真实闭环。
 - [x] 多对象竞争、无稳定身份和不健康业务状态 fail-closed，见 EXP-018。
 - [ ] 接入真实业务健康接口和生产保护名单；需外部业务信息和测试授权。
-- [ ] 将 capability 一次性消费、原子 intent/result 和崩溃恢复接入生产化状态层，见 Goal 7 PG-P0-05。
+- [x] 将 capability 一次性消费、原子 intent/result 和崩溃恢复接入本地生产化状态层；生产发行、权限和部署仍待后续审批，见 Goal 7 PG-P0-05。

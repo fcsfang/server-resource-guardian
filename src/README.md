@@ -12,6 +12,8 @@ PG-P0-03 新增 [`guardian_risk.py`](guardian_risk.py)：组合 OOM 增量、可
 
 PG-P0-04 新增 [`guardian_attribution.py`](guardian_attribution.py)：只读调用 Docker inspect，使用容器 PID 映射 full ID 到 cgroup v2，读取对象内存和 OOM 计数，并用连续样本计算贡献度、置信度和领先幅度。单目标未达到证据门槛、对象重建、ID/cgroup 不一致和候选接近时分别降级或输出 `AMBIGUOUS_TARGET`；未确认归因不能生成 simulate/enforce 目标计划。
 
+PG-P0-05 新增 [`guardian_state.py`](guardian_state.py)：使用 SQLite WAL 持久化 capability、intent/result、审计、冷却和失败熔断状态。真实 Docker enforce 必须同时提供 `--ledger-file` 与 `--state-db`；意图或执行开始后崩溃会在下次启动进入 `RECONCILIATION_REQUIRED`，不会自动重试。
+
 当前也支持 `simulate`：它只根据风险状态、对象身份、保护状态和动作白名单生成计划，并明确标记 `execution=not_executed`。`guardian_actions.py` 提供授权校验、mock executor 和参数数组 Docker 适配器；没有显式的本地可丢弃环境授权时，不调用真实执行器。
 
 `guardian_recovery.py` 提供纯函数式恢复验证、冷却和失败熔断判断；它不主动重试动作，必须由上层在策略允许时决定是否升级。
@@ -22,7 +24,7 @@ PG-P0-04 新增 [`guardian_attribution.py`](guardian_attribution.py)：只读调
 
 `guardian_enforce.py` 提供单次运行桥接：读取事件快照和短期授权文件，默认走 mock；显式选择 Docker executor 并确认本地可丢弃环境后，才会调用动作适配器，随后使用只读 `docker inspect` 做恢复探测，并输出包含动作前事件与动作后结果的 `guardian.enforce.v1` 审计记录。
 
-真实 Docker executor 还必须提供持久化 `--ledger-file`；ledger 保存冷却时间、动作窗口和连续失败次数，防止独立 CLI 进程绕过冷却或失败熔断。
+真实 Docker executor 还必须提供持久化 `--ledger-file` 和 SQLite WAL `--state-db`；前者保存兼容的冷却 ledger，后者保存 capability、intent/result、审计和崩溃恢复状态，防止独立 CLI 进程绕过动作门禁。
 CLI 可用 `--cooldown-seconds`、`--max-actions`、`--action-window-seconds` 和
 `--max-consecutive-failures` 显式设置实验参数；动作执行器超时会形成
 `action_timeout` 失败结果并计入 ledger，失败动作不会继续探测恢复状态。

@@ -54,7 +54,7 @@
 - 历史 PoC 执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md) 和 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)。
 - 当前生产化执行基线：[docs/27-production-guardian-roadmap.md](docs/27-production-guardian-roadmap.md)。当前 Guardian 是已有本地单对象止损证据的原型，尚不是生产守护服务。
 - 当前活动目标：Goal 6 保留 Beszel UI 评审任务；Goal 7 按生产化路线推进。
-- 当前下一步：执行 [PG-P0-05 策略、授权和耐久状态](docs/27-production-guardian-roadmap.md#pg-p0-05-策略授权和耐久状态)；PG-P0-04 的本地 MVP 证据见 [EXP-031](experiments/EXP-031-2026-09-20-object-attribution/record.md)。此前不开始新的 `enforce`、restart、terminate 或生产接入。G6-T06 仍需 leader 评审后才能实现旁路 endpoint。
+- 当前下一步：执行 [PG-P0-06 恢复、冷却和失败熔断](docs/27-production-guardian-roadmap.md#pg-p0-06-恢复冷却和失败熔断)；PG-P0-05 的本地 MVP 证据见 [EXP-032](experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md)。此前不开始新的 `enforce`、restart、terminate 或生产接入。G6-T06 仍需 leader 评审后才能实现旁路 endpoint。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
@@ -190,7 +190,7 @@ git push origin main
 
 ## 当前第一步
 
-从 [docs/27 状态板](docs/27-production-guardian-roadmap.md#10-当前状态板) 依次推进；PG-P0-01/02/03/04 已完成，当前从 `PG-P0-05` 策略、授权和耐久状态开始，再依次实现两层恢复和 systemd 常驻运行。在 P0-01–07 全部通过且用户对当次本地 disposable 对象单独授权前，不执行新的真实动作。
+从 [docs/27 状态板](docs/27-production-guardian-roadmap.md#10-当前状态板) 依次推进；PG-P0-01/02/03/04/05 已完成，当前从 `PG-P0-06` 两层恢复开始，再依次实现 systemd 常驻运行。在 P0-01–07 全部通过且用户对当次本地 disposable 对象单独授权前，不执行新的真实动作。
 
 ## 相关入口
 
