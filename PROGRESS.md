@@ -131,6 +131,7 @@
 - 2026-09-20 完成 EXP-047：审计追加检查完整写入并在成功返回前执行 `flush/fsync`，同步失败保持 fail-closed；主机全量 `125/125`、Multipass 当前 Observer/Runtime 相关回归 `25/25` 通过。首次 VM 夹具漏拷贝 unit/slice 的错误已修正后重跑，不纳入通过统计；EXP-039 仍使用修正前代码运行。
 - 2026-09-20 补充 EXP-047 当前代码运行时 smoke：Multipass 临时目录连续两次 `observe --once` 均退出 `0`，审计 2 行且 `audit_status=written`，动作均为 `none/not_applicable`，stderr 为空；该证据仍不覆盖长跑崩溃恢复或磁盘满恢复。
 - 2026-09-20 补充 EXP-047 当前代码 45 秒连续 observe soak：`timeout` 按预设停止条件返回 `124`，输出/审计各 7 条，7/7 审计写入成功，首条降级后 6 条 normal，动作均为 `none/not_applicable`，最大 RSS 27,612 KiB，无 Python traceback；该证据不替代 24 小时长跑或剩余故障注入。
+- 2026-09-20 完成 EXP-048：transient wrapper 首轮自然返回退出码 `137`，systemd 记录 restart counter `1`，第二轮 Observer 重新 readiness/审计并最终 success 回收；首次 `NotifyAccess=main` 子进程通知夹具失败保留，结果仅是异常退出码模拟，不写成真实 SIGKILL/OOM 恢复证据。
 
 ## 待办事项（按优先级）
 

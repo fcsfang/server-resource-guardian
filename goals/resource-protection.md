@@ -326,6 +326,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：复核并修正 docs/27「当前事实基线」中 systemd 自身保护的过时表述；当前准确状态为本地 MVP 部分实现，生产准入仍受 24h soak、剩余故障边界和 P99 校准约束。
 - 2026-09-20：同步修正 `src/README.md` 的 PG-P0-07 过时状态，明确 EXP-034～044 已完成的本地基线与 EXP-039/剩余故障边界未完成事实。
 - 2026-09-20：完成 EXP-047；审计追加现在检查完整写入并在成功返回前执行 `flush/fsync`，同步失败保持 fail-closed；主机正负向测试、Multipass 当前 Observer/Runtime 回归 `25/25`、两次当前代码 `observe --once` smoke 和 45 秒连续 observe soak 通过。该修正不 retroactively 覆盖已启动的 EXP-039，长跑结束后需用当前代码重新验证相关运行时窗口。
+- 2026-09-20：完成 EXP-048；在 transient wrapper 中自然返回退出码 `137`，systemd 观察到一次 restart counter，第二轮 Observer 恢复 readiness/审计并最终 success 回收；首次 `NotifyAccess=main` 子进程通知夹具失败已保留，结论仅覆盖模拟异常退出，不覆盖真实 SIGKILL/OOM/watchdog 超时。
 
 ## 全局边界（所有 Goal 共同遵守）
 

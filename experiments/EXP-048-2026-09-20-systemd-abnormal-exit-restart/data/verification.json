@@ -1,0 +1,48 @@
+{
+  "experiment_id": "EXP-048",
+  "date": "2026-09-20",
+  "environment": "guardian-ubuntu / Ubuntu 22.04.5 ARM64 / systemd 249 user manager",
+  "scope": "local-disposable-observe-only",
+  "fixture": {
+    "first_attempt": {
+      "notify_access": "main",
+      "result": "inconclusive_protocol_fixture",
+      "reason": "shell wrapper child Observer notifications were rejected"
+    },
+    "validated_attempt": {
+      "unit": "guardian-exp048-abnormal-fixed.service",
+      "notify_access": "all (transient wrapper fixture only)",
+      "watchdog_sec": 30,
+      "restart": "on-failure",
+      "restart_sec_ms": 100,
+      "first_exit": "status=137/FAILURE (natural exit code; no signal sent)",
+      "restart_counter_observed": 1,
+      "second_active_state_observed": "activating/start then active/running",
+      "final_result": "success",
+      "after_collect_load_state": "not-found"
+    }
+  },
+  "artifacts": {
+    "readiness": "observe:ready",
+    "audit_records": 2,
+    "audit_bytes": 15775,
+    "docker_actions": false,
+    "systemd_persistent_unit": false,
+    "resource_limits_changed": false,
+    "production_connection": false
+  },
+  "isolation": {
+    "exp039_pid": 1076273,
+    "exp039_alive_after": true,
+    "beszel_containers_healthy_after": true
+  },
+  "status": "PASSED_SIMULATED_ABNORMAL_EXIT_RESTART",
+  "not_proven": [
+    "SIGKILL recovery",
+    "OOM kill recovery",
+    "watchdog timeout recovery",
+    "persistent unit sandbox",
+    "disk-full recovery",
+    "production readiness"
+  ]
+}

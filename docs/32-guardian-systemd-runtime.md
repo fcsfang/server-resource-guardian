@@ -83,6 +83,8 @@ EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高
 
 EXP-044 验证了自然失败后的 systemd 重启子路径：transient unit 首轮自然返回非零码，journal 记录重启计划，第二轮 `NRestarts=1`、`ExecMainStatus=0`、readiness 再次生成并最终 success 回收。该实验没有触发 SIGKILL、OOM 或 watchdog 超时，因此仍不等同于崩溃/超时全覆盖。
 
+EXP-048 进一步用 disposable wrapper 自然返回退出码 `137`，验证 transient `Restart=on-failure`：首轮失败后 journal 记录 restart counter `1`，第二轮 Observer 重新写入 readiness/审计，unit 最终 success 并由 `--collect` 回收。第一次 `NotifyAccess=main` 子进程通知夹具失败已保留，修正后的 transient-only `NotifyAccess=all` 结果不代表生产 unit 的权限配置，也不等同于真实 SIGKILL/OOM 恢复。
+
 资源汇总器与回归测试已同步到 Multipass 临时工作树，当前隔离测试为 `78/78` 通过；该结果用于确认 ARM64 VM 上的测试兼容性，不改变 24 小时 soak 或生产 P99 的完成门。
 
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
