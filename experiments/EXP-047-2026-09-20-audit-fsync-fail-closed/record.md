@@ -55,6 +55,8 @@ Multipass `guardian-ubuntu` 临时目录回归：`tests.test_guardian_observer` 
 
 当前代码的 VM 运行时 smoke 也已通过：在独立临时目录连续执行两次 `observe --once`，两次退出码均为 `0`，审计为 2 行/15,680 bytes，`audit_status=written`，决策均为 `action=none`、`execution=not_applicable`，readiness 文件 14 bytes，stderr 为空。首次采样因尚未建立窗口而为预期的 `degraded_observability`；没有执行 Docker/systemd 动作。
 
+随后在同一当前代码临时工作树执行了有界 45 秒 observe soak：`timeout` 按停止条件返回 `124`，`/usr/bin/time` 记录 `elapsed_s=45.00`、`max_rss_kib=27612`、`user_s=0.15`、`sys_s=0.09`；输出和审计各 7 条，审计文件 53,880 bytes。7 条事件均为 `audit_status=written`、`action=none`、`execution=not_applicable`，其中首条为预期的 `degraded_observability`、其余 6 条为 `normal`；没有 Python traceback。该窗口只证明当前 fsync 代码能连续 observe 并保持无动作，不证明 24 小时泄漏、watchdog 超时或磁盘耗尽恢复。
+
 本实验当前结论只覆盖代码契约，不扩大为 systemd watchdog、进程崩溃、磁盘耗尽或 24 小时 soak 证据。
 
 ## 6. 结论与未完成项

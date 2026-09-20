@@ -325,7 +325,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：完成 EXP-046；Observer 启动入口现在拒绝 `--interval` 的非有限值及 0.1–60 秒之外的命令行覆盖；主机全量测试 123/123、Multipass 相关 Observer/Runtime 回归 23/23 通过。该项只验证参数 fail-closed，不改变 EXP-039 长跑。
 - 2026-09-20：复核并修正 docs/27「当前事实基线」中 systemd 自身保护的过时表述；当前准确状态为本地 MVP 部分实现，生产准入仍受 24h soak、剩余故障边界和 P99 校准约束。
 - 2026-09-20：同步修正 `src/README.md` 的 PG-P0-07 过时状态，明确 EXP-034～044 已完成的本地基线与 EXP-039/剩余故障边界未完成事实。
-- 2026-09-20：完成 EXP-047；审计追加现在检查完整写入并在成功返回前执行 `flush/fsync`，同步失败保持 fail-closed；主机正负向测试、Multipass 当前 Observer/Runtime 回归 `25/25` 和两次当前代码 `observe --once` smoke 通过。该修正不 retroactively 覆盖已启动的 EXP-039，长跑结束后需用当前代码重新验证相关运行时窗口。
+- 2026-09-20：完成 EXP-047；审计追加现在检查完整写入并在成功返回前执行 `flush/fsync`，同步失败保持 fail-closed；主机正负向测试、Multipass 当前 Observer/Runtime 回归 `25/25`、两次当前代码 `observe --once` smoke 和 45 秒连续 observe soak 通过。该修正不 retroactively 覆盖已启动的 EXP-039，长跑结束后需用当前代码重新验证相关运行时窗口。
 
 ## 全局边界（所有 Goal 共同遵守）
 
