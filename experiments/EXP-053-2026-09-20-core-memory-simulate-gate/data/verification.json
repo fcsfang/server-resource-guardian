@@ -1,0 +1,68 @@
+{
+  "experiment_id": "EXP-053",
+  "date": "2026-09-20",
+  "status": "PASSED",
+  "scope": "current-code-observe-simulate-only",
+  "full_test_count": 134,
+  "full_test_passed": 134,
+  "targeted_simulate_test_count": 4,
+  "targeted_simulate_test_passed": 4,
+  "scenarios": [
+    {
+      "name": "single_unprotected_object",
+      "state": "critical",
+      "action": "graceful_stop",
+      "execution": "not_executed",
+      "reason_codes": [
+        "cgroup_memory_oom_event",
+        "host_memory_available_critical",
+        "simulate_only"
+      ],
+      "candidate_count": 1
+    },
+    {
+      "name": "two_competing_objects",
+      "state": "critical",
+      "action": "escalate",
+      "execution": "not_executed",
+      "reason_codes": [
+        "cgroup_memory_oom_event",
+        "host_memory_available_critical",
+        "ambiguous_object_identity"
+      ],
+      "candidate_count": 2
+    },
+    {
+      "name": "protected_object",
+      "state": "critical",
+      "action": "escalate",
+      "execution": "not_executed",
+      "reason_codes": [
+        "cgroup_memory_oom_event",
+        "host_memory_available_critical",
+        "protected_object"
+      ],
+      "candidate_count": 1
+    },
+    {
+      "name": "unconfirmed_attribution",
+      "state": "critical",
+      "action": "escalate",
+      "execution": "not_executed",
+      "reason_codes": [
+        "cgroup_memory_oom_event",
+        "host_memory_available_critical",
+        "simulate_only",
+        "object_attribution_not_confirmed"
+      ],
+      "candidate_count": 1
+    }
+  ],
+  "mutations": {
+    "docker": false,
+    "systemd": false,
+    "resource_limits": false,
+    "production_connection": false
+  },
+  "limitation": "This verifies the current decision and safety gate only; it is not a new real graceful_stop effectiveness comparison."
+}

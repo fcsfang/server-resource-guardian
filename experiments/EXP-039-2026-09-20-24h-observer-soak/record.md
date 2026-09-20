@@ -3,7 +3,7 @@
 - 实验 ID：`EXP-039`
 - 日期：2026-09-20
 - 关联目标：Goal 7 / `PG-P0-07`
-- 状态：`RUNNING`
+- 状态：`STOPPED`（提前结束的阶段性证据；不等同于 24 小时通过）
 - 实验负责人：当前 Agent
 
 ## 1. 目的
@@ -22,7 +22,7 @@
 
 Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 包裹；资源时序由只读、有界的 [`guardian_resource_sampler.py`](../../scripts/guardian_resource_sampler.py) 采集 RSS、CPU、FD 和线程数。完成后记录实际时长、最大 RSS、CPU 时间、进程是否持续、审计文件大小是否不超过 1 MiB、达到上限后的降级比例、readiness、VM 状态和错误摘要。
 
-当前仅记录实验已启动；未完成前不把 PG-P0-07 标记为 DONE，也不进入 PG-P0-08。
+本轮在用户调整优先级后于 9,508 秒主动结束。该结果只作为阶段性长期运行证据，未满足 24 小时完成门；PG-P0-07 仍为 `IN_PROGRESS`。后续主线优先转向内存危机有效性对照，不能将本实验标记为完整通过，也不能据此直接进入生产。
 
 ## 4. 更新记录
 
@@ -38,3 +38,10 @@ Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 
 - 2026-09-20：再次只读复核；Observer 约 6,441 秒，sidecar 628 个样本/6,289 秒，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,463.478 KiB、FD 均值 3.615，审计仍为 1,046,557 bytes 且两个进程存活。`verification.json` 继续保持 `RUNNING`；该结果仍是中途 ARM64 观测窗口，不代表 24 小时完成或新代码（EXP-047）已被长跑验证。
 - 2026-09-20：只读完整性复核；Observer 约 7,219 秒，sidecar 706 个样本/7,071 秒，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,495.354 KiB、FD 均值 3.609。审计仍为 1,046,557 bytes，其中 136/136 行为合法 JSON、事件 ID 重复数为 0，Observer 与 sidecar 均存活；`verification.json` 继续保持 `RUNNING`，最终完成门未改变。
 - 2026-09-20：再次只读复核；Observer 约 8,568 秒，sidecar 839 个样本/8,404 秒，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,536.038 KiB、FD 均值 3.615。审计仍为 1,046,557 bytes，其中 136/136 行为合法 JSON、事件 ID 重复数为 0，Observer 与 sidecar 均存活；`verification.json` 继续保持 `RUNNING`，最终完成门未改变。
+- 2026-09-20：按用户优先级调整，向本轮由我们启动的 Observer 发送正常 `SIGTERM`，不触碰 Docker 业务对象、systemd 持久服务或资源限制；包装器完成收尾，记录 `elapsed_s=9508.00`、`wrapper_done=1`。最终 sidecar 为 933 个有效样本/9,346 秒窗口，RSS P99/最大值 17,752 KiB、均值 17,557.796 KiB，CPU P99 0.0%、FD P99/最大值 5/9、线程 P99/最大值 1/1；审计 1,046,557 bytes，136/136 条 JSON 合法、事件 ID 无重复。该结果证明约 2 小时 38 分钟窗口内的低开销与有界审计行为，不能替代 24 小时无泄漏验收。
+
+## 5. 结论与后续优先级
+
+- 已获得：本地 ARM64、observe-only、约 2 小时 38 分钟窗口内，Observer 未出现异常增长或审计完整性错误；审计达到容量门禁后仍保持有界。
+- 未获得：24 小时长跑、watchdog 超时恢复、真实 SIGKILL/OOM 恢复、真实磁盘耗尽恢复和完整场景 P99。
+- 优先级调整：先推进“无 Guardian 与 Guardian 的内存危机有效性对照”。当前先做当前代码的 `observe/simulate` 与证据复核；任何新的真实 disposable `graceful_stop` 仍须单独明确授权。

@@ -54,7 +54,7 @@
 - 历史 PoC 执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md) 和 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)。
 - 当前生产化执行基线：[docs/27-production-guardian-roadmap.md](docs/27-production-guardian-roadmap.md)。当前 Guardian 是已有本地单对象止损证据的原型，尚不是生产守护服务。
 - 当前活动目标：Goal 6 保留 Beszel UI 评审任务；Goal 7 按生产化路线推进。
-- 当前下一步：继续执行 [PG-P0-07 systemd 常驻服务与 Guardian 自身保护](docs/27-production-guardian-roadmap.md#pg-p0-07-systemd-常驻服务与-guardian-自身保护)；unit/slice、readiness/watchdog 通知接收、静态校验、有界存储、依赖 fixture 和 45 秒/5 分钟局部 soak 已完成，24 小时只读 soak 正在运行，但仍需 watchdog 超时/崩溃恢复、其他真实故障边界和 P99 资源校准，证据见 [docs/32](docs/32-guardian-systemd-runtime.md)、[EXP-039](experiments/EXP-039-2026-09-20-24h-observer-soak/record.md) 与 [EXP-041](experiments/EXP-041-2026-09-20-systemd-watchdog-notify/record.md)。此前不开始新的 `enforce`、restart、terminate 或生产接入。G6-T06 仍需 leader 评审后才能实现旁路 endpoint。
+- 当前下一步：继续执行 [PG-P0-07 systemd 常驻服务与 Guardian 自身保护](docs/27-production-guardian-roadmap.md#pg-p0-07-systemd-常驻服务与-guardian-自身保护)，但优先复核核心内存危机有效性；unit/slice、readiness/watchdog 通知接收、静态校验、有界存储、依赖 fixture 和 45 秒/5 分钟局部 soak 已完成，EXP-039 已运行 9,508 秒后提前结束并记录阶段性证据，24 小时门槛仍未通过。当前代码的 `observe/simulate` 门禁见 [EXP-053](experiments/EXP-053-2026-09-20-core-memory-simulate-gate/record.md)，仍需 watchdog 超时/崩溃恢复、其他真实故障边界和 P99 资源校准；在新的本地 disposable `graceful_stop` 获得当次明确授权前，不执行新的真实动作或生产接入。G6-T06 仍需 leader 评审后才能实现旁路 endpoint。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
@@ -190,7 +190,7 @@ git push origin main
 
 ## 当前第一步
 
-从 [docs/27 状态板](docs/27-production-guardian-roadmap.md#10-当前状态板) 依次推进；PG-P0-01/02/03/04/05/06 已完成，PG-P0-07 已完成 unit/slice、短时 observe、有界存储、依赖 fixture 和真实 systemd watchdog 通知接收基线，当前正在收集延长 soak，仍需 24 小时长跑、watchdog 超时/崩溃恢复、其他真实故障边界和 P99 资源校准。在 P0-01–07 全部通过且用户对当次本地 disposable 对象单独授权前，不执行新的真实动作。
+从 [docs/27 状态板](docs/27-production-guardian-roadmap.md#10-当前状态板) 依次推进；PG-P0-01/02/03/04/05/06 已完成，PG-P0-07 已完成 unit/slice、短时 observe、有界存储、依赖 fixture 和真实 systemd watchdog 通知接收基线，EXP-039 已提前结束且未通过 24 小时门槛。当前先执行 EXP-053 所代表的核心内存危机 observe/simulate 复核，仍需 24 小时长跑、watchdog 超时/崩溃恢复、其他真实故障边界和 P99 资源校准。在 P0-01–07 全部通过且用户对当次本地 disposable 对象单独授权前，不执行新的真实动作。
 
 ## 相关入口
 

@@ -77,7 +77,7 @@ EXP-047 的当前代码 VM smoke 已补充运行时证据：独立临时目录�
 
 同一当前代码随后完成有界 45 秒 observe soak：`timeout` 按预设停止条件返回 `124`，输出/审计各 7 条，7 条 stdout 事件均报告 `audit_status=written`，首条 `degraded_observability` 后 6 条 `normal`，动作均为 `none/not_applicable`，最大 RSS 27,612 KiB，无 Python traceback。该结果补充 fsync 版本的连续运行证据，但不替代 EXP-039 的 24 小时长跑或剩余故障注入。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至最新中途快照，Observer 约 8,568 秒，sidecar 有 839 个样本、8,404 秒窗口，RSS P95/P99/最大值为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,536.038 KiB、FD 均值 3.615，审计仍为 1,046,557 bytes。只读完整性扫描确认 136/136 行合法 JSON、事件 ID 无重复。24 小时主 soak 仍在运行，最终 P99 待完成；该长跑启动早于 EXP-047 的 fsync 修正。
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 在用户调整优先级后于 9,508 秒安全结束：sidecar 有 933 个样本、9,346 秒窗口，RSS P95/P99/最大值为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,557.796 KiB、FD 均值 3.613，FD 最大值 9，审计为 1,046,557 bytes。只读完整性扫描确认 136/136 行合法 JSON、事件 ID 无重复。该结果是约 2 小时 38 分钟的阶段性稳定性证据，不构成 24 小时通过；该长跑启动早于 EXP-047 的 fsync 修正。
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。
 
@@ -101,12 +101,12 @@ Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EX
 
 PG-P0-07 仍保持 `IN_PROGRESS`，原因是任务卡还要求：
 
-1. 24 小时本地 observe soak 和资源增长/日志增长统计；
+1. 24 小时本地 observe soak 和资源增长/日志增长统计（当前按用户优先级暂缓，不把阶段性窗口写成通过）；
 2. 进程崩溃、watchdog 超时恢复、Docker 超时、Hub 不可用、日志写失败和高压采样的故障注入；
 3. 有界快照/审计存储的容量水位与恢复检查；
 4. 基于完整场景 P99 + 余量重校准 slice 参数。
 
-这些工作仍只能在本地 disposable 环境进行。完成前不进入 PG-P0-08，不执行真实 `graceful_stop`，也不安装为持久 systemd 服务。
+这些工作仍只能在本地 disposable 环境进行。当前先复核核心内存危机的 observe/simulate 证据；完成 PG-P0-07 前不进入 PG-P0-08，不执行新的真实 `graceful_stop`，也不安装为持久 systemd 服务。
 
 ## 7. 回滚与部署边界
 

@@ -23,6 +23,18 @@
 
 PG-P0-01 至 PG-P0-06 已完成；当前正在执行 **PG-P0-07：systemd 常驻服务与 Guardian 自身保护**。本文的状态板和 Goal 7 必须与代码、实验记录同步更新。
 
+### 0.1 当前优先级调整（2026-09-20）
+
+用户决定不继续等待 EXP-039 的 24 小时长跑：该实验已在 9,508 秒（约 2 小时 38 分钟）处安全结束，并以 `STOPPED` 记录提前结束的阶段性证据。24 小时门槛仍未通过，因此 PG-P0-07 不改为 `DONE`；但它不再阻塞当前最重要的核心问题验证。
+
+当前优先级切换为：
+
+1. 用当前代码复核 `observe/simulate` 的“内存危机 → 风险确认 → 唯一对象定位 → 受控动作计划”链路（已记录 EXP-053）。
+2. 对照已有 EXP-021，区分“历史版本真实 `graceful_stop` 效果证据”和“当前生产化代码的可复核证据”。
+3. 只有在当前代码的 observe/simulate 和安全门禁证据完整后，才申请本次本地 disposable `graceful_stop` 的单次明确授权。
+
+这不是降低生产准入标准：watchdog 超时、真实 SIGKILL/OOM、真实磁盘耗尽和 24 小时长跑仍标记为未完成；只是先验证 Guardian 的核心止损价值。
+
 ---
 
 ## 1. 技术决策
@@ -352,6 +364,8 @@ M0–M3 仅在当前 Multipass `local-disposable` 环境执行。M4 及以后每
 - **验收标准**：24h soak 无泄漏；进程崩溃、磁盘满、Docker 超时、Hub 不可用、日志写失败、高压采样均有预期降级；资源参数来自实测 P99+余量，不凭空写死。
 - **外部授权**：本地否；安装到外部主机需授权。
 
+> 优先级说明：EXP-039 的 24 小时长跑已按用户决定提前结束，当前快照只作为阶段性稳定性证据；PG-P0-07 仍未完成。当前主线先推进核心内存危机有效性对照，不能把阶段性 soak 结果写成生产就绪。
+
 #### PG-P0-08 本地对照实验和唯一允许的真实动作
 
 - **目标**：在 Multipass 上完成 observe → simulate → 一次明确授权 `graceful_stop` 的新闭环。
@@ -513,7 +527,7 @@ M0–M3 仅在当前 Multipass `local-disposable` 环境执行。M4 及以后每
 | PG-P0-04 对象归因 | `DONE` | P0-03 | EXP-031；宿主 91/91、Multipass 隔离 27/27；真实 Docker full ID↔cgroup 映射、无压力 NO_TARGET 已验证 | 进入 PG-P0-05；贡献阈值仍是本地校准值 |
 | PG-P0-05 策略/授权/耐久性 | `DONE` | P0-02,P0-04 | docs/30、EXP-032；101/101 宿主、52/52 Multipass 隔离；SQLite WAL/capability/intent/reconciliation 已接入 Docker enforce 门 | 进入 PG-P0-06；生产 capability 发行仍待审批 |
 | PG-P0-06 两层恢复 | `DONE` | P0-03,P0-05 | docs/31、EXP-033；宿主/业务分层和 Controller 集成已验证，宿主端 107/107、Multipass 相关测试 64/64 | 进入 PG-P0-07；真实业务 probe 仍待 owner |
-| PG-P0-07 systemd/自身保护 | `IN_PROGRESS` | P0-03,P0-05,P0-06 | EXP-034/035/036/037/038/040/041/043/044/045/046/047/048/049/050/051/052：主机全量 `134/134`，审计 `flush/fsync`、完整性校验、watchdog 状态和 ENOSPC 正负向契约通过；当前 Observer/Runtime 相关 VM 回归 `30/30`，并以当前代码完成 VM `observe --once` smoke 和独立 45 秒 observe soak（输出/审计各 7 条、事件 ID 序列一致、watchdog `not_configured`、无动作）；既有隔离基线 `78/78`；systemd verify 退出码 0、8 秒 smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖 fixture、transient readiness/watchdog 通知接收、watchdog 余量契约、间隔覆盖 fail-closed、有限高压采样、自然失败重启、审计完整性校验、ENOSPC fixture 和自然退出码重启；EXP-042 预检失败已保留；EXP-039 最新只读快照为 Observer 约 8,568 秒、sidecar 839 样本/8,404 秒，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS/FD 均值为 17,536.038 KiB/3.615，审计 1,046,557 bytes 且 136/136 行合法 JSON、事件 ID 无重复，Observer 存活；24h soak、watchdog 超时、真实 SIGKILL/OOM 恢复、真实磁盘满边界和完整场景 P99 未完成；EXP-039 启动早于 EXP-047，不代表新持久写入契约、EXP-050 watchdog 状态代码或 EXP-051 连续 soak 已在长跑中验证 | 检查 EXP-039 结束结果，继续只读日志容量统计、剩余故障边界和资源 P99 测量；长跑结束后用当前代码重新验证相关窗口 |
+| PG-P0-07 systemd/自身保护 | `IN_PROGRESS` | P0-03,P0-05,P0-06 | EXP-034/035/036/037/038/040/041/043/044/045/046/047/048/049/050/051/052：主机全量 `134/134`，审计 `flush/fsync`、完整性校验、watchdog 状态和 ENOSPC 正负向契约通过；当前 Observer/Runtime 相关 VM 回归 `30/30`；systemd verify 退出码 0，8 秒 smoke、有界存储、45 秒/5 分钟局部 soak、依赖 fixture、transient readiness/watchdog 通知接收、watchdog 余量、间隔 fail-closed、有限高压采样、自然失败重启、审计完整性、ENOSPC fixture 和异常退出码重启已完成；EXP-042 预检失败保留。EXP-039 已由用户决定在 9,508 秒提前结束：sidecar 933 样本/9,346 秒，RSS P99/最大值 17,752 KiB、均值 17,557.796 KiB，CPU/FD/线程 P99 为 0.0%/5/1，审计 1,046,557 bytes 且 136/136 行合法 JSON、事件 ID 无重复；该结果是阶段性证据，不是 24h 通过。24h soak、watchdog 超时、真实 SIGKILL/OOM 恢复、真实磁盘满边界和完整场景 P99 未完成 | 先复核当前代码的核心内存危机 observe/simulate 链路；随后再处理剩余自身保护边界，真实 disposable `graceful_stop` 仍需单次明确授权 |
 | PG-P0-08 本地新闭环 | `BACKLOG` | P0-01–07 | 需重新授权 | 等待依赖和用户单次授权 |
 | PG-P0-09 Beszel 旁路 endpoint | `BLOCKED` | P0-05–07, UI 评审 | docs/23 尚未经 leader 评审 | 评审后实现 |
 | P1/P2 任务 | `BACKLOG` | M3 及外部条件 | 未进入 | 不提前开始 |
