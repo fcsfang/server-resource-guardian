@@ -2,7 +2,7 @@
 
 更新时间：2026-09-19
 
-> 本文定义风险对象如何识别、保护、授权和审计。它是 `observe/simulate/enforce` 的策略设计输入，不等同于已经执行的自动动作。当前代码尚未完整加载本规范的配置结构；生产化接入按 Goal 7 PG-P0-02、PG-P0-04 和 PG-P0-05 执行。
+> 本文定义风险对象如何识别、保护、授权和审计。它是 `observe/simulate/enforce` 的策略设计输入，不等同于已经执行的自动动作。PG-P0-04 已完成只读 Docker↔cgroup 归因 MVP；保护名单、业务 owner、动作合同和耐久授权仍按 PG-P0-05 接入。
 
 ## 1. 策略总原则
 
@@ -113,7 +113,7 @@ policy:
 
 ## 8. 验收与下一步
 
-当前实现边界：Observer 会把 Docker stats 返回的运行容器作为候选；Controller 目前要求单一稳定容器对象，尚未按内存贡献、领先幅度和置信度对复杂 fleet 做生产级归因。`config/guardian.example.yaml` 仍是样例，不是运行时已加载的生产策略。
+当前实现边界：Observer 通过 Docker inspect、容器 PID 和 cgroup v2 读取对象身份与内存证据；PG-P0-04 的评分器按内存贡献、领先幅度和置信度进行本地 MVP 归因，复杂 fleet、生产阈值、业务 owner 和策略配置仍未完成。`config/guardian.example.yaml` 仍是样例，不是运行时已加载的生产策略。
 
 - [x] 定义主机、unit、容器和进程组对象身份。
 - [x] 定义永久保护对象、配置保护对象和命中后的行为。

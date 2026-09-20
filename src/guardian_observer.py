@@ -16,8 +16,9 @@ import subprocess
 import time
 import uuid
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Mapping
 
+from .guardian_attribution import ObjectAttributionEvaluator, collect_object_registry
 from .guardian_config import ConfigError, GuardianConfig, load_config, safe_defaults
 from .guardian_risk import CompositeRiskEvaluator
 
@@ -189,6 +190,12 @@ def collect_observation(
     docker = collect_docker_stats(runner)
     if docker.get("available") is False:
         quality_flags.append("docker_observation_unavailable")
+    object_registry = collect_object_registry(
+        docker,
+        proc_root=proc_root,
+        cgroup_root=cgroup_root,
+        runner=runner,
+    )
     observation = {
         "observed_at": utc_now(),
         "observed_monotonic_ns": observed_monotonic_ns,
@@ -203,6 +210,7 @@ def collect_observation(
             "path": str(process_cgroup_root),
         },
         "docker": docker,
+        "object_registry": object_registry,
         "quality": {
             "status": "ok" if not quality_flags else "degraded",
             "flags": sorted(set(quality_flags)),
@@ -323,6 +331,7 @@ def build_event(
     simulate_action: str = "graceful_stop",
     protected: bool = True,
     allowed_actions: Iterable[str] = (),
+    object_attribution: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     if evaluator is None:
         candidate, reasons = _candidate_state(observation, warning_available, critical_available)
@@ -338,18 +347,35 @@ def build_event(
         risk = evaluator.evaluate(observation, warning_available, critical_available)
         candidate = risk["state"]
         reasons = risk["reasons"]
-    containers = observation["docker"].get("containers", [])
     candidates = []
-    for container in containers:
-        if not isinstance(container, dict):
-            continue
-        candidates.append({
-            "kind": "container",
-            "id": container.get("ID") or container.get("Container"),
-            "name": container.get("Name"),
-            "raw": container,
-            "confidence": "observed" if container.get("ID") or container.get("Container") else "low",
-        })
+    attributed_candidates = object_attribution.get("candidates") if isinstance(object_attribution, Mapping) else None
+    if isinstance(attributed_candidates, list):
+        candidates = [
+            {
+                "kind": item.get("kind", "container"),
+                "id": item.get("id"),
+                "name": item.get("name"),
+                "confidence": item.get("confidence", "low"),
+                "cgroup_path": item.get("cgroup_path"),
+                "score": item.get("score"),
+                "host_contribution_percent": item.get("host_contribution_percent"),
+                "mapping_errors": item.get("mapping_errors", []),
+            }
+            for item in attributed_candidates
+            if isinstance(item, Mapping)
+        ]
+    else:
+        containers = observation["docker"].get("containers", [])
+        for container in containers:
+            if not isinstance(container, dict):
+                continue
+            candidates.append({
+                "kind": "container",
+                "id": container.get("ID") or container.get("Container"),
+                "name": container.get("Name"),
+                "raw": container,
+                "confidence": "observed" if container.get("ID") or container.get("Container") else "low",
+            })
     decision: dict[str, Any] = {
         "mode": mode,
         "action": "none",
@@ -389,6 +415,13 @@ def build_event(
             decision["reason_codes"].append(
                 "simulate_only" if mode == "simulate" else "enforce_requires_controller"
             )
+        if (
+            isinstance(object_attribution, Mapping)
+            and object_attribution.get("state") != "TARGET_CONFIRMED"
+            and candidate in {"warning", "critical"}
+        ):
+            decision["action"] = "escalate"
+            decision["reason_codes"].append("object_attribution_not_confirmed")
 
     return {
         "event_id": str(uuid.uuid4()),
@@ -398,6 +431,7 @@ def build_event(
         "signals": observation,
         "risk": risk,
         "object_candidates": candidates,
+        "object_attribution": object_attribution,
         "decision": decision,
         "evidence": {"snapshot_path": None, "sample_window": None},
     }
@@ -444,8 +478,13 @@ def run(args: argparse.Namespace) -> None:
         warning_for=warning_for,
         critical_for=critical_for,
     )
+    attributor = ObjectAttributionEvaluator()
     while True:
         observation = collect_observation()
+        object_attribution = attributor.evaluate(
+            observation,
+            observation.get("object_registry", {}),
+        )
         event = build_event(
             observation,
             warning_available=warning_available,
@@ -455,6 +494,7 @@ def run(args: argparse.Namespace) -> None:
             protected=not args.allow_unprotected,
             allowed_actions=allowed_actions,
             evaluator=evaluator,
+            object_attribution=object_attribution,
         )
         event["evidence"]["config_digest"] = config.config_digest
         event["evidence"]["config_source"] = config.source

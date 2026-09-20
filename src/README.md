@@ -10,6 +10,8 @@ PG-P0-02 新增 [`guardian_config.py`](guardian_config.py) 和 `config/guardian.
 
 PG-P0-03 新增 [`guardian_risk.py`](guardian_risk.py)：组合 OOM 增量、可用内存、下降趋势、memory PSI、swap 和观测质量，输出候选状态、reason codes、质量标记和信号摘要。`guardian_observer.py` 使用单调时钟，并依据 `/proc/self/cgroup` 定位 cgroup v2 当前进程目录；历史计数不重复触发，计数回退或采集不完整时 fail-closed 为 `degraded_observability`。该层仍只产生风险证据，不授权动作。
 
+PG-P0-04 新增 [`guardian_attribution.py`](guardian_attribution.py)：只读调用 Docker inspect，使用容器 PID 映射 full ID 到 cgroup v2，读取对象内存和 OOM 计数，并用连续样本计算贡献度、置信度和领先幅度。单目标未达到证据门槛、对象重建、ID/cgroup 不一致和候选接近时分别降级或输出 `AMBIGUOUS_TARGET`；未确认归因不能生成 simulate/enforce 目标计划。
+
 当前也支持 `simulate`：它只根据风险状态、对象身份、保护状态和动作白名单生成计划，并明确标记 `execution=not_executed`。`guardian_actions.py` 提供授权校验、mock executor 和参数数组 Docker 适配器；没有显式的本地可丢弃环境授权时，不调用真实执行器。
 
 `guardian_recovery.py` 提供纯函数式恢复验证、冷却和失败熔断判断；它不主动重试动作，必须由上层在策略允许时决定是否升级。

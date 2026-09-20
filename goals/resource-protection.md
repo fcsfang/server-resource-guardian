@@ -273,7 +273,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] **G7-T01 / PG-P0-01**：事实与状态重置；修正旧文档过度声称和 EXP-020/021/028 边界，统一口径见 [docs/28](../docs/28-claim-evidence-boundary.md)。
 - [x] **G7-T02 / PG-P0-02**：实现严格 JSON 配置 schema、启动门禁、版本和 digest；证据见 [docs/29](../docs/29-guardian-config-schema.md)。
 - [x] **G7-T03 / PG-P0-03**：实现 OOM 增量、趋势、PSI、swap、数据质量和滞后的组合风险引擎；证据见 [EXP-030](../experiments/EXP-030-2026-09-20-composite-risk-engine/record.md)。
-- [ ] **G7-T04 / PG-P0-04**：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃。
+- [x] **G7-T04 / PG-P0-04**：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](../experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [ ] **G7-T05 / PG-P0-05**：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复。
 - [ ] **G7-T06 / PG-P0-06**：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复。
 - [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。
@@ -284,7 +284,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 
 ### 接手入口
 
-必须先读 [`docs/27`](../docs/27-production-guardian-roadmap.md) 的第 0、2、7、10、11 节。从状态板第一个 `READY` 任务开始；当前是 PG-P0-04。当任务卡与旧 Goal 4–6 的“已完成”声称冲突时，以 docs/27 的生产化完成定义为准，以源码和实验记录核实事实。
+必须先读 [`docs/27`](../docs/27-production-guardian-roadmap.md) 的第 0、2、7、10、11 节。从状态板第一个 `READY` 任务开始；当前是 PG-P0-05。当任务卡与旧 Goal 4–6 的“已完成”声称冲突时，以 docs/27 的生产化完成定义为准，以源码和实验记录核实事实。
 
 未获得用户对当次 disposable 目标的单独明确授权前，只允许 observe/simulate。未获得外部书面授权前，不连接非生产/生产主机。
 
@@ -302,6 +302,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：完成 G7-T01/PG-P0-01；建立 docs/28 声称—证据—边界对照，下一任务为 PG-P0-02 配置 Schema 与启动门禁。
 - 2026-09-20：完成 G7-T02/PG-P0-02；建立严格 JSON schema、配置 digest、observe-only 默认和 fail-closed 启动门禁，下一任务为 PG-P0-03 组合风险引擎。
 - 2026-09-20：完成 G7-T03/PG-P0-03；新增组合风险评估器、单调时钟、cgroup v2 当前路径解析和质量 fail-closed，证据见 EXP-030，下一任务为 PG-P0-04 对象归因。
+- 2026-09-20：完成 G7-T04/PG-P0-04；新增 Docker full ID↔cgroup v2 registry、对象贡献度/置信度/领先幅度和歧义放弃，证据见 EXP-031，下一任务为 PG-P0-05 策略、授权和耐久状态。
 
 ## 全局边界（所有 Goal 共同遵守）
 

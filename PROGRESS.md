@@ -22,7 +22,7 @@
 
 ## 当前活动目标
 
-按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 事实与状态重置、PG-P0-02 配置 Schema 与启动门禁、PG-P0-03 组合风险引擎已完成，当前 `READY` 任务为 PG-P0-04 每对象归因与放弃机制。当前 Guardian 仍是有本地单对象止损证据和组合风险 MVP 的原型，不具备多对象因果归因、生产级耐久安全和 systemd 常驻能力。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的 `enforce`，生产动作从未执行。
+按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-04 已完成，当前 `READY` 任务为 PG-P0-05 策略、授权和耐久状态。当前 Guardian 仍是有本地单对象止损证据、组合风险和对象归因 MVP 的原型，不具备生产级耐久安全、崩溃恢复和 systemd 常驻能力。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的 `enforce`，生产动作从未执行。
 
 ## 环境清单
 
@@ -104,6 +104,7 @@
 - 2026-09-20 完成 Goal 7 PG-P0-01：新增 [docs/28](docs/28-claim-evidence-boundary.md)，修正文档中的 PoC/生产边界；明确 EXP-021 的单对象、ARM64、`oom_score_adj=1000` fixture 条件，EXP-028 不构成通用 OOM 预测 SLA，并将 EXP-020 的分散重复计时降级为本地性能基线。
 - 2026-09-20 完成 Goal 7 PG-P0-02：新增严格 JSON schema、配置校验器、配置 digest 和 observe-only 安全默认；宿主机 74/74、Multipass 临时隔离校验 8/8 通过。当前下一项为 PG-P0-03，尚未执行新的真实动作。
 - 2026-09-20 完成 Goal 7 PG-P0-03：新增 OOM 增量/趋势/PSI/swap 组合风险引擎、单调时钟、质量 fail-closed 和 cgroup v2 当前进程路径解析；EXP-030 记录宿主机 84/84、Multipass 临时隔离 20/20，通过一次 VM observe 验证当前 session scope 可读 `memory.events`。当前下一项为 PG-P0-04，未执行压力注入或新的真实动作。
+- 2026-09-20 完成 Goal 7 PG-P0-04：新增 Docker inspect→PID→cgroup v2 对象 registry、对象内存贡献度/置信度/领先幅度评分和歧义放弃；EXP-031 记录宿主机 91/91、Multipass 临时隔离 27/27，VM 无压力连续观测为基线后 `NO_TARGET`。当前下一项为 PG-P0-05，未执行压力注入或新的真实动作。
 
 ## 待办事项（按优先级）
 
@@ -118,7 +119,8 @@
 - [x] Goal 7 / PG-P0-01：按 docs/27 执行事实与状态重置，明示原型/生产边界和 EXP-020/021/028 证据限制；统一口径见 [docs/28](docs/28-claim-evidence-boundary.md)。
 - [x] Goal 7 / PG-P0-02：实现严格配置 schema、启动门禁、版本和 digest；实现和回滚边界见 [docs/29](docs/29-guardian-config-schema.md)。
 - [x] Goal 7 / PG-P0-03：实现 OOM 增量、趋势、PSI、swap、数据质量和滞后的组合风险引擎；证据见 [EXP-030](experiments/EXP-030-2026-09-20-composite-risk-engine/record.md)。
-- [ ] Goal 7 / PG-P0-04：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃。
+- [x] Goal 7 / PG-P0-04：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](experiments/EXP-031-2026-09-20-object-attribution/record.md)。
+- [ ] Goal 7 / PG-P0-05：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复。
 - [ ] Goal 7 P0：依次完成组合风险、对象归因、耐久安全状态、两层恢复和 systemd 常驻；P0-01–07 全部通过前不做新真实动作。
 
 

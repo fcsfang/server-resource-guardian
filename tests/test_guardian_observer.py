@@ -197,6 +197,28 @@ class GuardianObserverTests(unittest.TestCase):
         self.assertEqual(event["decision"]["action"], "graceful_stop")
         self.assertEqual(event["decision"]["execution"], "pending_controller")
 
+    def test_unconfirmed_object_attribution_cannot_create_simulate_plan(self):
+        observation = {
+            "observed_at": "2026-09-19T00:00:00Z",
+            "memory": {"available_ratio_percent": 5.0, "available_bytes": 500},
+            "cgroup": {"memory_events": {"oom": 1}},
+            "psi": {},
+            "docker": {"containers": [{"ID": "abc123", "Name": "discardable"}]},
+        }
+        event = build_event(
+            observation,
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+            object_attribution={
+                "state": "AMBIGUOUS_TARGET",
+                "candidates": [{"id": "abc123", "name": "discardable", "confidence": "high"}],
+            },
+        )
+        self.assertEqual(event["decision"]["action"], "escalate")
+        self.assertIn("object_attribution_not_confirmed", event["decision"]["reason_codes"])
+
 
 if __name__ == "__main__":
     unittest.main()

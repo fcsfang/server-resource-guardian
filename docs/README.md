@@ -68,7 +68,7 @@ README.md
 | [14-execution-roadmap.md](14-execution-roadmap.md) | PoC 总执行蓝图：技术路线（Beszel 基础）、执行阶段和测试方式 | 历史 PoC 总纲；生产化以 27 号路线为准 |
 | [16-autonomous-execution-roadmap.md](16-autonomous-execution-roadmap.md) | Goal 4–6 的阶段、任务顺序和 Agent 交接协议 | 历史 PoC/集成执行记录；不作为生产化完成判定 |
 | [17-risk-signal-specification.md](17-risk-signal-specification.md) | G4-T01 风险信号、状态机和事件输出结构 | 当前实现设计入口 |
-| [18-object-policy-specification.md](18-object-policy-specification.md) | G4-T02 对象身份、保护名单、动作等级、冷却和熔断 | 当前策略设计入口 |
+| [18-object-policy-specification.md](18-object-policy-specification.md) | G4-T02 对象身份、保护名单、动作等级、冷却和熔断 | 策略设计入口；对象归因 MVP 证据见 EXP-031 |
 | [19-action-adapter-contract.md](19-action-adapter-contract.md) | G4-T05 授权校验、mock executor 和 Docker 动作参数契约 | 真实动作前的安全边界 |
 | [20-local-beszel-multipass-deployment.md](20-local-beszel-multipass-deployment.md) | 当前 Mac Multipass Hub/Agent 部署、认证证据和后续指标核验 | 当前本地运行状态 |
 | [21-beszel-guardian-event-contract.md](21-beszel-guardian-event-contract.md) | Beszel → Guardian 事件格式、身份映射、过期和 fail-closed 规则 | Goal 6 联调契约 |
