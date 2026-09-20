@@ -34,3 +34,4 @@ Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 
 - 2026-09-20：中途结构化摘要写入 [`data/verification.json`](data/verification.json)；Observer 运行约 2,175 秒、辅助时序 201 个样本/2,007 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes，进程仍存活。该文件明确标记 `RUNNING`，不代表 24 小时完成。
 - 2026-09-20：运行中增量复核；Observer 约 3,701 秒，资源 sidecar 355 个样本/3,551 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS 均值 17,384.719 KiB、FD 均值 3.596，审计仍为 1,046,557 bytes 且进程存活。该摘要仍是中途证据，`verification.json` 保持 `RUNNING`，不代表 24 小时完成。
 - 2026-09-20：运行中增量复核；Observer 约 4,564 秒，资源 sidecar 441 个样本/4,414 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS 均值 17,405.397 KiB、FD 均值 3.603，审计仍为 1,046,557 bytes 且进程存活。该摘要仍是中途证据，`verification.json` 保持 `RUNNING`，不代表 24 小时完成。
+- 2026-09-20：再次增量复核发现资源窗口出现真实变化；Observer 约 5,713 秒，sidecar 556 个样本/5,567 秒，RSS P99/最大值升至 17,752 KiB，CPU/FD/线程 P99 仍为 0.0%/5/1，RSS 均值 17,426.115 KiB、FD 均值 3.619，审计仍为 1,046,557 bytes 且进程存活。该摘要仍是中途证据，`verification.json` 保持 `RUNNING`，最终 P99 需等 soak 结束。

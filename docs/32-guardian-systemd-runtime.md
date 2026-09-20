@@ -71,7 +71,7 @@ watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-syste
 
 命令行采样间隔覆盖的 fail-closed 校验见 [EXP-046](../experiments/EXP-046-2026-09-20-interval-override-fail-closed/record.md)：Observer 在启动入口拒绝非有限值和超出 0.1–60 秒范围的覆盖参数，主机 `123/123`、相关 VM 测试 `23/23` 通过。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 441 个样本、4,414 秒窗口，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS 均值 17,405.397 KiB、FD 均值 3.603，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成。
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 556 个样本、5,567 秒窗口，RSS P99/最大值为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,426.115 KiB、FD 均值 3.619，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成。
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。
 
