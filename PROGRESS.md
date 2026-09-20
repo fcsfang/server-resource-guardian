@@ -129,6 +129,7 @@
 - 2026-09-20 复核并修正 docs/27「当前事实基线」中 systemd 自身保护的过时表述：本地 MVP 的 unit/slice、readiness/watchdog、有界审计和自然失败重启已存在，但 24h soak、剩余故障边界和 P99 校准仍未完成，不能据此声称生产就绪。
 - 2026-09-20 同步修正 `src/README.md` 的 PG-P0-07 过时状态，明确 EXP-034～044 的本地基线已完成，EXP-039 24h soak 与 watchdog 超时/SIGKILL/OOM/磁盘边界和完整 P99 仍未完成。
 - 2026-09-20 完成 EXP-047：审计追加检查完整写入并在成功返回前执行 `flush/fsync`，同步失败保持 fail-closed；主机全量 `125/125`、Multipass 当前 Observer/Runtime 相关回归 `25/25` 通过。首次 VM 夹具漏拷贝 unit/slice 的错误已修正后重跑，不纳入通过统计；EXP-039 仍使用修正前代码运行。
+- 2026-09-20 补充 EXP-047 当前代码运行时 smoke：Multipass 临时目录连续两次 `observe --once` 均退出 `0`，审计 2 行且 `audit_status=written`，动作均为 `none/not_applicable`，stderr 为空；该证据仍不覆盖长跑崩溃恢复或磁盘满恢复。
 
 ## 待办事项（按优先级）
 

@@ -73,6 +73,8 @@ watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-syste
 
 审计追加的持久写入契约见 [EXP-047](../experiments/EXP-047-2026-09-20-audit-fsync-fail-closed/record.md)：Observer 只有在完整 payload 写入、`flush` 和 `fsync` 都成功后才把审计事件视为已写入；短写入或同步失败均返回失败，由上层保持降级/不执行动作。主机正负向测试已覆盖；EXP-039 当前运行进程是在该修正之前启动的，因此不能把本次契约直接写成该长跑的运行时证据。
 
+EXP-047 的当前代码 VM smoke 已补充运行时证据：独立临时目录连续执行两次 `observe --once`，两次退出码均为 `0`，审计 2 行/15,680 bytes，`audit_status=written`，动作均为 `none/not_applicable`，stderr 为空；这仍不等同于长跑崩溃恢复或磁盘满恢复。
+
 PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 628 个样本、6,289 秒窗口，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,463.478 KiB、FD 均值 3.615，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成；该长跑启动早于 EXP-047 的 fsync 修正。
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。

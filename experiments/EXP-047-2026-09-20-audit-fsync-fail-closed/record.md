@@ -53,6 +53,8 @@ exit 0
 
 Multipass `guardian-ubuntu` 临时目录回归：`tests.test_guardian_observer` + `tests.test_guardian_runtime`，`25/25` 通过。第一次临时复制遗漏 unit/slice 模板而得到 1 个夹具错误；补齐模板后同一代码重跑通过，该夹具错误不计入通过统计。
 
+当前代码的 VM 运行时 smoke 也已通过：在独立临时目录连续执行两次 `observe --once`，两次退出码均为 `0`，审计为 2 行/15,680 bytes，`audit_status=written`，决策均为 `action=none`、`execution=not_applicable`，readiness 文件 14 bytes，stderr 为空。首次采样因尚未建立窗口而为预期的 `degraded_observability`；没有执行 Docker/systemd 动作。
+
 本实验当前结论只覆盖代码契约，不扩大为 systemd watchdog、进程崩溃、磁盘耗尽或 24 小时 soak 证据。
 
 ## 6. 结论与未完成项
