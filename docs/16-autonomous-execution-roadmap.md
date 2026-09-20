@@ -1,6 +1,8 @@
 # 自动化执行路线与 Agent 接手协议
 
-> 本文件是项目后续执行的总路线。它回答“下一步做什么、何时算完成、哪些事情必须停下来请求确认”，用于当前 Agent 或后续 Agent 无监督接手。
+> 本文件记录 Goal 4–6 期间的后续执行路线和 Agent 接手协议。
+
+> **权威性更新：**本文保留 Goal 4–6 的 PoC/集成历史路线。2026-09-20 起，生产化后续任务与 Agent 接手以 [Guardian 生产化技术路线](27-production-guardian-roadmap.md) 为准。本文中“Goal 4 完成”只表示原型和本地脚本化闭环完成，不表示生产就绪。
 
 ## 1. 总目标
 
@@ -13,9 +15,9 @@
 ### 2.1 代码与文档
 
 - Goal 1–3 的本地 WSL2 实验已经完成，历史证据保留在 `experiments/EXP-001` 至 `EXP-006`。
-- Goal 4 的本地最小风险检测与自动处置闭环已完成，当前仅保留生产交接外部依赖。
+- Goal 4 的本地单对象、脚本化风险检测与受控动作闭环已完成；这不是组合风险、复杂归因或生产常驻服务完成证明。生产化缺口和新的完成定义以 Goal 7/docs/27 为准。
 - 当前 Mac Multipass 上的 Beszel 0.19.0 Hub/Agent 已部署并完成认证连接；底层运行态、静态字段基线和有界动态探针已记录，部署证据见 [docs/20](20-local-beszel-multipass-deployment.md)，字段清单见 [docs/22](22-beszel-dashboard-field-inventory.md)。
-- 最新参考路线：[docs/14-execution-roadmap.md](14-execution-roadmap.md)。
+- 历史 PoC 参考路线：[docs/14-execution-roadmap.md](14-execution-roadmap.md)；当前生产化参考路线：[docs/27-production-guardian-roadmap.md](27-production-guardian-roadmap.md)。
 - 实验事实只能写入 [`experiments/`](../experiments/README.md)，不能用计划文件代替实验证据。
 
 ### 2.2 当前主测试环境
@@ -99,5 +101,7 @@ Goal 4 只有同时满足以下条件才算完成：
 - Beszel UI 集成方案完成设计评审；任何 `enforce`、重启、终止和生产接入仍需独立授权。
 
 ## 7. 交接入口
+
+生产化任务不再从本文件的历史队列继续推断；请转到 [docs/27](27-production-guardian-roadmap.md) 的状态板，从 PG-P0-01 开始。Goal 4–6 的“完成”只表示本地 PoC/集成范围，当前声称边界见 [docs/28](28-claim-evidence-boundary.md)。
 
 后续 Agent 只需先读本文件的“当前基线”和“下一项执行队列”，从 G6-T04 开始进入对应 Goal 和实验记录。不要重新从旧汇报 PPT 推断路线，也不要把历史 WSL2 实验改写成 Mac 实验结果。

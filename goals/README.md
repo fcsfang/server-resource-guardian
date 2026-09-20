@@ -22,6 +22,7 @@
 | [Goal 4：Guardian 最小风险检测与自动处置实现](resource-protection.md#goal-4guardian最小风险检测与自动处置实现) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 在可丢弃测试对象上实现并验证自动处置闭环 | [自动执行路线](../docs/16-autonomous-execution-roadmap.md)、[执行蓝图](../docs/14-execution-roadmap.md) |
 | [Goal 5：本地生产仿真性能报告](resource-protection.md#goal-5本地生产仿真性能报告) | [resource-protection.md](resource-protection.md) | `COMPLETED` | 在不接触生产的前提下复刻关键运行时、负载和故障模式，形成可交给 leader 的性能与有效性报告 | [EXP-021 真实故障对照](../experiments/EXP-021-2026-09-19-failure-prevention-comparison/report.md)、[自动执行路线](../docs/16-autonomous-execution-roadmap.md) |
 | [Goal 6：Beszel 二次开发集成](resource-protection.md#goal-6beszel-二次开发集成) | [resource-protection.md](resource-protection.md) | `IN_PROGRESS` | 将 Beszel 监控基础与 Guardian 风险检测、策略和处置能力安全联调 | [自动执行路线](../docs/16-autonomous-execution-roadmap.md)、[Mac Beszel 部署记录](../docs/20-local-beszel-multipass-deployment.md) |
+| [Goal 7：Guardian 生产化实现](resource-protection.md#goal-7guardian-生产化实现) | [resource-protection.md](resource-protection.md) | `IN_PROGRESS` | 将当前单对象脚本化 PoC 收敛为可持续、fail-closed、可审计的 Guardian，再经非生产和生产阶段门逐步准入 | [生产化技术路线](../docs/27-production-guardian-roadmap.md) |
 
 ## 新增 Goal 的最小模板
 

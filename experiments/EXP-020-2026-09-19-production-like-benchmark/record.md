@@ -3,7 +3,7 @@
 - 实验 ID：`EXP-020`
 - 状态：`PASSED`
 - 创建日期：2026-09-19
-- 最近更新：2026-09-19（完成 5 轮有效重复和 churn 场景）
+- 最近更新：2026-09-19（完成本地计时重复和 churn 场景；重复证据边界于 2026-09-20 修订）
 - 关联 Goal：`Goal 5 / G5-T01~G5-T06`
 - 实验负责人：当前 Agent
 
@@ -49,15 +49,15 @@
 ## 5. 执行记录
 
 - 第一轮仿真使用未处理 SIGTERM 的内存目标，Guardian 返回 `failed / target_force_killed`；该失败被保留为边界证据。
-- 修正测试目标加入 SIGTERM trap 后，完成 5 轮有效重复；12 个正常容器、14 个 CPU/IO 压力对象、15 个 CPU/IO/PID smoke 对象和短生命周期 churn 对象均未触发错误动作。
+- 修正测试目标加入 SIGTERM trap 后，形成 5 组跨文件计时；12 个正常容器、14 个 CPU/IO 压力对象、15 个 CPU/IO/PID smoke 对象和短生命周期 churn 对象均未触发错误动作。完整每轮事件/审计/恢复结果未汇总为单一可重算数据集。
 - 在 14 个容器和 CPU/IO 压力下持续采样 32 秒，Guardian 峰值 RSS 约 27.6 MiB、user+sys CPU 0.12 秒。
 - 无 Guardian 对照目标在 5 秒观察窗口结束时仍为 `Running=true`；Guardian 对同类单目标执行 `graceful_stop` 并恢复成功。
-- 5 轮有效重复的时延、事件、审计和结果已写入 `data/`；完整解读见 [`report.md`](report.md)。
+- 可见数据包含 `timings.csv` 的一组基础计时和 `timings-repeated.csv` 的 r2–r5 四组计时；报告中的“5 轮”是跨文件可见的计时组数量，不是每轮均有独立完整事件/审计/恢复结果的单一汇总。该证据保留为本地性能基线，不作为生产统计或 SLA。
 - 每轮结束运行中容器为 0；不连接生产，不执行 restart、terminate 或 kill。
 
 ## 6. 结论
 
-- 验收状态：通过（安全性/性能基线）；详细报告见本目录 [`report.md`](report.md)，有效性对照见 [EXP-021](../EXP-021-2026-09-19-failure-prevention-comparison/report.md)。
+- 验收状态：通过（本地安全性/性能基线）；重复计时的证据边界已降级，详细报告见本目录 [`report.md`](report.md)，有效性对照见 [EXP-021](../EXP-021-2026-09-19-failure-prevention-comparison/report.md)。
 - 本地实测：正常 fleet、CPU/IO 压力和 churn 未误触发；无 Guardian 对照目标保持运行；Guardian 对可优雅退出目标完成恢复。
 - 容量缩放推断：本地 12–14 个容器的流程可运行，不代表生产 55 个运行容器下的绝对性能。
 - 生产待复核：x86_64、真实业务健康、生产网络/磁盘、保护名单、业务 SLO 和长期稳定性。
@@ -71,4 +71,4 @@
 ## 8. 更新记录
 
 - 2026-09-19：建立仿真矩阵、资源预算、停止条件和生产差异说明；开始 G5-T01。
-- 2026-09-19：第一轮仿真因测试容器未响应 SIGTERM，Guardian 正确返回 `target_force_killed`；修正测试容器后完成 5 轮有效重复、正常高负载、churn 和无 Guardian/Guardian 对照；实验通过。
+- 2026-09-19：第一轮仿真因测试容器未响应 SIGTERM，Guardian 正确返回 `target_force_killed`；修正测试容器后形成跨文件计时、正常高负载、churn 和无 Guardian/Guardian 对照；实验作为本地安全性/性能基线保留。

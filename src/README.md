@@ -6,6 +6,10 @@ Adapter 还提供 alerts_history 活动/恢复记录的安全映射和 GET-only 
 
 当前第一版原型使用 Python 标准库实现只读 `observe`：[`guardian_observer.py`](guardian_observer.py) 采集 `/proc`、PSI、cgroup v2 和 Docker stats，使用连续采样窗口去抖，并输出 JSONL 事件和可选快照/审计记录。它不包含停止、重启、kill 或资源变更代码。
 
+PG-P0-02 新增 [`guardian_config.py`](guardian_config.py) 和 `config/guardian.example.json`：配置使用严格 JSON schema、未知字段拒绝、危险 `enforce` 默认拒绝，并为每个事件输出 `config_digest`。未传配置时只使用 observe-only 安全默认；历史 `guardian.example.yaml` 不被运行时读取。
+
+PG-P0-03 新增 [`guardian_risk.py`](guardian_risk.py)：组合 OOM 增量、可用内存、下降趋势、memory PSI、swap 和观测质量，输出候选状态、reason codes、质量标记和信号摘要。`guardian_observer.py` 使用单调时钟，并依据 `/proc/self/cgroup` 定位 cgroup v2 当前进程目录；历史计数不重复触发，计数回退或采集不完整时 fail-closed 为 `degraded_observability`。该层仍只产生风险证据，不授权动作。
+
 当前也支持 `simulate`：它只根据风险状态、对象身份、保护状态和动作白名单生成计划，并明确标记 `execution=not_executed`。`guardian_actions.py` 提供授权校验、mock executor 和参数数组 Docker 适配器；没有显式的本地可丢弃环境授权时，不调用真实执行器。
 
 `guardian_recovery.py` 提供纯函数式恢复验证、冷却和失败熔断判断；它不主动重试动作，必须由上层在策略允许时决定是否升级。

@@ -8,7 +8,7 @@
 
 ## 一句话结论
 
-在同一类无界内存泄漏条件下，无 Guardian 会造成宿主机 global OOM、健康服务和 SSH/Docker 相关进程受影响；Guardian 能在错误扩大前识别风险、定位唯一对象、执行受控 `graceful_stop`，并验证内存和健康探针恢复。
+在 EXP-021 的同一类无界内存泄漏条件下，无 Guardian 会造成宿主机 global OOM、健康服务和 SSH/Docker 相关进程受影响；Guardian 能在该次本地单对象实验中识别风险、定位唯一对象、执行受控 `graceful_stop`，并验证内存和健康探针恢复。该结论受 ARM64、约 4GB、无 swap、单个 disposable 对象、合成阈值和健康探针 fixture 限制，不是生产 SLA。
 
 项目目标不是给所有 Docker 容器统一设置内存上限，而是：
 
@@ -43,8 +43,8 @@
 
 ### 当前本地证据
 
-- Guardian 在 EXP-021 中提前发现 `critical`，并成功止损。
-- Guardian 检测窗口在 EXP-028 的两次运行中约为 6.15/6.18 秒。
+- Guardian 在 EXP-021 的有效 Guardian 组中发现 `critical`，并成功止损；该实验不是多对象归因或生产服务验证。
+- Guardian 检测窗口在 EXP-028 的两次 bounded memory pressure 中约为 6.15/6.18 秒；这是本地告警路径对照，不是接近 OOM 的通用预测 SLA。
 - Beszel 同窗告警约为 16.378/33.159 秒；它承担监控和历史，Guardian 负责低延迟本机判断。
 - EXP-015 验证真实 `graceful_stop` 恢复；EXP-016/017/018 验证冷却、熔断、多对象和未知对象边界。
 
@@ -76,6 +76,7 @@ Beszel 是否有效，不能只看页面是否有曲线，要看它是否提供�
 - 只验证 disposable 泄漏对象和本地健康探针，不代表真实业务自动恢复。
 - 当前不接生产、不读取生产凭据、不默认执行重启或强制终止。
 - 真实生产接入仍需要非生产 x86_64 测试机、保护名单、业务 health check 和明确动作授权。
+- EXP-020 的 5 组计时记录分散在多个数据文件，不能作为独立可重算的生产统计；完整声称边界见 [docs/28](28-claim-evidence-boundary.md)。
 
 ## 希望组长评审并决定的事项
 

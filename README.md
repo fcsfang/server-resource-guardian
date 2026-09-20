@@ -2,7 +2,7 @@
 
 服务器资源监控、危机预警与受控处置项目。
 
-> 本文件是项目总入口：用于让第一次接触项目的人、leader、协作者和新的 agent 快速理解项目内容，并知道下一步如何安全行动。细节以 [文档总目录](docs/README.md)、[执行蓝图](docs/14-execution-roadmap.md)、[项目进度](PROGRESS.md)、当前 [Goal](goals/README.md) 和 [实验记录](experiments/README.md) 为准。
+> 本文件是项目总入口：用于让第一次接触项目的人、leader、协作者和新的 agent 快速理解项目内容，并知道下一步如何安全行动。细节以 [生产化技术路线](docs/27-production-guardian-roadmap.md)、[文档总目录](docs/README.md)、[项目进度](PROGRESS.md)、当前 [Goal](goals/README.md) 和 [实验记录](experiments/README.md) 为准。
 
 更新时间：2026-09-20
 
@@ -51,9 +51,10 @@
 - 阶段 3：自动风险处置机制评估，已完成本地验证。
 - 阶段 4：Guardian 最小实现与本地受控闭环，已完成；生产交接待外部条件。
 - 阶段 5：本地生产仿真性能报告，已完成；报告已形成，生产测试权限待申请。
-- 当前执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，以 Beszel 为监控基础。
-- 当前活动目标：执行 Goal 6 Beszel 二次开发集成；详见 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 和 [Goal 6](goals/resource-protection.md#goal-6beszel-二次开发集成)。
-- 当前下一步：向 leader 展示 [一页式效果对照](docs/24-guardian-effectiveness-one-page.md) 和 [离线可点击演示](demo/guardian-beszel-review/index.html)，并完成 G6-T06 设计评审。设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已冻结风险/对象/策略/计划/结果/恢复 view model、降级状态和人工确认边界，当前仍为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 Beszel 上游修改或生产 endpoint。G6-T07 的 `enforce`、生产测试授权、保护名单和 x86_64 兼容性复核仍待外部条件。交付步骤见 [组长评审交付前执行路线](docs/25-leader-review-delivery-roadmap.md)。
+- 历史 PoC 执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md) 和 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)。
+- 当前生产化执行基线：[docs/27-production-guardian-roadmap.md](docs/27-production-guardian-roadmap.md)。当前 Guardian 是已有本地单对象止损证据的原型，尚不是生产守护服务。
+- 当前活动目标：Goal 6 保留 Beszel UI 评审任务；Goal 7 按生产化路线推进。
+- 当前下一步：执行 [PG-P0-04 每对象归因与放弃机制](docs/27-production-guardian-roadmap.md#pg-p0-04-每对象归因与放弃机制)；PG-P0-03 的本地 MVP 证据见 [EXP-030](experiments/EXP-030-2026-09-20-composite-risk-engine/record.md)。此前不开始新的 `enforce`、restart、terminate 或生产接入。G6-T06 仍需 leader 评审后才能实现旁路 endpoint。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
@@ -80,7 +81,7 @@
 | `experiments/` | 实验日志、脱敏核心数据和可审阅证据 | 每次实验使用唯一 `EXP-###`；失败实验也保留 | [experiments/README.md](experiments/README.md) |
 | `reports/` | 本机原始采集报告、日志和快照 | 默认不入库，可能包含生产敏感信息 | 仅本机查看 |
 | `scripts/` | 环境采集和 PoC 辅助脚本 | 脚本需写明适用环境、权限和副作用 | 直接查看脚本头部说明 |
-| `src/` | Guardian 或其他项目源代码 | 当前为占位目录；实现边界确认后再扩展 | [src/README.md](src/README.md) |
+| `src/` | Guardian 和 Beszel 旁路集成原型源代码 | 已有 observer/controller/action/recovery/bridge/UI model；生产化按 docs/27 推进 | [src/README.md](src/README.md) |
 | `tests/` | 自动化测试、集成测试和故障演练 | 测试必须绑定环境、授权、停止和恢复条件 | [tests/README.md](tests/README.md) |
 | `wsl/` | 本地 WSL2 配置样例 | 只代表本地开发环境，不当作生产配置 | 查看目录内配置 |
 | `汇报/` | 最终 PPT、讲稿、预览和生成素材 | 汇报材料不替代工程事实和实验记录 | [最终 PPT](汇报/服务器资源保护-现成策略优先-重构版.pptx) |
@@ -99,7 +100,7 @@
 
 ```text
 README.md
-  → docs/14-execution-roadmap.md（执行蓝图）
+  → docs/27-production-guardian-roadmap.md（当前生产化执行基线）
   → PROGRESS.md
   → goals/README.md → 当前 Goal 文件
   → docs/README.md → 当前任务对应的规范/方案/测试文档
@@ -108,7 +109,7 @@ README.md
 
 当前任务的具体参考关系：
 
-1. **技术路线与执行阶段：** [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)。
+1. **技术路线与执行阶段：** [docs/27-production-guardian-roadmap.md](docs/27-production-guardian-roadmap.md)。
 2. **项目状态、当前待办：** [PROGRESS.md](PROGRESS.md)。
 3. **Leader 最新反馈和测试入口：** [docs/13-leader-test-handoff.md](docs/13-leader-test-handoff.md)。
 4. **目标、任务和接手说明：** [goals/resource-protection.md](goals/resource-protection.md)。
@@ -189,21 +190,18 @@ git push origin main
 
 ## 当前第一步
 
-当前不要直接开发完整平台，也不要直接在生产机做故障注入。先按 [执行蓝图](docs/14-execution-roadmap.md) 定义 Guardian 的最小风险检测和自动处置闭环：
-
-1. 已完成主机/容器风险信号、趋势窗口和误报抑制规则的第一版设计。
-2. 已完成对象分类、保护名单、允许动作和 `observe/simulate/enforce` 边界设计。
-3. 已实现只生成计划的 `simulate`，不执行真实终止、重启或资源变更。
-4. 使用受限动作适配器在可丢弃测试对象上验证，禁止把通用 Docker 内存限制作为默认动作。
-5. 在 Ubuntu 22.04 非生产环境复核后，再讨论生产灰度。
+从 [docs/27 状态板](docs/27-production-guardian-roadmap.md#10-当前状态板) 依次推进；PG-P0-01/02/03 已完成，当前从 `PG-P0-04` 对象归因与放弃机制开始，再依次实现耐久安全状态、两层恢复和 systemd 常驻运行。在 P0-01–07 全部通过且用户对当次本地 disposable 对象单独授权前，不执行新的真实动作。
 
 ## 相关入口
 
+- [Guardian 生产化技术路线与执行手册](docs/27-production-guardian-roadmap.md)
 - [执行路线蓝图](docs/14-execution-roadmap.md)
 - [自动化执行路线与 Agent 接手协议](docs/16-autonomous-execution-roadmap.md)
 - [Guardian 风险信号规范](docs/17-risk-signal-specification.md)
 - [Guardian 对象策略规范](docs/18-object-policy-specification.md)
 - [项目文档总目录与管理规范](docs/README.md)
+- [Guardian 声称—证据—边界对照表](docs/28-claim-evidence-boundary.md)
+- [Guardian 配置 Schema 与启动门禁](docs/29-guardian-config-schema.md)
 - [目标与任务目录](goals/README.md)
 - [实验日志与核心数据目录](experiments/README.md)
 - [当前项目进度](PROGRESS.md)

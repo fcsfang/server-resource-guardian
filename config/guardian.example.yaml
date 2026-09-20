@@ -1,4 +1,5 @@
-# 仅用于需求讨论和 PoC。字段会在技术选型后通过 schema 固化。
+# 历史讨论样例，不是当前运行时格式；PG-P0-02 的 canonical runtime config 是 guardian.example.json。
+# 当前 JSON schema：../config/guardian.schema.json；本 YAML 不被 Guardian 读取。
 version: 1
 
 agent:

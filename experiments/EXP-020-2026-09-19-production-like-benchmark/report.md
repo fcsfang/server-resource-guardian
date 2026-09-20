@@ -12,7 +12,7 @@
 
 - 12 个正常容器、CPU/IO/PID 负载和短生命周期容器 churn 场景没有触发错误动作。
 - 无 Guardian 对照中，700 MiB 级别的内存增长目标在观察窗口结束时仍保持运行。
-- Guardian 对同类、单一、明确授权的 disposable 目标执行 `graceful_stop`，5 轮有效重复测试均返回 `recovered / target_stopped`。
+- Guardian 对同类、单一、明确授权的 disposable 目标执行过 `graceful_stop` 并得到 `recovered / target_stopped`；仓库当前没有每一组重复都独立汇总的完整审计结果，因此不把“5 组计时”写成 5 轮完整动作成功。
 - 单目标 observe 事件生成耗时约 P50 `1.06s`、近似 P95 `1.17s`；enforce 加恢复验证约 P50 `638ms`、近似 P95 `707ms`。
 - 多对象场景不会盲选目标，而是升级 `ambiguous_object_identity`；无稳定身份和不健康业务状态也会 fail-closed。
 
@@ -54,13 +54,13 @@
 | 对照组 | 观察结果 |
 | --- | --- |
 | 无 Guardian | 5 秒观察窗口结束时目标仍为 `Running=true`，没有自动处置 |
-| Guardian | 先生成 enforce 事件，再执行一次授权 `graceful_stop`；5 轮有效重复均 `recovered / target_stopped` |
+| Guardian | 先生成 enforce 事件，再执行授权 `graceful_stop`；可见的完整结果记录为 `recovered / target_stopped`，跨文件计时组不等于完整重复动作结果 |
 
 这说明 Guardian 的效果不是“阻止内存增长”，而是在风险达到测试策略条件后，按授权把明确目标安全停止，并确认目标已退出。
 
 ### 3.3 时延重复测量
 
-5 轮有效重复测试；P95 在小样本下按最大值近似，不能视为生产 SLA。
+跨 `timings.csv` 和 `timings-repeated.csv` 可见 5 组本地计时；由于重复数据分散，且没有每轮完整独立事件/审计/恢复结果的统一汇总，本报告只把它作为本地性能基线，不把 P95（即使按小样本最大值近似）视为统计结论或生产 SLA。
 
 | 操作 | P50 | 近似 P95 | 说明 |
 | --- | ---: | ---: | --- |

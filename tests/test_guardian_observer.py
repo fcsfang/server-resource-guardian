@@ -9,6 +9,7 @@ from src.guardian_observer import (
     collect_observation,
     parse_meminfo,
     parse_psi,
+    resolve_process_cgroup_root,
 )
 
 
@@ -53,6 +54,16 @@ class GuardianObserverTests(unittest.TestCase):
             event = build_event(observation)
             self.assertEqual(event["state"], "critical")
             self.assertEqual(event["decision"]["action"], "none")
+
+    def test_resolves_current_process_cgroup_v2_path(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "self").mkdir()
+            (root / "self" / "cgroup").write_text("0::/user.slice/session.scope\n")
+            cgroup = root / "cgroup"
+            (cgroup / "user.slice" / "session.scope").mkdir(parents=True)
+            resolved = resolve_process_cgroup_root(root, cgroup)
+            self.assertEqual(resolved, cgroup / "user.slice" / "session.scope")
 
     def test_snapshot_can_be_written_without_actions(self):
         observation = {

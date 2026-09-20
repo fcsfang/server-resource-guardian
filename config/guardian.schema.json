@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "guardian.config.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "agent", "risk", "actions", "protection", "recovery", "audit"],
+  "properties": {
+    "schema": {"const": "guardian.config.v1"},
+    "version": {"const": 1},
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "interval_seconds", "snapshot_directory", "snapshot_max_total_bytes"],
+      "properties": {
+        "mode": {"enum": ["observe", "simulate", "enforce"]},
+        "interval_seconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 60},
+        "snapshot_directory": {"type": ["string", "null"]},
+        "snapshot_max_total_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["memory", "composite"],
+      "properties": {
+        "memory": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["warning_available_percent", "critical_available_percent", "warning_for_seconds", "critical_for_seconds"],
+          "properties": {
+            "warning_available_percent": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 100},
+            "critical_available_percent": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 100},
+            "warning_for_seconds": {"type": "number", "exclusiveMinimum": 0},
+            "critical_for_seconds": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+        "composite": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required_samples", "max_sample_age_seconds", "trend_warning_bytes_per_second", "trend_critical_bytes_per_second", "psi_memory_some_warning_avg10", "psi_memory_full_critical_avg10", "swap_used_warning_percent", "swap_used_critical_percent"],
+          "properties": {
+            "required_samples": {"type": "integer", "minimum": 1, "maximum": 60},
+            "max_sample_age_seconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 300},
+            "trend_warning_bytes_per_second": {"type": "number", "minimum": 0},
+            "trend_critical_bytes_per_second": {"type": "number", "minimum": 0},
+            "psi_memory_some_warning_avg10": {"type": "number", "minimum": 0, "maximum": 100},
+            "psi_memory_full_critical_avg10": {"type": "number", "minimum": 0, "maximum": 100},
+            "swap_used_warning_percent": {"type": "number", "minimum": 0, "maximum": 100},
+            "swap_used_critical_percent": {"type": "number", "minimum": 0, "maximum": 100}
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "require_approval", "graceful_timeout_seconds", "cooldown_seconds", "max_actions_per_host_per_hour", "allow"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "require_approval": {"type": "boolean"},
+        "graceful_timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 120},
+        "cooldown_seconds": {"type": "number", "minimum": 0},
+        "max_actions_per_host_per_hour": {"type": "integer", "minimum": 0},
+        "allow": {"type": "array", "uniqueItems": true, "items": {"enum": ["graceful_stop", "restart", "terminate"]}}
+      }
+    },
+    "protection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["systemd_units", "executable_paths", "container_labels"],
+      "properties": {
+        "systemd_units": {"type": "array", "items": {"type": "string"}},
+        "executable_paths": {"type": "array", "items": {"type": "string"}},
+        "container_labels": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_wait_seconds", "poll_interval_seconds", "require_business_health"],
+      "properties": {
+        "max_wait_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "poll_interval_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "require_business_health": {"type": "boolean"}
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["local_buffer_enabled", "remote_export_enabled", "max_total_bytes"],
+      "properties": {
+        "local_buffer_enabled": {"type": "boolean"},
+        "remote_export_enabled": {"type": "boolean"},
+        "max_total_bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

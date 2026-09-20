@@ -14,8 +14,11 @@
 | [Goal 4](#goal-4guardian最小风险检测与自动处置实现) | Guardian 最小风险检测与自动处置 | `COMPLETED` | 在可丢弃测试对象上实现并验证自动处置闭环，生产交接另列为外部依赖 |
 | [Goal 5](#goal-5本地生产仿真性能报告) | 本地生产仿真性能报告 | `COMPLETED` | 在不接触生产的前提下复刻关键运行时、负载和故障模式，形成可交给 leader 的性能与有效性报告 |
 | [Goal 6](#goal-6beszel-二次开发集成) | Beszel 二次开发集成 | `IN_PROGRESS` | 将 Beszel 监控基础与 Guardian 风险检测、策略和处置能力安全联调 |
+| [Goal 7](#goal-7guardian-生产化实现) | Guardian 生产化实现 | `IN_PROGRESS` | 按 docs/27 补齐复合风险、对象归因、常驻运行、耐久安全和生产准入 |
 
 依赖关系：Goal 1 的观测能力是 Goal 2/3 的共同前提；Goal 2 建立的压力场景复用给 Goal 3；Goal 3 的缺口分析是 Goal 4 的实现输入；Goal 5 将 Goal 4 的本地闭环扩展为生产仿真性能报告；Goal 6 将 Beszel 监控基础与 Guardian 联调。所有 Goal 都按 `experiments/` 的 `EXP-###` 规范记录，失败实验同样保留。
+
+Goal 7 是 2026-09-20 架构评审后的生产化主线。Goal 4–6 的“完成”只代表对应原型/本地实验范围完成，不自动满足 Goal 7 的生产工程门。
 
 ## Goal 1：只观测 PoC 收尾
 
@@ -190,7 +193,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 ### 更新记录
 
 - 2026-09-19：Goal 4 本地闭环完成；建立 Goal 5，准备在申请生产权限前完成生产仿真性能报告。
-- 2026-09-19：EXP-020 完成 5 轮有效重复、CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下自身开销测量；性能报告已生成，生产交接仍需外部授权。
+- 2026-09-19：EXP-020 完成 CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下自身开销测量；仓库可见 5 组跨文件计时，但重复证据不构成生产统计，性能报告已生成，生产交接仍需外部授权。
 - 2026-09-19：根据对照证据复核，EXP-020 降级为安全性/性能基线；新增 EXP-021 真实故障预防对照，复现无 Guardian global OOM，并验证 Guardian 在 critical 阈值前后止损、恢复和健康探针保活。
 - 2026-09-19：完成 EXP-022，补充多对象身份歧义、保护对象、CPU/IO 误报和恢复失败熔断边界；所有场景保持 observe/simulate 或纯 fixture，不执行真实动作。
 
@@ -251,6 +254,54 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：完成 G6-T06 本地契约自检：5 个 UI 纯函数测试覆盖字段冻结、模拟不执行、多对象和缺失身份 fail-closed；leader/协作者评审仍是完成门槛，未实现 endpoint。
 - 2026-09-20：形成组长评审交付包：一页式 Guardian/Beszel 效果对照、离线可点击页面和现场演示 Runbook；页面只使用脱敏静态数据，正式评审和 G6-T07 仍未完成。
 - 2026-09-20：新增交付材料离线/只读约束测试 `test_review_delivery.py`；宿主机与 Multipass 全量测试 66/66 通过，确认演示页不访问网络、不调用 Docker/systemd 执行器。
+
+## Goal 7：Guardian 生产化实现
+
+- 状态：`IN_PROGRESS`
+- 创建日期：2026-09-20
+- 最近更新：2026-09-20（建立生产化技术路线与 Agent 接手状态板）
+- 负责人：按 [`docs/27`](../docs/27-production-guardian-roadmap.md) 状态板逐任务接手
+- 来源：2026-09-20 独立技术架构评审
+
+### 目标结果
+
+将当前 Guardian 从“本地 ARM64、单对象、脚本化、单次 `graceful_stop` 有效性证据”推进为一个默认 fail-closed、可持续运行、可归因、可崩溃恢复、可审计、可回滚的 Guardian。只有完成本地 MVP、x86_64 非生产验证、生产 observe/simulate 和多方授权后，才可评估极小白名单的 `graceful_stop`。
+
+### 任务清单
+
+- [x] **G7-T00**：建立 [Guardian 生产化技术路线与执行手册](../docs/27-production-guardian-roadmap.md)，固定主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务、实验矩阵和 Agent 交接协议。
+- [x] **G7-T01 / PG-P0-01**：事实与状态重置；修正旧文档过度声称和 EXP-020/021/028 边界，统一口径见 [docs/28](../docs/28-claim-evidence-boundary.md)。
+- [x] **G7-T02 / PG-P0-02**：实现严格 JSON 配置 schema、启动门禁、版本和 digest；证据见 [docs/29](../docs/29-guardian-config-schema.md)。
+- [x] **G7-T03 / PG-P0-03**：实现 OOM 增量、趋势、PSI、swap、数据质量和滞后的组合风险引擎；证据见 [EXP-030](../experiments/EXP-030-2026-09-20-composite-risk-engine/record.md)。
+- [ ] **G7-T04 / PG-P0-04**：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃。
+- [ ] **G7-T05 / PG-P0-05**：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复。
+- [ ] **G7-T06 / PG-P0-06**：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复。
+- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。
+- [ ] **G7-T08 / PG-P0-08**：完成本地 observe → simulate → 单次授权 `graceful_stop` 对照实验。
+- [ ] **G7-T09 / PG-P0-09**：在 docs/23 获得评审后实现 Beszel 只读旁路 endpoint，不为 UI 提供动作授权。
+- [ ] **G7-T10**：按 docs/27 P1 完成底层机制对照、7 天 soak、x86_64 非生产 observe/simulate、单次灰度和运维交付。
+- [ ] **G7-T11**：按 docs/27 P2 完成权限分离、安全审计、发布/回滚、生产 observe/simulate；生产 `enforce` 是单独多方审批项，不是 Goal 默认结果。
+
+### 接手入口
+
+必须先读 [`docs/27`](../docs/27-production-guardian-roadmap.md) 的第 0、2、7、10、11 节。从状态板第一个 `READY` 任务开始；当前是 PG-P0-04。当任务卡与旧 Goal 4–6 的“已完成”声称冲突时，以 docs/27 的生产化完成定义为准，以源码和实验记录核实事实。
+
+未获得用户对当次 disposable 目标的单独明确授权前，只允许 observe/simulate。未获得外部书面授权前，不连接非生产/生产主机。
+
+### 完成标准
+
+- [ ] docs/27 M0–M6 全部有可复核证据，P0/P1/P2 没有未处理的硬阻断。
+- [ ] 组合风险、对象归因、保护、授权、幂等、恢复和审计达到 docs/27 工程质量门。
+- [ ] Guardian 在目标 x86_64 非生产和生产 observe/simulate 环境完成长跑、故障注入、禁用和回滚演练。
+- [ ] 生产默认仍为 observe；restart、terminate、PID kill、整机重启和自动资源限额修改均未默认开启。
+- [ ] 业务 owner、SRE、安全和变更管理的前置、授权和风险接受均有可追溯记录。
+
+### 更新记录
+
+- 2026-09-20：建立 Goal 7 和 docs/27；将主技术路线定为“Python Guardian 作为 Beszel 本机旁路决策/受控动作层”，当前进入 PG-P0-01。
+- 2026-09-20：完成 G7-T01/PG-P0-01；建立 docs/28 声称—证据—边界对照，下一任务为 PG-P0-02 配置 Schema 与启动门禁。
+- 2026-09-20：完成 G7-T02/PG-P0-02；建立严格 JSON schema、配置 digest、observe-only 默认和 fail-closed 启动门禁，下一任务为 PG-P0-03 组合风险引擎。
+- 2026-09-20：完成 G7-T03/PG-P0-03；新增组合风险评估器、单调时钟、cgroup v2 当前路径解析和质量 fail-closed，证据见 EXP-030，下一任务为 PG-P0-04 对象归因。
 
 ## 全局边界（所有 Goal 共同遵守）
 

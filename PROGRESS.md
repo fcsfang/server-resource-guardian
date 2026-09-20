@@ -9,7 +9,7 @@
 
 ## 当前阶段
 
-**阶段 6：Beszel 二次开发集成 — 🚧 进行中**（Goal 1–5 本地验证已完成；执行蓝图见 [docs/14-execution-roadmap.md](docs/14-execution-roadmap.md)，自动执行路线见 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)）
+**阶段 7：Guardian 生产化实现 — 🚧 M0 进行中**（Goal 6 的 Beszel UI 评审仍保留；当前生产化执行基线见 [docs/27](docs/27-production-guardian-roadmap.md)）
 
 - 阶段 0 需求与环境确认：✅ 已完成
 - 阶段 1 只观测 PoC：✅ 本地已完成
@@ -18,10 +18,11 @@
 - 阶段 4 Guardian 最小实现与受控灰度：✅ 本地已完成
 - 阶段 5 本地生产仿真性能报告：✅ 已完成，生产测试权限待申请
 - 阶段 6 Beszel 二次开发集成：🚧 进行中，按 G6-T01～G6-T07 执行
+- 阶段 7 Guardian 生产化实现：🚧 进行中，当前在 M0，按 docs/27 的 P0→P1→P2 阶段门执行
 
 ## 当前活动目标
 
-按 [自动执行路线](docs/16-autonomous-execution-roadmap.md) 继续执行 Goal 6：G6-T01～G6-T05 已完成；EXP-029 的 bridge 7/7、宿主机与 Multipass 当前全量测试为 66/66，外部事件不获得动作授权。G6-T06 设计稿 [docs/23](docs/23-beszel-guardian-ui-integration-design.md) 已形成，本地离线演示、一页式效果对照和现场 Runbook 已准备，正式状态仍为 `DESIGN-READY-FOR-REVIEW`；评审前不实现 Beszel 上游修改或生产 endpoint，G6-T07 的 `enforce` 仍未开始。Goal 1–5 的本地验证均已完成；生产动作仍未执行。交付路线见 [docs/25](docs/25-leader-review-delivery-roadmap.md)，真实实验结果见 [`experiments/`](experiments/README.md)。
+按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 事实与状态重置、PG-P0-02 配置 Schema 与启动门禁、PG-P0-03 组合风险引擎已完成，当前 `READY` 任务为 PG-P0-04 每对象归因与放弃机制。当前 Guardian 仍是有本地单对象止损证据和组合风险 MVP 的原型，不具备多对象因果归因、生产级耐久安全和 systemd 常驻能力。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的 `enforce`，生产动作从未执行。
 
 ## 环境清单
 
@@ -72,7 +73,7 @@
 - 2026-09-19 完成 EXP-018：双 disposable 容器实机 observe/simulate 将多对象竞争升级为 `ambiguous_object_identity`；无稳定 ID 和 unhealthy 健康状态测试均 fail-closed，临时容器已清理。见 experiments/EXP-018-2026-09-19-multi-object-health-observe/record.md。
 - 2026-09-19 完成 EXP-019：在 Mac Multipass Ubuntu 空载测得 Guardian 单次 observe 峰值约 25.8 MiB、32 秒持续采样峰值约 26.5 MiB，CPU 累计约 0.12 秒；结果仅作为 0 容器基线。见 experiments/EXP-019-2026-09-19-guardian-local-resource-overhead/record.md。
 - 2026-09-19 建立 Goal 5：在本地复刻生产关键运行时、容器角色和故障模式，完成无 Guardian/Guardian 对照及性能报告；不连接生产。
-- 2026-09-19 完成 EXP-020/Goal 5：5 轮有效重复、CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下资源开销测量完成；老板报告见 experiments/EXP-020-2026-09-19-production-like-benchmark/report.md。
+- 2026-09-19 完成 EXP-020/Goal 5：完成 CPU/IO/PID、churn、无 Guardian/Guardian 对照和压力下资源开销测量；仓库可见 5 组跨文件计时，重复证据不足以作为生产统计，详见 experiments/EXP-020-2026-09-19-production-like-benchmark/report.md。
 - 2026-09-19 完成 EXP-021/Goal 5：补足真实有效性对照。同一无界内存泄漏下，无 Guardian 复现 global OOM，健康探针、dockerd、sshd 和多个 systemd 服务受 OOM 影响；Guardian 在 critical 阈值执行授权 graceful_stop，目标退出 0、内存恢复、健康探针保持可用。主证据见 experiments/EXP-021-2026-09-19-failure-prevention-comparison/report.md。
 - 2026-09-19 完成 EXP-022/Goal 5：补充多对象歧义、保护对象、CPU/IO 误报和恢复失败熔断边界；全部使用 observe/simulate 或纯 fixture，无新增真实动作。见 experiments/EXP-022-2026-09-19-policy-boundary-scenarios/record.md。
 - 2026-09-19 完成 Mac Multipass Beszel 本地部署：Hub/Agent 0.19.0 镜像离线导入 `guardian-ubuntu`，Hub/Agent 均为 healthy；用户完成系统登记后，Agent 日志出现 WebSocket connected，连接后短窗口无新的 401/错误。当前运行状态和后续指标核验见 [docs/20](docs/20-local-beszel-multipass-deployment.md)。
@@ -99,6 +100,10 @@
 
 - 2026-09-20 进入组长评审交付准备：修正文档状态口径，形成一页式效果对照、离线可点击演示页和现场 Runbook；演示使用脱敏静态数据，不连接 Beszel 登录态、不调用执行器。G6-T06 仍等待正式评审，G6-T07 未开始。
 - 2026-09-20 完成交付包离线/只读约束自检：新增 `test_review_delivery.py`，宿主机与 Multipass 全量测试均为 66/66；验证演示页不调用网络或执行器，Runbook、路线和一页式材料均可读取。
+- 2026-09-20 完成独立架构评审后的生产化路线落盘：新增 [docs/27](docs/27-production-guardian-roadmap.md) 和 Goal 7，选择“Python Guardian 作为 Beszel 本机旁路决策/受控动作层”主路线；当前进入 M0，随后完成 PG-P0-01/02，下一任务为 PG-P0-03。
+- 2026-09-20 完成 Goal 7 PG-P0-01：新增 [docs/28](docs/28-claim-evidence-boundary.md)，修正文档中的 PoC/生产边界；明确 EXP-021 的单对象、ARM64、`oom_score_adj=1000` fixture 条件，EXP-028 不构成通用 OOM 预测 SLA，并将 EXP-020 的分散重复计时降级为本地性能基线。
+- 2026-09-20 完成 Goal 7 PG-P0-02：新增严格 JSON schema、配置校验器、配置 digest 和 observe-only 安全默认；宿主机 74/74、Multipass 临时隔离校验 8/8 通过。当前下一项为 PG-P0-03，尚未执行新的真实动作。
+- 2026-09-20 完成 Goal 7 PG-P0-03：新增 OOM 增量/趋势/PSI/swap 组合风险引擎、单调时钟、质量 fail-closed 和 cgroup v2 当前进程路径解析；EXP-030 记录宿主机 84/84、Multipass 临时隔离 20/20，通过一次 VM observe 验证当前 session scope 可读 `memory.events`。当前下一项为 PG-P0-04，未执行压力注入或新的真实动作。
 
 ## 待办事项（按优先级）
 
@@ -110,6 +115,11 @@
 - [ ] 向公司确认仍未决的 P0/P1 问题：带外管理通道（Q-008）、SSH 失效实际表现（Q-006）、保护名单与可处置白名单（Q-009）、非生产测试机与故障注入授权（Q-010）。
 - [ ] 生产兼容性复核：本地 WSL 版本高于生产（systemd 259 vs 249、内核 6.18 vs 6.8），结论需在 Ubuntu 22.04 测试机验证。
 - [ ] Goal 6：G6-T01～G6-T05 已完成；当前整理 Guardian 效果、Beszel 集成和 UI 设计的组长评审交付包，G6-T06 正式评审和 G6-T07 enforce 仍未完成。
+- [x] Goal 7 / PG-P0-01：按 docs/27 执行事实与状态重置，明示原型/生产边界和 EXP-020/021/028 证据限制；统一口径见 [docs/28](docs/28-claim-evidence-boundary.md)。
+- [x] Goal 7 / PG-P0-02：实现严格配置 schema、启动门禁、版本和 digest；实现和回滚边界见 [docs/29](docs/29-guardian-config-schema.md)。
+- [x] Goal 7 / PG-P0-03：实现 OOM 增量、趋势、PSI、swap、数据质量和滞后的组合风险引擎；证据见 [EXP-030](experiments/EXP-030-2026-09-20-composite-risk-engine/record.md)。
+- [ ] Goal 7 / PG-P0-04：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃。
+- [ ] Goal 7 P0：依次完成组合风险、对象归因、耐久安全状态、两层恢复和 systemd 常驻；P0-01–07 全部通过前不做新真实动作。
 
 
 ## 仓库同步备忘

@@ -6,21 +6,24 @@
 
 ## 0. 执行与实验入口
 
-- [目标与任务目录](../goals/README.md)：记录跨 agent 可接手的目标组和任务清单；当前从 `Goal 1` 开始。
+- [目标与任务目录](../goals/README.md)：记录跨 agent 可接手的目标组和任务清单；当前生产化主线为 `Goal 7`。
 - [实验日志与核心数据](../experiments/README.md)：记录真实实验过程、结果和脱敏核心数据；实验编号使用 `EXP-###`。
-- 当前执行目标：按 [执行蓝图](14-execution-roadmap.md) 和 [自动执行路线](16-autonomous-execution-roadmap.md) 推进 Goal 6 Beszel 二次开发集成；Goal 4/5 的本地闭环和生产仿真报告已完成。
-- 后续自动执行总路线：[自动化执行路线与 Agent 接手协议](16-autonomous-execution-roadmap.md)。
+- 当前生产化执行目标：按 [Guardian 生产化技术路线](27-production-guardian-roadmap.md) 推进 Goal 7；Goal 6 只保留尚未完成的 Beszel UI 评审边界。
+- 后续 Agent 执行总路线：[Guardian 生产化技术路线与执行手册](27-production-guardian-roadmap.md)。
+- [自动化执行路线与 Agent 接手协议](16-autonomous-execution-roadmap.md) 保留为 PoC 历史路线，不再作为生产化完成判定。
 - 当前风险信号设计：[Guardian 风险信号规范](17-risk-signal-specification.md)。
 - 当前对象策略设计：[Guardian 对象策略规范](18-object-policy-specification.md)。
 - 当前动作边界设计：[Guardian 受控动作适配器契约](19-action-adapter-contract.md)。
 - 当前 Mac Beszel 运行状态：[Mac Multipass 本地 Beszel 部署记录](20-local-beszel-multipass-deployment.md)。
+- 当前声称、证据和边界口径：[Guardian 声称—证据—边界对照表](28-claim-evidence-boundary.md)。
 
 ## 1. 当前最新参考关系
 
 | 要回答的问题 | 当前首要参考 | 使用规则 |
 | --- | --- | --- |
+| Guardian 生产化选什么路线、下一步做什么？ | [Guardian 生产化技术路线](27-production-guardian-roadmap.md) | **当前唯一生产化执行基线**；任务状态、阶段门、授权和 Agent 接手均按此文 |
 | 项目现在做到哪一步、环境如何？ | [PROGRESS.md](../PROGRESS.md) | 项目进度、环境差异和待办的总账；每次阶段性工作后更新 |
-| leader 最新要求是什么、下一步如何执行？ | [Leader 测试交接](13-leader-test-handoff.md) | 两层方案和授权边界入口；与旧讨论笔记冲突时，以本文件和 14 号蓝图为当前任务方向 |
+| leader 最新要求是什么、下一步如何执行？ | [Leader 测试交接](13-leader-test-handoff.md) | 两层方案和授权边界背景；后续生产化任务与旧记录冲突时以 27 号路线为准 |
 | 测试如何设计、怎样验收和何时停止？ | [PoC 验证蓝图](07-poc-blueprint.md) | 通用测试矩阵、指标、输出物和停止条件；按 13 号文档补充 leader 最新范围 |
 | 任何处置动作的安全边界是什么？ | [生产安全与处置策略](06-safety-policy.md) | 默认关闭危险动作；保护名单、审批、审计和熔断优先级最高 |
 | 生产服务器已经确认了什么？ | [生产环境基线与风险分析](10-production-baseline.md) | 只引用已采集事实；未知项仍看 [待确认问题](05-open-questions.md) |
@@ -31,11 +34,11 @@
 
 ```text
 README.md
-  → docs/14-execution-roadmap.md
+  → docs/27-production-guardian-roadmap.md
   → PROGRESS.md
   → docs/13-leader-test-handoff.md
   → docs/15-experiment-findings.md
-  → goals/resource-protection.md → Goal 4
+  → goals/resource-protection.md → Goal 7
   → docs/07-poc-blueprint.md
   → docs/05-open-questions.md
   → docs/06-safety-policy.md
@@ -62,8 +65,8 @@ README.md
 | [12-leader-discussion-research.md](12-leader-discussion-research.md) | 围绕 leader 原始问题形成的讨论、路线和技术解释 | 讨论背景；最新行动方向以 13 号交接文档为准 |
 | [13-leader-test-handoff.md](13-leader-test-handoff.md) | leader 最新反馈、两层方案、测试顺序、授权前提和新会话接续方式 | **当前下一步工作的最新入口** |
 | [15-experiment-findings.md](15-experiment-findings.md) | 实验关键结论汇总：失效机制、管道时效、架构决策、Guardian 最小功能 | **实验结论的唯一汇总入口** |
-| [14-execution-roadmap.md](14-execution-roadmap.md) | 总执行蓝图：技术路线（Beszel 基础）、执行阶段和测试方式 | 执行目标与阶段的总纲 |
-| [16-autonomous-execution-roadmap.md](16-autonomous-execution-roadmap.md) | 后续阶段、任务顺序、无监督执行循环和 Agent 交接协议 | **当前自动执行入口** |
+| [14-execution-roadmap.md](14-execution-roadmap.md) | PoC 总执行蓝图：技术路线（Beszel 基础）、执行阶段和测试方式 | 历史 PoC 总纲；生产化以 27 号路线为准 |
+| [16-autonomous-execution-roadmap.md](16-autonomous-execution-roadmap.md) | Goal 4–6 的阶段、任务顺序和 Agent 交接协议 | 历史 PoC/集成执行记录；不作为生产化完成判定 |
 | [17-risk-signal-specification.md](17-risk-signal-specification.md) | G4-T01 风险信号、状态机和事件输出结构 | 当前实现设计入口 |
 | [18-object-policy-specification.md](18-object-policy-specification.md) | G4-T02 对象身份、保护名单、动作等级、冷却和熔断 | 当前策略设计入口 |
 | [19-action-adapter-contract.md](19-action-adapter-contract.md) | G4-T05 授权校验、mock executor 和 Docker 动作参数契约 | 真实动作前的安全边界 |
@@ -74,6 +77,9 @@ README.md
 | [24-guardian-effectiveness-one-page.md](24-guardian-effectiveness-one-page.md) | Guardian 故障预防效果、Beszel 集成效果和组长评审结论一页纸 | 当前组长评审材料 |
 | [25-leader-review-delivery-roadmap.md](25-leader-review-delivery-roadmap.md) | 交付前文档、页面、演示、验收和同步路线 | 当前交付执行路线 |
 | [26-guardian-beszel-live-demo-runbook.md](26-guardian-beszel-live-demo-runbook.md) | 明早验收和组长现场演示步骤、话术和安全边界 | 当前现场演示入口 |
+| [27-production-guardian-roadmap.md](27-production-guardian-roadmap.md) | 生产化主方案、安全不变量、P0/P1/P2 任务、实验门、生产准入和 Agent 交接 | **当前生产化唯一执行基线** |
+| [28-claim-evidence-boundary.md](28-claim-evidence-boundary.md) | 当前项目声称、源码/实验依据和不可扩大边界 | Goal 7 M0 事实口径；新增结论必须回链 |
+| [29-guardian-config-schema.md](29-guardian-config-schema.md) | Guardian JSON 配置、启动门禁、digest 和回滚边界 | Goal 7 PG-P0-02；组合风险现状回链 EXP-030 |
 
 ## 3. 补充研究材料
 

@@ -18,6 +18,9 @@ import uuid
 from pathlib import Path
 from typing import Any, Callable, Iterable
 
+from .guardian_config import ConfigError, GuardianConfig, load_config, safe_defaults
+from .guardian_risk import CompositeRiskEvaluator
+
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
 
@@ -88,8 +91,8 @@ def memory_signals(meminfo: dict[str, int]) -> dict[str, float | int | None]:
     swap_free = meminfo.get("SwapFree")
     available_ratio = None
     swap_used_ratio = None
-    if total:
-        available_ratio = round((available or 0) / total * 100, 3)
+    if total and available is not None:
+        available_ratio = round(available / total * 100, 3)
     if swap_total:
         swap_used_ratio = round((swap_total - (swap_free or 0)) / swap_total * 100, 3)
     return {
@@ -107,6 +110,28 @@ def read_optional(path: Path) -> str | None:
         return path.read_text(encoding="utf-8")
     except (FileNotFoundError, PermissionError, OSError):
         return None
+
+
+def resolve_process_cgroup_root(
+    proc_root: Path = Path("/proc"),
+    cgroup_root: Path = Path("/sys/fs/cgroup"),
+) -> Path:
+    """Resolve the current process cgroup directory on a cgroup v2 host.
+
+    Callers may still pass a fixture directory directly; when the fixture has
+    no ``/proc/self/cgroup`` file, the supplied root is preserved.
+    """
+
+    content = read_optional(proc_root / "self" / "cgroup")
+    if content is None:
+        return cgroup_root
+    for line in content.splitlines():
+        hierarchy, _, relative = line.partition("::")
+        if hierarchy == "0" and relative:
+            candidate = cgroup_root / relative.lstrip("/")
+            if candidate.is_dir():
+                return candidate
+    return cgroup_root
 
 
 def collect_docker_stats(runner: CommandRunner = subprocess.run) -> dict[str, Any]:
@@ -137,26 +162,51 @@ def collect_observation(
     cgroup_root: Path = Path("/sys/fs/cgroup"),
     runner: CommandRunner = subprocess.run,
 ) -> dict[str, Any]:
-    meminfo_text = read_optional(proc_root / "meminfo") or ""
+    observed_monotonic_ns = time.monotonic_ns()
+    quality_flags: list[str] = []
+    meminfo_text = read_optional(proc_root / "meminfo")
+    if meminfo_text is None:
+        quality_flags.append("meminfo_missing")
     psi: dict[str, Any] = {}
     for resource in ("cpu", "memory", "io"):
         content = read_optional(proc_root / "pressure" / resource)
         if content is not None:
             psi[resource] = parse_psi(content)
+    if "memory" not in psi:
+        quality_flags.append("memory_psi_missing")
 
-    events = parse_counter_file(read_optional(cgroup_root / "memory.events") or "")
+    process_cgroup_root = resolve_process_cgroup_root(proc_root, cgroup_root)
+    events_text = read_optional(process_cgroup_root / "memory.events")
+    if events_text is None:
+        quality_flags.append("memory_events_missing")
+    events = parse_counter_file(events_text or "")
+    meminfo = parse_meminfo(meminfo_text or "")
+    memory = memory_signals(meminfo)
+    if memory.get("total_bytes") is None:
+        quality_flags.append("memory_total_missing")
+    if memory.get("available_bytes") is None:
+        quality_flags.append("memory_available_missing")
+    docker = collect_docker_stats(runner)
+    if docker.get("available") is False:
+        quality_flags.append("docker_observation_unavailable")
     observation = {
         "observed_at": utc_now(),
-        "memory": memory_signals(parse_meminfo(meminfo_text)),
+        "observed_monotonic_ns": observed_monotonic_ns,
+        "memory": memory,
         "psi": psi,
         "cgroup": {
-            "memory_current_bytes": _read_int(cgroup_root / "memory.current"),
-            "memory_max": _read_scalar(cgroup_root / "memory.max"),
+            "memory_current_bytes": _read_int(process_cgroup_root / "memory.current"),
+            "memory_max": _read_scalar(process_cgroup_root / "memory.max"),
             "memory_events": events,
-            "pids_current": _read_int(cgroup_root / "pids.current"),
-            "pids_max": _read_scalar(cgroup_root / "pids.max"),
+            "pids_current": _read_int(process_cgroup_root / "pids.current"),
+            "pids_max": _read_scalar(process_cgroup_root / "pids.max"),
+            "path": str(process_cgroup_root),
         },
-        "docker": collect_docker_stats(runner),
+        "docker": docker,
+        "quality": {
+            "status": "ok" if not quality_flags else "degraded",
+            "flags": sorted(set(quality_flags)),
+        },
     }
     return observation
 
@@ -269,7 +319,7 @@ def build_event(
     warning_available: float = 15.0,
     critical_available: float = 10.0,
     mode: str = "observe",
-    evaluator: RiskEvaluator | None = None,
+    evaluator: Any = None,
     simulate_action: str = "graceful_stop",
     protected: bool = True,
     allowed_actions: Iterable[str] = (),
@@ -367,48 +417,77 @@ def append_audit(event: dict[str, Any], path: Path) -> None:
 
 
 def run(args: argparse.Namespace) -> None:
-    evaluator = RiskEvaluator(warning_for=args.warning_for, critical_for=args.critical_for)
+    try:
+        config: GuardianConfig = load_config(args.config) if args.config else safe_defaults()
+    except ConfigError as exc:
+        raise SystemExit(f"configuration rejected: {exc}") from exc
+
+    mode = args.mode or config.mode
+    interval = args.interval if args.interval is not None else config.interval_seconds
+    warning_available = (
+        args.warning_available
+        if args.warning_available is not None
+        else config.warning_available_percent
+    )
+    critical_available = (
+        args.critical_available
+        if args.critical_available is not None
+        else config.critical_available_percent
+    )
+    warning_for = args.warning_for if args.warning_for is not None else config.warning_for_seconds
+    critical_for = args.critical_for if args.critical_for is not None else config.critical_for_seconds
+    snapshot_dir = args.snapshot_dir or config.snapshot_directory
+    allowed_actions = args.allow_action if args.allow_action is not None else list(config.allowed_actions)
+    simulate_action = args.simulate_action or "graceful_stop"
+    evaluator = CompositeRiskEvaluator(
+        config,
+        warning_for=warning_for,
+        critical_for=critical_for,
+    )
     while True:
         observation = collect_observation()
         event = build_event(
             observation,
-            warning_available=args.warning_available,
-            critical_available=args.critical_available,
-            mode=args.mode,
-            simulate_action=args.simulate_action,
+            warning_available=warning_available,
+            critical_available=critical_available,
+            mode=mode,
+            simulate_action=simulate_action,
             protected=not args.allow_unprotected,
-            allowed_actions=args.allow_action,
+            allowed_actions=allowed_actions,
             evaluator=evaluator,
         )
-        if args.snapshot_dir and (args.snapshot_all or event["state"] in {"warning", "critical", "recovered", "escalated"}):
-            event["evidence"]["snapshot_path"] = write_snapshot(event, Path(args.snapshot_dir))
+        event["evidence"]["config_digest"] = config.config_digest
+        event["evidence"]["config_source"] = config.source
+        if snapshot_dir and (args.snapshot_all or event["state"] in {"warning", "critical", "recovered", "escalated"}):
+            event["evidence"]["snapshot_path"] = write_snapshot(event, Path(snapshot_dir))
         if args.audit_file:
             append_audit(event, Path(args.audit_file))
         print(json.dumps(event, ensure_ascii=False), flush=True)
         if args.once:
             return
-        time.sleep(args.interval)
+        time.sleep(interval)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Read-only Guardian observe prototype")
     parser.add_argument("--once", action="store_true", help="emit one observation and exit")
+    parser.add_argument("--config", type=Path, help="strict JSON config; absent means safe observe-only defaults")
     parser.add_argument(
         "--mode",
         choices=("observe", "simulate", "enforce"),
-        default="observe",
+        default=None,
         help="enforce 只生成待控制层接管的计划；真实动作必须另行调用 guardian_enforce",
     )
-    parser.add_argument("--interval", type=float, default=5.0, help="sampling interval in seconds")
-    parser.add_argument("--warning-available", type=float, default=15.0, help="PoC warning threshold")
-    parser.add_argument("--critical-available", type=float, default=10.0, help="PoC critical threshold")
-    parser.add_argument("--warning-for", type=float, default=180.0, help="warning persistence window in seconds")
-    parser.add_argument("--critical-for", type=float, default=30.0, help="critical persistence window in seconds")
+    parser.add_argument("--interval", type=float, default=None, help="sampling interval in seconds")
+    parser.add_argument("--warning-available", type=float, default=None, help="override config warning threshold")
+    parser.add_argument("--critical-available", type=float, default=None, help="override config critical threshold")
+    parser.add_argument("--warning-for", type=float, default=None, help="override warning persistence window")
+    parser.add_argument("--critical-for", type=float, default=None, help="override critical persistence window")
     parser.add_argument("--snapshot-dir", help="optional directory for JSON snapshots")
     parser.add_argument("--snapshot-all", action="store_true", help="snapshot normal observations too")
     parser.add_argument("--audit-file", help="optional JSONL audit file")
-    parser.add_argument("--simulate-action", default="graceful_stop", choices=("notify", "snapshot", "graceful_stop", "restart", "terminate", "escalate"))
-    parser.add_argument("--allow-action", action="append", default=[], help="action allowed in simulate policy; repeatable")
+    parser.add_argument("--simulate-action", default=None, choices=("notify", "snapshot", "graceful_stop", "restart", "terminate", "escalate"))
+    parser.add_argument("--allow-action", action="append", default=None, help="override config action allowlist; repeatable")
     parser.add_argument("--allow-unprotected", action="store_true", help="fixture-only switch to simulate a non-protected target")
     run(parser.parse_args())
 
