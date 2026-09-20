@@ -276,7 +276,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] **G7-T04 / PG-P0-04**：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](../experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [x] **G7-T05 / PG-P0-05**：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复；证据见 [EXP-032](../experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md) 和 [docs/30](../docs/30-guardian-durable-state.md)。
 - [x] **G7-T06 / PG-P0-06**：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复；证据见 [EXP-033](../experiments/EXP-033-2026-09-20-two-layer-recovery/record.md) 和 [docs/31](../docs/31-two-layer-recovery.md)。
-- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。（进行中：unit/slice、readiness/watchdog、静态校验、有界存储、依赖 fixture 和 45 秒局部 observe 已完成；5 分钟延长 soak 正在运行，24 小时 soak、真实故障边界与 P99 校准未完成，见 [EXP-034](../experiments/EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[EXP-036](../experiments/EXP-036-2026-09-20-bounded-observer-soak/record.md) 和 [docs/32](../docs/32-guardian-systemd-runtime.md)。）
+- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。（进行中：unit/slice、readiness/watchdog、静态校验、有界存储、依赖 fixture 和 45 秒/5 分钟局部 observe 已完成；24 小时 soak 正在运行，真实故障边界与 P99 校准未完成，见 [EXP-034](../experiments/EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[EXP-038](../experiments/EXP-038-2026-09-20-extended-observer-soak/record.md)、[EXP-039](../experiments/EXP-039-2026-09-20-24h-observer-soak/record.md) 和 [docs/32](../docs/32-guardian-systemd-runtime.md)。）
 - [ ] **G7-T08 / PG-P0-08**：完成本地 observe → simulate → 单次授权 `graceful_stop` 对照实验。
 - [ ] **G7-T09 / PG-P0-09**：在 docs/23 获得评审后实现 Beszel 只读旁路 endpoint，不为 UI 提供动作授权。
 - [ ] **G7-T10**：按 docs/27 P1 完成底层机制对照、7 天 soak、x86_64 非生产 observe/simulate、单次灰度和运维交付。

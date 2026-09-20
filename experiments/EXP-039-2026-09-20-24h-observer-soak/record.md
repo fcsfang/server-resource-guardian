@@ -23,3 +23,7 @@
 Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 包裹。完成后记录实际时长、最大 RSS、CPU 时间、进程是否持续、审计文件大小是否不超过 1 MiB、达到上限后的降级比例、readiness、VM 状态和错误摘要。
 
 当前仅记录实验已启动；未完成前不把 PG-P0-07 标记为 DONE，也不进入 PG-P0-08。
+
+## 4. 更新记录
+
+- 2026-09-20：在 `guardian-ubuntu` 启动 24 小时硬上限只读 soak；初始 readiness 为 `observe:ready`，审计文件约 7.7 KiB，进程 RSS 约 17 MiB，仍在运行。
