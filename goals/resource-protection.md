@@ -316,6 +316,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：PG-P0-07 新增有界资源时序汇总器，主机全量测试 121/121 通过；EXP-039 运行中 1,185 秒窗口的 119 个样本得到 RSS P99 17,492 KiB、CPU P99 0.0%、FD P99 5、线程 P99 1。该数值仅为中途 ARM64 本地校准，不改变 24 小时/P99 完成门。
 - 2026-09-20：PG-P0-07 完成 EXP-043 修正版有限高压采样；128 MiB/单 CPU worker 自然运行 20.06 秒，Guardian 保持存活，15 个样本 RSS P99 17,492 KiB、CPU P99 0.0%、FD P99 5、线程 P99 1，三次 Observer 均 fail-closed 且无动作，memory PSI full/OOM/OOM-kill 均为 0；EXP-042 的 fixture 失败记录保留，证据见 EXP-042/043。
 - 2026-09-20：PG-P0-07 完成 EXP-044；transient unit 首轮自然 `status=1` 后由 systemd `Restart=on-failure` 重启，`NRestarts=1`、第二轮 `ExecMainStatus=0`、readiness 再次生成、最终 success 回收，EXP-039 主进程未受影响；未验证 SIGKILL/OOM/watchdog 超时恢复。
+- 2026-09-20：PG-P0-07 将资源 P99 汇总器及测试同步至 Multipass 临时工作树，当前 VM 隔离回归 `78/78` 通过；EXP-039 长跑仍在运行。
 
 ## 全局边界（所有 Goal 共同遵守）
 

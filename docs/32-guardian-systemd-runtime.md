@@ -73,6 +73,8 @@ EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高
 
 EXP-044 验证了自然失败后的 systemd 重启子路径：transient unit 首轮自然返回非零码，journal 记录重启计划，第二轮 `NRestarts=1`、`ExecMainStatus=0`、readiness 再次生成并最终 success 回收。该实验没有触发 SIGKILL、OOM 或 watchdog 超时，因此仍不等同于崩溃/超时全覆盖。
 
+后续将新增的资源汇总器与回归测试同步到 Multipass 临时工作树后，当前隔离测试为 `78/78` 通过；该结果用于确认 ARM64 VM 上的测试兼容性，不改变 24 小时 soak 或生产 P99 的完成门。
+
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 
 ## 6. 尚未完成与下一步
