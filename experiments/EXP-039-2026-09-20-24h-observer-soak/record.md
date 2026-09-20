@@ -31,3 +31,4 @@ Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 
 - 2026-09-20：中途复核同一主 soak 的资源采样器已有 50 个有效样本；RSS 16,996 KiB 恒定、CPU 采样最高 0.0%、FD 3–5、线程 1，审计文件约 692 KiB。该数据仅作运行中证据，最终 P99 需等 soak 结束。
 - 2026-09-20：运行约 19 分钟时复核目标进程仍存活；临时审计文件达到容量门禁前的 1,046,557 bytes（小于 1 MiB 上限）后保持不再增长，Observer 未退出；辅助只读资源时序已有 101 个有效样本，RSS 16,996–17,492 KiB、CPU 0.0%、FD 3–5、线程 1。该结果证明当前有界写入不会因达到上限而删除旧证据或停止 Observer，但最终 24 小时统计/P99 仍待完成。
 - 2026-09-20：新增 [`guardian_resource_summary.py`](../../scripts/guardian_resource_summary.py) 对有界 TSV 做可重算的 nearest-rank P50/P95/P99 汇总；当前辅助时序 119 个样本、1,185 秒窗口的中途结果为 RSS P99 17,492 KiB、CPU P99 0.0%、FD P99 5、线程 P99 1。该结果只代表运行中的本地 ARM64 观测窗口，不能作为最终 24 小时或生产资源参数。
+- 2026-09-20：中途结构化摘要写入 [`data/verification.json`](data/verification.json)；Observer 运行约 2,175 秒、辅助时序 201 个样本/2,007 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes，进程仍存活。该文件明确标记 `RUNNING`，不代表 24 小时完成。

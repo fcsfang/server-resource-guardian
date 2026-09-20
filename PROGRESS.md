@@ -120,6 +120,7 @@
 - 2026-09-20 完成 EXP-043 修正版有限高压采样：worker 自然运行 20.06 秒、峰值 RSS 138,864 KiB；Guardian 主进程存活，三次 Observer 事件均 `degraded_observability`/`action=none`，memory PSI full 与 cgroup OOM/OOM-kill 为 0，Docker 清单未变。EXP-042 的 fixture 失败已保留，详见两份实验记录；该结果是高压安全性检查，不是宕机有效性对照。
 - 2026-09-20 完成 EXP-044 自然失败重启：真实 systemd 249 user manager 记录首轮 `status=1/FAILURE`，按 `Restart=on-failure` 计划重启（counter=1），第二轮 readiness/审计恢复且 `ExecMainStatus=0`，最终 transient success 回收；EXP-039 主进程存活，未发送 kill，未改 Docker/资源。
 - 2026-09-20 将新增资源 P99 汇总器和测试同步到 `guardian-ubuntu` 临时工作树；Multipass 隔离回归 `78/78` 通过，EXP-039 主 Observer 仍存活。
+- 2026-09-20 运行中归档 EXP-039 结构化摘要：Observer 约 2,175 秒、资源 sidecar 201 样本/2,007 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes 且未删除旧记录；`verification.json` 明确保持 `RUNNING`。
 
 ## 待办事项（按优先级）
 
