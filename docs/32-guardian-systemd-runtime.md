@@ -49,8 +49,8 @@
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |
-| 主机 Python 测试 | `114/114` 通过 | 包括 runtime、Observer 有界存储、配置、风险、归因、状态和恢复相关测试 |
-| VM 隔离相关测试 | `71/71` 通过 | 在临时目录运行，未安装 unit |
+| 主机 Python 测试 | `116/116` 通过 | 包括 runtime、Observer 有界存储/依赖故障、配置、风险、归因、状态和恢复相关测试 |
+| VM 隔离相关测试 | `73/73` 通过 | 在临时目录运行，未安装 unit |
 | `systemd-analyze verify` | 退出码 `0` | Guardian unit/slice 无自身语法错误；VM 还输出了 `netplan-ovs-cleanup.service` 权限警告和系统 `snapd.service` 不认识 `RestartMode` 的无关警告 |
 | `observe --once` | 退出码 `0`，输出/审计各 1 条 | readiness 写入 `observe:degraded_observability`；首次样本因 OOM 基线和样本不足而降级，不执行动作 |
 | 有界常驻 smoke | 8 秒上限，按预期由 `timeout` 返回 `124` | 输出/审计各 2 条，readiness 正常写入；未安装 systemd、未改 Docker |
@@ -60,6 +60,8 @@
 有界快照和审计的容量拒写、历史保留和异常路径证据见 [EXP-035](../experiments/EXP-035-2026-09-20-bounded-storage-fail-closed/record.md)。
 
 45 秒局部 observe soak 和 readiness 语义修正见 [EXP-036](../experiments/EXP-036-2026-09-20-bounded-observer-soak/record.md)：最大 RSS 27,672 KiB、11 条采样全部写入审计；这只是局部基线，不是 24 小时或生产 P99 结论。
+
+Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 
 ## 6. 尚未完成与下一步
 

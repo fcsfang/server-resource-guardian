@@ -1,0 +1,18 @@
+{
+  "experiment_id": "EXP-037",
+  "date": "2026-09-20",
+  "scope": "local-disposable-fixtures",
+  "checks": {
+    "host_unittest": {"passed": 116, "failed": 0},
+    "vm_isolated_unittest": {"passed": 73, "failed": 0},
+    "docker_stats_timeout": "degraded_without_unhandled_exception",
+    "snapshot_path_error": "returned_none_without_unhandled_exception",
+    "audit_path_error": "covered_by_EXP-035"
+  },
+  "mutations": {
+    "docker": false,
+    "systemd": false,
+    "resource_limits": false
+  },
+  "status": "passed-fixture-validation"
+}

@@ -1,4 +1,5 @@
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -7,6 +8,7 @@ from src.guardian_observer import (
     RiskEvaluator,
     append_audit,
     build_event,
+    collect_docker_stats,
     collect_observation,
     parse_meminfo,
     parse_psi,
@@ -107,6 +109,20 @@ class GuardianObserverTests(unittest.TestCase):
             directory = Path(temp) / "not-a-file"
             directory.mkdir()
             self.assertFalse(append_audit({"event_id": "bad"}, directory))
+
+    def test_snapshot_write_error_returns_no_path_instead_of_raising(self):
+        with tempfile.TemporaryDirectory() as temp:
+            file_path = Path(temp) / "not-a-directory"
+            file_path.write_text("occupied", encoding="utf-8")
+            self.assertIsNone(write_snapshot({"event_id": "bad"}, file_path))
+
+    def test_docker_stats_timeout_is_degraded_read_only_observation(self):
+        def timeout_runner(*_args, **_kwargs):
+            raise subprocess.TimeoutExpired(["docker", "stats"], 3)
+
+        result = collect_docker_stats(timeout_runner)
+        self.assertFalse(result["available"])
+        self.assertIn("timed out", result["error"])
 
     def test_risk_evaluator_requires_persistence_window_and_emits_recovery(self):
         observation = {

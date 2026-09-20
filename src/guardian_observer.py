@@ -451,14 +451,17 @@ def write_snapshot(
     *,
     max_total_bytes: int | None = None,
 ) -> str | None:
-    directory.mkdir(parents=True, exist_ok=True)
-    path = directory / f"{event['event_id']}.json"
-    payload = json.dumps(event, ensure_ascii=False, indent=2) + "\n"
-    if max_total_bytes is not None and _regular_file_bytes(directory) + len(payload.encode("utf-8")) > max_total_bytes:
+    try:
+        directory.mkdir(parents=True, exist_ok=True)
+        path = directory / f"{event['event_id']}.json"
+        payload = json.dumps(event, ensure_ascii=False, indent=2) + "\n"
+        if max_total_bytes is not None and _regular_file_bytes(directory) + len(payload.encode("utf-8")) > max_total_bytes:
+            return None
+        temporary = path.with_name(path.name + ".tmp")
+        temporary.write_text(payload, encoding="utf-8")
+        temporary.replace(path)
+    except (OSError, TypeError, ValueError):
         return None
-    temporary = path.with_name(path.name + ".tmp")
-    temporary.write_text(payload, encoding="utf-8")
-    temporary.replace(path)
     return str(path)
 
 
