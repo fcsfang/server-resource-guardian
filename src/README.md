@@ -16,7 +16,7 @@ PG-P0-05 新增 [`guardian_state.py`](guardian_state.py)：使用 SQLite WAL 持
 
 PG-P0-06 扩展 [`guardian_recovery.py`](guardian_recovery.py)：将宿主资源缓解和业务健康恢复分成两层；只有两层都通过才输出 `BUSINESS_RECOVERED`，容器停止但业务未确认时输出 `MITIGATED` + `BUSINESS_DEGRADED`，恢复证据缺失或新 OOM 时 fail-closed。
 
-PG-P0-07 新增 [`guardian_runtime.py`](guardian_runtime.py) 和 [`deploy/guardian/`](../deploy/guardian/)：提供 systemd `READY=1`/watchdog 通知、原子 readiness 文件、非 root Observer unit、独立 slice、有界日志和本地资源起始值。Observer 的快照与 JSONL 审计达到容量上限时拒写并标记降级，不自动删除历史证据，也不继续动作。当前只完成模板静态校验与临时 observe smoke；没有安装/启用持久服务，资源参数不是生产校准值，24 小时 soak 和故障注入仍待完成。
+PG-P0-07 新增 [`guardian_runtime.py`](guardian_runtime.py) 和 [`deploy/guardian/`](../deploy/guardian/)：提供 systemd `READY=1`/watchdog 通知、原子 readiness 文件、非 root Observer unit、独立 slice、有界日志和本地资源起始值。Observer 的快照与 JSONL 审计达到容量上限时拒写并标记降级，不自动删除历史证据，也不继续动作。当前已完成模板静态校验、有界存储与依赖故障 fixture、45 秒/5 分钟 observe soak、transient readiness/watchdog 通知接收、有限高压采样和自然失败重启验证；EXP-039 的 24 小时只读 soak 仍在运行。没有安装/启用持久服务，资源参数不是生产校准值，watchdog 超时、SIGKILL/OOM、磁盘满和完整场景 P99 仍待完成。
 
 当前也支持 `simulate`：它只根据风险状态、对象身份、保护状态和动作白名单生成计划，并明确标记 `execution=not_executed`。`guardian_actions.py` 提供授权校验、mock executor 和参数数组 Docker 适配器；没有显式的本地可丢弃环境授权时，不调用真实执行器。
 
