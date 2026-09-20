@@ -307,6 +307,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：完成 G7-T06/PG-P0-06；新增宿主 `MITIGATED`、业务恢复/降级和 Controller 分层输出，证据见 EXP-033，下一任务为 PG-P0-07 systemd 常驻与自身保护。
 - 2026-09-20：PG-P0-07 完成第一轮本地运行基线；新增非 root Observer unit、独立 slice、readiness/watchdog 和有限日志边界，主机 111/111、VM 隔离 68/68、systemd verify 退出码 0、8 秒 observe smoke 通过；任务仍 IN_PROGRESS，长跑/故障注入/P99 校准待继续，证据见 EXP-034 和 docs/32。
 - 2026-09-20：PG-P0-07 有界存储子项通过；快照/审计达到上限或写失败时拒写、保留历史并降级，主机 114/114、VM 隔离 71/71 和只读 smoke 通过，证据见 EXP-035。
+- 2026-09-20：PG-P0-07 完成 45 秒局部 observe soak；最大 RSS 27,672 KiB、11 条采样/审计、stderr 0，readiness 修正为 `observe:ready`，证据见 EXP-036；24 小时 soak、真实 manager watchdog 和 P99 校准仍未完成。
 
 ## 全局边界（所有 Goal 共同遵守）
 

@@ -1,0 +1,32 @@
+{
+  "experiment_id": "EXP-036",
+  "date": "2026-09-20",
+  "environment": "guardian-ubuntu / Ubuntu 22.04.5 ARM64 / 2 vCPU / approx 3.8 GiB",
+  "scope": "local-disposable",
+  "runtime": {
+    "timeout_seconds": 45,
+    "timeout_exit_code": 124,
+    "elapsed_seconds": 45.04,
+    "max_rss_kib": 27672,
+    "user_cpu_seconds": 0.27,
+    "system_cpu_seconds": 0.15,
+    "samples": 11,
+    "audit_records": 11,
+    "stderr_bytes": 0,
+    "states": {
+      "degraded_observability": 1,
+      "normal": 10
+    },
+    "audit_status": {
+      "written": 11
+    },
+    "readiness": "observe:ready"
+  },
+  "mutations": {
+    "systemd": false,
+    "docker": false,
+    "resource_limits": false
+  },
+  "status": "passed-bounded-local-soak",
+  "not_proven": ["24h soak", "production P99", "real systemd watchdog delivery"]
+}

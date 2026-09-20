@@ -59,6 +59,8 @@
 
 有界快照和审计的容量拒写、历史保留和异常路径证据见 [EXP-035](../experiments/EXP-035-2026-09-20-bounded-storage-fail-closed/record.md)。
 
+45 秒局部 observe soak 和 readiness 语义修正见 [EXP-036](../experiments/EXP-036-2026-09-20-bounded-observer-soak/record.md)：最大 RSS 27,672 KiB、11 条采样全部写入审计；这只是局部基线，不是 24 小时或生产 P99 结论。
+
 ## 6. 尚未完成与下一步
 
 PG-P0-07 仍保持 `IN_PROGRESS`，原因是任务卡还要求：

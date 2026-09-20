@@ -554,7 +554,10 @@ def run(args: argparse.Namespace) -> None:
                 event["decision"]["execution"] = "not_executed"
                 event["decision"]["reason_codes"].append("audit_write_failed_or_capacity_exhausted")
         if not ready_notified:
-            ready_notified = notify_ready(f"observe:{event['state']}")
+            # Readiness means the process has completed its first collection,
+            # not that the first sample was normal. Risk state is reported via
+            # the watchdog STATUS field and the persisted event.
+            ready_notified = notify_ready("observe:ready")
         notify_watchdog(f"observe:{event['state']}")
         print(json.dumps(event, ensure_ascii=False), flush=True)
         if args.once:
