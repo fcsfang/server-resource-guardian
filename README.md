@@ -54,7 +54,7 @@
 - 历史 PoC 执行蓝图：[docs/14-execution-roadmap.md](docs/14-execution-roadmap.md) 和 [docs/16-autonomous-execution-roadmap.md](docs/16-autonomous-execution-roadmap.md)。
 - 当前生产化执行基线：[docs/27-production-guardian-roadmap.md](docs/27-production-guardian-roadmap.md)。当前 Guardian 是已有本地单对象止损证据的原型，尚不是生产守护服务。
 - 当前活动目标：Goal 6 保留 Beszel UI 评审任务；Goal 7 按生产化路线推进。
-- 当前下一步：继续执行 [PG-P0-07 systemd 常驻服务与 Guardian 自身保护](docs/27-production-guardian-roadmap.md#pg-p0-07-systemd-常驻服务与-guardian-自身保护)；unit/slice、readiness/watchdog、静态校验、有界存储、依赖 fixture 和 45 秒局部 soak 已完成，5 分钟延长 soak 正在运行，但仍需 24 小时长跑、真实故障边界和 P99 资源校准，证据见 [docs/32](docs/32-guardian-systemd-runtime.md)。此前不开始新的 `enforce`、restart、terminate 或生产接入。G6-T06 仍需 leader 评审后才能实现旁路 endpoint。
+- 当前下一步：继续执行 [PG-P0-07 systemd 常驻服务与 Guardian 自身保护](docs/27-production-guardian-roadmap.md#pg-p0-07-systemd-常驻服务与-guardian-自身保护)；unit/slice、readiness/watchdog、静态校验、有界存储、依赖 fixture 和 45 秒/5 分钟局部 soak 已完成，24 小时只读 soak 正在运行，但仍需真实故障边界和 P99 资源校准，证据见 [docs/32](docs/32-guardian-systemd-runtime.md) 与 [EXP-039](experiments/EXP-039-2026-09-20-24h-observer-soak/record.md)。此前不开始新的 `enforce`、restart、terminate 或生产接入。G6-T06 仍需 leader 评审后才能实现旁路 endpoint。
 
 权威状态和待办只看 [PROGRESS.md](PROGRESS.md)；不要只依据聊天记录、旧 PPT 或本机运行态判断项目进度。
 
