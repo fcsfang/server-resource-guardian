@@ -18,3 +18,13 @@ python3 scripts/guardian_resource_sampler.py \
 ```
 
 该脚本只用于本地 disposable 实验和证据重算，不提供生产监控、动作授权或资源限制能力。
+
+## Guardian 资源时序汇总器
+
+[`guardian_resource_summary.py`](guardian_resource_summary.py) 以只读方式读取已有 TSV，最多读取 `--max-bytes` 指定的字节数，计算 RSS、CPU、FD、线程的 min/P50/P95/P99/max/mean，并输出 JSON。它不连接 systemd/Docker，也不向目标进程发送信号；对仍在追加的文件会忽略不完整的最后一行。
+
+```bash
+python3 scripts/guardian_resource_summary.py \
+  --input /tmp/guardian-resource.tsv \
+  --max-bytes 10485760
+```

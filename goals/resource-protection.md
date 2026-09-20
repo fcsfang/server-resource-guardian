@@ -313,6 +313,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：PG-P0-07 transient systemd readiness smoke 通过；systemd 249 user manager 对一次 `--once` Observer 返回 success 并回收 unit，证据见 EXP-040；watchdog 故障恢复和持久服务仍未验证。
 - 2026-09-20：PG-P0-07 新增只读、有界资源采样器，主机 119/119、VM 76/76，当前 24 小时 soak 的 20 秒 sidecar 通过；证据回链 EXP-039，P99 统计待主 soak 完成。
 - 2026-09-20：PG-P0-07 在真实 systemd 249 user manager 中完成 watchdog 通知接收验证；`WatchdogTimestampMonotonic` 非零、READY 后 unit 进入 active/running 并自然 success 退出，证据见 EXP-041。未触发超时，崩溃重启、磁盘满和 P99 仍待验证。
+- 2026-09-20：PG-P0-07 新增有界资源时序汇总器，主机全量测试 121/121 通过；EXP-039 运行中 1,185 秒窗口的 119 个样本得到 RSS P99 17,492 KiB、CPU P99 0.0%、FD P99 5、线程 P99 1。该数值仅为中途 ARM64 本地校准，不改变 24 小时/P99 完成门。
 
 ## 全局边界（所有 Goal 共同遵守）
 

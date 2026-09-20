@@ -67,7 +67,7 @@
 
 watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-systemd-watchdog-notify/record.md)：transient unit 配置 `WatchdogSec=30s`，systemd 记录到非零 `WatchdogTimestampMonotonic`，并在 READY 后观察到 `ActiveState=active/SubState=running`，随后 unit 以 success 自然结束。该实验没有触发 watchdog 超时，也没有验证崩溃后的自动重启。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；24 小时主 soak 仍在运行，最终 P99 待完成。
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；当前 1,185 秒中途窗口的 RSS P99 为 17,492 KiB，但 24 小时主 soak 仍在运行，最终 P99 待完成。
 
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 

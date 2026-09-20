@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from scripts.guardian_resource_summary import summarize_tsv
 from scripts.guardian_resource_sampler import parse_proc_stat, parse_proc_status, sample_process
 
 
@@ -36,6 +37,38 @@ class GuardianResourceSamplerTests(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertEqual(output.read_text(encoding="utf-8"), "epoch_s\trss_kib\tcpu_percent\tfds\tthreads\n")
             self.assertLessEqual(output.stat().st_size, 128)
+
+    def test_resource_summary_uses_nearest_rank_percentiles_and_accepts_pcpu(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "resources.tsv"
+            path.write_text(
+                "epoch_s\trss_kib\tpcpu\tfds\tthreads\n"
+                "1\t10\t0.0\t3\t1\n"
+                "2\t20\t1.0\t4\t1\n"
+                "3\t30\t2.0\t5\t2\n"
+                "4\t40\t\t6\t2\n",
+                encoding="utf-8",
+            )
+            summary = summarize_tsv(path)
+            self.assertEqual(summary["rows_read"], 4)
+            self.assertEqual(summary["epoch"]["duration_seconds"], 3.0)
+            self.assertEqual(summary["metrics"]["rss_kib"]["p95"], 40.0)
+            self.assertEqual(summary["metrics"]["rss_kib"]["p99"], 40.0)
+            self.assertEqual(summary["metrics"]["cpu_percent"]["samples"], 3)
+
+    def test_resource_summary_bounds_input_and_drops_partial_last_row(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "resources.tsv"
+            path.write_bytes(
+                b"epoch_s\trss_kib\tcpu_percent\tfds\tthreads\n"
+                b"1\t10\t0\t3\t1\n"
+                b"2\t20\t0\t4\t1\n"
+                b"3\t30\t0\t5\t1\n"
+            )
+            summary = summarize_tsv(path, max_bytes=58)
+            self.assertTrue(summary["truncated"])
+            self.assertLessEqual(summary["bytes_considered"], 58)
+            self.assertLess(summary["rows_read"], 3)
 
 
 if __name__ == "__main__":

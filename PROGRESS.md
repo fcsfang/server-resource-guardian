@@ -116,6 +116,7 @@
 - 2026-09-20 完成 Goal 7 PG-P0-07 资源采样器：新增只读、有界 RSS/CPU/FD/线程采样脚本，主机 119/119、Multipass 76/76，当前 soak 目标 20 秒 sidecar 通过；证据回链 EXP-039，24 小时主 soak 仍在运行。
 - 2026-09-20 完成 Goal 7 PG-P0-07 watchdog 通知接收 smoke：真实 systemd 249 user manager 在 transient `WatchdogSec=30s` unit 中记录非零 `WatchdogTimestampMonotonic`，READY 后观察到 active/running，unit 自然 success 退出且 EXP-039 主进程存活，证据见 EXP-041；未验证 watchdog 超时恢复、崩溃重启和持久部署。
 - 2026-09-20 运行中复核 EXP-039：约 19 分钟时 Observer 仍存活，JSONL 审计在 1 MiB 有界门禁前稳定于 1,046,557 bytes，未删除旧证据；辅助资源时序 101 个样本的 RSS 为 16,996–17,492 KiB、CPU 0.0%、FD 3–5、线程 1。该条目是中途证据，最终 24 小时统计和 P99 待长跑结束。
+- 2026-09-20 新增只读资源时序汇总器，主机全量测试 121/121 通过；EXP-039 当前 1,185 秒中途窗口 119 个样本的 RSS P99 为 17,492 KiB、CPU P99 0.0%、FD P99 5、线程 P99 1。该结果只用于中途校准，不能替代 24 小时或生产 P99。
 
 ## 待办事项（按优先级）
 
