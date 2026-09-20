@@ -34,7 +34,7 @@
 - Observer 通过 `SupplementaryGroups=docker` 读取 Docker 状态。Docker 组本身是高权限控制面，因此这是当前本地模板中最需要在生产部署前拆分/评审的边界；它不等于已经具备生产动作权限，action broker 仍必须是独立服务。
 - `ReadWritePaths` 仅保留 Guardian 状态目录和 readiness 目录；审计写入失败时，上层动作门禁仍保持 fail-closed。
 - `RestrictAddressFamilies` 只保留 Unix/IPv4/IPv6，unit 没有公网目的地配置。
-- `Type=notify`、`NotifyAccess=main` 和 `WatchdogSec=60s` 用于运行态观察；没有 `NOTIFY_SOCKET` 时适配层不报错退出，也不伪造 systemd 已接收通知。
+- `Type=notify`、`NotifyAccess=main` 和 `WatchdogSec=90s` 用于运行态观察。配置 schema 的采样间隔上限为 60 秒，unit 保留名义上的 30 秒 watchdog 余量；实际超时恢复仍未注入验证。没有 `NOTIFY_SOCKET` 时适配层不报错退出，也不伪造 systemd 已接收通知。
 - `RuntimeDirectory=guardian` 和 `StateDirectory=guardian` 让目录由 systemd 管理；当前验证没有触碰真实 `/run` 或 `/var/lib`。
 
 ## 4. 资源参数的证据边界
@@ -66,6 +66,8 @@
 真实 systemd 249 user manager 的 transient `Type=notify` readiness 和回收见 [EXP-040](../experiments/EXP-040-2026-09-20-systemd-transient-notify/record.md)：一次 `--once` Observer 成功收到 readiness 并退出，unit 被 `--collect` 回收；这不等同于持久 unit 安装或 watchdog 超时恢复验证。
 
 watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-systemd-watchdog-notify/record.md)：transient unit 配置 `WatchdogSec=30s`，systemd 记录到非零 `WatchdogTimestampMonotonic`，并在 READY 后观察到 `ActiveState=active/SubState=running`，随后 unit 以 success 自然结束。该实验没有触发 watchdog 超时，也没有验证崩溃后的自动重启。
+
+模板与最大采样间隔的余量契约见 [EXP-045](../experiments/EXP-045-2026-09-20-watchdog-margin-contract/record.md)：持久 unit 模板使用 `WatchdogSec=90s`，严格大于配置允许的 60 秒采样间隔；这只是静态防回退约束，不等同于 watchdog 超时恢复证据。
 
 PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 441 个样本、4,414 秒窗口，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS 均值 17,405.397 KiB、FD 均值 3.603，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成。
 

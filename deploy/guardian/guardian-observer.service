@@ -20,7 +20,9 @@ Environment=GUARDIAN_READY_FILE=/run/guardian/ready
 ExecStart=/usr/bin/python3 -m src.guardian_observer --config /etc/guardian/guardian.json --audit-file /var/lib/guardian/audit/events.jsonl
 Restart=on-failure
 RestartSec=5s
-WatchdogSec=60s
+# The config schema permits at most a 60s sampling interval. Keep a margin
+# for bounded collection work and scheduler jitter; recalibrate on target hosts.
+WatchdogSec=90s
 TimeoutStartSec=30s
 TimeoutStopSec=15s
 KillMode=mixed

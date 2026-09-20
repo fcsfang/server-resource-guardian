@@ -1,4 +1,5 @@
 import os
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -64,7 +65,7 @@ class GuardianRuntimeTests(unittest.TestCase):
         slice_file = (deploy_root / "guardian-observer.slice").read_text(encoding="utf-8")
         for required in (
             "Type=notify",
-            "WatchdogSec=60s",
+            "WatchdogSec=90s",
             "Restart=on-failure",
             "User=guardian",
             "SupplementaryGroups=docker",
@@ -75,6 +76,9 @@ class GuardianRuntimeTests(unittest.TestCase):
             self.assertIn(required, unit)
         for required in ("MemoryMin=16M", "MemoryLow=32M", "MemoryHigh=192M", "TasksMax=128"):
             self.assertIn(required, slice_file)
+        watchdog_match = re.search(r"^WatchdogSec=(\d+)s$", unit, flags=re.MULTILINE)
+        self.assertIsNotNone(watchdog_match)
+        self.assertGreater(int(watchdog_match.group(1)), 60)
         self.assertNotIn("docker stop", unit)
         self.assertNotIn("docker restart", unit)
         self.assertNotIn("docker kill", unit)
