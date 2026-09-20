@@ -21,6 +21,7 @@ from typing import Any, Callable, Iterable, Mapping
 from .guardian_attribution import ObjectAttributionEvaluator, collect_object_registry
 from .guardian_config import ConfigError, GuardianConfig, load_config, safe_defaults
 from .guardian_risk import CompositeRiskEvaluator
+from .guardian_runtime import notify_ready, notify_watchdog
 
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
@@ -479,6 +480,7 @@ def run(args: argparse.Namespace) -> None:
         critical_for=critical_for,
     )
     attributor = ObjectAttributionEvaluator()
+    ready_notified = False
     while True:
         observation = collect_observation()
         object_attribution = attributor.evaluate(
@@ -502,6 +504,9 @@ def run(args: argparse.Namespace) -> None:
             event["evidence"]["snapshot_path"] = write_snapshot(event, Path(snapshot_dir))
         if args.audit_file:
             append_audit(event, Path(args.audit_file))
+        if not ready_notified:
+            ready_notified = notify_ready(f"observe:{event['state']}")
+        notify_watchdog(f"observe:{event['state']}")
         print(json.dumps(event, ensure_ascii=False), flush=True)
         if args.once:
             return

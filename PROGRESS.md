@@ -22,7 +22,7 @@
 
 ## 当前活动目标
 
-按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，当前 `READY` 任务为 PG-P0-07 systemd 常驻服务与 Guardian 自身保护。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，不具备生产级常驻、watchdog、slice 和日志边界。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
+按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，PG-P0-07 正在进行：unit/slice、readiness/watchdog、静态验证和短时 observe smoke 已通过，但 24 小时 soak、故障注入和 P99 资源校准未完成。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，尚未完成生产级长跑和部署准入。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
 
 ## 环境清单
 
@@ -107,6 +107,7 @@
 - 2026-09-20 完成 Goal 7 PG-P0-04：新增 Docker inspect→PID→cgroup v2 对象 registry、对象内存贡献度/置信度/领先幅度评分和歧义放弃；EXP-031 记录宿主机 91/91、Multipass 临时隔离 27/27，VM 无压力连续观测为基线后 `NO_TARGET`。当前下一项为 PG-P0-05，未执行压力注入或新的真实动作。
 - 2026-09-20 完成 Goal 7 PG-P0-05：新增 SQLite WAL 持久 capability/intent/result/audit/cooldown 状态，Docker enforce 缺少 `--state-db` 时 fail-closed；EXP-032 记录宿主机 101/101、Multipass 临时隔离 52/52 和 mock CLI smoke，未执行真实 Docker 动作。当前下一项为 PG-P0-06。
 - 2026-09-20 完成 Goal 7 PG-P0-06：新增宿主资源 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复判断并接入 Controller；EXP-033 记录宿主机 107/107、Multipass 相关测试 64/64，未执行真实动作。当前下一项为 PG-P0-07。
+- 2026-09-20 完成 Goal 7 PG-P0-07 第一轮本地运行基线：新增非 root Observer unit、独立 slice、readiness/watchdog 和有限日志边界；主机 111/111、Multipass 隔离 68/68、systemd verify 退出码 0、8 秒 observe smoke 通过，证据见 EXP-034 和 docs/32。任务仍进行中，长跑、故障注入和 P99 校准未完成。
 
 ## 待办事项（按优先级）
 
@@ -124,7 +125,7 @@
 - [x] Goal 7 / PG-P0-04：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [x] Goal 7 / PG-P0-05：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复；证据见 [EXP-032](experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md)。
 - [x] Goal 7 / PG-P0-06：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复；证据见 [EXP-033](experiments/EXP-033-2026-09-20-two-layer-recovery/record.md)。
-- [ ] Goal 7 / PG-P0-07：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。
+- [ ] Goal 7 / PG-P0-07：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照；第一轮静态/短时基线已完成，长跑和故障注入未完成。
 - [ ] Goal 7 P0：依次完成组合风险、对象归因、耐久安全状态、两层恢复和 systemd 常驻；P0-01–07 全部通过前不做新真实动作。
 
 

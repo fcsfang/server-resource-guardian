@@ -276,7 +276,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] **G7-T04 / PG-P0-04**：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](../experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [x] **G7-T05 / PG-P0-05**：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复；证据见 [EXP-032](../experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md) 和 [docs/30](../docs/30-guardian-durable-state.md)。
 - [x] **G7-T06 / PG-P0-06**：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复；证据见 [EXP-033](../experiments/EXP-033-2026-09-20-two-layer-recovery/record.md) 和 [docs/31](../docs/31-two-layer-recovery.md)。
-- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。
+- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。（进行中：unit/slice、readiness/watchdog、静态校验和短时 observe 已完成；24 小时 soak、故障注入与 P99 校准未完成，见 [EXP-034](../experiments/EXP-034-2026-09-20-systemd-runtime-baseline/record.md) 和 [docs/32](../docs/32-guardian-systemd-runtime.md)。）
 - [ ] **G7-T08 / PG-P0-08**：完成本地 observe → simulate → 单次授权 `graceful_stop` 对照实验。
 - [ ] **G7-T09 / PG-P0-09**：在 docs/23 获得评审后实现 Beszel 只读旁路 endpoint，不为 UI 提供动作授权。
 - [ ] **G7-T10**：按 docs/27 P1 完成底层机制对照、7 天 soak、x86_64 非生产 observe/simulate、单次灰度和运维交付。
@@ -305,6 +305,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：完成 G7-T04/PG-P0-04；新增 Docker full ID↔cgroup v2 registry、对象贡献度/置信度/领先幅度和歧义放弃，证据见 EXP-031，下一任务为 PG-P0-05 策略、授权和耐久状态。
 - 2026-09-20：完成 G7-T05/PG-P0-05；新增 SQLite WAL 状态库、一次性 capability、原子 intent/result、并发 claim、审计失败前置和启动 reconciliation，证据见 EXP-032，下一任务为 PG-P0-06 两层恢复。
 - 2026-09-20：完成 G7-T06/PG-P0-06；新增宿主 `MITIGATED`、业务恢复/降级和 Controller 分层输出，证据见 EXP-033，下一任务为 PG-P0-07 systemd 常驻与自身保护。
+- 2026-09-20：PG-P0-07 完成第一轮本地运行基线；新增非 root Observer unit、独立 slice、readiness/watchdog 和有限日志边界，主机 111/111、VM 隔离 68/68、systemd verify 退出码 0、8 秒 observe smoke 通过；任务仍 IN_PROGRESS，长跑/故障注入/P99 校准待继续，证据见 EXP-034 和 docs/32。
 
 ## 全局边界（所有 Goal 共同遵守）
 

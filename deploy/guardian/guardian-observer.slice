@@ -1,0 +1,14 @@
+[Unit]
+Description=Guardian observer resource boundary
+
+[Slice]
+CPUAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=50
+# Local MVP starting values. Recalibrate from P99+margin before any external deployment.
+MemoryMin=16M
+MemoryLow=32M
+MemoryHigh=192M
+MemoryMax=256M
+TasksMax=128

@@ -82,6 +82,7 @@ README.md
 | [29-guardian-config-schema.md](29-guardian-config-schema.md) | Guardian JSON 配置、启动门禁、digest 和回滚边界 | Goal 7 PG-P0-02；组合风险现状回链 EXP-030 |
 | [30-guardian-durable-state.md](30-guardian-durable-state.md) | SQLite WAL、capability、intent/result、审计、冷却和崩溃恢复 | Goal 7 PG-P0-05 本地 MVP |
 | [31-two-layer-recovery.md](31-two-layer-recovery.md) | 宿主 `MITIGATED`、业务恢复/降级和 fail-closed 语义 | Goal 7 PG-P0-06 本地 MVP |
+| [32-guardian-systemd-runtime.md](32-guardian-systemd-runtime.md) | systemd 常驻模板、slice、readiness/watchdog、资源和日志边界 | Goal 7 PG-P0-07；本地静态/短时基线，长跑仍未完成 |
 
 ## 3. 补充研究材料
 

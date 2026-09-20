@@ -1,0 +1,49 @@
+{
+  "experiment_id": "EXP-034",
+  "date": "2026-09-20",
+  "environment": {
+    "host": "macOS",
+    "vm": "guardian-ubuntu",
+    "os": "Ubuntu 22.04.5 LTS ARM64",
+    "cpus": 2,
+    "memory_gib_approx": 3.8,
+    "docker": "29.1.3",
+    "scope": "local-disposable"
+  },
+  "checks": {
+    "host_unittest": {"passed": 111, "failed": 0},
+    "vm_isolated_unittest": {"passed": 68, "failed": 0},
+    "systemd_analyze_verify_exit_code": 0,
+    "observe_once": {
+      "exit_code": 0,
+      "output_lines": 1,
+      "audit_lines": 1,
+      "state": "degraded_observability",
+      "decision": "none",
+      "execution": "not_applicable"
+    },
+    "bounded_observe": {
+      "timeout_seconds": 8,
+      "timeout_exit_code": 124,
+      "output_lines": 2,
+      "audit_lines": 2,
+      "state": "degraded_observability"
+    }
+  },
+  "mutations": {
+    "systemd_unit_installed": false,
+    "systemd_unit_enabled": false,
+    "systemd_unit_started": false,
+    "docker_action": false,
+    "resource_change": false
+  },
+  "status": "passed-static-and-bounded-smoke",
+  "not_proven": [
+    "24h soak",
+    "production P99 resource limits",
+    "disk-full and log-write failure recovery",
+    "x86_64 compatibility",
+    "real systemd manager watchdog delivery",
+    "automatic graceful_stop effectiveness"
+  ]
+}
