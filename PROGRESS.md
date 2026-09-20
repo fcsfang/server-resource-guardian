@@ -123,7 +123,7 @@
 - 2026-09-20 运行中归档 EXP-039 结构化摘要：Observer 约 2,175 秒、资源 sidecar 201 样本/2,007 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes 且未删除旧记录；`verification.json` 明确保持 `RUNNING`。
 - 2026-09-20 增量复核 EXP-039：Observer 约 3,701 秒、资源 sidecar 355 样本/3,551 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes 且仍有界，`verification.json` 保持 `RUNNING`；24 小时完成门和剩余故障边界未改变。
 - 2026-09-20 再次复核 EXP-039：Observer 约 4,564 秒、资源 sidecar 441 样本/4,414 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS/FD 均值为 17,405.397 KiB/3.603，审计 1,046,557 bytes 且仍有界，`verification.json` 保持 `RUNNING`；24 小时完成门和剩余故障边界未改变。
-- 2026-09-20 再次复核 EXP-039：Observer 约 5,713 秒、资源 sidecar 556 样本/5,567 秒，RSS P99/最大值升至 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS/FD 均值为 17,426.115 KiB/3.619，审计 1,046,557 bytes 且仍有界；该中途变化已同步 `verification.json`，最终 P99 和 24 小时完成门未改变。
+- 2026-09-20 再次复核 EXP-039：Observer 约 6,441 秒、资源 sidecar 628 样本/6,289 秒，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS/FD 均值为 17,463.478 KiB/3.615，审计 1,046,557 bytes 且仍有界；该中途快照已同步 `verification.json`，最终 P99、24 小时完成门和 EXP-047 新代码的长跑验证仍未完成。
 - 2026-09-20 完成 EXP-045：修正 systemd unit 的 watchdog 余量，`WatchdogSec=90s` 严格大于配置允许的 60 秒最大采样间隔；加入静态回归契约，全量测试 `121/121` 通过。该修正未安装或重启服务，实际 watchdog 超时恢复仍未验证。
 - 2026-09-20 完成 EXP-046：Observer 启动入口拒绝 `--interval` 的非有限值和越过 0.1–60 秒边界的覆盖参数；主机全量测试 `123/123`、Multipass 相关 Observer/Runtime 回归 `23/23` 通过。临时目录全量回归因缺少无关项目依赖未纳入统计，详见实验记录。
 - 2026-09-20 复核并修正 docs/27「当前事实基线」中 systemd 自身保护的过时表述：本地 MVP 的 unit/slice、readiness/watchdog、有界审计和自然失败重启已存在，但 24h soak、剩余故障边界和 P99 校准仍未完成，不能据此声称生产就绪。
