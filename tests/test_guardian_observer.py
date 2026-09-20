@@ -13,11 +13,22 @@ from src.guardian_observer import (
     parse_meminfo,
     parse_psi,
     resolve_process_cgroup_root,
+    validate_interval_seconds,
     write_snapshot,
 )
 
 
 class GuardianObserverTests(unittest.TestCase):
+    def test_interval_validation_accepts_schema_boundaries(self):
+        self.assertEqual(validate_interval_seconds(0.1), 0.1)
+        self.assertEqual(validate_interval_seconds(60), 60.0)
+
+    def test_interval_validation_rejects_non_finite_or_out_of_range_override(self):
+        for invalid in (0, -1, 60.1, float("nan"), float("inf"), float("-inf"), True):
+            with self.subTest(invalid=invalid):
+                with self.assertRaises(ValueError):
+                    validate_interval_seconds(invalid)
+
     def test_parse_meminfo_converts_kib_to_bytes(self):
         parsed = parse_meminfo("MemTotal:       1024 kB\nMemAvailable:    512 kB\n")
         self.assertEqual(parsed["MemTotal"], 1024 * 1024)

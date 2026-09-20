@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import math
 import os
 import subprocess
 import time
@@ -26,9 +27,26 @@ from .guardian_runtime import notify_ready, notify_watchdog
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
 
+MIN_INTERVAL_SECONDS = 0.1
+MAX_INTERVAL_SECONDS = 60.0
+
 
 def utc_now() -> str:
     return dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def validate_interval_seconds(value: float) -> float:
+    """Reject CLI interval overrides that could break bounded sampling."""
+
+    if isinstance(value, bool):
+        raise ValueError("interval_seconds:finite_number_required")
+    try:
+        interval = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("interval_seconds:finite_number_required") from exc
+    if not math.isfinite(interval) or not MIN_INTERVAL_SECONDS <= interval <= MAX_INTERVAL_SECONDS:
+        raise ValueError("interval_seconds:must_be_between_0.1_and_60")
+    return interval
 
 
 def parse_meminfo(text: str) -> dict[str, int]:
@@ -491,7 +509,12 @@ def run(args: argparse.Namespace) -> None:
         raise SystemExit(f"configuration rejected: {exc}") from exc
 
     mode = args.mode or config.mode
-    interval = args.interval if args.interval is not None else config.interval_seconds
+    try:
+        interval = validate_interval_seconds(
+            args.interval if args.interval is not None else config.interval_seconds
+        )
+    except ValueError as exc:
+        raise SystemExit(f"configuration rejected: {exc}") from exc
     warning_available = (
         args.warning_available
         if args.warning_available is not None

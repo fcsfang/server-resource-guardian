@@ -124,6 +124,7 @@
 - 2026-09-20 增量复核 EXP-039：Observer 约 3,701 秒、资源 sidecar 355 样本/3,551 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes 且仍有界，`verification.json` 保持 `RUNNING`；24 小时完成门和剩余故障边界未改变。
 - 2026-09-20 再次复核 EXP-039：Observer 约 4,564 秒、资源 sidecar 441 样本/4,414 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS/FD 均值为 17,405.397 KiB/3.603，审计 1,046,557 bytes 且仍有界，`verification.json` 保持 `RUNNING`；24 小时完成门和剩余故障边界未改变。
 - 2026-09-20 完成 EXP-045：修正 systemd unit 的 watchdog 余量，`WatchdogSec=90s` 严格大于配置允许的 60 秒最大采样间隔；加入静态回归契约，全量测试 `121/121` 通过。该修正未安装或重启服务，实际 watchdog 超时恢复仍未验证。
+- 2026-09-20 完成 EXP-046：Observer 启动入口拒绝 `--interval` 的非有限值和越过 0.1–60 秒边界的覆盖参数；主机全量测试 `123/123`、Multipass 相关 Observer/Runtime 回归 `23/23` 通过。临时目录全量回归因缺少无关项目依赖未纳入统计，详见实验记录。
 - 2026-09-20 复核并修正 docs/27「当前事实基线」中 systemd 自身保护的过时表述：本地 MVP 的 unit/slice、readiness/watchdog、有界审计和自然失败重启已存在，但 24h soak、剩余故障边界和 P99 校准仍未完成，不能据此声称生产就绪。
 - 2026-09-20 同步修正 `src/README.md` 的 PG-P0-07 过时状态，明确 EXP-034～044 的本地基线已完成，EXP-039 24h soak 与 watchdog 超时/SIGKILL/OOM/磁盘边界和完整 P99 仍未完成。
 
