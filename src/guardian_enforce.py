@@ -131,6 +131,7 @@ def serialize_result(result: ControllerResult) -> dict[str, Any]:
         "cooldown_state": result.cooldown_state,
         "failure_breaker_tripped": result.failure_breaker_tripped,
         "intent_id": result.intent_id,
+        "recovery_layers": asdict(result.recovery_layers) if result.recovery_layers else None,
     }
 
 

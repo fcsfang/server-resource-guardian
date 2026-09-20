@@ -21,11 +21,17 @@ from .guardian_actions import (
     validate_request,
 )
 from .guardian_recovery import (
+    BusinessRecoveryObservation,
+    BusinessRecoveryPolicy,
     CooldownLedger,
+    HostRecoveryObservation,
+    HostRecoveryPolicy,
     RecoveryObservation,
     RecoveryPolicy,
     RecoveryResult,
+    TwoLayerRecoveryResult,
     assess_recovery,
+    assess_two_layer_recovery,
 )
 from .guardian_state import GuardianStateStore, StateStoreError
 
@@ -50,6 +56,7 @@ class ControllerResult:
     cooldown_state: str
     failure_breaker_tripped: bool
     intent_id: str | None = None
+    recovery_layers: TwoLayerRecoveryResult | None = None
 
 
 class GuardianController:
@@ -75,6 +82,10 @@ class GuardianController:
         recovery_observation: RecoveryObservation | None = None,
         recovery_policy: RecoveryPolicy | None = None,
         recovery_probe: RecoveryProbe | None = None,
+        host_recovery_observation: HostRecoveryObservation | None = None,
+        host_recovery_policy: HostRecoveryPolicy | None = None,
+        business_recovery_observation: BusinessRecoveryObservation | None = None,
+        business_recovery_policy: BusinessRecoveryPolicy | None = None,
         cooldown_seconds: float = 30.0,
         max_actions: int = 1,
         window_seconds: float = 300.0,
@@ -297,6 +308,16 @@ class GuardianController:
                 else:
                     recovery = assess_recovery(recovery_policy, probed_observation)
 
+        recovery_layers: TwoLayerRecoveryResult | None = None
+        if host_recovery_observation is not None:
+            recovery_layers = assess_two_layer_recovery(
+                host_recovery_policy or HostRecoveryPolicy(),
+                host_recovery_observation,
+                business_recovery_policy,
+                business_recovery_observation,
+                expected_target_id=target_id,
+            )
+
         if not action_result.executed:
             # A mock/planning adapter does not mutate runtime state and must
             # not consume the real-action cooldown or count as a failure.
@@ -309,10 +330,13 @@ class GuardianController:
                 cooldown_state="not_recorded",
                 failure_breaker_tripped=breaker_tripped,
                 intent_id=intent_id,
+                recovery_layers=recovery_layers,
             )
 
         successful_action = action_result.executed and action_result.returncode == 0
         successful_recovery = recovery is None or recovery.recovered
+        if recovery_layers is not None:
+            successful_recovery = successful_recovery and recovery_layers.host_mitigated
         success = successful_action and successful_recovery
         try:
             if self.state_store is not None and intent_id is not None:
@@ -324,6 +348,15 @@ class GuardianController:
                         "returncode": action_result.returncode,
                         "reason": action_result.reason,
                         "stderr": action_result.stderr,
+                        "recovery_layers": (
+                            {
+                                "host_state": recovery_layers.host_state,
+                                "business_state": recovery_layers.business_state,
+                                "overall_state": recovery_layers.overall_state,
+                            }
+                            if recovery_layers is not None
+                            else None
+                        ),
                     },
                     success=success,
                     executed=action_result.executed,
@@ -358,6 +391,15 @@ class GuardianController:
         elif recovery is not None and not recovery.recovered:
             state = "escalated" if breaker_tripped else recovery.state
             reasons = recovery.reason_codes
+        elif recovery_layers is not None and not recovery_layers.host_mitigated:
+            state = "escalated" if breaker_tripped else "failed"
+            reasons = recovery_layers.reason_codes
+        elif recovery_layers is not None and recovery_layers.business_recovered:
+            state = "recovered"
+            reasons = recovery_layers.reason_codes
+        elif recovery_layers is not None:
+            state = "mitigated"
+            reasons = recovery_layers.reason_codes
         else:
             state = "recovered" if recovery is not None else "executed"
             reasons = ("action_succeeded",)
@@ -371,4 +413,5 @@ class GuardianController:
             cooldown_state="recorded",
             failure_breaker_tripped=breaker_tripped,
             intent_id=intent_id,
+            recovery_layers=recovery_layers,
         )

@@ -38,6 +38,54 @@ class RecoveryResult:
     reason_codes: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class HostRecoveryObservation:
+    """Before/after host evidence used to assess mitigation only."""
+
+    before_available_percent: float | None
+    after_available_percent: float | None
+    before_psi_full_avg10: float | None
+    after_psi_full_avg10: float | None
+    before_oom_events: int | None
+    after_oom_events: int | None
+    after_risk_state: str
+    observed_after_seconds: float
+
+
+@dataclass(frozen=True)
+class HostRecoveryPolicy:
+    max_wait_seconds: float = 30.0
+    minimum_available_improvement_percent: float = 0.1
+    minimum_psi_improvement_avg10: float = 0.1
+
+
+@dataclass(frozen=True)
+class BusinessRecoveryObservation:
+    target_id: str
+    target_present: bool
+    target_running: bool
+    health_status: str | None
+    probe_ok: bool | None
+    observed_after_seconds: float
+
+
+@dataclass(frozen=True)
+class BusinessRecoveryPolicy:
+    max_wait_seconds: float = 30.0
+    healthy_statuses: frozenset[str] = field(default_factory=lambda: frozenset({"healthy", "running"}))
+    require_probe: bool = True
+
+
+@dataclass(frozen=True)
+class TwoLayerRecoveryResult:
+    host_state: str
+    business_state: str
+    overall_state: str
+    host_mitigated: bool
+    business_recovered: bool
+    reason_codes: tuple[str, ...]
+
+
 def assess_recovery(policy: RecoveryPolicy, observation: RecoveryObservation) -> RecoveryResult:
     """Return recovered/pending/failed without performing a follow-up action."""
 
@@ -75,6 +123,105 @@ def assess_recovery(policy: RecoveryPolicy, observation: RecoveryObservation) ->
     if recovered:
         return RecoveryResult("recovered", True, reasons)
     return RecoveryResult("pending", False, reasons)
+
+
+def assess_host_mitigation(
+    policy: HostRecoveryPolicy,
+    observation: HostRecoveryObservation,
+) -> RecoveryResult:
+    """Assess whether the host risk improved after an action.
+
+    A stopped container is not enough.  Host mitigation requires a normal or
+    recovered risk state, no new OOM event, and evidence that available memory
+    or full PSI improved from the pre-action sample.
+    """
+
+    if observation.observed_after_seconds < 0:
+        return RecoveryResult("failed", False, ("invalid_observation_time",))
+    if observation.observed_after_seconds > policy.max_wait_seconds:
+        return RecoveryResult("failed", False, ("host_recovery_window_expired",))
+    required = (
+        observation.before_available_percent,
+        observation.after_available_percent,
+        observation.before_psi_full_avg10,
+        observation.after_psi_full_avg10,
+        observation.before_oom_events,
+        observation.after_oom_events,
+    )
+    if any(value is None for value in required):
+        return RecoveryResult("failed", False, ("host_recovery_observation_incomplete",))
+    if observation.after_risk_state not in {"normal", "recovered"}:
+        return RecoveryResult("failed", False, ("host_risk_still_actionable",))
+    if observation.after_oom_events > observation.before_oom_events:
+        return RecoveryResult("failed", False, ("new_oom_after_action",))
+    available_improvement = observation.after_available_percent - observation.before_available_percent
+    psi_improvement = observation.before_psi_full_avg10 - observation.after_psi_full_avg10
+    if (
+        available_improvement >= policy.minimum_available_improvement_percent
+        or psi_improvement >= policy.minimum_psi_improvement_avg10
+    ):
+        return RecoveryResult("MITIGATED", True, ("host_risk_mitigated",))
+    return RecoveryResult("pending", False, ("host_pressure_not_improved",))
+
+
+def assess_business_recovery(
+    policy: BusinessRecoveryPolicy,
+    observation: BusinessRecoveryObservation,
+    *,
+    expected_target_id: str | None = None,
+) -> RecoveryResult:
+    """Assess service health independently from host mitigation."""
+
+    if expected_target_id is not None and observation.target_id != expected_target_id:
+        return RecoveryResult("BUSINESS_DEGRADED", False, ("business_target_mismatch",))
+    if observation.observed_after_seconds < 0:
+        return RecoveryResult("BUSINESS_DEGRADED", False, ("invalid_observation_time",))
+    if observation.observed_after_seconds > policy.max_wait_seconds:
+        return RecoveryResult("BUSINESS_DEGRADED", False, ("business_recovery_window_expired",))
+    if not observation.target_present or not observation.target_running:
+        return RecoveryResult("BUSINESS_DEGRADED", False, ("business_target_not_running",))
+    if observation.health_status not in policy.healthy_statuses:
+        return RecoveryResult("BUSINESS_DEGRADED", False, ("business_health_not_healthy",))
+    if policy.require_probe and observation.probe_ok is not True:
+        return RecoveryResult("BUSINESS_DEGRADED", False, ("business_probe_not_healthy",))
+    return RecoveryResult("BUSINESS_RECOVERED", True, ("business_health_recovered",))
+
+
+def assess_two_layer_recovery(
+    host_policy: HostRecoveryPolicy,
+    host_observation: HostRecoveryObservation,
+    business_policy: BusinessRecoveryPolicy | None = None,
+    business_observation: BusinessRecoveryObservation | None = None,
+    *,
+    expected_target_id: str | None = None,
+) -> TwoLayerRecoveryResult:
+    """Return host mitigation and business recovery as separate states."""
+
+    host = assess_host_mitigation(host_policy, host_observation)
+    if business_policy is None or business_observation is None:
+        business = RecoveryResult("BUSINESS_DEGRADED", False, ("business_probe_not_configured",))
+    else:
+        business = assess_business_recovery(
+            business_policy,
+            business_observation,
+            expected_target_id=expected_target_id,
+        )
+    if host.recovered and business.recovered:
+        overall = "BUSINESS_RECOVERED"
+    elif host.recovered:
+        overall = "MITIGATED"
+    elif host.state == "pending" or business.state == "pending":
+        overall = "RECOVERY_PENDING"
+    else:
+        overall = "RECOVERY_FAILED"
+    return TwoLayerRecoveryResult(
+        host_state=host.state,
+        business_state=business.state,
+        overall_state=overall,
+        host_mitigated=host.recovered,
+        business_recovered=business.recovered,
+        reason_codes=tuple(dict.fromkeys((*host.reason_codes, *business.reason_codes))),
+    )
 
 
 @dataclass

@@ -14,6 +14,8 @@ PG-P0-04 新增 [`guardian_attribution.py`](guardian_attribution.py)：只读调
 
 PG-P0-05 新增 [`guardian_state.py`](guardian_state.py)：使用 SQLite WAL 持久化 capability、intent/result、审计、冷却和失败熔断状态。真实 Docker enforce 必须同时提供 `--ledger-file` 与 `--state-db`；意图或执行开始后崩溃会在下次启动进入 `RECONCILIATION_REQUIRED`，不会自动重试。
 
+PG-P0-06 扩展 [`guardian_recovery.py`](guardian_recovery.py)：将宿主资源缓解和业务健康恢复分成两层；只有两层都通过才输出 `BUSINESS_RECOVERED`，容器停止但业务未确认时输出 `MITIGATED` + `BUSINESS_DEGRADED`，恢复证据缺失或新 OOM 时 fail-closed。
+
 当前也支持 `simulate`：它只根据风险状态、对象身份、保护状态和动作白名单生成计划，并明确标记 `execution=not_executed`。`guardian_actions.py` 提供授权校验、mock executor 和参数数组 Docker 适配器；没有显式的本地可丢弃环境授权时，不调用真实执行器。
 
 `guardian_recovery.py` 提供纯函数式恢复验证、冷却和失败熔断判断；它不主动重试动作，必须由上层在策略允许时决定是否升级。

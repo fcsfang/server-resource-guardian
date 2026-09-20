@@ -4,6 +4,12 @@ import unittest
 from src.guardian_actions import ActionResult, Authorization, MockActionExecutor
 from src.guardian_controller import GuardianController
 from src.guardian_recovery import RecoveryObservation, RecoveryPolicy
+from src.guardian_recovery import (
+    BusinessRecoveryObservation,
+    BusinessRecoveryPolicy,
+    HostRecoveryObservation,
+    HostRecoveryPolicy,
+)
 
 
 def enforce_event(action="graceful_stop", protected=False, candidates=None):
@@ -138,6 +144,39 @@ class GuardianControllerTests(unittest.TestCase):
         self.assertEqual(second.state, "failed")
         self.assertTrue(second.failure_breaker_tripped)
         self.assertEqual(third.reason_codes, ("failure_breaker_tripped",))
+
+    def test_controller_reports_host_mitigation_separately_from_business_degradation(self):
+        executor = SuccessfulFakeExecutor()
+        result = GuardianController(executor).enforce(
+            enforce_event(),
+            authorization(),
+            ["graceful_stop"],
+            now=100.0,
+            host_recovery_policy=HostRecoveryPolicy(),
+            host_recovery_observation=HostRecoveryObservation(
+                before_available_percent=5.0,
+                after_available_percent=25.0,
+                before_psi_full_avg10=1.0,
+                after_psi_full_avg10=0.0,
+                before_oom_events=0,
+                after_oom_events=0,
+                after_risk_state="recovered",
+                observed_after_seconds=2.0,
+            ),
+            business_recovery_policy=BusinessRecoveryPolicy(),
+            business_recovery_observation=BusinessRecoveryObservation(
+                target_id="abcdef123456",
+                target_present=True,
+                target_running=False,
+                health_status="exited",
+                probe_ok=False,
+                observed_after_seconds=2.0,
+            ),
+        )
+        self.assertEqual(result.state, "mitigated")
+        self.assertEqual(result.recovery_layers.host_state, "MITIGATED")
+        self.assertEqual(result.recovery_layers.business_state, "BUSINESS_DEGRADED")
+        self.assertFalse(result.recovery_layers.business_recovered)
 
 
 if __name__ == "__main__":

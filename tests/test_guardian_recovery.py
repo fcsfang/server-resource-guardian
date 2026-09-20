@@ -4,9 +4,16 @@ from pathlib import Path
 
 from src.guardian_recovery import (
     CooldownLedger,
+    BusinessRecoveryObservation,
+    BusinessRecoveryPolicy,
+    HostRecoveryObservation,
+    HostRecoveryPolicy,
     RecoveryObservation,
     RecoveryPolicy,
+    assess_business_recovery,
+    assess_host_mitigation,
     assess_recovery,
+    assess_two_layer_recovery,
 )
 
 
@@ -77,6 +84,92 @@ class GuardianRecoveryTests(unittest.TestCase):
             ledger.save(path)
             restored = CooldownLedger.load(path)
         self.assertEqual(restored.to_dict(), ledger.to_dict())
+
+    def host_observation(self, **overrides):
+        values = {
+            "before_available_percent": 5.0,
+            "after_available_percent": 25.0,
+            "before_psi_full_avg10": 1.0,
+            "after_psi_full_avg10": 0.0,
+            "before_oom_events": 0,
+            "after_oom_events": 0,
+            "after_risk_state": "recovered",
+            "observed_after_seconds": 5.0,
+        }
+        values.update(overrides)
+        return HostRecoveryObservation(**values)
+
+    def business_observation(self, **overrides):
+        values = {
+            "target_id": "abcdef123456",
+            "target_present": True,
+            "target_running": True,
+            "health_status": "healthy",
+            "probe_ok": True,
+            "observed_after_seconds": 5.0,
+        }
+        values.update(overrides)
+        return BusinessRecoveryObservation(**values)
+
+    def test_host_mitigation_requires_improvement_and_no_new_oom(self):
+        result = assess_host_mitigation(HostRecoveryPolicy(), self.host_observation())
+        self.assertEqual(result.state, "MITIGATED")
+        self.assertTrue(result.recovered)
+
+        new_oom = assess_host_mitigation(
+            HostRecoveryPolicy(), self.host_observation(after_oom_events=1)
+        )
+        self.assertEqual(new_oom.reason_codes, ("new_oom_after_action",))
+
+    def test_host_mitigation_fails_closed_on_missing_or_still_critical_evidence(self):
+        missing = assess_host_mitigation(
+            HostRecoveryPolicy(), self.host_observation(after_psi_full_avg10=None)
+        )
+        self.assertEqual(missing.reason_codes, ("host_recovery_observation_incomplete",))
+        critical = assess_host_mitigation(
+            HostRecoveryPolicy(), self.host_observation(after_risk_state="critical")
+        )
+        self.assertEqual(critical.reason_codes, ("host_risk_still_actionable",))
+
+    def test_business_recovery_requires_health_and_probe(self):
+        recovered = assess_business_recovery(
+            BusinessRecoveryPolicy(), self.business_observation(), expected_target_id="abcdef123456"
+        )
+        self.assertEqual(recovered.state, "BUSINESS_RECOVERED")
+        unhealthy = assess_business_recovery(
+            BusinessRecoveryPolicy(), self.business_observation(health_status="unhealthy"), expected_target_id="abcdef123456"
+        )
+        self.assertEqual(unhealthy.state, "BUSINESS_DEGRADED")
+        missing_probe = assess_business_recovery(
+            BusinessRecoveryPolicy(), self.business_observation(probe_ok=None), expected_target_id="abcdef123456"
+        )
+        self.assertEqual(missing_probe.reason_codes, ("business_probe_not_healthy",))
+
+    def test_two_layer_result_does_not_equate_stopped_target_with_business_recovery(self):
+        result = assess_two_layer_recovery(
+            HostRecoveryPolicy(),
+            self.host_observation(),
+            BusinessRecoveryPolicy(),
+            self.business_observation(target_running=False, health_status="exited", probe_ok=False),
+            expected_target_id="abcdef123456",
+        )
+        self.assertEqual(result.host_state, "MITIGATED")
+        self.assertEqual(result.business_state, "BUSINESS_DEGRADED")
+        self.assertEqual(result.overall_state, "MITIGATED")
+        self.assertTrue(result.host_mitigated)
+        self.assertFalse(result.business_recovered)
+
+    def test_two_layer_result_is_business_recovered_only_when_both_layers_pass(self):
+        result = assess_two_layer_recovery(
+            HostRecoveryPolicy(),
+            self.host_observation(),
+            BusinessRecoveryPolicy(),
+            self.business_observation(),
+            expected_target_id="abcdef123456",
+        )
+        self.assertEqual(result.overall_state, "BUSINESS_RECOVERED")
+        self.assertTrue(result.host_mitigated)
+        self.assertTrue(result.business_recovered)
 
 
 if __name__ == "__main__":
