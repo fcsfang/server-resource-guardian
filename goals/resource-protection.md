@@ -276,7 +276,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] **G7-T04 / PG-P0-04**：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](../experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [x] **G7-T05 / PG-P0-05**：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复；证据见 [EXP-032](../experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md) 和 [docs/30](../docs/30-guardian-durable-state.md)。
 - [x] **G7-T06 / PG-P0-06**：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复；证据见 [EXP-033](../experiments/EXP-033-2026-09-20-two-layer-recovery/record.md) 和 [docs/31](../docs/31-two-layer-recovery.md)。
-- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。（进行中：unit/slice、readiness/watchdog、静态校验、有界存储、依赖 fixture 和 45 秒/5 分钟局部 observe 已完成；24 小时 soak 正在运行，真实故障边界与 P99 校准未完成，见 [EXP-034](../experiments/EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[EXP-038](../experiments/EXP-038-2026-09-20-extended-observer-soak/record.md)、[EXP-039](../experiments/EXP-039-2026-09-20-24h-observer-soak/record.md) 和 [docs/32](../docs/32-guardian-systemd-runtime.md)。）
+- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。（进行中：unit/slice、readiness/watchdog、静态校验、有界存储、依赖 fixture、transient notify/watchdog 通知接收和 45 秒/5 分钟局部 observe 已完成；EXP-039 运行中已观察到审计达到 1 MiB 有界门禁前停止增长且 Observer 继续存活；24 小时 soak、watchdog 超时/崩溃恢复、其他真实故障边界与 P99 校准未完成，见 [EXP-034](../experiments/EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[EXP-038](../experiments/EXP-038-2026-09-20-extended-observer-soak/record.md)、[EXP-039](../experiments/EXP-039-2026-09-20-24h-observer-soak/record.md)、[EXP-041](../experiments/EXP-041-2026-09-20-systemd-watchdog-notify/record.md) 和 [docs/32](../docs/32-guardian-systemd-runtime.md)。）
 - [ ] **G7-T08 / PG-P0-08**：完成本地 observe → simulate → 单次授权 `graceful_stop` 对照实验。
 - [ ] **G7-T09 / PG-P0-09**：在 docs/23 获得评审后实现 Beszel 只读旁路 endpoint，不为 UI 提供动作授权。
 - [ ] **G7-T10**：按 docs/27 P1 完成底层机制对照、7 天 soak、x86_64 非生产 observe/simulate、单次灰度和运维交付。
@@ -312,6 +312,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：PG-P0-07 5 分钟延长 soak 通过；300.02 秒、最大 RSS 27,672 KiB、43 条采样/审计、readiness `observe:ready`，证据见 EXP-038；24 小时 soak、真实 manager watchdog 和 P99 校准仍未完成。
 - 2026-09-20：PG-P0-07 transient systemd readiness smoke 通过；systemd 249 user manager 对一次 `--once` Observer 返回 success 并回收 unit，证据见 EXP-040；watchdog 故障恢复和持久服务仍未验证。
 - 2026-09-20：PG-P0-07 新增只读、有界资源采样器，主机 119/119、VM 76/76，当前 24 小时 soak 的 20 秒 sidecar 通过；证据回链 EXP-039，P99 统计待主 soak 完成。
+- 2026-09-20：PG-P0-07 在真实 systemd 249 user manager 中完成 watchdog 通知接收验证；`WatchdogTimestampMonotonic` 非零、READY 后 unit 进入 active/running 并自然 success 退出，证据见 EXP-041。未触发超时，崩溃重启、磁盘满和 P99 仍待验证。
 
 ## 全局边界（所有 Goal 共同遵守）
 

@@ -1,0 +1,51 @@
+{
+  "experiment_id": "EXP-041",
+  "date": "2026-09-20",
+  "environment": "guardian-ubuntu / Ubuntu 22.04.5 ARM64 / systemd 249",
+  "scope": "local-disposable-observe-only",
+  "unit": {
+    "name": "guardian-observer-watchdog-notify.service",
+    "creation": "systemd-run --user --collect",
+    "type": "notify",
+    "notify_access": "main",
+    "watchdog_sec": 30,
+    "working_directory": "/tmp/guardian-p0-03-check",
+    "readiness": "observe:ready",
+    "watchdog_timestamp_monotonic": 54319804739,
+    "active_state_observed": "active",
+    "sub_state_observed": "running",
+    "main_pid": 1103409,
+    "result": "success",
+    "after_collect_load_state": "not-found",
+    "forced_timeout": false
+  },
+  "artifacts": {
+    "audit_records": 1,
+    "audit_bytes": 7913,
+    "readiness_bytes": 14,
+    "status_samples": 80,
+    "active_poll_range": "19-44"
+  },
+  "isolation": {
+    "exp039_pid": 1076273,
+    "exp039_alive_after": true,
+    "exp039_rss_kib_after": 17492,
+    "exp039_cpu_percent_after": 0.0
+  },
+  "mutations": {
+    "persistent_unit_installed": false,
+    "persistent_unit_enabled": false,
+    "docker": false,
+    "resource_limits": false,
+    "production_connection": false
+  },
+  "status": "passed-watchdog-notify-delivery",
+  "not_proven": [
+    "watchdog timeout recovery",
+    "crash restart",
+    "persistent guardian user sandbox",
+    "disk-full recovery",
+    "24h soak completion",
+    "production readiness"
+  ]
+}

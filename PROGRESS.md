@@ -22,7 +22,7 @@
 
 ## 当前活动目标
 
-按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，PG-P0-07 正在进行：unit/slice、readiness/watchdog、静态验证、短时 observe smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖故障 fixture 和 transient systemd readiness 已通过，24 小时 soak（EXP-039）正在运行，真实 watchdog 故障注入和 P99 资源校准未完成。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，尚未完成生产级长跑和部署准入。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
+按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，PG-P0-07 正在进行：unit/slice、readiness/watchdog、静态验证、短时 observe smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖故障 fixture、transient systemd readiness 和真实 watchdog 通知接收已通过，24 小时 soak（EXP-039）正在运行且已观察到审计达到有界容量后 Observer 继续存活，watchdog 超时/崩溃恢复、其他真实故障边界和 P99 资源校准未完成。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，尚未完成生产级长跑和部署准入。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
 
 ## 环境清单
 
@@ -114,6 +114,8 @@
 - 2026-09-20 完成 Goal 7 PG-P0-07 5 分钟延长 soak：300.02 秒、最大 RSS 27,672 KiB、CPU 时间 2.02 秒、43 条采样/审计、首条降级后 42 条 normal，证据见 EXP-038；仍不替代 24 小时 soak 或 P99。
 - 2026-09-20 完成 Goal 7 PG-P0-07 transient systemd readiness smoke：systemd 249 user manager 创建并回收临时 unit，`READY=1`、审计 1 条、结果 success，证据见 EXP-040；watchdog 超时恢复和持久 unit 仍未验证。
 - 2026-09-20 完成 Goal 7 PG-P0-07 资源采样器：新增只读、有界 RSS/CPU/FD/线程采样脚本，主机 119/119、Multipass 76/76，当前 soak 目标 20 秒 sidecar 通过；证据回链 EXP-039，24 小时主 soak 仍在运行。
+- 2026-09-20 完成 Goal 7 PG-P0-07 watchdog 通知接收 smoke：真实 systemd 249 user manager 在 transient `WatchdogSec=30s` unit 中记录非零 `WatchdogTimestampMonotonic`，READY 后观察到 active/running，unit 自然 success 退出且 EXP-039 主进程存活，证据见 EXP-041；未验证 watchdog 超时恢复、崩溃重启和持久部署。
+- 2026-09-20 运行中复核 EXP-039：约 19 分钟时 Observer 仍存活，JSONL 审计在 1 MiB 有界门禁前稳定于 1,046,557 bytes，未删除旧证据；辅助资源时序 101 个样本的 RSS 为 16,996–17,492 KiB、CPU 0.0%、FD 3–5、线程 1。该条目是中途证据，最终 24 小时统计和 P99 待长跑结束。
 
 ## 待办事项（按优先级）
 
@@ -131,7 +133,7 @@
 - [x] Goal 7 / PG-P0-04：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [x] Goal 7 / PG-P0-05：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复；证据见 [EXP-032](experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md)。
 - [x] Goal 7 / PG-P0-06：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复；证据见 [EXP-033](experiments/EXP-033-2026-09-20-two-layer-recovery/record.md)。
-- [ ] Goal 7 / PG-P0-07：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照；第一轮静态/短时基线已完成，长跑和故障注入未完成。
+- [ ] Goal 7 / PG-P0-07：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照；静态/短时/通知接收基线已完成，24 小时长跑、超时/崩溃恢复、剩余故障边界和 P99 校准未完成。
 - [ ] Goal 7 P0：依次完成组合风险、对象归因、耐久安全状态、两层恢复和 systemd 常驻；P0-01–07 全部通过前不做新真实动作。
 
 

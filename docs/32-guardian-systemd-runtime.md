@@ -2,7 +2,7 @@
 
 更新时间：2026-09-20  
 关联 Goal：Goal 7 / PG-P0-07  
-状态：`IN_PROGRESS`（本地 MVP 静态、短时运行和有界存储基线已通过；完整 24 小时耐久和 P99 资源校准未完成）
+状态：`IN_PROGRESS`（本地 MVP 静态、短时运行、有界存储、依赖 fixture 和 transient notify/watchdog 通知基线已通过；完整 24 小时耐久、超时恢复和 P99 资源校准未完成）
 
 ## 1. 目的与范围
 
@@ -65,7 +65,9 @@
 
 真实 systemd 249 user manager 的 transient `Type=notify` readiness 和回收见 [EXP-040](../experiments/EXP-040-2026-09-20-systemd-transient-notify/record.md)：一次 `--once` Observer 成功收到 readiness 并退出，unit 被 `--collect` 回收；这不等同于持久 unit 安装或 watchdog 超时恢复验证。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；EXP-039 已完成 20 秒 sidecar smoke，24 小时主 soak 仍在运行。
+watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-systemd-watchdog-notify/record.md)：transient unit 配置 `WatchdogSec=30s`，systemd 记录到非零 `WatchdogTimestampMonotonic`，并在 READY 后观察到 `ActiveState=active/SubState=running`，随后 unit 以 success 自然结束。该实验没有触发 watchdog 超时，也没有验证崩溃后的自动重启。
+
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；24 小时主 soak 仍在运行，最终 P99 待完成。
 
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 
@@ -74,7 +76,7 @@ Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EX
 PG-P0-07 仍保持 `IN_PROGRESS`，原因是任务卡还要求：
 
 1. 24 小时本地 observe soak 和资源增长/日志增长统计；
-2. 进程崩溃、Docker 超时、Hub 不可用、日志写失败和高压采样的故障注入；
+2. 进程崩溃、watchdog 超时恢复、Docker 超时、Hub 不可用、日志写失败和高压采样的故障注入；
 3. 有界快照/审计存储的容量水位与恢复检查；
 4. 基于完整场景 P99 + 余量重校准 slice 参数。
 
