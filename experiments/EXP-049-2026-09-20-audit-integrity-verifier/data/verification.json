@@ -1,0 +1,50 @@
+{
+  "experiment_id": "EXP-049",
+  "date": "2026-09-20",
+  "goal": "Goal 7 / PG-P0-07",
+  "status": "PASSED_READ_ONLY_AUDIT_VERIFIER",
+  "scope": "local-disposable-read-only",
+  "implementation": {
+    "verifier": "src/guardian_audit.py + scripts/guardian_audit_verify.py",
+    "checks": [
+      "UTF-8 JSONL parse",
+      "record object shape",
+      "non-empty event_id",
+      "duplicate event_id",
+      "optional byte capacity"
+    ],
+    "mutates_input": false
+  },
+  "tests": {
+    "host_targeted": "4/4",
+    "host_full": "129/129",
+    "host_compileall_exit": 0,
+    "vm_targeted": "4/4",
+    "negative_cases": [
+      "malformed_json_and_missing_event_id",
+      "duplicate_event_id",
+      "capacity_overrun_input_unchanged"
+    ]
+  },
+  "current_exp039_audit": {
+    "path": "/tmp/guardian-p0-03-check/soak24.jsonl",
+    "lines": 136,
+    "valid_json_records": 136,
+    "invalid_json_records": 0,
+    "missing_event_ids": 0,
+    "duplicate_event_ids": 0,
+    "bytes": 1046557,
+    "max_bytes": 1048576,
+    "capacity_ok": true,
+    "status": "valid",
+    "read_only": true
+  },
+  "not_proven": [
+    "disk_full_end_to_end_recovery",
+    "crash_consistency_after_arbitrary_failure_point",
+    "24h_soak_completion",
+    "final_resource_p99",
+    "watchdog_timeout_or_real_sigkill_oom_recovery",
+    "production_readiness"
+  ]
+}
