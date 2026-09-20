@@ -77,7 +77,7 @@ EXP-047 的当前代码 VM smoke 已补充运行时证据：独立临时目录�
 
 同一当前代码随后完成有界 45 秒 observe soak：`timeout` 按预设停止条件返回 `124`，输出/审计各 7 条，7 条审计均 `written`，首条 `degraded_observability` 后 6 条 `normal`，动作均为 `none/not_applicable`，最大 RSS 27,612 KiB，无 Python traceback。该结果补充 fsync 版本的连续运行证据，但不替代 EXP-039 的 24 小时长跑或剩余故障注入。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 628 个样本、6,289 秒窗口，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,463.478 KiB、FD 均值 3.615，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成；该长跑启动早于 EXP-047 的 fsync 修正。
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 706 个样本、7,071 秒窗口，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，RSS 均值 17,495.354 KiB、FD 均值 3.609，审计仍为 1,046,557 bytes。只读完整性扫描确认 136/136 行合法 JSON、事件 ID 无重复。24 小时主 soak 仍在运行，最终 P99 待完成；该长跑启动早于 EXP-047 的 fsync 修正。
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。
 

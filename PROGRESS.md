@@ -132,6 +132,7 @@
 - 2026-09-20 补充 EXP-047 当前代码运行时 smoke：Multipass 临时目录连续两次 `observe --once` 均退出 `0`，审计 2 行且 `audit_status=written`，动作均为 `none/not_applicable`，stderr 为空；该证据仍不覆盖长跑崩溃恢复或磁盘满恢复。
 - 2026-09-20 补充 EXP-047 当前代码 45 秒连续 observe soak：`timeout` 按预设停止条件返回 `124`，输出/审计各 7 条，7/7 审计写入成功，首条降级后 6 条 normal，动作均为 `none/not_applicable`，最大 RSS 27,612 KiB，无 Python traceback；该证据不替代 24 小时长跑或剩余故障注入。
 - 2026-09-20 完成 EXP-048：transient wrapper 首轮自然返回退出码 `137`，systemd 记录 restart counter `1`，第二轮 Observer 重新 readiness/审计并最终 success 回收；首次 `NotifyAccess=main` 子进程通知夹具失败保留，结果仅是异常退出码模拟，不写成真实 SIGKILL/OOM 恢复证据。
+- 2026-09-20 运行中复核 EXP-039：Observer 约 7,219 秒、sidecar 706 样本/7,071 秒，RSS P95/P99/最大值均为 17,752 KiB，CPU/FD/线程 P99 为 0.0%/5/1，审计 1,046,557 bytes；只读扫描确认 136/136 行合法 JSON、事件 ID 无重复，长跑继续保持 `RUNNING`。
 
 ## 待办事项（按优先级）
 
