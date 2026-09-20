@@ -276,7 +276,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - [x] **G7-T04 / PG-P0-04**：实现每容器/cgroup 归因、置信度、领先幅度和歧义放弃；证据见 [EXP-031](../experiments/EXP-031-2026-09-20-object-attribution/record.md)。
 - [x] **G7-T05 / PG-P0-05**：实现对象策略、单次 capability、原子 intent/result、幂等、冷却、熄断和崩溃恢复；证据见 [EXP-032](../experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md) 和 [docs/30](../docs/30-guardian-durable-state.md)。
 - [x] **G7-T06 / PG-P0-06**：实现宿主 `MITIGATED` 与业务 `BUSINESS_RECOVERED/BUSINESS_DEGRADED` 两层恢复；证据见 [EXP-033](../experiments/EXP-033-2026-09-20-two-layer-recovery/record.md) 和 [docs/31](../docs/31-two-layer-recovery.md)。
-- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。（进行中：unit/slice、readiness/watchdog、静态校验和短时 observe 已完成；24 小时 soak、故障注入与 P99 校准未完成，见 [EXP-034](../experiments/EXP-034-2026-09-20-systemd-runtime-baseline/record.md) 和 [docs/32](../docs/32-guardian-systemd-runtime.md)。）
+- [ ] **G7-T07 / PG-P0-07**：实现 systemd 常驻服务、watchdog、独立 slice、资源预留/上限和有界日志快照。（进行中：unit/slice、readiness/watchdog、静态校验、有界存储、依赖 fixture 和 45 秒局部 observe 已完成；5 分钟延长 soak 正在运行，24 小时 soak、真实故障边界与 P99 校准未完成，见 [EXP-034](../experiments/EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[EXP-036](../experiments/EXP-036-2026-09-20-bounded-observer-soak/record.md) 和 [docs/32](../docs/32-guardian-systemd-runtime.md)。）
 - [ ] **G7-T08 / PG-P0-08**：完成本地 observe → simulate → 单次授权 `graceful_stop` 对照实验。
 - [ ] **G7-T09 / PG-P0-09**：在 docs/23 获得评审后实现 Beszel 只读旁路 endpoint，不为 UI 提供动作授权。
 - [ ] **G7-T10**：按 docs/27 P1 完成底层机制对照、7 天 soak、x86_64 非生产 observe/simulate、单次灰度和运维交付。
@@ -309,6 +309,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：PG-P0-07 有界存储子项通过；快照/审计达到上限或写失败时拒写、保留历史并降级，主机 114/114、VM 隔离 71/71 和只读 smoke 通过，证据见 EXP-035。
 - 2026-09-20：PG-P0-07 完成 45 秒局部 observe soak；最大 RSS 27,672 KiB、11 条采样/审计、stderr 0，readiness 修正为 `observe:ready`，证据见 EXP-036；24 小时 soak、真实 manager watchdog 和 P99 校准仍未完成。
 - 2026-09-20：PG-P0-07 依赖故障 fixture 通过；Docker stats 超时和快照路径异常均保持降级、无未处理异常，主机 116/116、VM 73/73，证据见 EXP-037。
+- 2026-09-20：PG-P0-07 5 分钟延长 soak 通过；300.02 秒、最大 RSS 27,672 KiB、43 条采样/审计、readiness `observe:ready`，证据见 EXP-038；24 小时 soak、真实 manager watchdog 和 P99 校准仍未完成。
 
 ## 全局边界（所有 Goal 共同遵守）
 

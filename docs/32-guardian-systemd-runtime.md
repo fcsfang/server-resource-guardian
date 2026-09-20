@@ -61,6 +61,8 @@
 
 45 秒局部 observe soak 和 readiness 语义修正见 [EXP-036](../experiments/EXP-036-2026-09-20-bounded-observer-soak/record.md)：最大 RSS 27,672 KiB、11 条采样全部写入审计；这只是局部基线，不是 24 小时或生产 P99 结论。
 
+随后完成的 5 分钟延长 soak 见 [EXP-038](../experiments/EXP-038-2026-09-20-extended-observer-soak/record.md)：300.02 秒、43 条采样/审计、最大 RSS 27,672 KiB、无 Python traceback；仍不能替代 24 小时 soak。
+
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 
 ## 6. 尚未完成与下一步
