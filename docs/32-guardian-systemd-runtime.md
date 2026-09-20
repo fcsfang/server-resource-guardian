@@ -2,7 +2,7 @@
 
 更新时间：2026-09-20  
 关联 Goal：Goal 7 / PG-P0-07  
-状态：`IN_PROGRESS`（本地 MVP 静态与临时运行基线已通过；完整 24 小时耐久和 P99 资源校准未完成）
+状态：`IN_PROGRESS`（本地 MVP 静态、短时运行和有界存储基线已通过；完整 24 小时耐久和 P99 资源校准未完成）
 
 ## 1. 目的与范围
 
@@ -15,6 +15,7 @@
 - readiness 文件和 journald 输出有明确位置与上限；
 - 运行时没有把 Docker stop/restart/kill 写进常驻 unit；
 - 采集失败、样本不足和依赖不可用时保持 observe/fail-closed，不生成真实动作。
+- 快照和 JSONL 审计达到容量上限或写入失败时拒写并标记降级，不自动删除历史证据。
 
 本阶段不保证 24 小时无泄漏、磁盘满场景完整恢复、生产阈值或 x86_64 兼容性。
 
@@ -48,13 +49,15 @@
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |
-| 主机 Python 测试 | `111/111` 通过 | 包括 runtime、Observer、配置、风险、归因、状态和恢复相关测试 |
-| VM 隔离相关测试 | `68/68` 通过 | 在临时目录运行，未安装 unit |
+| 主机 Python 测试 | `114/114` 通过 | 包括 runtime、Observer 有界存储、配置、风险、归因、状态和恢复相关测试 |
+| VM 隔离相关测试 | `71/71` 通过 | 在临时目录运行，未安装 unit |
 | `systemd-analyze verify` | 退出码 `0` | Guardian unit/slice 无自身语法错误；VM 还输出了 `netplan-ovs-cleanup.service` 权限警告和系统 `snapd.service` 不认识 `RestartMode` 的无关警告 |
 | `observe --once` | 退出码 `0`，输出/审计各 1 条 | readiness 写入 `observe:degraded_observability`；首次样本因 OOM 基线和样本不足而降级，不执行动作 |
 | 有界常驻 smoke | 8 秒上限，按预期由 `timeout` 返回 `124` | 输出/审计各 2 条，readiness 正常写入；未安装 systemd、未改 Docker |
 
 `degraded_observability` 在上述首次/短时运行中是预期的安全结果，不是故障恢复成功证明。它表明 Guardian 在尚未形成采样窗口时不会把单个样本升级为可执行风险。
+
+有界快照和审计的容量拒写、历史保留和异常路径证据见 [EXP-035](../experiments/EXP-035-2026-09-20-bounded-storage-fail-closed/record.md)。
 
 ## 6. 尚未完成与下一步
 

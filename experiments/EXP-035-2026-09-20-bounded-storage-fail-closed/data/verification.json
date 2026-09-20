@@ -1,0 +1,25 @@
+{
+  "experiment_id": "EXP-035",
+  "date": "2026-09-20",
+  "scope": "local-disposable-fixtures",
+  "checks": {
+    "host_unittest": {"passed": 114, "failed": 0},
+    "vm_isolated_unittest": {"passed": 71, "failed": 0},
+    "snapshot_capacity": "refused_without_deleting_existing_file",
+    "audit_capacity": "refused_without_growing_file",
+    "audit_path_error": "returned_false_without_unhandled_exception",
+    "vm_observe_smoke": {
+      "exit_code": 0,
+      "state": "degraded_observability",
+      "execution": "not_applicable",
+      "audit_status": "written"
+    }
+  },
+  "mutations": {
+    "systemd": false,
+    "docker": false,
+    "resource_limits": false,
+    "history_deleted": false
+  },
+  "status": "passed-fixture-and-read-only-smoke"
+}

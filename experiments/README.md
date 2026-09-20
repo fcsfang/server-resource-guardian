@@ -19,7 +19,7 @@ experiments/
 
 `EXP-###` 全局递增且不复用。实验即使失败、提前停止或没有得到预期结果，也要保留记录；不要删除失败实验来美化结果。
 
-当前生产化路线最近的证据：[`EXP-034 systemd 常驻基线`](EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[`EXP-033 两层恢复`](EXP-033-2026-09-20-two-layer-recovery/record.md)、[`EXP-032 持久状态`](EXP-032-2026-09-20-durable-state-and-recovery/record.md)、[`EXP-031 对象归因`](EXP-031-2026-09-20-object-attribution/record.md) 和 [`EXP-030 组合风险引擎`](EXP-030-2026-09-20-composite-risk-engine/record.md)，分别对应 Goal 7 / PG-P0-07、PG-P0-06、PG-P0-05、PG-P0-04、PG-P0-03。
+当前生产化路线最近的证据：[`EXP-035 有界存储`](EXP-035-2026-09-20-bounded-storage-fail-closed/record.md)、[`EXP-034 systemd 常驻基线`](EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[`EXP-033 两层恢复`](EXP-033-2026-09-20-two-layer-recovery/record.md)、[`EXP-032 持久状态`](EXP-032-2026-09-20-durable-state-and-recovery/record.md)、[`EXP-031 对象归因`](EXP-031-2026-09-20-object-attribution/record.md) 和 [`EXP-030 组合风险引擎`](EXP-030-2026-09-20-composite-risk-engine/record.md)，分别对应 Goal 7 / PG-P0-07、PG-P0-07、PG-P0-06、PG-P0-05、PG-P0-04、PG-P0-03。
 
 ## 记录规范
 

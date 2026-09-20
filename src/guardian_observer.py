@@ -438,17 +438,47 @@ def build_event(
     }
 
 
-def write_snapshot(event: dict[str, Any], directory: Path) -> str:
+def _regular_file_bytes(directory: Path) -> int:
+    try:
+        return sum(item.stat().st_size for item in directory.iterdir() if item.is_file())
+    except (FileNotFoundError, NotADirectoryError, PermissionError, OSError):
+        return 0
+
+
+def write_snapshot(
+    event: dict[str, Any],
+    directory: Path,
+    *,
+    max_total_bytes: int | None = None,
+) -> str | None:
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / f"{event['event_id']}.json"
-    path.write_text(json.dumps(event, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    payload = json.dumps(event, ensure_ascii=False, indent=2) + "\n"
+    if max_total_bytes is not None and _regular_file_bytes(directory) + len(payload.encode("utf-8")) > max_total_bytes:
+        return None
+    temporary = path.with_name(path.name + ".tmp")
+    temporary.write_text(payload, encoding="utf-8")
+    temporary.replace(path)
     return str(path)
 
 
-def append_audit(event: dict[str, Any], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8") as stream:
-        stream.write(json.dumps(event, ensure_ascii=False) + "\n")
+def append_audit(
+    event: dict[str, Any],
+    path: Path,
+    *,
+    max_total_bytes: int | None = None,
+) -> bool:
+    payload = (json.dumps(event, ensure_ascii=False) + "\n").encode("utf-8")
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        current_size = path.stat().st_size if path.exists() else 0
+        if max_total_bytes is not None and current_size + len(payload) > max_total_bytes:
+            return False
+        with path.open("ab") as stream:
+            stream.write(payload)
+    except (OSError, ValueError):
+        return False
+    return True
 
 
 def run(args: argparse.Namespace) -> None:
@@ -501,9 +531,28 @@ def run(args: argparse.Namespace) -> None:
         event["evidence"]["config_digest"] = config.config_digest
         event["evidence"]["config_source"] = config.source
         if snapshot_dir and (args.snapshot_all or event["state"] in {"warning", "critical", "recovered", "escalated"}):
-            event["evidence"]["snapshot_path"] = write_snapshot(event, Path(snapshot_dir))
+            snapshot_path = write_snapshot(
+                event,
+                Path(snapshot_dir),
+                max_total_bytes=config.snapshot_max_total_bytes,
+            )
+            event["evidence"]["snapshot_path"] = snapshot_path
+            if snapshot_path is None:
+                event["evidence"]["snapshot_status"] = "capacity_exhausted"
+                event["decision"]["action"] = "escalate"
+                event["decision"]["execution"] = "not_executed"
+                event["decision"]["reason_codes"].append("snapshot_capacity_exhausted")
         if args.audit_file:
-            append_audit(event, Path(args.audit_file))
+            audit_written = append_audit(
+                event,
+                Path(args.audit_file),
+                max_total_bytes=config.audit_max_total_bytes,
+            )
+            event["evidence"]["audit_status"] = "written" if audit_written else "degraded"
+            if not audit_written:
+                event["decision"]["action"] = "escalate"
+                event["decision"]["execution"] = "not_executed"
+                event["decision"]["reason_codes"].append("audit_write_failed_or_capacity_exhausted")
         if not ready_notified:
             ready_notified = notify_ready(f"observe:{event['state']}")
         notify_watchdog(f"observe:{event['state']}")

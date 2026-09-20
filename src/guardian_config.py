@@ -177,6 +177,10 @@ class GuardianConfig:
         return self._value["recovery"]["require_business_health"]
 
     @property
+    def audit_max_total_bytes(self) -> int:
+        return self._value["audit"]["max_total_bytes"]
+
+    @property
     def config_digest(self) -> str:
         return hashlib.sha256(_canonical(self._value)).hexdigest()
 

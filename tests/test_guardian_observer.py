@@ -5,11 +5,13 @@ from pathlib import Path
 
 from src.guardian_observer import (
     RiskEvaluator,
+    append_audit,
     build_event,
     collect_observation,
     parse_meminfo,
     parse_psi,
     resolve_process_cgroup_root,
+    write_snapshot,
 )
 
 
@@ -75,13 +77,36 @@ class GuardianObserverTests(unittest.TestCase):
         }
         event = build_event(observation)
         with tempfile.TemporaryDirectory() as temp:
-            from src.guardian_observer import write_snapshot
-
             path = Path(write_snapshot(event, Path(temp)))
             self.assertTrue(path.exists())
             saved = json.loads(path.read_text())
             self.assertEqual(saved["decision"]["mode"], "observe")
             self.assertEqual(saved["decision"]["action"], "none")
+
+    def test_snapshot_refuses_to_cross_capacity_without_deleting_history(self):
+        event = {"event_id": "new", "decision": {"action": "none"}}
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            existing = directory / "existing.json"
+            existing.write_text("history\n", encoding="utf-8")
+            path = write_snapshot(event, directory, max_total_bytes=existing.stat().st_size)
+            self.assertIsNone(path)
+            self.assertEqual(existing.read_text(encoding="utf-8"), "history\n")
+
+    def test_audit_refuses_to_cross_capacity_and_returns_failure(self):
+        event = {"event_id": "one", "state": "normal"}
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "events.jsonl"
+            self.assertTrue(append_audit(event, path, max_total_bytes=1024))
+            size = path.stat().st_size
+            self.assertFalse(append_audit({"event_id": "two", "payload": "x"}, path, max_total_bytes=size))
+            self.assertEqual(path.stat().st_size, size)
+
+    def test_audit_write_error_returns_failure_instead_of_raising(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp) / "not-a-file"
+            directory.mkdir()
+            self.assertFalse(append_audit({"event_id": "bad"}, directory))
 
     def test_risk_evaluator_requires_persistence_window_and_emits_recovery(self):
         observation = {
