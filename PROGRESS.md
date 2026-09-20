@@ -22,7 +22,7 @@
 
 ## 当前活动目标
 
-按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，PG-P0-07 正在进行：unit/slice、readiness/watchdog、静态验证、短时 observe smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖故障 fixture、transient systemd readiness、真实 watchdog 通知接收和有限高压采样已通过，24 小时 soak（EXP-039）正在运行且已观察到审计达到有界容量后 Observer 继续存活，EXP-042 的高压 fixture 失败已保留；watchdog 超时/崩溃恢复、其他真实故障边界和完整场景 P99 资源校准未完成。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，尚未完成生产级长跑和部署准入。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
+按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，PG-P0-07 正在进行：unit/slice、readiness/watchdog、静态验证、短时 observe smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖故障 fixture、transient systemd readiness、真实 watchdog 通知接收、有限高压采样和自然失败重启已通过，24 小时 soak（EXP-039）正在运行且已观察到审计达到有界容量后 Observer 继续存活，EXP-042 的高压 fixture 失败已保留；watchdog 超时、SIGKILL/OOM 恢复、其他真实故障边界和完整场景 P99 资源校准未完成。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，尚未完成生产级长跑和部署准入。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
 
 ## 环境清单
 
@@ -118,6 +118,7 @@
 - 2026-09-20 运行中复核 EXP-039：约 19 分钟时 Observer 仍存活，JSONL 审计在 1 MiB 有界门禁前稳定于 1,046,557 bytes，未删除旧证据；辅助资源时序 101 个样本的 RSS 为 16,996–17,492 KiB、CPU 0.0%、FD 3–5、线程 1。该条目是中途证据，最终 24 小时统计和 P99 待长跑结束。
 - 2026-09-20 新增只读资源时序汇总器，主机全量测试 121/121 通过；EXP-039 当前 1,185 秒中途窗口 119 个样本的 RSS P99 为 17,492 KiB、CPU P99 0.0%、FD P99 5、线程 P99 1。该结果只用于中途校准，不能替代 24 小时或生产 P99。
 - 2026-09-20 完成 EXP-043 修正版有限高压采样：worker 自然运行 20.06 秒、峰值 RSS 138,864 KiB；Guardian 主进程存活，三次 Observer 事件均 `degraded_observability`/`action=none`，memory PSI full 与 cgroup OOM/OOM-kill 为 0，Docker 清单未变。EXP-042 的 fixture 失败已保留，详见两份实验记录；该结果是高压安全性检查，不是宕机有效性对照。
+- 2026-09-20 完成 EXP-044 自然失败重启：真实 systemd 249 user manager 记录首轮 `status=1/FAILURE`，按 `Restart=on-failure` 计划重启（counter=1），第二轮 readiness/审计恢复且 `ExecMainStatus=0`，最终 transient success 回收；EXP-039 主进程存活，未发送 kill，未改 Docker/资源。
 
 ## 待办事项（按优先级）
 

@@ -71,6 +71,8 @@ PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。
 
+EXP-044 验证了自然失败后的 systemd 重启子路径：transient unit 首轮自然返回非零码，journal 记录重启计划，第二轮 `NRestarts=1`、`ExecMainStatus=0`、readiness 再次生成并最终 success 回收。该实验没有触发 SIGKILL、OOM 或 watchdog 超时，因此仍不等同于崩溃/超时全覆盖。
+
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 
 ## 6. 尚未完成与下一步

@@ -1,0 +1,42 @@
+{
+  "experiment_id": "EXP-044",
+  "date": "2026-09-20",
+  "environment": "guardian-ubuntu / Ubuntu 22.04.5 ARM64 / systemd 249 user manager",
+  "scope": "local-disposable-observe-only",
+  "unit": {
+    "name": "guardian-observer-crash-restart.service",
+    "type": "notify",
+    "watchdog_sec": 30,
+    "restart": "on-failure",
+    "restart_sec_ms": 100,
+    "first_exit": "status=1/FAILURE",
+    "restart_counter": 1,
+    "second_main_pid": 1125271,
+    "second_exec_main_status": 0,
+    "second_active_state": "active/running",
+    "second_watchdog_timestamp_monotonic": 55159411136,
+    "final_result": "success",
+    "after_collect_load_state": "not-found"
+  },
+  "artifacts": {
+    "readiness": "observe:ready",
+    "audit_records": 2,
+    "audit_bytes": 15823,
+    "journal_contains_scheduled_restart": true
+  },
+  "isolation": {
+    "exp039_pid": 1076273,
+    "exp039_alive_after": true,
+    "docker_mutated": false,
+    "persistent_unit_installed": false,
+    "resource_limits_changed": false
+  },
+  "status": "passed-natural-failure-restart",
+  "not_proven": [
+    "SIGKILL or OOM kill recovery",
+    "watchdog timeout recovery",
+    "persistent unit sandbox",
+    "disk-full recovery",
+    "production readiness"
+  ]
+}

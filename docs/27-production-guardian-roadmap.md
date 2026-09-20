@@ -513,7 +513,7 @@ M0–M3 仅在当前 Multipass `local-disposable` 环境执行。M4 及以后每
 | PG-P0-04 对象归因 | `DONE` | P0-03 | EXP-031；宿主 91/91、Multipass 隔离 27/27；真实 Docker full ID↔cgroup 映射、无压力 NO_TARGET 已验证 | 进入 PG-P0-05；贡献阈值仍是本地校准值 |
 | PG-P0-05 策略/授权/耐久性 | `DONE` | P0-02,P0-04 | docs/30、EXP-032；101/101 宿主、52/52 Multipass 隔离；SQLite WAL/capability/intent/reconciliation 已接入 Docker enforce 门 | 进入 PG-P0-06；生产 capability 发行仍待审批 |
 | PG-P0-06 两层恢复 | `DONE` | P0-03,P0-05 | docs/31、EXP-033；宿主/业务分层和 Controller 集成已验证，宿主端 107/107、Multipass 相关测试 64/64 | 进入 PG-P0-07；真实业务 probe 仍待 owner |
-| PG-P0-07 systemd/自身保护 | `IN_PROGRESS` | P0-03,P0-05,P0-06 | EXP-034/035/036/037/038/040/041/043：主机 121/121、VM 隔离 76/76、systemd verify 退出码 0、8 秒 smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖 fixture、transient readiness/watchdog 通知接收和有限高压采样；EXP-042 预检失败已保留，EXP-039 24h soak 运行中，watchdog 超时/崩溃恢复、磁盘满边界和完整场景 P99 未完成 | 检查 EXP-039 结束结果，继续只读日志容量统计、剩余故障边界和资源 P99 测量 |
+| PG-P0-07 systemd/自身保护 | `IN_PROGRESS` | P0-03,P0-05,P0-06 | EXP-034/035/036/037/038/040/041/043/044：主机 121/121、VM 隔离 76/76、systemd verify 退出码 0、8 秒 smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖 fixture、transient readiness/watchdog 通知接收、有限高压采样和自然失败重启；EXP-042 预检失败已保留，EXP-039 24h soak 运行中，watchdog 超时、SIGKILL/OOM 恢复、磁盘满边界和完整场景 P99 未完成 | 检查 EXP-039 结束结果，继续只读日志容量统计、剩余故障边界和资源 P99 测量 |
 | PG-P0-08 本地新闭环 | `BACKLOG` | P0-01–07 | 需重新授权 | 等待依赖和用户单次授权 |
 | PG-P0-09 Beszel 旁路 endpoint | `BLOCKED` | P0-05–07, UI 评审 | docs/23 尚未经 leader 评审 | 评审后实现 |
 | P1/P2 任务 | `BACKLOG` | M3 及外部条件 | 未进入 | 不提前开始 |
