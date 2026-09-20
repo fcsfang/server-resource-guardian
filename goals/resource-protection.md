@@ -310,6 +310,7 @@ CPU 或内存高压下，验证“新建 SSH 连接 → 执行诊断命令 → �
 - 2026-09-20：PG-P0-07 完成 45 秒局部 observe soak；最大 RSS 27,672 KiB、11 条采样/审计、stderr 0，readiness 修正为 `observe:ready`，证据见 EXP-036；24 小时 soak、真实 manager watchdog 和 P99 校准仍未完成。
 - 2026-09-20：PG-P0-07 依赖故障 fixture 通过；Docker stats 超时和快照路径异常均保持降级、无未处理异常，主机 116/116、VM 73/73，证据见 EXP-037。
 - 2026-09-20：PG-P0-07 5 分钟延长 soak 通过；300.02 秒、最大 RSS 27,672 KiB、43 条采样/审计、readiness `observe:ready`，证据见 EXP-038；24 小时 soak、真实 manager watchdog 和 P99 校准仍未完成。
+- 2026-09-20：PG-P0-07 transient systemd readiness smoke 通过；systemd 249 user manager 对一次 `--once` Observer 返回 success 并回收 unit，证据见 EXP-040；watchdog 故障恢复和持久服务仍未验证。
 
 ## 全局边界（所有 Goal 共同遵守）
 

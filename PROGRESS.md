@@ -22,7 +22,7 @@
 
 ## 当前活动目标
 
-按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，PG-P0-07 正在进行：unit/slice、readiness/watchdog、静态验证、短时 observe smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak 和依赖故障 fixture 已通过，24 小时 soak（EXP-039）正在运行，真实故障注入和 P99 资源校准未完成。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，尚未完成生产级长跑和部署准入。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
+按 [Guardian 生产化技术路线](docs/27-production-guardian-roadmap.md) 推进 Goal 7。G7-T00 已建立主方案、安全不变量、M0–M7 阶段门、P0/P1/P2 任务卡、实验矩阵和 Agent 接手协议；PG-P0-01 至 PG-P0-06 已完成，PG-P0-07 正在进行：unit/slice、readiness/watchdog、静态验证、短时 observe smoke、有界存储 fail-closed、45 秒/5 分钟局部 soak、依赖故障 fixture 和 transient systemd readiness 已通过，24 小时 soak（EXP-039）正在运行，真实 watchdog 故障注入和 P99 资源校准未完成。当前 Guardian 仍是有本地单对象止损证据、组合风险、对象归因、持久状态和两层恢复 MVP 的原型，尚未完成生产级长跑和部署准入。Goal 6 的 G6-T06 仍等待 leader/partner 评审，旁路 endpoint 作为 PG-P0-09 且在评审前阻塞。未开始新的真实 Docker enforce，生产动作从未执行。
 
 ## 环境清单
 
@@ -112,6 +112,7 @@
 - 2026-09-20 完成 Goal 7 PG-P0-07 45 秒局部 soak：最大 RSS 27,672 KiB、CPU 时间 0.42 秒、11 条采样/审计、stderr 0；首样本降级后恢复 normal，readiness 修正为 `observe:ready`，证据见 EXP-036。该结果不替代 24 小时 soak 或生产 P99。
 - 2026-09-20 完成 Goal 7 PG-P0-07 依赖故障 fixture：Docker stats 超时和快照路径不可写均降级而不抛出未处理异常；主机 116/116、Multipass 73/73，证据见 EXP-037。
 - 2026-09-20 完成 Goal 7 PG-P0-07 5 分钟延长 soak：300.02 秒、最大 RSS 27,672 KiB、CPU 时间 2.02 秒、43 条采样/审计、首条降级后 42 条 normal，证据见 EXP-038；仍不替代 24 小时 soak 或 P99。
+- 2026-09-20 完成 Goal 7 PG-P0-07 transient systemd readiness smoke：systemd 249 user manager 创建并回收临时 unit，`READY=1`、审计 1 条、结果 success，证据见 EXP-040；watchdog 超时恢复和持久 unit 仍未验证。
 
 ## 待办事项（按优先级）
 

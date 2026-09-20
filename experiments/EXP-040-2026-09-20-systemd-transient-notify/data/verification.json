@@ -1,0 +1,33 @@
+{
+  "experiment_id": "EXP-040",
+  "date": "2026-09-20",
+  "environment": "guardian-ubuntu / Ubuntu 22.04.5 ARM64 / systemd 249",
+  "scope": "local-disposable-observe-only",
+  "systemd": {
+    "command": "systemd-run --user --collect --wait --pipe",
+    "unit": "guardian-observer-transient-smoke.service",
+    "return_code": 0,
+    "result": "success",
+    "runtime_seconds": 2.121,
+    "cpu_time_ms": 53,
+    "readiness": "observe:ready",
+    "audit_records": 1,
+    "after_collect": {
+      "load_state": "not-found",
+      "active_state": "inactive",
+      "result": "success"
+    }
+  },
+  "mutations": {
+    "persistent_unit_installed": false,
+    "persistent_unit_enabled": false,
+    "docker": false,
+    "resource_limits": false
+  },
+  "status": "passed-transient-notify-readiness",
+  "not_proven": [
+    "watchdog timeout recovery",
+    "persistent guardian user sandbox",
+    "24h soak completion"
+  ]
+}

@@ -63,6 +63,8 @@
 
 随后完成的 5 分钟延长 soak 见 [EXP-038](../experiments/EXP-038-2026-09-20-extended-observer-soak/record.md)：300.02 秒、43 条采样/审计、最大 RSS 27,672 KiB、无 Python traceback；仍不能替代 24 小时 soak。
 
+真实 systemd 249 user manager 的 transient `Type=notify` readiness 和回收见 [EXP-040](../experiments/EXP-040-2026-09-20-systemd-transient-notify/record.md)：一次 `--once` Observer 成功收到 readiness 并退出，unit 被 `--collect` 回收；这不等同于持久 unit 安装或 watchdog 超时恢复验证。
+
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 
 ## 6. 尚未完成与下一步
