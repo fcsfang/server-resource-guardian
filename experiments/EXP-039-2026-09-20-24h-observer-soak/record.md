@@ -28,3 +28,4 @@ Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 
 
 - 2026-09-20：在 `guardian-ubuntu` 启动 24 小时硬上限只读 soak；初始 readiness 为 `observe:ready`，审计文件约 7.7 KiB，进程 RSS 约 17 MiB，仍在运行。
 - 2026-09-20：新增资源采样器并通过主机 119/119、VM 76/76；对同一 Observer 完成 20 秒只读 sidecar，RSS 16,996 KiB、线程 1、FD 3–5，目标进程仍存活。
+- 2026-09-20：中途复核同一主 soak 的资源采样器已有 50 个有效样本；RSS 16,996 KiB 恒定、CPU 采样最高 0.0%、FD 3–5、线程 1，审计文件约 692 KiB。该数据仅作运行中证据，最终 P99 需等 soak 结束。
