@@ -67,7 +67,7 @@
 
 watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-systemd-watchdog-notify/record.md)：transient unit 配置 `WatchdogSec=30s`，systemd 记录到非零 `WatchdogTimestampMonotonic`，并在 READY 后观察到 `ActiveState=active/SubState=running`，随后 unit 以 success 自然结束。该实验没有触发 watchdog 超时，也没有验证崩溃后的自动重启。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；当前 1,185 秒中途窗口的 RSS P99 为 17,492 KiB，但 24 小时主 soak 仍在运行，最终 P99 待完成。
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；当前约 3,551 秒、355 个样本的中途窗口 RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成。
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。
 

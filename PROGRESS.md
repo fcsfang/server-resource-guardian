@@ -121,6 +121,7 @@
 - 2026-09-20 完成 EXP-044 自然失败重启：真实 systemd 249 user manager 记录首轮 `status=1/FAILURE`，按 `Restart=on-failure` 计划重启（counter=1），第二轮 readiness/审计恢复且 `ExecMainStatus=0`，最终 transient success 回收；EXP-039 主进程存活，未发送 kill，未改 Docker/资源。
 - 2026-09-20 将新增资源 P99 汇总器和测试同步到 `guardian-ubuntu` 临时工作树；Multipass 隔离回归 `78/78` 通过，EXP-039 主 Observer 仍存活。
 - 2026-09-20 运行中归档 EXP-039 结构化摘要：Observer 约 2,175 秒、资源 sidecar 201 样本/2,007 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes 且未删除旧记录；`verification.json` 明确保持 `RUNNING`。
+- 2026-09-20 增量复核 EXP-039：Observer 约 3,701 秒、资源 sidecar 355 样本/3,551 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes 且仍有界，`verification.json` 保持 `RUNNING`；24 小时完成门和剩余故障边界未改变。
 - 2026-09-20 复核并修正 docs/27「当前事实基线」中 systemd 自身保护的过时表述：本地 MVP 的 unit/slice、readiness/watchdog、有界审计和自然失败重启已存在，但 24h soak、剩余故障边界和 P99 校准仍未完成，不能据此声称生产就绪。
 - 2026-09-20 同步修正 `src/README.md` 的 PG-P0-07 过时状态，明确 EXP-034～044 的本地基线已完成，EXP-039 24h soak 与 watchdog 超时/SIGKILL/OOM/磁盘边界和完整 P99 仍未完成。
 
