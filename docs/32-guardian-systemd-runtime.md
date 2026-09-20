@@ -49,8 +49,8 @@
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |
-| 主机 Python 测试 | `116/116` 通过 | 包括 runtime、Observer 有界存储/依赖故障、配置、风险、归因、状态和恢复相关测试 |
-| VM 隔离相关测试 | `73/73` 通过 | 在临时目录运行，未安装 unit |
+| 主机 Python 测试 | `121/121` 通过 | 包括 runtime、Observer 有界存储/依赖故障、配置、风险、归因、状态和恢复相关测试 |
+| VM 隔离相关测试 | `78/78` 通过 | 在临时目录运行，未安装 unit |
 | `systemd-analyze verify` | 退出码 `0` | Guardian unit/slice 无自身语法错误；VM 还输出了 `netplan-ovs-cleanup.service` 权限警告和系统 `snapd.service` 不认识 `RestartMode` 的无关警告 |
 | `observe --once` | 退出码 `0`，输出/审计各 1 条 | readiness 写入 `observe:degraded_observability`；首次样本因 OOM 基线和样本不足而降级，不执行动作 |
 | 有界常驻 smoke | 8 秒上限，按预期由 `timeout` 返回 `124` | 输出/审计各 2 条，readiness 正常写入；未安装 systemd、未改 Docker |
@@ -67,13 +67,13 @@
 
 watchdog 通知接收路径见 [EXP-041](../experiments/EXP-041-2026-09-20-systemd-watchdog-notify/record.md)：transient unit 配置 `WatchdogSec=30s`，systemd 记录到非零 `WatchdogTimestampMonotonic`，并在 READY 后观察到 `ActiveState=active/SubState=running`，随后 unit 以 success 自然结束。该实验没有触发 watchdog 超时，也没有验证崩溃后的自动重启。
 
-PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；当前约 3,551 秒、355 个样本的中途窗口 RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成。
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；[`guardian_resource_summary.py`](../scripts/guardian_resource_summary.py) 以固定 nearest-rank 定义计算 P50/P95/P99。EXP-039 已完成 20 秒 sidecar smoke，且在运行约 19 分钟时观察到审计文件在 1 MiB 有界门禁前停止增长、Observer 仍存活；截至当前中途快照，sidecar 已有 441 个样本、4,414 秒窗口，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS 均值 17,405.397 KiB、FD 均值 3.603，审计仍为 1,046,557 bytes。24 小时主 soak 仍在运行，最终 P99 待完成。
 
 EXP-043 对 128 MiB/单 CPU、20 秒自然结束的本地 worker 做了有限高压采样：Guardian 保持存活，三次 Observer 只读事件均 fail-closed，memory PSI full 和 cgroup OOM/OOM-kill 为 0，Docker 状态未变。该结果只覆盖安全性检查；它没有制造 OOM，也不证明检测提前量或动作有效性。EXP-042 的 fixture 失败单独保留，不纳入通过统计。
 
 EXP-044 验证了自然失败后的 systemd 重启子路径：transient unit 首轮自然返回非零码，journal 记录重启计划，第二轮 `NRestarts=1`、`ExecMainStatus=0`、readiness 再次生成并最终 success 回收。该实验没有触发 SIGKILL、OOM 或 watchdog 超时，因此仍不等同于崩溃/超时全覆盖。
 
-后续将新增的资源汇总器与回归测试同步到 Multipass 临时工作树后，当前隔离测试为 `78/78` 通过；该结果用于确认 ARM64 VM 上的测试兼容性，不改变 24 小时 soak 或生产 P99 的完成门。
+资源汇总器与回归测试已同步到 Multipass 临时工作树，当前隔离测试为 `78/78` 通过；该结果用于确认 ARM64 VM 上的测试兼容性，不改变 24 小时 soak 或生产 P99 的完成门。
 
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 

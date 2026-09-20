@@ -6,7 +6,7 @@
   "scope": "local-disposable-observe-only",
   "observer": {
     "pid": 1076273,
-    "elapsed_seconds_at_snapshot": 3701,
+    "elapsed_seconds_at_snapshot": 4564,
     "rss_kib_at_snapshot": 17492,
     "cpu_percent_at_snapshot": 0.0,
     "threads_at_snapshot": 1,
@@ -23,11 +23,11 @@
   },
   "resource_sidecar": {
     "source": "soak24.resource2.tsv",
-    "samples": 355,
-    "duration_seconds": 3551.0,
-    "rss_kib": {"p99": 17492.0, "max": 17492.0, "mean": 17384.719},
+    "samples": 441,
+    "duration_seconds": 4414.0,
+    "rss_kib": {"p99": 17492.0, "max": 17492.0, "mean": 17405.397},
     "cpu_percent": {"p99": 0.0, "max": 0.0, "mean": 0.0},
-    "fds": {"p99": 5.0, "max": 5.0, "mean": 3.596},
+    "fds": {"p99": 5.0, "max": 5.0, "mean": 3.603},
     "threads": {"p99": 1.0, "max": 1.0, "mean": 1.0}
   },
   "mutations": {

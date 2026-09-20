@@ -33,3 +33,4 @@ Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 
 - 2026-09-20：新增 [`guardian_resource_summary.py`](../../scripts/guardian_resource_summary.py) 对有界 TSV 做可重算的 nearest-rank P50/P95/P99 汇总；当前辅助时序 119 个样本、1,185 秒窗口的中途结果为 RSS P99 17,492 KiB、CPU P99 0.0%、FD P99 5、线程 P99 1。该结果只代表运行中的本地 ARM64 观测窗口，不能作为最终 24 小时或生产资源参数。
 - 2026-09-20：中途结构化摘要写入 [`data/verification.json`](data/verification.json)；Observer 运行约 2,175 秒、辅助时序 201 个样本/2,007 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，审计 1,046,557 bytes，进程仍存活。该文件明确标记 `RUNNING`，不代表 24 小时完成。
 - 2026-09-20：运行中增量复核；Observer 约 3,701 秒，资源 sidecar 355 个样本/3,551 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS 均值 17,384.719 KiB、FD 均值 3.596，审计仍为 1,046,557 bytes 且进程存活。该摘要仍是中途证据，`verification.json` 保持 `RUNNING`，不代表 24 小时完成。
+- 2026-09-20：运行中增量复核；Observer 约 4,564 秒，资源 sidecar 441 个样本/4,414 秒，RSS/CPU/FD/线程 P99 为 17,492 KiB/0.0%/5/1，RSS 均值 17,405.397 KiB、FD 均值 3.603，审计仍为 1,046,557 bytes 且进程存活。该摘要仍是中途证据，`verification.json` 保持 `RUNNING`，不代表 24 小时完成。
