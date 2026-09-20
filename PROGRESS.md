@@ -113,6 +113,7 @@
 - 2026-09-20 完成 Goal 7 PG-P0-07 依赖故障 fixture：Docker stats 超时和快照路径不可写均降级而不抛出未处理异常；主机 116/116、Multipass 73/73，证据见 EXP-037。
 - 2026-09-20 完成 Goal 7 PG-P0-07 5 分钟延长 soak：300.02 秒、最大 RSS 27,672 KiB、CPU 时间 2.02 秒、43 条采样/审计、首条降级后 42 条 normal，证据见 EXP-038；仍不替代 24 小时 soak 或 P99。
 - 2026-09-20 完成 Goal 7 PG-P0-07 transient systemd readiness smoke：systemd 249 user manager 创建并回收临时 unit，`READY=1`、审计 1 条、结果 success，证据见 EXP-040；watchdog 超时恢复和持久 unit 仍未验证。
+- 2026-09-20 完成 Goal 7 PG-P0-07 资源采样器：新增只读、有界 RSS/CPU/FD/线程采样脚本，主机 119/119、Multipass 76/76，当前 soak 目标 20 秒 sidecar 通过；证据回链 EXP-039，24 小时主 soak 仍在运行。
 
 ## 待办事项（按优先级）
 

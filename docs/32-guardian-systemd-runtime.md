@@ -65,6 +65,8 @@
 
 真实 systemd 249 user manager 的 transient `Type=notify` readiness 和回收见 [EXP-040](../experiments/EXP-040-2026-09-20-systemd-transient-notify/record.md)：一次 `--once` Observer 成功收到 readiness 并退出，unit 被 `--collect` 回收；这不等同于持久 unit 安装或 watchdog 超时恢复验证。
 
+PG-P0-07 的资源时序使用只读、有界的 [`guardian_resource_sampler.py`](../scripts/guardian_resource_sampler.py)，不会向目标进程发送信号；EXP-039 已完成 20 秒 sidecar smoke，24 小时主 soak 仍在运行。
+
 Docker 只读采集超时、快照路径不可写等依赖故障 fixture 见 [EXP-037](../experiments/EXP-037-2026-09-20-dependency-failure-fixtures/record.md)。
 
 ## 6. 尚未完成与下一步

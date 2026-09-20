@@ -80,7 +80,7 @@
 | `docs/` | 需求、方案、架构、安全、测试、生产事实和证据 | 稳定知识与决策文档；以总目录标记权威关系 | [docs/README.md](docs/README.md) |
 | `experiments/` | 实验日志、脱敏核心数据和可审阅证据 | 每次实验使用唯一 `EXP-###`；失败实验也保留 | [experiments/README.md](experiments/README.md) |
 | `reports/` | 本机原始采集报告、日志和快照 | 默认不入库，可能包含生产敏感信息 | 仅本机查看 |
-| `scripts/` | 环境采集和 PoC 辅助脚本 | 脚本需写明适用环境、权限和副作用 | 直接查看脚本头部说明 |
+| `scripts/` | 环境采集和 PoC 辅助脚本 | 脚本需写明适用环境、权限和副作用 | [scripts/README.md](scripts/README.md) |
 | `src/` | Guardian 和 Beszel 旁路集成原型源代码 | 已有 observer/controller/action/recovery/bridge/UI model；生产化按 docs/27 推进 | [src/README.md](src/README.md) |
 | `tests/` | 自动化测试、集成测试和故障演练 | 测试必须绑定环境、授权、停止和恢复条件 | [tests/README.md](tests/README.md) |
 | `wsl/` | 本地 WSL2 配置样例 | 只代表本地开发环境，不当作生产配置 | 查看目录内配置 |

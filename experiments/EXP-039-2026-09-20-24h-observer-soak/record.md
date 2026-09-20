@@ -20,10 +20,11 @@
 
 ## 3. 运行与验收
 
-Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 包裹。完成后记录实际时长、最大 RSS、CPU 时间、进程是否持续、审计文件大小是否不超过 1 MiB、达到上限后的降级比例、readiness、VM 状态和错误摘要。
+Observer 使用 5 秒采样间隔，由 `/usr/bin/time` 和 24 小时 `timeout` 包裹；资源时序由只读、有界的 [`guardian_resource_sampler.py`](../../scripts/guardian_resource_sampler.py) 采集 RSS、CPU、FD 和线程数。完成后记录实际时长、最大 RSS、CPU 时间、进程是否持续、审计文件大小是否不超过 1 MiB、达到上限后的降级比例、readiness、VM 状态和错误摘要。
 
 当前仅记录实验已启动；未完成前不把 PG-P0-07 标记为 DONE，也不进入 PG-P0-08。
 
 ## 4. 更新记录
 
 - 2026-09-20：在 `guardian-ubuntu` 启动 24 小时硬上限只读 soak；初始 readiness 为 `observe:ready`，审计文件约 7.7 KiB，进程 RSS 约 17 MiB，仍在运行。
+- 2026-09-20：新增资源采样器并通过主机 119/119、VM 76/76；对同一 Observer 完成 20 秒只读 sidecar，RSS 16,996 KiB、线程 1、FD 3–5，目标进程仍存活。
