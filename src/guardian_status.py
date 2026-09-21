@@ -17,6 +17,8 @@ DEFAULT_READINESS = Path("/run/guardian-runtime/ready")
 DEFAULT_AUDIT = Path("/var/lib/guardian/runtime/audit/events.jsonl")
 DEFAULT_BROKER_MARKER = Path("/etc/guardian/broker.enabled")
 DEFAULT_BROKER_SOCKET = Path("/run/guardian-broker/broker.sock")
+DEFAULT_RESERVE_BROKER_MARKER = Path("/etc/guardian/reserve-broker.enabled")
+DEFAULT_RESERVE_BROKER_SOCKET = Path("/run/guardian-reserve-broker/reserve.sock")
 DEFAULT_COLLECTOR_SOCKET = Path("/run/guardian-collector/collector.sock")
 
 
@@ -130,6 +132,7 @@ def _audit_summary(path: Path) -> dict[str, Any]:
         "execution_semantics": None,
         "semantic_state": None,
         "recovery": None,
+        "reserve_recovery": None,
         "reason_codes": [],
     }
     if isinstance(runtime_result, Mapping):
@@ -145,6 +148,15 @@ def _audit_summary(path: Path) -> dict[str, Any]:
             verification = broker.get("verification")
             if isinstance(verification, Mapping):
                 action_summary["recovery"] = verification
+        reserve_recovery = runtime_result.get("reserve_recovery")
+        if isinstance(reserve_recovery, Mapping):
+            action_summary["reserve_recovery"] = {
+                "action": reserve_recovery.get("action"),
+                "state": reserve_recovery.get("state"),
+                "execution": reserve_recovery.get("execution"),
+                "reason_codes": list(reserve_recovery.get("reason_codes") or []),
+                "host_state": runtime_result.get("host_state"),
+            }
     return {
         "status": "ok",
         "path": str(path),
@@ -181,6 +193,8 @@ def build_status(
     audit_path: Path = DEFAULT_AUDIT,
     broker_marker: Path = DEFAULT_BROKER_MARKER,
     broker_socket: Path = DEFAULT_BROKER_SOCKET,
+    reserve_broker_marker: Path = DEFAULT_RESERVE_BROKER_MARKER,
+    reserve_broker_socket: Path = DEFAULT_RESERVE_BROKER_SOCKET,
     collector_socket: Path = DEFAULT_COLLECTOR_SOCKET,
     unit: str = DEFAULT_UNIT,
     runner: Callable[..., Any] = subprocess.run,
@@ -192,6 +206,8 @@ def build_status(
     runtime_enabled = _systemctl("is-enabled", unit, runner)
     broker_active = _systemctl("is-active", "guardian-broker.service", runner)
     broker_enabled = _systemctl("is-enabled", "guardian-broker.service", runner)
+    reserve_broker_active = _systemctl("is-active", "guardian-reserve-broker.service", runner)
+    reserve_broker_enabled = _systemctl("is-enabled", "guardian-reserve-broker.service", runner)
     collector_active = _systemctl("is-active", "guardian-collector.service", runner)
     collector_enabled = _systemctl("is-enabled", "guardian-collector.service", runner)
     try:
@@ -204,10 +220,11 @@ def build_status(
     protected_labels = protection.get("container_labels", []) if isinstance(protection, Mapping) else []
     automatic_actions = "disabled" if mode == "observe" and actions_enabled is False else "enabled_or_unknown"
     broker_closed = not broker_marker.exists() and not broker_socket.exists() and broker_active != "active"
+    reserve_broker_closed = not reserve_broker_marker.exists() and not reserve_broker_socket.exists() and reserve_broker_active != "active"
     collector_socket_present = collector_socket.exists()
     collector_online = collector_active == "active" and collector_socket_present
     ready = runtime_active == "active" and readiness == "runtime:ready:observe"
-    overall = "healthy" if ready and automatic_actions == "disabled" and broker_closed and collector_online else "degraded"
+    overall = "healthy" if ready and automatic_actions == "disabled" and broker_closed and reserve_broker_closed and collector_online else "degraded"
     if config_error or mode is None:
         overall = "unknown"
     return {
@@ -228,6 +245,13 @@ def build_status(
             "marker_present": broker_marker.exists(),
             "socket_present": broker_socket.exists(),
             "closed": broker_closed,
+        },
+        "reserve_broker": {
+            "active": reserve_broker_active,
+            "enabled": reserve_broker_enabled,
+            "marker_present": reserve_broker_marker.exists(),
+            "socket_present": reserve_broker_socket.exists(),
+            "closed": reserve_broker_closed,
         },
         "collector": {
             "active": collector_active,
@@ -270,10 +294,12 @@ def format_status(value: Mapping[str, Any]) -> str:
             f"Candidates: {ranking.get('count', 0)}, highest={top_name}",
             f"Simulation: action={simulation.get('action') or 'none'}, execution={simulation.get('execution') or 'unknown'}, target={simulation.get('target_name') or 'none'}",
             f"Action result: state={alerts.get('action', {}).get('state') or 'none'}, action={alerts.get('action', {}).get('action') or 'none'}, recovery={alerts.get('action', {}).get('recovery', {}).get('overall_state') if isinstance(alerts.get('action', {}).get('recovery'), dict) else 'none'} (business health is separate)",
+            f"Reserve recovery: state={alerts.get('action', {}).get('reserve_recovery', {}).get('state') if isinstance(alerts.get('action', {}).get('reserve_recovery'), dict) else 'none'}, execution={alerts.get('action', {}).get('reserve_recovery', {}).get('execution') if isinstance(alerts.get('action', {}).get('reserve_recovery'), dict) else 'none'}",
             f"Protection: units={value['protection']['systemd_units']}, labels={value['protection']['container_labels']}, protected candidates={len(protected_candidates)}",
             f"Protected candidates: {protected_text}",
             f"Collector: {'online (read-only container data)' if value['collector']['online'] else 'review_required'}",
             f"Broker: {'closed (no automatic action path)' if value['broker']['closed'] else 'review_required'}",
+            f"Reserve recovery boundary: {'closed (no automatic reserve release)' if value['reserve_broker']['closed'] else 'review_required'}",
         )
     )
 

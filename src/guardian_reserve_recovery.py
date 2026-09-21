@@ -1,20 +1,22 @@
-"""Fail-closed recovery for Guardian's own disk reserve.
+"""Fail-closed Runtime planning for Guardian's own disk reserve.
 
-This is a host-safety action, not a container action.  It can only release
-the fixed Guardian reserve after validating its manifest, and it verifies
-that free space on the configured filesystem increased.  It never accepts an
-operator-supplied deletion path and never touches logs, Docker data, images,
-volumes, business files, or audit files.
+This is a host-safety action, not a container action. The unprivileged Runtime
+validates the short-lived authorization and asks the fixed-scope reserve
+Broker to release Guardian's own reserve. The Broker verifies the manifest,
+checks that free space increased, and records the durable result. This module
+never accepts an operator-supplied deletion path and never touches logs,
+Docker data, images, volumes, or business files.
 """
 
 from __future__ import annotations
 
 import json
-import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
+
+from .guardian_actions import Authorization
 
 
 RESERVE_SCHEMA = "guardian.emergency_reserve.v1"
@@ -61,7 +63,12 @@ def _read_manifest(path: Path) -> Mapping[str, Any] | None:
 def reserve_status(root: Path = RESERVE_ROOT) -> dict[str, Any]:
     reserve, manifest_path = _paths(root)
     manifest = _read_manifest(manifest_path)
-    if not reserve.is_file() or manifest is None:
+    try:
+        reserve_is_file = reserve.is_file()
+        reserve_size = reserve.stat().st_size if reserve_is_file else None
+    except OSError:
+        return {"state": "unavailable", "path": str(reserve), "reason_codes": ["reserve_access_unavailable"]}
+    if not reserve_is_file or manifest is None:
         return {"state": "unavailable", "path": str(reserve), "reason_codes": ["reserve_manifest_missing"]}
     expected_path = str(reserve)
     valid = (
@@ -69,30 +76,31 @@ def reserve_status(root: Path = RESERVE_ROOT) -> dict[str, Any]:
         and manifest.get("created_by") == RESERVE_CREATED_BY
         and manifest.get("path") == expected_path
         and isinstance(manifest.get("size_bytes"), int)
-        and manifest.get("size_bytes") == reserve.stat().st_size
+        and manifest.get("size_bytes") == reserve_size
     )
     return {
         "state": "ready" if valid else "invalid",
         "path": expected_path,
-        "size_bytes": reserve.stat().st_size,
+        "size_bytes": reserve_size,
         "reason_codes": [] if valid else ["reserve_manifest_mismatch"],
     }
-
-
-def _free_bytes(path: str) -> int | None:
-    try:
-        stats = os.statvfs(path)
-        return int(stats.f_bavail * stats.f_frsize)
-    except (OSError, ValueError):
-        return None
 
 
 class ReserveRecoveryController:
     """One bounded reserve-release decision/execution boundary."""
 
-    def __init__(self, policy: ReserveRecoveryPolicy | None = None) -> None:
+    def __init__(
+        self,
+        policy: ReserveRecoveryPolicy | None = None,
+        *,
+        broker_socket: str | Path = "/run/guardian-reserve-broker/reserve.sock",
+        config_digest: str = "",
+    ) -> None:
+        from .guardian_reserve_broker import ReserveRecoveryBrokerClient
+
         self.policy = policy or ReserveRecoveryPolicy()
-        self._released_incidents: set[str] = set()
+        self.broker = ReserveRecoveryBrokerClient(broker_socket)
+        self.config_digest = config_digest
 
     @staticmethod
     def _disk_risk(event: Mapping[str, Any]) -> Mapping[str, Any]:
@@ -105,63 +113,35 @@ class ReserveRecoveryController:
         risk = disk.get("risk")
         return risk if isinstance(risk, Mapping) else {}
 
-    def _authorized(self, incident_id: str, now: float) -> tuple[bool, str]:
+    def _authorized(self, incident_id: str, now: float) -> tuple[bool, str, Authorization | None]:
         path = self.policy.authorization_file
         if path is None:
-            return False, "reserve_authorization_missing"
+            return False, "reserve_authorization_missing", None
         try:
             value = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
-            return False, "reserve_authorization_invalid"
+            return False, "reserve_authorization_invalid", None
         if not isinstance(value, Mapping):
-            return False, "reserve_authorization_invalid"
+            return False, "reserve_authorization_invalid", None
         if value.get("environment") != "local-disposable" or value.get("action") != RESERVE_ACTION:
-            return False, "reserve_authorization_scope_invalid"
+            return False, "reserve_authorization_scope_invalid", None
         if value.get("target_id") != str(self.policy.root):
-            return False, "reserve_authorization_target_mismatch"
+            return False, "reserve_authorization_target_mismatch", None
         try:
             expires_at = float(value["expires_at"])
         except (KeyError, TypeError, ValueError):
-            return False, "reserve_authorization_expiry_invalid"
+            return False, "reserve_authorization_expiry_invalid", None
         if expires_at <= now:
-            return False, "reserve_authorization_expired"
+            return False, "reserve_authorization_expired", None
         if not value.get("approval_id") or not incident_id:
-            return False, "reserve_authorization_identity_missing"
-        return True, "reserve_authorized"
-
-    def _release(self, incident_id: str, now: float) -> dict[str, Any]:
-        if incident_id in self._released_incidents:
-            return {"state": "blocked", "execution": "not_executed", "reason_codes": ["reserve_release_already_used"]}
-        if self.policy.max_releases_per_incident != 1:
-            return {"state": "blocked", "execution": "not_executed", "reason_codes": ["reserve_release_limit_invalid"]}
-        before = _free_bytes(self.policy.mount_point)
-        status = reserve_status(self.policy.root)
-        if status["state"] != "ready":
-            return {"state": "blocked", "execution": "not_executed", "reason_codes": status["reason_codes"]}
-        reserve, manifest_path = _paths(self.policy.root)
-        try:
-            reserve.unlink()
-            manifest_path.unlink()
-        except OSError:
-            return {"state": "failed", "execution": "executed", "reason_codes": ["reserve_release_failed"]}
-        after = _free_bytes(self.policy.mount_point)
-        if before is None or after is None or after <= before:
-            return {
-                "state": "failed",
-                "execution": "executed",
-                "before_free_bytes": before,
-                "after_free_bytes": after,
-                "reason_codes": ["reserve_space_increase_unverified"],
-            }
-        self._released_incidents.add(incident_id)
-        return {
-            "state": "released",
-            "execution": "executed",
-            "before_free_bytes": before,
-            "after_free_bytes": after,
-            "released_path": str(reserve),
-            "reason_codes": ["guardian_reserve_released", "writer_source_requires_manual_handling"],
-        }
+            return False, "reserve_authorization_identity_missing", None
+        return True, "reserve_authorized", Authorization(
+            approval_id=str(value["approval_id"]),
+            environment=str(value["environment"]),
+            target_id=str(value["target_id"]),
+            action=str(value["action"]),
+            expires_at=expires_at,
+        )
 
     def handle(self, event: Mapping[str, Any], *, mode: str, now: float | None = None) -> dict[str, Any]:
         timestamp = time.time() if now is None else now
@@ -184,10 +164,19 @@ class ReserveRecoveryController:
             return {**base, "execution": "not_executed", "state": "simulated", "reason_codes": ["SIMULATE_ONLY"]}
         if mode != "enforce":
             return {**base, "execution": "not_executed", "state": "blocked", "reason_codes": ["MODE_NOT_ACTIONABLE"]}
-        authorized, reason = self._authorized(incident_id, timestamp)
+        authorized, reason, authorization = self._authorized(incident_id, timestamp)
         if not authorized:
             return {**base, "execution": "not_executed", "state": "blocked", "reason_codes": [reason]}
-        return {**base, **self._release(incident_id, timestamp)}
+        if not self.config_digest or authorization is None:
+            return {**base, "execution": "not_executed", "state": "blocked", "reason_codes": ["reserve_config_digest_missing"]}
+        result = self.broker.release(
+            incident_id=incident_id,
+            authorization=authorization,
+            config_digest=self.config_digest,
+            mount_point=self.policy.mount_point,
+            now=timestamp,
+        )
+        return {**base, **result}
 
 
 __all__ = [

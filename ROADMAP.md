@@ -87,6 +87,7 @@ Guardian 在 Ubuntu 服务器上持续运行，长期观察 CPU、内存和磁�
 - [x] 执行一次最终整体验收，不再拆成多个小实验。
 - [x] 内存风险已接入连续 Runtime 的 observe/simulate 主链；默认无真实动作。
 - [x] 磁盘容量风险已接入 Guardian 自有预留空间恢复主链；无写入者证据时不停止容器。
+- [x] 常驻 Runtime 通过默认关闭的固定作用域预留恢复边界执行一次授权释放；不放宽 Runtime 权限，不连接 Docker。
 - [x] 完成本地统一的内存 observe/simulate、磁盘预留恢复和混合风险 fail-closed 验收。
 - [x] 验收确认自动容器动作数为零、Broker 关闭、最新工作区代码已安装到本地虚拟机。
 

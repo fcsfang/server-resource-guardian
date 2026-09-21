@@ -95,9 +95,19 @@ def release(root: Path) -> dict[str, object]:
     expected = _manifest(reserve, int(manifest.get("size_bytes", -1)))
     if manifest != expected or reserve.stat().st_size != int(manifest["size_bytes"]):
         raise SystemExit("Guardian reserve manifest mismatch; refusing any deletion")
+    before_stats = os.statvfs(root)
+    before_free_bytes = int(before_stats.f_bavail * before_stats.f_frsize)
     reserve.unlink()
     manifest_path.unlink()
-    return {"status": "released", "path": str(reserve), "size_bytes": expected["size_bytes"]}
+    after_stats = os.statvfs(root)
+    after_free_bytes = int(after_stats.f_bavail * after_stats.f_frsize)
+    return {
+        "status": "released",
+        "path": str(reserve),
+        "size_bytes": expected["size_bytes"],
+        "before_free_bytes": before_free_bytes,
+        "after_free_bytes": after_free_bytes,
+    }
 
 
 def status(root: Path) -> dict[str, object]:

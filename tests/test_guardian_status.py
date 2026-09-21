@@ -51,7 +51,7 @@ class GuardianStatusTests(unittest.TestCase):
 
             def runner(command, **kwargs):
                 value = "active" if command[1] == "is-active" and command[2] in {"guardian-runtime.service", "guardian-collector.service"} else "enabled"
-                if command[2] == "guardian-broker.service":
+                if command[2] in {"guardian-broker.service", "guardian-reserve-broker.service"}:
                     value = "inactive" if command[1] == "is-active" else "static"
                 return subprocess.CompletedProcess(command, 0, value + "\n", "")
 
@@ -67,6 +67,7 @@ class GuardianStatusTests(unittest.TestCase):
             self.assertEqual(value["overall"], "healthy")
             self.assertEqual(value["automatic_actions"], "disabled")
             self.assertTrue(value["broker"]["closed"])
+            self.assertTrue(value["reserve_broker"]["closed"])
             self.assertEqual(value["recent_alerts"]["candidate_ranking"]["top"]["name"], "fixture-app")
             self.assertEqual(value["recent_alerts"]["simulation"]["action"], "none")
             self.assertEqual(value["recent_alerts"]["protection"]["protected_candidates"][0]["name"], "fixture-app")
@@ -113,6 +114,12 @@ class GuardianStatusTests(unittest.TestCase):
                         "action_result": {"action": "graceful_stop"},
                         "verification": {"overall_state": "MITIGATED"},
                     },
+                    "reserve_recovery": {
+                        "action": "release_emergency_reserve",
+                        "state": "released",
+                        "execution": "executed",
+                        "reason_codes": ["guardian_reserve_released"],
+                    },
                 },
             }
             event["schema"] = "guardian.runtime.result.v1"
@@ -121,7 +128,7 @@ class GuardianStatusTests(unittest.TestCase):
 
             def runner(command, **kwargs):
                 value = "active" if command[1] == "is-active" else "enabled"
-                if command[2] == "guardian-broker.service":
+                if command[2] in {"guardian-broker.service", "guardian-reserve-broker.service"}:
                     value = "inactive" if command[1] == "is-active" else "static"
                 return subprocess.CompletedProcess(command, 0, value + "\n", "")
 
@@ -134,6 +141,7 @@ class GuardianStatusTests(unittest.TestCase):
             )
             self.assertEqual(value["recent_alerts"]["action"]["action"], "graceful_stop")
             self.assertEqual(value["recent_alerts"]["action"]["recovery"]["overall_state"], "MITIGATED")
+            self.assertEqual(value["recent_alerts"]["action"]["reserve_recovery"]["state"], "released")
 
     def test_cli_json_is_read_only_and_uses_fixture_paths(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -148,7 +156,7 @@ class GuardianStatusTests(unittest.TestCase):
             audit.write_text("", encoding="utf-8")
             with patch("scripts.guardian_status._load_status_module") as loader:
                 def runner(command, **kwargs):
-                    if command[2] == "guardian-broker.service":
+                    if command[2] in {"guardian-broker.service", "guardian-reserve-broker.service"}:
                         value = "inactive" if command[1] == "is-active" else "static"
                     else:
                         value = "active" if command[1] == "is-active" else "enabled"

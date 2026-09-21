@@ -7,6 +7,7 @@
 - `rescue.slice`：本地 disposable VM 的维护域，固定到 CPU 0，并提供内存最小保障和任务数边界。
 - `workload.slice`：本地压力对象的隔离域，固定到 CPU 1，内存上限 512 MiB、禁用交换并限制任务数。
 - `guardian-runtime.service`：持续 Observer → bounded queue → Coordinator 的 observe Runtime；不加入 `docker` 组，不直接持有 Docker socket。
+- `guardian-reserve-broker.service`：默认关闭的 root 固定作用域预留恢复边界；只接受 Guardian 的固定释放请求，不接触 Docker，不接受任意路径。
 - `guardian-collector.service`：独立的只读容器 Collector；仅接受固定 snapshot 请求，执行固定的 `docker stats`/`docker inspect` 读取，并通过 `/run/guardian-collector/collector.sock` 返回身份、状态和资源事实。
 - `guardian.tmpfiles`：共享状态、审计、快照和运行时目录的 owner/mode/setgid 约束。
 - `guardian-journald.conf`：journald 的全局磁盘和限流边界模板；安装后仍需按目标机根盘预算复核。
@@ -17,7 +18,7 @@
 - `scripts/install-guardian-local.sh`：本地 Ubuntu 的一次性、可重复安装入口；默认 dry-run，应用时要求 `local-disposable` 标记，只启用 observe Runtime。
 - `scripts/guardian_maintenance_status.py`、`scripts/guardian_maintenance_pressure.py`：维护账号可以调用的固定范围只读状态和限时压力入口；不接受任意命令。
 - `scripts/guardian_reserve_space.py`：预创建 Guardian 自有应急空间；释放时必须匹配自身清单，不能指定任意删除路径。
-- `src/guardian_reserve_recovery.py`：连续 Runtime 中默认关闭的磁盘预留恢复动作；只释放 Guardian 固定预留，验证同一文件系统空间增加，并记录写入源仍需人工处理。
+- `src/guardian_reserve_recovery.py`、`src/guardian_reserve_broker.py`：连续 Runtime 中默认关闭的磁盘预留恢复动作和最小特权边界；只释放 Guardian 固定预留，验证同一文件系统空间增加，并记录写入源仍需人工处理。
 - `scripts/accept-guardian-maintenance-ssh.sh`：从宿主机通过真实 SSH 完成一次基线和四类压力维护验收。
 - `scripts/guardian_rescue_plan.py`：安装、诊断、停用、回滚的非变更计划器；它不调用 systemd、Docker 或 Multipass。
 - `scripts/guardian_rescue_matrix.py`：把 CPU、内存、I/O、容量/inode、PID 和四类维护探针汇总为一个 fail-closed 只读判定；缺证据只返回 `INCONCLUSIVE`。
@@ -82,7 +83,7 @@ bash scripts/install-guardian-local.sh
 sudo bash scripts/install-guardian-local.sh --apply --environment local-disposable
 ```
 
-安装入口会创建或复用 `guardian`、`guardian-broker`、`guardian-shared` 账户和组，安装当前代码、observe 配置、systemd 资源边界及 journald drop-in，校验配置仍为 `observe` 且自动动作关闭，然后启用并启动 `guardian-runtime.service`。重复执行会先备份已管理的 unit/config 文件，再重新校验和启动；失败时保留备份路径，不会自动打开 Broker。
+安装入口会创建或复用 `guardian`、`guardian-broker`、`guardian-shared` 账户和组，安装当前代码、observe 配置、systemd 资源边界及 journald drop-in，校验配置仍为 `observe` 且自动动作关闭，然后启用并启动 `guardian-runtime.service`。重复执行会先备份已管理的 unit/config 文件，再重新校验和启动；失败时保留备份路径，不会自动打开 Docker Broker 或预留恢复边界。
 
 同时会创建 `guardian-maint` 维护账号、只读状态命令、限时压力命令和 `/var/lib/guardian/reserve/emergency-space.bin`。维护账号只获得固定诊断/压力命令和释放 Guardian 自有预留空间的受限入口；允许处理名单仍为空，Broker 仍关闭。
 
@@ -143,11 +144,11 @@ sudo systemctl enable guardian-runtime.service
 sudo systemctl start guardian-runtime.service
 ```
 
-安装后至少检查 `systemctl status guardian-runtime.service`、`/run/guardian-runtime/ready`、`journalctl -u guardian-runtime.service`、共享 SQLite/WAL owner/mode、当前 cgroup 归属、SSH/session、网络/DNS、Docker/containerd 只读状态和根盘余量。Runtime 用户不得出现在 `docker` 组中。
+安装后至少检查 `systemctl status guardian-runtime.service`、`/run/guardian-runtime/ready`、`journalctl -u guardian-runtime.service`、共享 SQLite/WAL owner/mode、当前 cgroup 归属、SSH/session、网络/DNS、Docker/containerd 只读状态和根盘余量。Runtime 用户不得出现在 `docker` 组中；预留恢复服务即使安装也必须保持 inactive、无 marker、无 socket。
 
 ## 默认 Broker 关闭
 
-安装和重启后都必须确认 `/etc/guardian/broker.enabled` 不存在、Broker socket 不存在或不可用、Broker 没有 `[Install]` 自动入口。Runtime 缺少 Broker 时只能 observe/告警/人工接管；Beszel 告警、webhook、UI 和 SSH 登录都不能授予 capability。进入 `enforce` 前必须在配置中指定绝对路径的一次性授权文件，Runtime 会在启动时向 Broker 注册 capability；任何 disposable VM 的 Broker 验证都需要单独、当次、指定目标授权，本 Runbook 不提供自动开放命令。
+安装和重启后都必须确认 `/etc/guardian/broker.enabled` 与 `/etc/guardian/reserve-broker.enabled` 不存在、两个 socket 都不存在或不可用、两个服务都没有 `[Install]` 自动入口。Runtime 缺少动作边界时只能 observe/告警/人工接管；Beszel 告警、webhook、UI 和 SSH 登录都不能授予 capability。进入 `enforce` 前必须在配置中指定绝对路径的一次性授权文件；预留恢复还需要单独开启本地预留边界并指定同一份一次性授权。本 Runbook 不提供自动开放命令。
 
 ## 诊断、停用与回滚
 

@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 from scripts.guardian_reserve_space import create
-from src.guardian_reserve_recovery import RESERVE_ACTION, ReserveRecoveryController, ReserveRecoveryPolicy
+from src.guardian_reserve_recovery import RESERVE_ACTION, ReserveRecoveryController, ReserveRecoveryPolicy, reserve_status
 
 
 def critical_event(event_id="incident-1"):
@@ -44,7 +44,7 @@ class GuardianReserveRecoveryTests(unittest.TestCase):
             self.assertEqual(result["state"], "simulated")
             self.assertTrue((root / "emergency-space.bin").exists())
 
-    def test_enforce_releases_only_manifest_owned_file_and_verifies_space(self):
+    def test_enforce_without_privileged_boundary_does_not_delete(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             create(root, 1024 * 1024)
@@ -62,13 +62,12 @@ class GuardianReserveRecoveryTests(unittest.TestCase):
                 encoding="utf-8",
             )
             result = ReserveRecoveryController(
-                ReserveRecoveryPolicy(enabled=True, root=root, authorization_file=auth)
+                ReserveRecoveryPolicy(enabled=True, root=root, authorization_file=auth),
+                broker_socket=root / "missing.sock",
+                config_digest="config-digest",
             ).handle(critical_event(), mode="enforce")
-            self.assertEqual(result["state"], "released")
-            self.assertEqual(result["execution"], "executed")
-            self.assertGreater(result["after_free_bytes"], result["before_free_bytes"])
-            self.assertFalse((root / "emergency-space.bin").exists())
-            self.assertFalse((root / "manifest.json").exists())
+            self.assertEqual(result["state"], "blocked")
+            self.assertTrue((root / "emergency-space.bin").exists())
 
     def test_manifest_mismatch_is_fail_closed(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -95,7 +94,7 @@ class GuardianReserveRecoveryTests(unittest.TestCase):
                 ReserveRecoveryPolicy(enabled=True, root=root, authorization_file=auth)
             ).handle(critical_event(), mode="enforce")
             self.assertEqual(result["state"], "blocked")
-            self.assertIn("reserve_manifest_mismatch", result["reason_codes"])
+            self.assertEqual(reserve_status(root)["state"], "invalid")
             self.assertTrue((root / "emergency-space.bin").exists())
 
 

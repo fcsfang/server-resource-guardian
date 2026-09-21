@@ -90,6 +90,7 @@ required_files=(
   "deploy/guardian/guardian-collector.slice"
   "deploy/guardian/guardian-broker.slice"
   "deploy/guardian/guardian-broker.service"
+  "deploy/guardian/guardian-reserve-broker.service"
   "deploy/guardian/rescue.slice"
   "deploy/guardian/workload.slice"
   "deploy/guardian/guardian.tmpfiles"
@@ -99,6 +100,7 @@ required_files=(
   "scripts/guardian_maintenance_pressure.py"
   "scripts/guardian_maintenance_status.py"
   "src/guardian_reserve_recovery.py"
+  "src/guardian_reserve_broker.py"
   "scripts/guardian-status-emergency-space"
   "scripts/guardian-create-emergency-space"
 )
@@ -116,6 +118,7 @@ managed_units=(
   guardian-collector.service
   guardian-runtime.service
   guardian-broker.service
+  guardian-reserve-broker.service
 )
 
 protected_units=(
@@ -178,6 +181,16 @@ fi
 broker_enable_state=$(systemctl is-enabled guardian-broker.service 2>/dev/null || true)
 if [[ "$broker_enable_state" == "enabled" ]]; then
   die "refusing to install while guardian-broker.service is enabled"
+fi
+if [[ -e /etc/guardian/reserve-broker.enabled ]]; then
+  die "refusing to install over an explicitly enabled reserve Broker: /etc/guardian/reserve-broker.enabled"
+fi
+if systemctl is-active --quiet guardian-reserve-broker.service 2>/dev/null; then
+  die "refusing to install while guardian-reserve-broker.service is active"
+fi
+reserve_broker_enable_state=$(systemctl is-enabled guardian-reserve-broker.service 2>/dev/null || true)
+if [[ "$reserve_broker_enable_state" == "enabled" ]]; then
+  die "refusing to install while guardian-reserve-broker.service is enabled"
 fi
 
 ensure_group() {
@@ -338,6 +351,11 @@ if systemctl is-active --quiet guardian-broker.service 2>/dev/null; then
   die "Broker became active during installation"
 fi
 [[ ! -e /run/guardian-broker/broker.sock ]] || die "Broker socket appeared during installation"
+[[ ! -e /etc/guardian/reserve-broker.enabled ]] || die "Reserve Broker marker appeared during installation"
+if systemctl is-active --quiet guardian-reserve-broker.service 2>/dev/null; then
+  die "Reserve Broker became active during installation"
+fi
+[[ ! -e /run/guardian-reserve-broker/reserve.sock ]] || die "Reserve Broker socket appeared during installation"
 [[ -S /run/guardian-collector/collector.sock ]] || die "Collector socket is missing"
 [[ -s /run/guardian-runtime/ready ]] || die "runtime readiness marker is missing"
 systemctl show "user-${maintenance_uid}.slice" -p Slice -p AllowedCPUs -p MemoryMin -p MemoryLow -p TasksMax >/dev/null 2>&1 || true

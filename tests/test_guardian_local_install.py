@@ -35,11 +35,14 @@ class GuardianLocalInstallTests(unittest.TestCase):
         self.assertIn("actions_enabled is not False", source)
         self.assertIn("broker.enabled", source)
         self.assertIn("/run/guardian-broker/broker.sock", source)
+        self.assertIn("guardian-reserve-broker.service", source)
+        self.assertIn("/run/guardian-reserve-broker/reserve.sock", source)
         self.assertIn("guardian-collector.service", source)
         self.assertIn("guardian-collector", source)
         self.assertIn("systemctl enable guardian-runtime.service", source)
         self.assertIn("systemctl enable guardian-collector.service", source)
         self.assertNotIn("systemctl enable guardian-broker.service", source)
+        self.assertNotIn("systemctl enable guardian-reserve-broker.service", source)
 
 
 if __name__ == "__main__":

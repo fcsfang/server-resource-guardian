@@ -19,7 +19,7 @@ WorkingDirectory=/opt/server-resource-guardian
 Environment=PYTHONPATH=/opt/server-resource-guardian
 Environment=GUARDIAN_READY_FILE=/run/guardian-runtime/ready
 ExecStartPre=/usr/bin/python3 -m src.guardian_preflight --role runtime --config /etc/guardian/guardian.json --state-db /var/lib/guardian/shared/state.db --outbox-db /var/lib/guardian/runtime/outbox.db --audit-file /var/lib/guardian/runtime/audit/events.jsonl
-ExecStart=/usr/bin/python3 -m src.guardian_orchestrator --config /etc/guardian/guardian.json --state-db /var/lib/guardian/shared/state.db --outbox-db /var/lib/guardian/runtime/outbox.db --audit-file /var/lib/guardian/runtime/audit/events.jsonl --snapshot-dir /var/lib/guardian/runtime/snapshots --broker-socket /run/guardian-broker/broker.sock --collector-socket /run/guardian-collector/collector.sock
+ExecStart=/usr/bin/python3 -m src.guardian_orchestrator --config /etc/guardian/guardian.json --state-db /var/lib/guardian/shared/state.db --outbox-db /var/lib/guardian/runtime/outbox.db --audit-file /var/lib/guardian/runtime/audit/events.jsonl --snapshot-dir /var/lib/guardian/runtime/snapshots --broker-socket /run/guardian-broker/broker.sock --reserve-broker-socket /run/guardian-reserve-broker/reserve.sock --collector-socket /run/guardian-collector/collector.sock
 Restart=on-failure
 RestartSec=5s
 WatchdogSec=90s

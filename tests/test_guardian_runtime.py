@@ -114,6 +114,7 @@ class GuardianRuntimeTests(unittest.TestCase):
             "--state-db /var/lib/guardian/shared/state.db",
             "--outbox-db /var/lib/guardian/runtime/outbox.db",
             "--audit-file /var/lib/guardian/runtime/audit/events.jsonl",
+            "--reserve-broker-socket /run/guardian-reserve-broker/reserve.sock",
             "Environment=GUARDIAN_READY_FILE=/run/guardian-runtime/ready",
             "Restart=on-failure",
             "NoNewPrivileges=true",
@@ -137,6 +138,7 @@ class GuardianRuntimeTests(unittest.TestCase):
         self.assertIn("SupplementaryGroups=docker guardian-shared", broker)
         self.assertIn("/run/guardian-runtime", runtime)
         self.assertIn("/run/guardian-broker/broker.sock", runtime)
+        self.assertIn("/run/guardian-reserve-broker/reserve.sock", runtime)
         self.assertIn("/run/guardian-broker/broker.sock", broker)
         self.assertIn("/var/lib/guardian/shared", runtime)
         self.assertIn("/var/lib/guardian/shared", broker)
@@ -144,6 +146,7 @@ class GuardianRuntimeTests(unittest.TestCase):
         self.assertIn("d /var/lib/guardian/shared 2770 root guardian-shared", tmpfiles)
         self.assertIn("d /run/guardian-runtime 0750 guardian guardian", tmpfiles)
         self.assertIn("d /run/guardian-broker 0750 guardian-broker guardian-broker", tmpfiles)
+        self.assertIn("d /run/guardian-reserve-broker 0750 root guardian", tmpfiles)
 
     def test_preflight_requires_role_specific_writable_paths(self):
         with tempfile.TemporaryDirectory() as temp:

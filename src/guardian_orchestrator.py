@@ -117,6 +117,7 @@ class RuntimeOrchestrator:
         shutdown_timeout_seconds: float = DEFAULT_SHUTDOWN_TIMEOUT_SECONDS,
         broker_socket: str | Path = "/run/guardian-broker/broker.sock",
         broker_timeout_seconds: float = 10.0,
+        reserve_broker_socket: str | Path = "/run/guardian-reserve-broker/reserve.sock",
         collector_socket: str | Path = "/run/guardian-collector/collector.sock",
         authorization_file: str | Path | None = None,
         observer: Any | None = None,
@@ -141,7 +142,9 @@ class RuntimeOrchestrator:
         self.config = config
         self.mode = effective_mode
         self.reserve_recovery = ReserveRecoveryController(
-            ReserveRecoveryPolicy.from_mapping(config.disk_reserve_recovery_policy)
+            ReserveRecoveryPolicy.from_mapping(config.disk_reserve_recovery_policy),
+            broker_socket=reserve_broker_socket,
+            config_digest=config.config_digest,
         )
         self.snapshot_dir = snapshot_dir if snapshot_dir is not None else config.snapshot_directory
         self.snapshot_all = bool(snapshot_all)
@@ -646,6 +649,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--shutdown-timeout", type=float, default=DEFAULT_SHUTDOWN_TIMEOUT_SECONDS)
     parser.add_argument("--broker-socket", default="/run/guardian-broker/broker.sock")
     parser.add_argument("--broker-timeout", type=float, default=10.0)
+    parser.add_argument("--reserve-broker-socket", default="/run/guardian-reserve-broker/reserve.sock")
     parser.add_argument("--collector-socket", default="/run/guardian-collector/collector.sock")
     parser.add_argument("--authorization-file", type=Path, default=None)
     args = parser.parse_args(argv)
@@ -664,6 +668,7 @@ def main(argv: list[str] | None = None) -> int:
             shutdown_timeout_seconds=args.shutdown_timeout,
             broker_socket=args.broker_socket,
             broker_timeout_seconds=args.broker_timeout,
+            reserve_broker_socket=args.reserve_broker_socket,
             collector_socket=args.collector_socket,
             authorization_file=args.authorization_file,
         )

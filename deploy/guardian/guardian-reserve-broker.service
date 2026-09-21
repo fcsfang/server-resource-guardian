@@ -1,0 +1,39 @@
+[Unit]
+Description=Guardian fixed-scope reserve recovery boundary
+Documentation=https://github.com/fcsfang/server-resource-guardian
+After=local-fs.target systemd-tmpfiles-setup.service
+ConditionPathExists=/etc/guardian/reserve-broker.enabled
+StartLimitIntervalSec=5min
+StartLimitBurst=2
+
+[Service]
+Type=simple
+User=root
+Group=guardian
+WorkingDirectory=/opt/server-resource-guardian
+Environment=PYTHONPATH=/opt/server-resource-guardian
+ExecStart=/usr/bin/python3 -m src.guardian_reserve_broker --socket /run/guardian-reserve-broker/reserve.sock --state-db /var/lib/guardian/shared/state.db --config /etc/guardian/guardian.json --enable --allowed-uid guardian
+Restart=on-failure
+RestartSec=5s
+TimeoutStartSec=30s
+TimeoutStopSec=15s
+KillMode=mixed
+KillSignal=SIGTERM
+LimitNOFILE=256
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/guardian/reserve /var/lib/guardian/shared /run/guardian-reserve-broker
+ReadOnlyPaths=/etc/guardian/guardian.json
+RestrictAddressFamilies=AF_UNIX
+LockPersonality=true
+PrivateDevices=true
+CapabilityBoundingSet=CAP_DAC_OVERRIDE CAP_FOWNER
+AmbientCapabilities=CAP_DAC_OVERRIDE CAP_FOWNER
+UMask=0007
+Slice=rescue.slice
+RuntimeDirectory=guardian-reserve-broker
+RuntimeDirectoryMode=0750
+
+# Deliberately no [Install] section: this boundary is closed by default.
