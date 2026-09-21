@@ -8,6 +8,7 @@
 - `workload.slice`：disposable 压力对象的竞争对照域，不是生产配额。
 - `guardian-runtime.service`：持续 Observer → bounded queue → Coordinator 的 observe Runtime；不加入 `docker` 组，不直接持有 Docker socket。
 - `guardian.tmpfiles`：共享状态、审计、快照和运行时目录的 owner/mode/setgid 约束。
+- `guardian-journald.conf`：journald 的全局磁盘和限流边界模板；安装后仍需按目标机根盘预算复核。
 - `guardian-runtime.slice`：Runtime 自身的有限控制面预算；它与 Rescue Plane 资源域分开评审。
 - `guardian-observer.service`、`guardian-broker.service`、`guardian-broker.slice`、`guardian-audit.logrotate`：既有 Observer/Broker 和审计模板；本 T11 安装默认不启用 Broker。
 - `scripts/guardian_rescue_probe.py`：默认只生成 dry-run 计划；只有显式 `--run-read-only` 才运行固定只读 Multipass 探针。
@@ -74,9 +75,12 @@ sudo install -o root -g root -m 0644 deploy/guardian/rescue.slice /etc/systemd/s
 sudo install -o root -g root -m 0644 deploy/guardian/workload.slice /etc/systemd/system/
 sudo install -o root -g root -m 0644 deploy/guardian/guardian-runtime.service /etc/systemd/system/
 sudo install -o root -g root -m 0644 deploy/guardian/guardian.tmpfiles /etc/tmpfiles.d/guardian.conf
+sudo install -d -o root -g root -m 0755 /etc/systemd/journald.conf.d
+sudo install -o root -g root -m 0644 deploy/guardian/guardian-journald.conf /etc/systemd/journald.conf.d/guardian.conf
 sudo systemd-tmpfiles --create /etc/tmpfiles.d/guardian.conf
 sudo systemd-analyze verify /etc/systemd/system/rescue.slice /etc/systemd/system/workload.slice /etc/systemd/system/guardian-runtime.service
 sudo systemctl daemon-reload
+sudo systemctl reload systemd-journald
 sudo systemctl enable guardian-runtime.service
 sudo systemctl start guardian-runtime.service
 ```

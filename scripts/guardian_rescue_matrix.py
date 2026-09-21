@@ -32,6 +32,11 @@ DEFAULT_P95_LIMITS_MS = {
     "guardian_observe_once": 10000.0,
 }
 SCENARIO_ALIASES = {
+    "cpu": "cpu",
+    "memory": "memory",
+    "io": "io",
+    "capacity_inode": "capacity_inode",
+    "pid": "pid",
     "cpu-workload-slice": "cpu",
     "memory-workload-slice": "memory",
     "io-workload-slice": "io",

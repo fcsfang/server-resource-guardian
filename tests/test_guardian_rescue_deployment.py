@@ -63,6 +63,15 @@ class GuardianRescueDeploymentTests(unittest.TestCase):
         self.assertIn("d /var/lib/guardian/runtime 0700 guardian guardian -", source)
         self.assertIn("d /run/guardian-runtime 0750 guardian guardian -", source)
 
+    def test_journald_and_audit_retention_boundaries_are_explicit(self):
+        journald = (DEPLOY / "guardian-journald.conf").read_text(encoding="utf-8")
+        self.assertIn("SystemMaxUse=200M", journald)
+        self.assertIn("RuntimeMaxUse=64M", journald)
+        self.assertIn("RateLimitBurst=200", journald)
+        logrotate = (DEPLOY / "guardian-audit.logrotate").read_text(encoding="utf-8")
+        self.assertIn("size 50M", logrotate)
+        self.assertIn("rotate 7", logrotate)
+
     def test_probe_cli_defaults_to_dry_run_and_has_no_mutation_words(self):
         source = (ROOT / "scripts" / "guardian_rescue_probe.py").read_text(encoding="utf-8")
         self.assertIn("--run-read-only", source)
