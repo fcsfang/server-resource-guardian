@@ -3,15 +3,18 @@ Description=Guardian Rescue Plane resource domain
 Documentation=https://github.com/fcsfang/server-resource-guardian
 
 [Slice]
-# Local disposable-VM starting values only. CPUWeight/IOWeight are relative
-# scheduling weights, not hard reservations or a guarantee under exhaustion.
-# MemoryMin/MemoryLow require a host-specific budget review before deployment.
+# Local disposable-VM hard boundary. This file is not a production profile.
+# On the 2-vCPU acceptance VM, CPU 0 is the rescue/maintenance CPU and CPU 1
+# is the workload CPU. MemoryMin/MemoryLow and TasksMax protect the rescue
+# domain from the bounded workload fixture; they cannot defeat kernel-wide,
+# device-wide, or root-filesystem failure.
 CPUAccounting=true
 IOAccounting=true
 MemoryAccounting=true
 TasksAccounting=true
+AllowedCPUs=0
 CPUWeight=1000
 IOWeight=1000
-MemoryMin=128M
-MemoryLow=512M
-TasksMax=512
+MemoryMin=512M
+MemoryLow=768M
+TasksMax=1024

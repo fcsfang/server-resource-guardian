@@ -90,7 +90,7 @@ class GuardianRuntimeTests(unittest.TestCase):
             "Restart=on-failure",
             "User=guardian",
             "SupplementaryGroups=docker",
-            "Slice=guardian-observer.slice",
+            "Slice=rescue.slice",
             "LogRateLimitBurst=200",
             "GUARDIAN_READY_FILE=/run/guardian/ready",
         ):

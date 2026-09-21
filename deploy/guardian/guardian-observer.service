@@ -40,7 +40,7 @@ PrivateDevices=true
 CapabilityBoundingSet=
 AmbientCapabilities=
 UMask=0077
-Slice=guardian-observer.slice
+Slice=rescue.slice
 # Journald is the audit transport; keep bursts bounded during failures.
 LogRateLimitIntervalSec=30s
 LogRateLimitBurst=200

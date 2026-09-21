@@ -4,8 +4,8 @@
 
 ## 组成与边界
 
-- `rescue.slice`：Rescue Plane 的相对 CPU/IO 权重、内存回收保护和任务数边界。
-- `workload.slice`：disposable 压力对象的竞争对照域，不是生产配额。
+- `rescue.slice`：本地 disposable VM 的维护域，固定到 CPU 0，并提供内存最小保障和任务数边界。
+- `workload.slice`：本地压力对象的隔离域，固定到 CPU 1，内存上限 512 MiB、禁用交换并限制任务数。
 - `guardian-runtime.service`：持续 Observer → bounded queue → Coordinator 的 observe Runtime；不加入 `docker` 组，不直接持有 Docker socket。
 - `guardian-collector.service`：独立的只读容器 Collector；仅接受固定 snapshot 请求，执行固定的 `docker stats`/`docker inspect` 读取，并通过 `/run/guardian-collector/collector.sock` 返回身份、状态和资源事实。
 - `guardian.tmpfiles`：共享状态、审计、快照和运行时目录的 owner/mode/setgid 约束。
@@ -15,6 +15,9 @@
 - `guardian-observer.service`、`guardian-broker.service`、`guardian-broker.slice`、`guardian-audit.logrotate`：既有 Observer/Broker 和审计模板；本 T11 安装默认不启用 Broker。
 - `scripts/guardian_rescue_probe.py`：默认只生成 dry-run 计划；只有显式 `--run-read-only` 才运行固定只读 Multipass 探针。
 - `scripts/install-guardian-local.sh`：本地 Ubuntu 的一次性、可重复安装入口；默认 dry-run，应用时要求 `local-disposable` 标记，只启用 observe Runtime。
+- `scripts/guardian_maintenance_status.py`、`scripts/guardian_maintenance_pressure.py`：维护账号可以调用的固定范围只读状态和限时压力入口；不接受任意命令。
+- `scripts/guardian_reserve_space.py`：预创建 Guardian 自有应急空间；释放时必须匹配自身清单，不能指定任意删除路径。
+- `scripts/accept-guardian-maintenance-ssh.sh`：从宿主机通过真实 SSH 完成一次基线和四类压力维护验收。
 - `scripts/guardian_rescue_plan.py`：安装、诊断、停用、回滚的非变更计划器；它不调用 systemd、Docker 或 Multipass。
 - `scripts/guardian_rescue_matrix.py`：把 CPU、内存、I/O、容量/inode、PID 和四类维护探针汇总为一个 fail-closed 只读判定；缺证据只返回 `INCONCLUSIVE`。
 
@@ -43,9 +46,9 @@ Rescue Plane 的目标是提高“登录 → 只读诊断 → 人工控制”的
 
 ## 资源边界
 
-`rescue.slice` 的 `CPUWeight=1000`、`IOWeight=1000` 相对高于 `workload.slice` 的 `100`，只代表竞争时的相对调度优先级，不是专用 CPU/IO 预留。`MemoryMin=128M`、`MemoryLow=512M` 是本地 2 vCPU/4 GiB disposable VM 的候选值，必须结合目标机上 SSH、session、网络、日志、控制面和 Guardian 的 P99 RSS 重新审核。`TasksMax=512` 也不是无限制的登录保障。
+本地 2 vCPU/4 GiB disposable VM 把维护域固定到 CPU 0，把压力域固定到 CPU 1；维护域使用 `MemoryMin=512M`、`MemoryLow=768M`，压力域使用 `MemoryHigh=448M`、`MemoryMax=512M`、`MemorySwapMax=0` 和 `TasksMax=256`。这只适用于本地验收，不是生产配置，也不是任意资源耗尽下的 SSH 保证。
 
-当前故意不设置 `MemoryMax`：这组模板不是业务限额方案。若目标机需要专用 CPU、硬内存上限、磁盘 quota 或独立分区，必须由 SRE/运维批准并另留回滚证据。权重和 low/min 保护在全局内存、IO、内核或根盘耗尽时都可能失效。
+压力域的内存和任务上限只限制本地压力对象；维护域的最小内存只提供 cgroup 层面的保护。I/O 使用低权重竞争边界和固定时长的压力工具，不能把普通磁盘变成专用设备。全局内存、I/O、内核或根盘耗尽时，保护仍可能失效。
 
 ## 根盘与日志边界
 
@@ -80,6 +83,8 @@ sudo bash scripts/install-guardian-local.sh --apply --environment local-disposab
 
 安装入口会创建或复用 `guardian`、`guardian-broker`、`guardian-shared` 账户和组，安装当前代码、observe 配置、systemd 资源边界及 journald drop-in，校验配置仍为 `observe` 且自动动作关闭，然后启用并启动 `guardian-runtime.service`。重复执行会先备份已管理的 unit/config 文件，再重新校验和启动；失败时保留备份路径，不会自动打开 Broker。
 
+同时会创建 `guardian-maint` 维护账号、只读状态命令、限时压力命令和 `/var/lib/guardian/reserve/emergency-space.bin`。维护账号只获得固定诊断/压力命令和释放 Guardian 自有预留空间的受限入口；允许处理名单仍为空，Broker 仍关闭。
+
 安装后应看到：
 
 ```text
@@ -99,12 +104,22 @@ sudo guardian-status
 
 它会回答 Runtime/Collector 是否在线、是否开机启用、当前是否 `observe`、自动动作是否关闭、最近一条 Guardian 本地风险状态、当前候选数量/最高候选、候选保护原因、模拟目标及是否执行，以及 Broker 是否仍处于关闭边界。`Recent local risk` 来自 Guardian 本地审计；Beszel 的三类告警历史和通知仍以 Beszel 页面为准。
 
+本地 disposable VM 的最终维护验收从宿主机执行真实 SSH：
+
+```bash
+bash scripts/accept-guardian-maintenance-ssh.sh \
+  --host VM_IP --key /path/to/maintenance_ed25519 \
+  --output /tmp/guardian-maintenance-acceptance.txt
+```
+
+它只启动固定、限时的 CPU、内存、磁盘和混合压力；每个场景重新建立 SSH 连接，读取 Guardian、Beszel、Docker、网络和磁盘状态，并在最后确认压力文件已清理。验收结果只代表本地 disposable VM；没有真实业务健康检查时，不报告“业务恢复”。
+
 ## 升级
 
 升级只允许在已确认的 disposable 环境或经过审批的非生产维护窗口执行：
 
 1. 先确认 Broker 标记和 socket 都不存在，并保存当前 unit、配置、`/var/lib/guardian` 和审计备份。
-2. 使用新版本仓库执行同一个本地安装入口；安装器会先备份已管理的 unit 和配置，校验默认仍为 `observe`，然后只重启 Collector 和 Runtime。
+2. 使用新版本仓库执行同一个本地安装入口；安装器会先备份已管理的 unit 和配置，校验默认仍为 `observe`，在本地 disposable VM 中重新加载维护链路 drop-in，并重启需要重新归属资源域的系统服务、Collector 和 Runtime；不会执行容器停止动作。
 3. 用 `guardian-status`、preflight、Collector 只读快照和 `systemctl is-active` 检查升级结果；升级失败时保持 Broker 关闭并按回滚顺序恢复上一份备份。
 4. 升级过程不自动停止、重启或删除 Beszel、Docker 容器、业务文件或审计数据。
 
@@ -167,4 +182,4 @@ python3 scripts/guardian_rescue_plan.py rollback
 
 ## 明确限制
 
-`guardian_rescue_probe.py` 的 Multipass 管理 session 只能证明本地 guest 探针可用，不能证明生产外部 SSH、认证、网络故障或任意资源耗尽下的可登录性。根盘真实满盘、带外通道、外部 x86_64 主机和生产 Docker/AuthZ 策略仍需独立验证。本任务不创建新的阈值 EXP，也不执行真实 systemd、Docker 或 Multipass 变更。
+`guardian_rescue_probe.py` 的 Multipass 管理 session 只能证明本地 guest 探针可用，不能证明生产外部 SSH、认证、网络故障或任意资源耗尽下的可登录性。根盘真实满盘、带外通道、外部 x86_64 主机和生产 Docker/AuthZ 策略仍需独立验证。本地维护通道本轮只在新的 disposable VM 应用和验证，未连接生产，也未执行容器停止动作；不再新增阈值 EXP。

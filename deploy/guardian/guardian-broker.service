@@ -37,7 +37,7 @@ PrivateDevices=true
 CapabilityBoundingSet=
 AmbientCapabilities=
 UMask=0007
-Slice=guardian-broker.slice
+Slice=rescue.slice
 RuntimeDirectory=guardian-broker
 RuntimeDirectoryMode=0750
 

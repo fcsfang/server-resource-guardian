@@ -16,3 +16,4 @@ MemoryLow=64M
 MemoryHigh=384M
 MemoryMax=512M
 TasksMax=256
+AllowedCPUs=0

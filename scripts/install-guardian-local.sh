@@ -15,6 +15,7 @@ environment=""
 apply=false
 install_root=/opt/server-resource-guardian
 backup_root=/var/backups/guardian-local-installer
+maintenance_user=guardian-maint
 
 usage() {
   cat <<'EOF'
@@ -58,6 +59,11 @@ while (($# > 0)); do
       backup_root=$2
       shift 2
       ;;
+    --maintenance-user)
+      (($# >= 2)) || die "--maintenance-user requires a value"
+      maintenance_user=$2
+      shift 2
+      ;;
     -h|--help)
       usage
       exit 0
@@ -88,6 +94,10 @@ required_files=(
   "deploy/guardian/workload.slice"
   "deploy/guardian/guardian.tmpfiles"
   "deploy/guardian/guardian-journald.conf"
+  "deploy/guardian/guardian-rescue-member.conf"
+  "scripts/guardian_reserve_space.py"
+  "scripts/guardian_maintenance_pressure.py"
+  "scripts/guardian_maintenance_status.py"
 )
 
 for relative_path in "${required_files[@]}"; do
@@ -105,6 +115,18 @@ managed_units=(
   guardian-broker.service
 )
 
+protected_units=(
+  ssh.service
+  sshd.service
+  systemd-logind.service
+  systemd-journald.service
+  docker.service
+  containerd.service
+  systemd-networkd.service
+  systemd-resolved.service
+  NetworkManager.service
+)
+
 print_plan() {
   cat <<EOF
 Guardian local installation plan
@@ -120,6 +142,10 @@ Would create or verify:
   state: /etc/guardian and /var/lib/guardian
   units: ${managed_units[*]}
   services: guardian-collector.service and guardian-runtime.service enabled and started
+  maintenance account: ${maintenance_user} (SSH shell and read-only Docker access)
+  rescue boundary: CPU 0, protected services and maintenance user
+  workload boundary: CPU 1, 512M memory cap, 256 task cap
+  emergency reserve: /var/lib/guardian/reserve/emergency-space.bin
 EOF
 }
 
@@ -175,6 +201,11 @@ usermod --append --groups guardian-shared,guardian-broker guardian
 usermod --append --groups guardian-shared guardian-broker
 getent group docker >/dev/null 2>&1 || die "docker group is required for the read-only Collector"
 usermod --append --groups docker,guardian-shared guardian-collector
+if ! getent passwd "$maintenance_user" >/dev/null 2>&1; then
+  useradd --create-home --home-dir "/home/${maintenance_user}" --shell /bin/bash --groups docker "$maintenance_user"
+else
+  usermod --shell /bin/bash --groups docker "$maintenance_user"
+fi
 
 config_path=/etc/guardian/guardian.json
 if [[ ! -e "$config_path" ]]; then
@@ -201,6 +232,10 @@ if [[ "$repository" != "$install_root" ]]; then
 fi
 chown -R root:root "$install_root"
 install -o root -g root -m 0755 "${repository}/scripts/guardian_status.py" /usr/local/bin/guardian-status
+install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_status.py" /usr/local/sbin/guardian-maintenance-status
+install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_pressure.py" /usr/local/sbin/guardian-maintenance-pressure
+install -o root -g root -m 0755 "${repository}/scripts/guardian_reserve_space.py" /usr/local/sbin/guardian-reserve-space
+install -o root -g root -m 0755 "${repository}/scripts/guardian-release-emergency-space" /usr/local/sbin/guardian-release-emergency-space
 
 timestamp=$(date -u +%Y%m%dT%H%M%SZ)
 backup_dir="${backup_root}/${timestamp}"
@@ -218,6 +253,7 @@ for unit in "${managed_units[@]}"; do
 done
 backup_if_present /etc/tmpfiles.d/guardian.conf
 backup_if_present /etc/systemd/journald.conf.d/guardian.conf
+backup_if_present /etc/sudoers.d/guardian-maintenance
 
 install -d -o root -g root -m 0755 /etc/systemd/system
 for unit in "${managed_units[@]}"; do
@@ -227,6 +263,33 @@ install -d -o root -g root -m 0755 /etc/tmpfiles.d
 install -o root -g root -m 0644 "${repository}/deploy/guardian/guardian.tmpfiles" /etc/tmpfiles.d/guardian.conf
 install -d -o root -g root -m 0755 /etc/systemd/journald.conf.d
 install -o root -g root -m 0644 "${repository}/deploy/guardian/guardian-journald.conf" /etc/systemd/journald.conf.d/guardian.conf
+
+maintenance_uid=$(id -u "$maintenance_user")
+user_slice_dropin_dir="/etc/systemd/system/user-${maintenance_uid}.slice.d"
+install -d -o root -g root -m 0755 "$user_slice_dropin_dir"
+cat > "${user_slice_dropin_dir}/guardian-maintenance.conf" <<'EOF'
+[Slice]
+# user-UID slices cannot be nested below another slice on all supported
+# systemd builds; apply the rescue CPU/memory/task controls directly.
+AllowedCPUs=0
+MemoryMin=128M
+MemoryLow=256M
+TasksMax=256
+EOF
+chmod 0644 "${user_slice_dropin_dir}/guardian-maintenance.conf"
+
+install -d -o root -g root -m 0755 /etc/systemd/system
+for unit in "${protected_units[@]}"; do
+  if systemctl cat "$unit" >/dev/null 2>&1; then
+    install -d -o root -g root -m 0755 "/etc/systemd/system/${unit}.d"
+    install -o root -g root -m 0644 "${repository}/deploy/guardian/guardian-rescue-member.conf" "/etc/systemd/system/${unit}.d/guardian-rescue-member.conf"
+  fi
+done
+
+install -d -o root -g root -m 0755 /etc/sudoers.d
+printf '%s ALL=(root) NOPASSWD: /usr/local/sbin/guardian-maintenance-status, /usr/local/sbin/guardian-maintenance-pressure, /usr/local/sbin/guardian-release-emergency-space\n' "$maintenance_user" > /etc/sudoers.d/guardian-maintenance
+chmod 0440 /etc/sudoers.d/guardian-maintenance
+visudo -cf /etc/sudoers.d/guardian-maintenance >/dev/null
 
 systemd-analyze verify \
   /etc/systemd/system/rescue.slice \
@@ -238,7 +301,18 @@ systemd-analyze verify \
   /etc/systemd/system/guardian-runtime.service \
   /etc/systemd/system/guardian-broker.service
 systemd-tmpfiles --create /etc/tmpfiles.d/guardian.conf
+python3 /usr/local/sbin/guardian-reserve-space create --root /var/lib/guardian/reserve
 systemctl daemon-reload
+for unit in "${protected_units[@]}"; do
+  case "$unit" in
+    systemd-networkd.service|systemd-resolved.service|NetworkManager.service)
+      continue
+      ;;
+  esac
+  if systemctl is-active --quiet "$unit" 2>/dev/null; then
+    systemctl try-restart "$unit"
+  fi
+done
 # Some Ubuntu systemd builds expose journald without a standalone reload
 # operation. Apply the drop-in without failing the whole install in that case.
 systemctl reload systemd-journald 2>/dev/null || systemctl reload-or-restart systemd-journald
@@ -246,6 +320,7 @@ systemctl enable guardian-collector.service
 systemctl restart guardian-collector.service 2>/dev/null || systemctl start guardian-collector.service
 systemctl enable guardian-runtime.service
 systemctl restart guardian-runtime.service 2>/dev/null || systemctl start guardian-runtime.service
+systemctl restart systemd-logind 2>/dev/null || true
 
 if ! systemctl is-active --quiet guardian-collector.service || ! systemctl is-active --quiet guardian-runtime.service; then
   printf 'guardian-local-install: runtime failed to start; backup: %s\n' "${backup_created:+$backup_dir}" >&2
@@ -260,6 +335,8 @@ fi
 [[ ! -e /run/guardian-broker/broker.sock ]] || die "Broker socket appeared during installation"
 [[ -S /run/guardian-collector/collector.sock ]] || die "Collector socket is missing"
 [[ -s /run/guardian-runtime/ready ]] || die "runtime readiness marker is missing"
+systemctl show "user-${maintenance_uid}.slice" -p Slice -p AllowedCPUs -p MemoryMin -p MemoryLow -p TasksMax >/dev/null 2>&1 || true
+python3 /usr/local/sbin/guardian-reserve-space status --root /var/lib/guardian/reserve >/dev/null
 
 printf 'Guardian local installation completed\n'
 printf '  runtime: %s\n' "$(systemctl is-active guardian-runtime.service)"

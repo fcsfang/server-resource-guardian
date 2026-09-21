@@ -3,12 +3,17 @@ Description=Guardian workload-plane resource domain
 Documentation=https://github.com/fcsfang/server-resource-guardian
 
 [Slice]
-# Relative competition fixture for disposable tests. These values do not
-# impose a production quota and deliberately omit MemoryMax.
+# Bounded disposable-VM workload domain. It is deliberately isolated from
+# CPU 0 and capped so acceptance pressure cannot consume the maintenance
+# domain. This is not a production quota.
 CPUAccounting=true
 IOAccounting=true
 MemoryAccounting=true
 TasksAccounting=true
-CPUWeight=100
-IOWeight=100
-TasksMax=4096
+AllowedCPUs=1
+CPUWeight=1
+IOWeight=1
+MemoryHigh=448M
+MemoryMax=512M
+MemorySwapMax=0
+TasksMax=256
