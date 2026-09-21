@@ -32,13 +32,6 @@ class CapabilityDecision:
 
 
 @dataclass(frozen=True)
-class ReserveClaim:
-    claimed: bool
-    state: str
-    reason: str
-
-
-@dataclass(frozen=True)
 class IntentClaim:
     claimed: bool
     intent_id: str
@@ -142,15 +135,6 @@ class GuardianStateStore:
                     acquired_at REAL NOT NULL,
                     updated_at REAL NOT NULL,
                     PRIMARY KEY(host_id, action)
-                );
-                CREATE TABLE IF NOT EXISTS reserve_incidents (
-                    incident_id TEXT PRIMARY KEY,
-                    action TEXT NOT NULL,
-                    target TEXT NOT NULL,
-                    state TEXT NOT NULL,
-                    created_at REAL NOT NULL,
-                    updated_at REAL NOT NULL,
-                    result_json TEXT
                 );
                 """
             )
@@ -282,97 +266,6 @@ class GuardianStateStore:
         except sqlite3.Error as exc:
             connection.rollback()
             raise StateStoreError(f"capability_consume_failed:{exc}") from exc
-        finally:
-            connection.close()
-
-    def claim_reserve_incident(
-        self,
-        *,
-        incident_id: str,
-        action: str,
-        target: str,
-        now: float | None = None,
-    ) -> ReserveClaim:
-        """Claim one reserve recovery incident durably and never replay it."""
-
-        if not incident_id or not action or not target:
-            raise StateStoreError("reserve_incident_identity_missing")
-        timestamp = time.time() if now is None else now
-        connection = self._connect()
-        try:
-            connection.execute("BEGIN IMMEDIATE")
-            existing = connection.execute(
-                "SELECT state FROM reserve_incidents WHERE incident_id=?",
-                (incident_id,),
-            ).fetchone()
-            if existing is not None:
-                connection.rollback()
-                return ReserveClaim(False, str(existing[0]), "reserve_incident_already_claimed")
-            connection.execute(
-                "INSERT INTO reserve_incidents(incident_id,action,target,state,created_at,updated_at) VALUES (?,?,?,?,?,?)",
-                (incident_id, action, target, "EXECUTION_STARTED", timestamp, timestamp),
-            )
-            self._audit(
-                connection,
-                None,
-                "reserve_execution_started",
-                {"incident_id": incident_id, "action": action, "target": target},
-                timestamp,
-            )
-            connection.commit()
-            return ReserveClaim(True, "EXECUTION_STARTED", "reserve_incident_claimed")
-        except StateStoreError:
-            connection.rollback()
-            raise
-        except sqlite3.Error as exc:
-            connection.rollback()
-            raise StateStoreError(f"reserve_incident_claim_failed:{exc}") from exc
-        finally:
-            connection.close()
-
-    def finish_reserve_incident(
-        self,
-        *,
-        incident_id: str,
-        state: str,
-        result: Mapping[str, Any],
-        now: float | None = None,
-    ) -> bool:
-        """Persist a terminal reserve result; an in-flight claim is not replayed."""
-
-        if state not in {"RELEASED", "FAILED"}:
-            raise StateStoreError("reserve_incident_terminal_state_invalid")
-        timestamp = time.time() if now is None else now
-        connection = self._connect()
-        try:
-            connection.execute("BEGIN IMMEDIATE")
-            current = connection.execute(
-                "SELECT state FROM reserve_incidents WHERE incident_id=?",
-                (incident_id,),
-            ).fetchone()
-            if current is None or current[0] != "EXECUTION_STARTED":
-                connection.rollback()
-                return False
-            payload = dict(result)
-            connection.execute(
-                "UPDATE reserve_incidents SET state=?,updated_at=?,result_json=? WHERE incident_id=? AND state='EXECUTION_STARTED'",
-                (state, timestamp, self._json(payload), incident_id),
-            )
-            self._audit(
-                connection,
-                None,
-                "reserve_execution_finished",
-                {"incident_id": incident_id, "state": state, "result": payload},
-                timestamp,
-            )
-            connection.commit()
-            return True
-        except StateStoreError:
-            connection.rollback()
-            raise
-        except sqlite3.Error as exc:
-            connection.rollback()
-            raise StateStoreError(f"reserve_incident_finish_failed:{exc}") from exc
         finally:
             connection.close()
 
@@ -738,4 +631,4 @@ class GuardianStateStore:
             connection.close()
 
 
-__all__ = ["CapabilityDecision", "GuardianStateStore", "IntentClaim", "ReserveClaim", "StateStoreError"]
+__all__ = ["CapabilityDecision", "GuardianStateStore", "IntentClaim", "StateStoreError"]

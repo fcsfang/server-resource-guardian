@@ -33,7 +33,7 @@ from .guardian_broker_client import UnixSocketActionBrokerAdapter
 from .guardian_collector_client import UnixSocketCollectorClient
 from .guardian_enforce import load_authorization
 from .guardian_emergency_shedding import emergency_shedding_policy_from_config
-from .guardian_notification_outbox import DurableNotificationOutbox
+from .guardian_notification_outbox import DurableNotificationOutbox, NotificationOutboxError
 from .guardian_notifications import DisabledNotificationSink
 from .guardian_observer import ObserverSampler, _finalize_observer_event, append_audit, collect_observation
 from .guardian_recovery import (
@@ -493,29 +493,109 @@ class RuntimeOrchestrator:
                 self._stats.result_audit_errors += 1
 
     def _consume_one(self, event: dict[str, Any]) -> None:
-        reserve_result = self.reserve_recovery.handle(event, mode=self.mode)
-        reserve_actionable = reserve_result.get("action") != "none" and reserve_result.get("state") in {
+        try:
+            reserve_plan = self.reserve_recovery.handle(event, mode=self.mode, execute=False)
+        except TypeError as exc:
+            # Keep injected legacy test doubles source-compatible while the
+            # real controller uses the explicit plan/execute split.
+            if "execute" not in str(exc):
+                raise
+            reserve_plan = self.reserve_recovery.handle(event, mode=self.mode)
+        reserve_actionable = reserve_plan.get("action") != "none" and reserve_plan.get("state") in {
             "observed",
             "simulated",
-            "released",
+            "authorized",
         }
+        reserve_result = reserve_plan
         if reserve_actionable and self.mode in {"simulate", "enforce"}:
+            try:
+                enqueue_notification = getattr(self.coordinator, "enqueue_notification_event", None)
+                if not callable(enqueue_notification):
+                    raise NotificationOutboxError("notification_outbox_unavailable")
+                else:
+                    notification = enqueue_notification(
+                        event,
+                        incident_key=str(event.get("incident_id") or event.get("event_id") or "reserve"),
+                        now_monotonic_ns=time.monotonic_ns(),
+                    )
+            except (NotificationOutboxError, ValueError, TypeError) as exc:
+                notification = {"status": "rejected", "reason": f"notification_persistence_failed:{exc}"}
+            if notification.get("status") != "queued":
+                reserve_result = {
+                    **reserve_plan,
+                    "state": "blocked",
+                    "execution": "not_executed",
+                    "reason_codes": ["notification_persistence_failed", str(notification.get("reason") or notification.get("status"))],
+                }
+            elif self.mode == "enforce":
+                reserve_result = self.reserve_recovery.handle(event, mode=self.mode, execute=True)
+                result_state_after_action = "recovered" if reserve_result.get("state") == "released" else "escalated"
+                result_event = dict(event)
+                result_event["event_id"] = f"{event.get('event_id')}:reserve-result"
+                result_event["state"] = result_state_after_action
+                result_event["decision"] = {
+                    "action": reserve_result.get("action"),
+                    "mode": self.mode,
+                    "target_state": reserve_result.get("state"),
+                    "reason_codes": reserve_result.get("reason_codes", []),
+                }
+                try:
+                    enqueue_notification = getattr(self.coordinator, "enqueue_notification_event", None)
+                    if not callable(enqueue_notification):
+                        raise NotificationOutboxError("notification_outbox_unavailable")
+                    else:
+                        result_notification = enqueue_notification(
+                            result_event,
+                            incident_key=str(event.get("incident_id") or event.get("event_id") or "reserve"),
+                            now_monotonic_ns=time.monotonic_ns(),
+                        )
+                except (NotificationOutboxError, ValueError, TypeError) as exc:
+                    result_notification = {"status": "rejected", "reason": f"notification_persistence_failed:{exc}"}
+                if result_notification.get("status") != "queued" and reserve_result.get("execution") == "executed":
+                    reserve_result = {
+                        **reserve_result,
+                        "state": "unknown",
+                        "execution": "unknown",
+                        "reason_codes": [
+                            *list(reserve_result.get("reason_codes", [])),
+                            "reserve_result_notification_persistence_failed",
+                            "manual_reconciliation_required",
+                        ],
+                    }
+            reserve_execution = str(reserve_result.get("execution") or "not_executed")
+            reserve_state = str(reserve_result.get("state") or "blocked")
+            semantic_state = (
+                "SIMULATED_PLAN_COMPLETE"
+                if self.mode == "simulate" and reserve_execution == "not_executed"
+                else "MITIGATED"
+                if reserve_state == "released"
+                else "MANUAL_HANDOFF"
+            )
+            execution_semantics = (
+                "SIMULATED"
+                if self.mode == "simulate"
+                else "REAL"
+                if reserve_execution == "executed"
+                else "UNKNOWN"
+                if reserve_execution == "unknown"
+                else "NOT_EXECUTED"
+            )
             result_payload: Mapping[str, Any] = {
                 "schema": "guardian.coordinator.result.v1",
                 "mode": self.mode,
-                "state": "simulated_plan_complete" if self.mode == "simulate" else "observed",
+                "state": "simulated_plan_complete" if self.mode == "simulate" and reserve_result.get("execution") == "not_executed" else ("observed" if reserve_result.get("execution") == "not_executed" else ("recovered" if reserve_result.get("state") == "released" else "manual_handoff")),
                 "event_id": str(event.get("event_id") or ""),
                 "reason_codes": list(reserve_result.get("reason_codes", [])),
-                "notification": None,
+                "notification": notification,
                 "intent": None,
                 "intent_id": None,
                 "broker": None,
                 "manual_handoff": self.mode == "enforce" and reserve_result.get("state") != "released",
-                "semantic_state": "SIMULATED_PLAN_COMPLETE" if self.mode == "simulate" else "MITIGATED",
-                "execution_semantics": "SIMULATED" if self.mode == "simulate" else "REAL",
+                "semantic_state": semantic_state,
+                "execution_semantics": execution_semantics,
                 "host_state": "reserve_released" if reserve_result.get("state") == "released" else "pending",
                 "business_state": "BUSINESS_DEGRADED",
-                "state_trace": ["CRITICAL_CONFIRMED", "SIMULATED_PLAN_COMPLETE"] if self.mode == "simulate" else ["CRITICAL_CONFIRMED", "MITIGATED"],
+                "state_trace": ["CRITICAL_CONFIRMED", semantic_state],
             }
             result_state = str(result_payload["state"])
         else:

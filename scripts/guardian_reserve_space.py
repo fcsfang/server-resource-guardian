@@ -97,16 +97,32 @@ def release(root: Path) -> dict[str, object]:
         raise SystemExit("Guardian reserve manifest mismatch; refusing any deletion")
     before_stats = os.statvfs(root)
     before_free_bytes = int(before_stats.f_bavail * before_stats.f_frsize)
-    reserve.unlink()
-    manifest_path.unlink()
-    after_stats = os.statvfs(root)
-    after_free_bytes = int(after_stats.f_bavail * after_stats.f_frsize)
+    reserve_deleted = False
+    try:
+        reserve.unlink()
+        reserve_deleted = True
+        manifest_path.unlink()
+        after_stats = os.statvfs(root)
+        after_free_bytes = int(after_stats.f_bavail * after_stats.f_frsize)
+    except OSError as exc:
+        if reserve_deleted:
+            return {
+                "status": "executed_unverified",
+                "path": str(reserve),
+                "size_bytes": expected["size_bytes"],
+                "before_free_bytes": before_free_bytes,
+                "after_free_bytes": None,
+                "manifest_cleanup": "failed",
+                "error": type(exc).__name__,
+            }
+        raise SystemExit(f"Guardian reserve release failed before deletion: {exc}") from exc
     return {
-        "status": "released",
+        "status": "released" if after_free_bytes > before_free_bytes else "executed_unverified",
         "path": str(reserve),
         "size_bytes": expected["size_bytes"],
         "before_free_bytes": before_free_bytes,
         "after_free_bytes": after_free_bytes,
+        "manifest_cleanup": "complete",
     }
 
 

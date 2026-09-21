@@ -4,6 +4,7 @@ d /var/lib/guardian 0750 root guardian-shared -
 # setgid keeps shared SQLite/WAL files in guardian-shared without making
 # either service account the owner of the other account's files.
 d /var/lib/guardian/shared 2770 root guardian-shared -
+d /var/lib/guardian/reserve-broker 0700 root root -
 d /var/lib/guardian/runtime 0700 guardian guardian -
 d /var/lib/guardian/runtime/audit 0700 guardian guardian -
 d /var/lib/guardian/runtime/snapshots 0700 guardian guardian -

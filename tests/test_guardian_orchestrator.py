@@ -64,6 +64,21 @@ class CapabilityRecordingCoordinator(RecordingCoordinator):
         return {"state": "observed", "event_id": event["event_id"], "mode": mode}
 
 
+class NotificationRecordingCoordinator(RecordingCoordinator):
+    def __init__(self, *, status="queued"):
+        super().__init__()
+        self.status = status
+        self.notifications = []
+        self.registered = []
+
+    def register_capability(self, authorization):
+        self.registered.append(authorization)
+
+    def enqueue_notification_event(self, event, **_kwargs):
+        self.notifications.append(event["event_id"])
+        return {"status": self.status, "reason": "fixture"}
+
+
 class GuardianOrchestratorTests(unittest.TestCase):
     def build_runtime(self, temp, *, observer=None, coordinator=None, **kwargs):
         config = kwargs.pop("config", None) or safe_defaults()
@@ -121,7 +136,7 @@ class GuardianOrchestratorTests(unittest.TestCase):
                 interval=0.1,
                 collector=lambda **_kwargs: quiet_observation(),
             )
-            coordinator = RecordingCoordinator()
+            coordinator = NotificationRecordingCoordinator()
             results = []
             runtime = self.build_runtime(
                 temp,
@@ -142,6 +157,52 @@ class GuardianOrchestratorTests(unittest.TestCase):
             self.assertEqual(outcome.exit_code, 0)
             self.assertEqual(coordinator.events, [])
             self.assertEqual(results[0]["reserve_recovery"]["action"], "release_emergency_reserve")
+            self.assertEqual(len(coordinator.notifications), 1)
+
+    def test_reserve_action_is_blocked_when_notification_is_not_durable(self):
+        with tempfile.TemporaryDirectory() as temp:
+            authorization_path = Path(temp) / "authorization.json"
+            authorization_path.write_text(
+                '{"approval_id":"reserve-notification-gate","environment":"local-disposable",'
+                '"target_id":"abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",'
+                '"action":"graceful_stop","expires_at":4102444800}',
+                encoding="utf-8",
+            )
+            sampler = ObserverSampler(
+                safe_defaults(),
+                interval=0.1,
+                collector=lambda **_kwargs: quiet_observation(),
+            )
+            coordinator = NotificationRecordingCoordinator(status="rejected")
+            results = []
+            runtime = self.build_runtime(
+                temp,
+                observer=sampler,
+                coordinator=coordinator,
+                mode="enforce",
+                authorization_file=authorization_path,
+                result_callback=results.append,
+            )
+            calls = []
+
+            def reserve(event, *, mode, execute=True):
+                del event, mode
+                calls.append(execute)
+                return {
+                    "action": "release_emergency_reserve",
+                    "state": "released" if execute else "authorized",
+                    "execution": "executed" if execute else "not_executed",
+                    "reason_codes": [],
+                }
+
+            runtime.reserve_recovery.handle = reserve
+            outcome = runtime.run(max_samples=1)
+
+            self.assertEqual(outcome.exit_code, 0)
+            self.assertEqual(calls, [False])
+            self.assertEqual(results[0]["reserve_recovery"]["state"], "blocked")
+            self.assertEqual(results[0]["execution_semantics"], "NOT_EXECUTED")
+            self.assertIn("notification_persistence_failed", results[0]["reason_codes"])
 
     def test_graceful_stop_drains_bounded_queue(self):
         with tempfile.TemporaryDirectory() as temp:

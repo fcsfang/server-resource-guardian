@@ -15,7 +15,7 @@ from src.guardian_reserve_broker import (
     ReserveRecoveryBrokerServer,
 )
 from src.guardian_reserve_recovery import RESERVE_ACTION
-from src.guardian_state import GuardianStateStore
+from src.guardian_reserve_state import ReserveBrokerStateStore
 
 
 class FakeRunner:
@@ -57,7 +57,7 @@ def local_config(path: Path, authorization_file: Path) -> None:
 class GuardianReserveBrokerTests(unittest.TestCase):
     def start_server(self, root: Path):
         socket_path = root / "reserve.sock"
-        state = GuardianStateStore(root / "state.db", file_mode=0o600)
+        state = ReserveBrokerStateStore(root / "state" / "state.db")
         authorization_file = root / "authorization.json"
         authorization = {
             "approval_id": "reserve-approval",
@@ -104,7 +104,7 @@ class GuardianReserveBrokerTests(unittest.TestCase):
                     mount_point="/",
                 )
                 second = client.release(
-                    incident_id="incident-reserve-1",
+                    incident_id="incident-reserve-2",
                     authorization=auth,
                     config_digest=digest,
                     mount_point="/",
@@ -116,13 +116,21 @@ class GuardianReserveBrokerTests(unittest.TestCase):
             self.assertEqual(first["execution"], "executed")
             self.assertEqual(runner.commands, [["/usr/local/sbin/guardian-release-emergency-space"]])
             self.assertEqual(second["state"], "blocked")
-            self.assertIn("reserve_incident_already_claimed", second["reason_codes"])
+            self.assertIn("reserve_approval_already_consumed", second["reason_codes"])
             connection = state._connect()
             try:
-                records = connection.execute("SELECT kind FROM audit_records ORDER BY sequence").fetchall()
+                records = connection.execute("SELECT kind FROM reserve_audits ORDER BY sequence").fetchall()
             finally:
                 connection.close()
-            self.assertEqual([row[0] for row in records], ["reserve_execution_started", "reserve_execution_finished"])
+            self.assertEqual(
+                [row[0] for row in records],
+                [
+                    "reserve_capability_registered",
+                    "reserve_capability_consumed",
+                    "reserve_execution_started",
+                    "reserve_execution_finished",
+                ],
+            )
 
     def test_disabled_boundary_rejects_without_helper(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -130,7 +138,7 @@ class GuardianReserveBrokerTests(unittest.TestCase):
             socket_path = root / "reserve.sock"
             server = ReserveRecoveryBrokerServer(
                 socket_path,
-                state_store=GuardianStateStore(root / "state.db"),
+                state_store=ReserveBrokerStateStore(root / "state" / "state.db"),
                 config_path=root / "missing.json",
                 enabled=False,
                 allowed_uid=os.getuid(),

@@ -29,11 +29,12 @@ from typing import Any, Mapping
 from .guardian_actions import Authorization
 from .guardian_config import ConfigError, load_config
 from .guardian_reserve_recovery import RESERVE_ACTION, RESERVE_ROOT, ReserveRecoveryPolicy
-from .guardian_state import GuardianStateStore, StateStoreError
+from .guardian_reserve_state import ReserveBrokerStateStore, ReserveStateError
 
 
 RESERVE_BROKER_REQUEST_SCHEMA = "guardian.reserve_broker.request.v1"
 RESERVE_BROKER_RESPONSE_SCHEMA = "guardian.reserve_broker.response.v1"
+RESERVE_BROKER_RESPONSE_VERSION = 1
 MAX_REQUEST_BYTES = 16 * 1024
 MAX_RESPONSE_BYTES = 16 * 1024
 MAX_TEXT = 256
@@ -53,6 +54,16 @@ _REQUEST_KEYS = {
     "authorization",
 }
 _TARGET_KEYS = {"root", "mount_point"}
+_RESULT_KEYS = {
+    "action",
+    "incident_id",
+    "released_path",
+    "path",
+    "size_bytes",
+    "before_free_bytes",
+    "after_free_bytes",
+    "reason_codes",
+}
 
 
 class ReserveBrokerProtocolError(ValueError):
@@ -218,12 +229,26 @@ class ReserveRecoveryBrokerClient:
             response = json.loads(raw.split(b"\n", 1)[0].decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError):
             return {"action": RESERVE_ACTION, "state": "unknown", "execution": "unknown", "reason_codes": ["reserve_broker_response_invalid"]}
-        if not isinstance(response, Mapping) or response.get("schema") != RESERVE_BROKER_RESPONSE_SCHEMA:
+        if (
+            not isinstance(response, Mapping)
+            or set(response) != {"schema", "version", "status", "reason_codes", "result"}
+            or response.get("schema") != RESERVE_BROKER_RESPONSE_SCHEMA
+            or response.get("version") != RESERVE_BROKER_RESPONSE_VERSION
+        ):
             return {"action": RESERVE_ACTION, "state": "unknown", "execution": "unknown", "reason_codes": ["reserve_broker_response_schema_invalid"]}
         reasons = response.get("reason_codes")
         result = response.get("result")
-        payload_result = dict(result) if isinstance(result, Mapping) else {}
         status = response.get("status")
+        if status not in {"EXECUTED", "DENIED", "UNKNOWN"} or not isinstance(reasons, list) or not all(isinstance(item, str) for item in reasons):
+            return {"action": RESERVE_ACTION, "state": "unknown", "execution": "unknown", "reason_codes": ["reserve_broker_response_invalid"]}
+        if result is not None and (
+            not isinstance(result, Mapping)
+            or any(key not in _RESULT_KEYS for key in result)
+        ):
+            return {"action": RESERVE_ACTION, "state": "unknown", "execution": "unknown", "reason_codes": ["reserve_broker_response_result_invalid"]}
+        payload_result = {
+            key: value for key, value in result.items() if key != "action"
+        } if isinstance(result, Mapping) else {}
         if status == "EXECUTED":
             state = "released"
             execution = "executed"
@@ -238,7 +263,7 @@ class ReserveRecoveryBrokerClient:
             "state": state,
             "execution": execution,
             **payload_result,
-            "reason_codes": list(reasons) if isinstance(reasons, list) else ["reserve_broker_denied"],
+            "reason_codes": list(reasons) or ["reserve_broker_denied"],
         }
 
 
@@ -249,7 +274,7 @@ class ReserveRecoveryBrokerServer:
         self,
         socket_path: str | Path,
         *,
-        state_store: GuardianStateStore,
+        state_store: ReserveBrokerStateStore,
         config_path: Path,
         enabled: bool = False,
         allowed_uid: int | str = "guardian",
@@ -269,6 +294,9 @@ class ReserveRecoveryBrokerServer:
         self.helper_path = FIXED_HELPER
         self._stop = threading.Event()
         self._server_socket: socket.socket | None = None
+        self._active_connections = 0
+        self._connection_lock = threading.Lock()
+        self._max_connections = 1
 
     @staticmethod
     def _resolve_uid(value: int | str) -> int:
@@ -313,6 +341,21 @@ class ReserveRecoveryBrokerServer:
         policy = ReserveRecoveryPolicy.from_mapping(config.disk_reserve_recovery_policy)
         if not policy.enabled or policy.root != RESERVE_ROOT or policy.mount_point != "/" or policy.max_releases_per_incident != 1:
             raise ReserveBrokerProtocolError("reserve_policy_not_enabled_or_fixed")
+        configured_auth = policy.authorization_file
+        if configured_auth is None:
+            raise ReserveBrokerProtocolError("reserve_authorization_file_missing")
+        try:
+            configured_value = json.loads(configured_auth.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ReserveBrokerProtocolError("reserve_authorization_file_invalid") from exc
+        authorization = _authorization(configured_value)
+        self.state_store.register_capability(
+            approval_id=authorization.approval_id,
+            environment=authorization.environment,
+            target_id=authorization.target_id,
+            action=authorization.action,
+            expires_at=authorization.expires_at,
+        )
         return policy, config.config_digest
 
     def _validate(self, request: Mapping[str, Any], *, now: float) -> tuple[str, Authorization, ReserveRecoveryPolicy]:
@@ -362,10 +405,14 @@ class ReserveRecoveryBrokerServer:
                 raise ReserveBrokerProtocolError("request_mapping_required")
             now = time.time()
             incident_id, _authorization_value, policy = self._validate(request, now=now)
-            claim = self.state_store.claim_reserve_incident(
+            claim = self.state_store.claim_execution(
                 incident_id=incident_id,
+                approval_id=_authorization_value.approval_id,
+                environment=_authorization_value.environment,
+                target_id=_authorization_value.target_id,
                 action=RESERVE_ACTION,
                 target=str(policy.root),
+                expires_at=_authorization_value.expires_at,
                 now=now,
             )
             if not claim.claimed:
@@ -381,12 +428,12 @@ class ReserveRecoveryBrokerServer:
                 )
             except subprocess.TimeoutExpired:
                 payload = {"action": RESERVE_ACTION, "incident_id": incident_id, "reason_codes": ["reserve_helper_outcome_unknown"]}
-                self.state_store.finish_reserve_incident(incident_id=incident_id, state="FAILED", result=payload, now=time.time())
+                self.state_store.finish_execution(incident_id=incident_id, state="UNKNOWN", result=payload, now=time.time())
                 self._respond(channel, "UNKNOWN", ["reserve_helper_outcome_unknown"], payload)
                 return
             except OSError:
                 payload = {"action": RESERVE_ACTION, "incident_id": incident_id, "reason_codes": ["reserve_helper_unavailable"]}
-                self.state_store.finish_reserve_incident(incident_id=incident_id, state="FAILED", result=payload, now=time.time())
+                self.state_store.finish_execution(incident_id=incident_id, state="FAILED", result=payload, now=time.time())
                 self._respond(channel, "DENIED", ["reserve_helper_unavailable"], payload)
                 return
             try:
@@ -402,18 +449,20 @@ class ReserveRecoveryBrokerServer:
                 and isinstance(helper_result.get("after_free_bytes"), int)
                 and helper_result["after_free_bytes"] > helper_result["before_free_bytes"]
             )
+            partial = isinstance(helper_result, Mapping) and helper_result.get("status") == "executed_unverified"
+            helper_outcome_unknown = not isinstance(helper_result, Mapping) or result.returncode != 0
             payload = {
                 "action": RESERVE_ACTION,
                 "incident_id": incident_id,
                 "released_path": str(policy.root / "emergency-space.bin"),
                 "before_free_bytes": helper_result.get("before_free_bytes") if isinstance(helper_result, Mapping) else None,
                 "after_free_bytes": helper_result.get("after_free_bytes") if isinstance(helper_result, Mapping) else None,
-                "reason_codes": ["guardian_reserve_released", "writer_source_requires_manual_handling"] if valid else ["reserve_helper_failed"],
+                "reason_codes": ["guardian_reserve_released", "writer_source_requires_manual_handling"] if valid else (["reserve_release_executed_unverified", "manual_reconciliation_required"] if partial else (["reserve_helper_outcome_unknown", "manual_reconciliation_required"] if helper_outcome_unknown else ["reserve_helper_failed"])),
             }
-            state = "RELEASED" if valid else "FAILED"
-            self.state_store.finish_reserve_incident(incident_id=incident_id, state=state, result=payload, now=time.time())
-            self._respond(channel, "EXECUTED" if valid else "DENIED", payload["reason_codes"], payload)
-        except (ReserveBrokerProtocolError, StateStoreError, json.JSONDecodeError) as exc:
+            state = "RELEASED" if valid else ("EXECUTED_UNVERIFIED" if partial else ("UNKNOWN" if helper_outcome_unknown else "FAILED"))
+            self.state_store.finish_execution(incident_id=incident_id, state=state, result=payload, now=time.time())
+            self._respond(channel, "EXECUTED" if valid else ("UNKNOWN" if partial or helper_outcome_unknown else "DENIED"), payload["reason_codes"], payload)
+        except (ReserveBrokerProtocolError, ReserveStateError, json.JSONDecodeError) as exc:
             self._respond(channel, "DENIED", [str(exc)[:128]])
         finally:
             try:
@@ -445,7 +494,21 @@ class ReserveRecoveryBrokerServer:
                     if self._stop.is_set():
                         break
                     raise
-                threading.Thread(target=self._handle, args=(channel,), daemon=True).start()
+                with self._connection_lock:
+                    if self._active_connections >= self._max_connections:
+                        self._respond(channel, "DENIED", ["reserve_broker_concurrency_limit"])
+                        channel.close()
+                        continue
+                    self._active_connections += 1
+
+                def handle_bounded(connection: socket.socket) -> None:
+                    try:
+                        self._handle(connection)
+                    finally:
+                        with self._connection_lock:
+                            self._active_connections -= 1
+
+                threading.Thread(target=handle_bounded, args=(channel,), daemon=True).start()
         finally:
             try:
                 server_socket.close()
@@ -462,7 +525,7 @@ class ReserveRecoveryBrokerServer:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Guardian fixed-scope reserve recovery broker")
     parser.add_argument("--socket", type=Path, default=Path("/run/guardian-reserve-broker/reserve.sock"))
-    parser.add_argument("--state-db", type=Path, default=Path("/var/lib/guardian/shared/state.db"))
+    parser.add_argument("--state-db", type=Path, default=Path("/var/lib/guardian/reserve-broker/state.db"))
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--enable", action="store_true")
     parser.add_argument("--allowed-uid", default="guardian")
@@ -470,12 +533,12 @@ def main(argv: list[str] | None = None) -> int:
     try:
         server = ReserveRecoveryBrokerServer(
             args.socket,
-            state_store=GuardianStateStore(args.state_db, file_mode=0o660),
+            state_store=ReserveBrokerStateStore(args.state_db),
             config_path=args.config,
             enabled=args.enable,
             allowed_uid=args.allowed_uid,
         )
-    except (ConfigError, OSError, ValueError, StateStoreError) as exc:
+    except (ConfigError, OSError, ValueError, ReserveStateError) as exc:
         print(json.dumps({"schema": RESERVE_BROKER_RESPONSE_SCHEMA, "status": "FAILED", "error": str(exc)}, ensure_ascii=False), file=sys.stderr)
         return 2
 

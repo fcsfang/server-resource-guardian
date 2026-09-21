@@ -12,7 +12,7 @@ User=root
 Group=guardian
 WorkingDirectory=/opt/server-resource-guardian
 Environment=PYTHONPATH=/opt/server-resource-guardian
-ExecStart=/usr/bin/python3 -m src.guardian_reserve_broker --socket /run/guardian-reserve-broker/reserve.sock --state-db /var/lib/guardian/shared/state.db --config /etc/guardian/guardian.json --enable --allowed-uid guardian
+ExecStart=/usr/bin/python3 -m src.guardian_reserve_broker --socket /run/guardian-reserve-broker/reserve.sock --state-db /var/lib/guardian/reserve-broker/state.db --config /etc/guardian/guardian.json --enable --allowed-uid guardian
 Restart=on-failure
 RestartSec=5s
 TimeoutStartSec=30s
@@ -24,7 +24,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectHome=true
 ProtectSystem=strict
-ReadWritePaths=/var/lib/guardian/reserve /var/lib/guardian/shared /run/guardian-reserve-broker
+ReadWritePaths=/var/lib/guardian/reserve /var/lib/guardian/reserve-broker /run/guardian-reserve-broker
 ReadOnlyPaths=/etc/guardian/guardian.json
 RestrictAddressFamilies=AF_UNIX
 LockPersonality=true

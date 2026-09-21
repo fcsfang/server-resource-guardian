@@ -11,6 +11,7 @@ Docker data, images, volumes, or business files.
 from __future__ import annotations
 
 import json
+import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -62,10 +63,32 @@ def _read_manifest(path: Path) -> Mapping[str, Any] | None:
 
 def reserve_status(root: Path = RESERVE_ROOT) -> dict[str, Any]:
     reserve, manifest_path = _paths(root)
+    try:
+        root.stat()
+    except PermissionError:
+        return {
+            "state": "protected",
+            "path": str(reserve),
+            "reason_codes": ["reserve_status_protected_root_boundary"],
+        }
+    except OSError:
+        return {"state": "unavailable", "path": str(reserve), "reason_codes": ["reserve_access_unavailable"]}
+    if not os.access(root, os.R_OK | os.X_OK):
+        return {
+            "state": "protected",
+            "path": str(reserve),
+            "reason_codes": ["reserve_status_protected_root_boundary"],
+        }
     manifest = _read_manifest(manifest_path)
     try:
         reserve_is_file = reserve.is_file()
         reserve_size = reserve.stat().st_size if reserve_is_file else None
+    except PermissionError:
+        return {
+            "state": "protected",
+            "path": str(reserve),
+            "reason_codes": ["reserve_status_protected_root_boundary"],
+        }
     except OSError:
         return {"state": "unavailable", "path": str(reserve), "reason_codes": ["reserve_access_unavailable"]}
     if not reserve_is_file or manifest is None:
@@ -143,7 +166,7 @@ class ReserveRecoveryController:
             expires_at=expires_at,
         )
 
-    def handle(self, event: Mapping[str, Any], *, mode: str, now: float | None = None) -> dict[str, Any]:
+    def handle(self, event: Mapping[str, Any], *, mode: str, now: float | None = None, execute: bool = True) -> dict[str, Any]:
         timestamp = time.time() if now is None else now
         if not self.policy.enabled:
             return {"action": "none", "execution": "not_applicable", "state": "disabled", "reason_codes": ["RESERVE_RECOVERY_DISABLED"]}
@@ -169,6 +192,8 @@ class ReserveRecoveryController:
             return {**base, "execution": "not_executed", "state": "blocked", "reason_codes": [reason]}
         if not self.config_digest or authorization is None:
             return {**base, "execution": "not_executed", "state": "blocked", "reason_codes": ["reserve_config_digest_missing"]}
+        if not execute:
+            return {**base, "execution": "not_executed", "state": "authorized", "reason_codes": ["reserve_authorized"]}
         result = self.broker.release(
             incident_id=incident_id,
             authorization=authorization,

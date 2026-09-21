@@ -317,8 +317,13 @@ systemd-analyze verify \
   /etc/systemd/system/guardian-broker.slice \
   /etc/systemd/system/guardian-collector.service \
   /etc/systemd/system/guardian-runtime.service \
-  /etc/systemd/system/guardian-broker.service
+  /etc/systemd/system/guardian-broker.service \
+  /etc/systemd/system/guardian-reserve-broker.service
 systemd-tmpfiles --create /etc/tmpfiles.d/guardian.conf
+reserve_state_mode=$(stat -c '%a' /var/lib/guardian/reserve-broker)
+[[ "$reserve_state_mode" == "700" ]] || die "reserve broker state directory is not root-only"
+reserve_state_owner=$(stat -c '%U:%G' /var/lib/guardian/reserve-broker)
+[[ "$reserve_state_owner" == "root:root" ]] || die "reserve broker state directory owner is not root:root"
 python3 /usr/local/sbin/guardian-reserve-space create --root /var/lib/guardian/reserve
 systemctl daemon-reload
 for unit in "${protected_units[@]}"; do

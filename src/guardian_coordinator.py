@@ -1036,6 +1036,21 @@ class GuardianCoordinator:
 
         self.state_store.register_capability(authorization)
 
+    def enqueue_notification_event(
+        self,
+        event: Mapping[str, Any],
+        *,
+        incident_key: str | None = None,
+        now_monotonic_ns: int | None = None,
+    ) -> dict[str, Any]:
+        """Persist a notification before a caller crosses an action boundary."""
+
+        return self.notification_outbox.enqueue_event(
+            event,
+            incident_key=incident_key,
+            now_monotonic_ns=now_monotonic_ns,
+        )
+
     @staticmethod
     def _intent_audit_payload(event: Mapping[str, Any], intent: ActionIntent) -> dict[str, Any]:
         return {
