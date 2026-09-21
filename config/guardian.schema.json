@@ -164,6 +164,18 @@
               }
             }
           }
+        },
+        "disk_reserve_recovery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "root", "mount_point", "max_releases_per_incident", "authorization_file"],
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "root": {"const": "/var/lib/guardian/reserve"},
+            "mount_point": {"type": "string", "pattern": "^/"},
+            "max_releases_per_incident": {"const": 1},
+            "authorization_file": {"type": ["string", "null"], "pattern": "^/"}
+          }
         }
       }
     },

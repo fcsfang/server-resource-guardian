@@ -531,9 +531,9 @@ class EmergencySheddingTests(unittest.TestCase):
             actionable=[actionable(TARGET_A), actionable(TARGET_B)],
             selected_policy=policy(resource_priority=("cpu", "memory", "io", "disk_capacity")),
         )
-        self.assertEqual(result["decision"]["resource_kind"], "cpu")
-        self.assertEqual(result["decision"]["target_id"], TARGET_B)
-        self.assertEqual(result["decision"]["plans_count"], 1)
+        self.assertEqual(result["decision"]["action"], "none")
+        self.assertEqual(result["decision"]["resource_kind"], "multi_resource")
+        self.assertIn("MULTI_RESOURCE_AMBIGUOUS", result["decision"]["reason_codes"])
 
     def test_capacity_requires_writer_evidence(self):
         writerless = candidate(TARGET_A, contributions={"disk_capacity": 90})
@@ -552,6 +552,17 @@ class EmergencySheddingTests(unittest.TestCase):
             actionable=[actionable(TARGET_A)],
         )
         self.assertEqual(result["decision"]["action"], "graceful_stop")
+
+    def test_mixed_memory_and_disk_without_writer_evidence_blocks_container_action(self):
+        memory_top = candidate(TARGET_A, contributions={"memory": 90, "disk_capacity": 80})
+        result = self.run_decision(
+            confirmed("memory", "disk_capacity"),
+            [memory_top],
+            actionable=[actionable(TARGET_A)],
+            selected_policy=policy(resource_priority=("memory", "cpu", "io", "disk_capacity")),
+        )
+        self.assertEqual(result["decision"]["action"], "none")
+        self.assertIn("CAPACITY_WRITER_EVIDENCE_MISSING", result["decision"]["reason_codes"])
 
     def test_observe_stays_read_only_and_enforce_generates_pending_plan(self):
         top = candidate(TARGET_A, contributions={"memory": 90})

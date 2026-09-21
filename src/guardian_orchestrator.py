@@ -45,6 +45,7 @@ from .guardian_recovery import (
     assess_two_layer_recovery,
 )
 from .guardian_revalidation import FreshRevalidation, revalidate_observer_event
+from .guardian_reserve_recovery import ReserveRecoveryController, ReserveRecoveryPolicy
 from .guardian_runtime import notify_ready, notify_status, notify_watchdog
 from .guardian_state import GuardianStateStore
 
@@ -139,6 +140,9 @@ class RuntimeOrchestrator:
 
         self.config = config
         self.mode = effective_mode
+        self.reserve_recovery = ReserveRecoveryController(
+            ReserveRecoveryPolicy.from_mapping(config.disk_reserve_recovery_policy)
+        )
         self.snapshot_dir = snapshot_dir if snapshot_dir is not None else config.snapshot_directory
         self.snapshot_all = bool(snapshot_all)
         self.audit_file = Path(audit_file) if audit_file is not None else None
@@ -486,26 +490,54 @@ class RuntimeOrchestrator:
                 self._stats.result_audit_errors += 1
 
     def _consume_one(self, event: dict[str, Any]) -> None:
-        process_kwargs: dict[str, Any] = {
-            "mode": self.mode,
-            "now_monotonic_ns": time.monotonic_ns(),
+        reserve_result = self.reserve_recovery.handle(event, mode=self.mode)
+        reserve_actionable = reserve_result.get("action") != "none" and reserve_result.get("state") in {
+            "observed",
+            "simulated",
+            "released",
         }
-        if self._owns_coordinator:
-            process_kwargs["authorization"] = self.authorization
-            if self.mode == "enforce":
-                process_kwargs["verification_provider"] = self._verification_provider(event)
-        result = self.coordinator.process(event, **process_kwargs)
-        if isinstance(result, CoordinatorResult):
-            result_payload: Mapping[str, Any] = result.as_dict()
-            result_state = result.state
-        elif callable(getattr(result, "as_dict", None)):
-            result_payload = result.as_dict()
-            result_state = str(result_payload.get("state") or "unknown")
-        elif isinstance(result, Mapping):
-            result_payload = result
-            result_state = str(result.get("state") or "unknown")
+        if reserve_actionable and self.mode in {"simulate", "enforce"}:
+            result_payload: Mapping[str, Any] = {
+                "schema": "guardian.coordinator.result.v1",
+                "mode": self.mode,
+                "state": "simulated_plan_complete" if self.mode == "simulate" else "observed",
+                "event_id": str(event.get("event_id") or ""),
+                "reason_codes": list(reserve_result.get("reason_codes", [])),
+                "notification": None,
+                "intent": None,
+                "intent_id": None,
+                "broker": None,
+                "manual_handoff": self.mode == "enforce" and reserve_result.get("state") != "released",
+                "semantic_state": "SIMULATED_PLAN_COMPLETE" if self.mode == "simulate" else "MITIGATED",
+                "execution_semantics": "SIMULATED" if self.mode == "simulate" else "REAL",
+                "host_state": "reserve_released" if reserve_result.get("state") == "released" else "pending",
+                "business_state": "BUSINESS_DEGRADED",
+                "state_trace": ["CRITICAL_CONFIRMED", "SIMULATED_PLAN_COMPLETE"] if self.mode == "simulate" else ["CRITICAL_CONFIRMED", "MITIGATED"],
+            }
+            result_state = str(result_payload["state"])
         else:
-            raise ValueError("coordinator_result_invalid")
+            process_kwargs: dict[str, Any] = {
+                "mode": self.mode,
+                "now_monotonic_ns": time.monotonic_ns(),
+            }
+            if self._owns_coordinator:
+                process_kwargs["authorization"] = self.authorization
+                if self.mode == "enforce":
+                    process_kwargs["verification_provider"] = self._verification_provider(event)
+            result = self.coordinator.process(event, **process_kwargs)
+            if isinstance(result, CoordinatorResult):
+                result_payload = result.as_dict()
+                result_state = result.state
+            elif callable(getattr(result, "as_dict", None)):
+                result_payload = result.as_dict()
+                result_state = str(result_payload.get("state") or "unknown")
+            elif isinstance(result, Mapping):
+                result_payload = result
+                result_state = str(result.get("state") or "unknown")
+            else:
+                raise ValueError("coordinator_result_invalid")
+        result_payload = dict(result_payload)
+        result_payload["reserve_recovery"] = reserve_result
         with self._lock:
             self._stats.processed += 1
             self._stats.last_result_state = result_state

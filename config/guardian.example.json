@@ -67,6 +67,13 @@
       "min_object_contribution_percent": 20,
       "min_object_lead_margin": 0.15
     },
+    "disk_reserve_recovery": {
+      "enabled": false,
+      "root": "/var/lib/guardian/reserve",
+      "mount_point": "/",
+      "max_releases_per_incident": 1,
+      "authorization_file": null
+    },
     "emergency_shedding": {
       "schema": "guardian.emergency_shedding.v1",
       "enabled": false,

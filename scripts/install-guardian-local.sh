@@ -98,6 +98,9 @@ required_files=(
   "scripts/guardian_reserve_space.py"
   "scripts/guardian_maintenance_pressure.py"
   "scripts/guardian_maintenance_status.py"
+  "src/guardian_reserve_recovery.py"
+  "scripts/guardian-status-emergency-space"
+  "scripts/guardian-create-emergency-space"
 )
 
 for relative_path in "${required_files[@]}"; do
@@ -236,6 +239,8 @@ install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_stat
 install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_pressure.py" /usr/local/sbin/guardian-maintenance-pressure
 install -o root -g root -m 0755 "${repository}/scripts/guardian_reserve_space.py" /usr/local/sbin/guardian-reserve-space
 install -o root -g root -m 0755 "${repository}/scripts/guardian-release-emergency-space" /usr/local/sbin/guardian-release-emergency-space
+install -o root -g root -m 0755 "${repository}/scripts/guardian-status-emergency-space" /usr/local/sbin/guardian-status-emergency-space
+install -o root -g root -m 0755 "${repository}/scripts/guardian-create-emergency-space" /usr/local/sbin/guardian-create-emergency-space
 
 timestamp=$(date -u +%Y%m%dT%H%M%SZ)
 backup_dir="${backup_root}/${timestamp}"
@@ -287,7 +292,7 @@ for unit in "${protected_units[@]}"; do
 done
 
 install -d -o root -g root -m 0755 /etc/sudoers.d
-printf '%s ALL=(root) NOPASSWD: /usr/local/sbin/guardian-maintenance-status, /usr/local/sbin/guardian-maintenance-pressure, /usr/local/sbin/guardian-release-emergency-space\n' "$maintenance_user" > /etc/sudoers.d/guardian-maintenance
+printf '%s ALL=(root) NOPASSWD: /usr/local/sbin/guardian-maintenance-status, /usr/local/sbin/guardian-maintenance-pressure, /usr/local/sbin/guardian-release-emergency-space, /usr/local/sbin/guardian-status-emergency-space, /usr/local/sbin/guardian-create-emergency-space\n' "$maintenance_user" > /etc/sudoers.d/guardian-maintenance
 chmod 0440 /etc/sudoers.d/guardian-maintenance
 visudo -cf /etc/sudoers.d/guardian-maintenance >/dev/null
 

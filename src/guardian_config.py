@@ -179,6 +179,13 @@ class GuardianConfig:
         return value if isinstance(value, Mapping) else {}
 
     @property
+    def disk_reserve_recovery_policy(self) -> Mapping[str, Any]:
+        """Return the disabled-by-default Guardian-owned reserve policy."""
+
+        value = self._value["risk"].get("disk_reserve_recovery", {})
+        return value if isinstance(value, Mapping) else {}
+
+    @property
     def max_sample_age_seconds(self) -> float:
         return self._value["risk"]["composite"]["max_sample_age_seconds"]
 
@@ -275,7 +282,7 @@ def validate_config(value: Mapping[str, Any], *, source: str = "<mapping>") -> G
     risk = _mapping(root["risk"], "risk")
     required_risk_keys = {"memory", "composite"}
     missing_risk = required_risk_keys - set(risk)
-    unknown_risk = set(risk) - required_risk_keys - {"cpu", "disk_capacity", "io", "emergency_shedding"}
+    unknown_risk = set(risk) - required_risk_keys - {"cpu", "disk_capacity", "io", "emergency_shedding", "disk_reserve_recovery"}
     if missing_risk:
         raise ConfigError(f"risk:missing_fields:{','.join(sorted(missing_risk))}")
     if unknown_risk:
@@ -582,6 +589,32 @@ def validate_config(value: Mapping[str, Any], *, source: str = "<mapping>") -> G
         if enabled and not actionable_entries:
             raise ConfigError("risk.emergency_shedding.actionable_set:non_empty_when_enabled")
 
+    reserve_recovery = risk.get("disk_reserve_recovery")
+    if reserve_recovery is not None:
+        reserve_recovery = _mapping(reserve_recovery, "risk.disk_reserve_recovery")
+        _exact_keys(
+            reserve_recovery,
+            {"enabled", "root", "mount_point", "max_releases_per_incident", "authorization_file"},
+            "risk.disk_reserve_recovery",
+        )
+        enabled = _bool(reserve_recovery["enabled"], "risk.disk_reserve_recovery.enabled")
+        root_path = _string(reserve_recovery["root"], "risk.disk_reserve_recovery.root")
+        mount_point = _string(reserve_recovery["mount_point"], "risk.disk_reserve_recovery.mount_point")
+        if not root_path.startswith("/") or root_path != "/var/lib/guardian/reserve":
+            raise ConfigError("risk.disk_reserve_recovery.root:fixed_guardian_reserve_path_required")
+        if not mount_point.startswith("/"):
+            raise ConfigError("risk.disk_reserve_recovery.mount_point:absolute_path_required")
+        max_releases = reserve_recovery["max_releases_per_incident"]
+        if type(max_releases) is not int or max_releases != 1:
+            raise ConfigError("risk.disk_reserve_recovery.max_releases_per_incident:must_be_one")
+        authorization_file = reserve_recovery["authorization_file"]
+        if authorization_file is not None:
+            authorization_file = _string(authorization_file, "risk.disk_reserve_recovery.authorization_file")
+            if not authorization_file.startswith("/"):
+                raise ConfigError("risk.disk_reserve_recovery.authorization_file:absolute_path_required")
+        if enabled and authorization_file is None:
+            raise ConfigError("risk.disk_reserve_recovery:authorization_file_required_when_enabled")
+
     actions = _mapping(root["actions"], "actions")
     # Keep already-installed observe/simulate configurations readable while
     # requiring the new authorization path before enforce can start. Fresh
@@ -729,6 +762,13 @@ def safe_defaults() -> GuardianConfig:
                     "max_sample_age_seconds": 15,
                     "min_object_contribution_percent": 20,
                     "min_object_lead_margin": 0.15,
+                },
+                "disk_reserve_recovery": {
+                    "enabled": False,
+                    "root": "/var/lib/guardian/reserve",
+                    "mount_point": "/",
+                    "max_releases_per_incident": 1,
+                    "authorization_file": None,
                 },
             },
             "actions": {

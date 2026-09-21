@@ -17,6 +17,7 @@
 - `scripts/install-guardian-local.sh`：本地 Ubuntu 的一次性、可重复安装入口；默认 dry-run，应用时要求 `local-disposable` 标记，只启用 observe Runtime。
 - `scripts/guardian_maintenance_status.py`、`scripts/guardian_maintenance_pressure.py`：维护账号可以调用的固定范围只读状态和限时压力入口；不接受任意命令。
 - `scripts/guardian_reserve_space.py`：预创建 Guardian 自有应急空间；释放时必须匹配自身清单，不能指定任意删除路径。
+- `src/guardian_reserve_recovery.py`：连续 Runtime 中默认关闭的磁盘预留恢复动作；只释放 Guardian 固定预留，验证同一文件系统空间增加，并记录写入源仍需人工处理。
 - `scripts/accept-guardian-maintenance-ssh.sh`：从宿主机通过真实 SSH 完成一次基线和四类压力维护验收。
 - `scripts/guardian_rescue_plan.py`：安装、诊断、停用、回滚的非变更计划器；它不调用 systemd、Docker 或 Multipass。
 - `scripts/guardian_rescue_matrix.py`：把 CPU、内存、I/O、容量/inode、PID 和四类维护探针汇总为一个 fail-closed 只读判定；缺证据只返回 `INCONCLUSIVE`。
@@ -113,6 +114,8 @@ bash scripts/accept-guardian-maintenance-ssh.sh \
 ```
 
 它只启动固定、限时的 CPU、内存、磁盘和混合压力；每个场景重新建立 SSH 连接，读取 Guardian、Beszel、Docker、网络和磁盘状态，并在最后确认压力文件已清理。验收结果只代表本地 disposable VM；没有真实业务健康检查时，不报告“业务恢复”。
+
+内存风险进入 observe/simulate 后，仍只有在明确的 `local-disposable`、完整容器 ID、稳定身份、允许资源和一次性授权都满足时，才会生成未来的 `graceful_stop` 计划；默认 allowlist 为空。磁盘容量风险没有写入者证据时，只能释放 Guardian 自有应急预留（若本地专用配置已授权），随后报告写入源待人工处理，不会扩大为容器停止。
 
 ## 升级
 

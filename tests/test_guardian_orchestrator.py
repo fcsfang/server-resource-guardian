@@ -114,6 +114,35 @@ class GuardianOrchestratorTests(unittest.TestCase):
             audit_lines = (Path(temp) / "audit" / "events.jsonl").read_text(encoding="utf-8").splitlines()
             self.assertEqual(len(audit_lines), 3)
 
+    def test_reserve_recovery_is_handled_before_container_coordinator(self):
+        with tempfile.TemporaryDirectory() as temp:
+            sampler = ObserverSampler(
+                safe_defaults(),
+                interval=0.1,
+                collector=lambda **_kwargs: quiet_observation(),
+            )
+            coordinator = RecordingCoordinator()
+            results = []
+            runtime = self.build_runtime(
+                temp,
+                observer=sampler,
+                coordinator=coordinator,
+                mode="simulate",
+                result_callback=results.append,
+            )
+            runtime.reserve_recovery.handle = lambda event, mode: {
+                "action": "release_emergency_reserve",
+                "state": "simulated",
+                "execution": "not_executed",
+                "reason_codes": ["SIMULATE_ONLY"],
+            }
+
+            outcome = runtime.run(max_samples=1)
+
+            self.assertEqual(outcome.exit_code, 0)
+            self.assertEqual(coordinator.events, [])
+            self.assertEqual(results[0]["reserve_recovery"]["action"], "release_emergency_reserve")
+
     def test_graceful_stop_drains_bounded_queue(self):
         with tempfile.TemporaryDirectory() as temp:
             sampler = ObserverSampler(

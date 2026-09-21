@@ -690,6 +690,25 @@ def build_emergency_shedding_decision(
         rows.sort(key=lambda row: (-float(row["contribution_percent"]), str(row["id"])))
         rankings[resource] = rows
 
+    # A mixed incident gets one decision only.  If active resources point to
+    # different objects, or disk capacity has no explicit writer evidence,
+    # keep the incident visible but do not let a memory/CPU ranking bypass the
+    # unsafe disk channel.  The reserve-recovery path may act independently;
+    # container stopping must remain manual in this situation.
+    top_by_resource = {resource: rows[0] for resource, rows in rankings.items() if rows}
+    top_ids = {row["id"] for row in top_by_resource.values()}
+    if len(active_resources) > 1 and len(top_ids) > 1:
+        decision = _empty_decision(mode, execution, ("MULTI_RESOURCE_AMBIGUOUS", "NO_EFFECTIVE_SHEDDING_TARGET"))
+        decision["resource_kind"] = "multi_resource"
+        decision["top_consumers"] = {resource: row["id"] for resource, row in top_by_resource.items()}
+        return {"schema": EMERGENCY_SHEDDING_SCHEMA, "decision": decision, "active_resources": active_resources, "rankings": rankings}
+    disk_top = top_by_resource.get("disk_capacity")
+    if disk_top is not None and not disk_top["writer_evidence"]:
+        decision = _empty_decision(mode, execution, ("CAPACITY_WRITER_EVIDENCE_MISSING", "NO_EFFECTIVE_SHEDDING_TARGET"))
+        decision["resource_kind"] = "disk_capacity"
+        decision["top_consumer"] = disk_top["id"]
+        return {"schema": EMERGENCY_SHEDDING_SCHEMA, "decision": decision, "active_resources": active_resources, "rankings": rankings}
+
     resource = active_resources[0]
     ranking = rankings[resource]
     identity_failures = [row for row in ranking if row["identity_reason"]]
