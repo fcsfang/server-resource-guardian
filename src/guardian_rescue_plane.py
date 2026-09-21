@@ -13,7 +13,7 @@ changes host or service state.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from typing import Any, Mapping
 
 
@@ -143,21 +143,44 @@ class DependencyGraph:
 
     @classmethod
     def minimum(cls, *, include_optional_observer: bool = False) -> "DependencyGraph":
-        """Build the smallest useful graph without probing the host.
+        """Build the minimum explicit maintenance graph without probing the host.
 
         The graph is intentionally descriptive rather than environment
         specific.  Callers can use the default nodes as labels and inject
         platform-specific evidence separately.
         """
 
+        # Keep this list deliberately small and explicit.  It names the
+        # maintenance path rather than trying to move every host service into
+        # a protected slice.
         nodes = [
+            DependencySpec("network", kind="transport"),
+            DependencySpec("dns", kind="name-resolution"),
+            DependencySpec("ssh", kind="access"),
+            DependencySpec("logind", kind="session-manager"),
+            DependencySpec("user.slice", kind="session-resource-domain"),
             DependencySpec("guardian-runtime", kind="process"),
             DependencySpec("local-state", kind="state"),
+            DependencySpec("journald", kind="logging"),
+            DependencySpec("docker", kind="container-control-plane"),
+            DependencySpec("containerd", kind="container-runtime-control-plane"),
             DependencySpec("diagnostic-observer", kind="observer"),
         ]
         edges = (
+            DependencyEdge("ssh", "network"),
+            DependencyEdge("ssh", "dns"),
+            DependencyEdge("logind", "network"),
+            DependencyEdge("user.slice", "logind"),
+            DependencyEdge("guardian-runtime", "network"),
+            DependencyEdge("guardian-runtime", "journald"),
+            DependencyEdge("guardian-runtime", "local-state"),
+            DependencyEdge("docker", "containerd"),
+            DependencyEdge("diagnostic-observer", "ssh"),
+            DependencyEdge("diagnostic-observer", "user.slice"),
             DependencyEdge("diagnostic-observer", "guardian-runtime"),
-            DependencyEdge("diagnostic-observer", "local-state"),
+            DependencyEdge("diagnostic-observer", "journald"),
+            DependencyEdge("diagnostic-observer", "docker"),
+            DependencyEdge("diagnostic-observer", "containerd"),
         )
         if include_optional_observer:
             nodes.append(DependencySpec("external-monitor", kind="optional-monitor", required=False))
@@ -226,6 +249,9 @@ class DependencyEvaluation:
     blocking_dependencies: tuple[str, ...]
     observed: Mapping[str, DependencyState] = field(default_factory=dict)
 
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
 
 @dataclass(frozen=True)
 class ResourceProtectionConfig:
@@ -243,6 +269,9 @@ class ResourceProtectionConfig:
     memory_low_bytes: int | None = None
     memory_high_bytes: int | None = None
     tasks_max: int | None = None
+    cpu_weight: int | None = None
+    io_weight: int | None = None
+    oom_score_adjust: int | None = None
 
     def __post_init__(self) -> None:
         mode = _non_empty(self.mode, "resource_protection.mode").lower()
@@ -264,10 +293,19 @@ class ResourceProtectionConfig:
             "memory_low_bytes": self.memory_low_bytes,
             "memory_high_bytes": self.memory_high_bytes,
             "tasks_max": self.tasks_max,
+            "cpu_weight": self.cpu_weight,
+            "io_weight": self.io_weight,
         }
         for name, value in values.items():
             if value is not None and (type(value) is not int or value < 0):
                 raise RescuePlaneError(f"resource_protection.{name}:non_negative_integer_or_null_required")
+        for name in ("cpu_weight", "io_weight"):
+            value = getattr(self, name)
+            if value is not None and not 1 <= value <= 10000:
+                raise RescuePlaneError(f"resource_protection.{name}:systemd_weight_out_of_range")
+        if self.oom_score_adjust is not None:
+            if type(self.oom_score_adjust) is not int or not -1000 <= self.oom_score_adjust <= 1000:
+                raise RescuePlaneError("resource_protection.oom_score_adjust:out_of_range")
         if self.memory_min_bytes is not None and self.memory_low_bytes is not None:
             if self.memory_min_bytes > self.memory_low_bytes:
                 raise RescuePlaneError("resource_protection:memory_min_above_low")
@@ -303,6 +341,9 @@ class MaintenanceDiagnostic:
     dependency: DependencyEvaluation
     resource_protection: ResourceProtectionObservation
     runtime_status: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
 
 
 def diagnose_maintenance(
@@ -355,6 +396,9 @@ class RollbackPrecheckResult:
     status: str
     read_only: bool
     reason_codes: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
 
 
 def check_rollback_preconditions(request: RollbackPreconditions) -> RollbackPrecheckResult:

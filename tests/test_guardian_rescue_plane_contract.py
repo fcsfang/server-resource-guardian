@@ -26,9 +26,21 @@ class GuardianRescuePlaneContractTests(unittest.TestCase):
     def test_minimum_graph_is_small_and_acyclic(self):
         self.assertEqual(
             {node.name for node in self.graph.nodes},
-            {"guardian-runtime", "local-state", "diagnostic-observer"},
+            {
+                "network",
+                "dns",
+                "ssh",
+                "logind",
+                "user.slice",
+                "guardian-runtime",
+                "local-state",
+                "journald",
+                "docker",
+                "containerd",
+                "diagnostic-observer",
+            },
         )
-        self.assertEqual(len(self.graph.edges), 2)
+        self.assertGreaterEqual(len(self.graph.edges), 10)
         self.assertEqual(self.graph.evaluate(self.healthy_states).status, "ready")
 
     def test_graph_rejects_cycles_and_unknown_edges(self):
@@ -48,7 +60,8 @@ class GuardianRescuePlaneContractTests(unittest.TestCase):
         self.assertEqual(result.status, "blocked")
         self.assertIn("dependency_missing:local-state", result.reason_codes)
         self.assertIn("dependency_status_abnormal:guardian-runtime:failed", result.reason_codes)
-        self.assertIn("dependency_prerequisite_unhealthy:diagnostic-observer:local-state", result.reason_codes)
+        self.assertIn("dependency_prerequisite_unhealthy:guardian-runtime:local-state", result.reason_codes)
+        self.assertIn("dependency_prerequisite_unhealthy:diagnostic-observer:guardian-runtime", result.reason_codes)
 
     def test_resource_protection_is_declarative_and_ordered(self):
         config = ResourceProtectionConfig(
@@ -60,6 +73,12 @@ class GuardianRescuePlaneContractTests(unittest.TestCase):
             tasks_max=128,
         )
         self.assertEqual(config.mode, "observe")
+        bounded = ResourceProtectionConfig(cpu_weight=1000, io_weight=1000, oom_score_adjust=-900)
+        self.assertEqual(bounded.oom_score_adjust, -900)
+        with self.assertRaisesRegex(RescuePlaneError, "systemd_weight_out_of_range"):
+            ResourceProtectionConfig(cpu_weight=10001)
+        with self.assertRaisesRegex(RescuePlaneError, "oom_score_adjust:out_of_range"):
+            ResourceProtectionConfig(oom_score_adjust=-1001)
         with self.assertRaisesRegex(RescuePlaneError, "memory_low_above_high"):
             ResourceProtectionConfig(memory_low_bytes=10, memory_high_bytes=1)
         with self.assertRaisesRegex(RescuePlaneError, "read_only_mode_required"):

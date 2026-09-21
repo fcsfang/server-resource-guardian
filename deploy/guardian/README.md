@@ -8,6 +8,8 @@
 - `workload.slice`：disposable 压力对象的竞争对照域，不是生产配额。
 - `guardian-runtime.service`：持续 Observer → bounded queue → Coordinator 的 observe Runtime；不加入 `docker` 组，不直接持有 Docker socket。
 - `guardian.tmpfiles`：共享状态、审计、快照和运行时目录的 owner/mode/setgid 约束。
+- `guardian-runtime.slice`：Runtime 自身的有限控制面预算；它与 Rescue Plane 资源域分开评审。
+- `guardian-observer.service`、`guardian-broker.service`、`guardian-broker.slice`、`guardian-audit.logrotate`：既有 Observer/Broker 和审计模板；本 T11 安装默认不启用 Broker。
 - `scripts/guardian_rescue_probe.py`：默认只生成 dry-run 计划；只有显式 `--run-read-only` 才运行固定只读 Multipass 探针。
 - `scripts/guardian_rescue_plan.py`：安装、诊断、停用、回滚的非变更计划器；它不调用 systemd、Docker 或 Multipass。
 
@@ -44,6 +46,7 @@ Rescue Plane 的目标是提高“登录 → 只读诊断 → 人工控制”的
 
 - Guardian 状态、审计和快照位于 `/var/lib/guardian`；共享目录保持 `root:guardian-shared`、setgid `2770`，Runtime 目录保持 `guardian:guardian`、`0700`。
 - unit 日志进入 journald，并由 unit 限流；安装前必须记录 `journalctl --disk-usage`、根盘剩余空间和 `/var/lib/guardian` 所在文件系统。
+- `guardian-audit.logrotate` 只提供经审查的审计保留模板；它不负责清理业务文件，也不应在根盘紧张时未经人工批准扩大写入。
 - 生产环境应预留管理员可用的紧急空间，或使用已批准的独立分区/quota；不要让 Guardian 自动删除业务文件、容器数据、镜像或历史审计。
 - 根盘接近满时，优先经带外通道人工停止写入源、保留证据并按保留策略释放空间；不能把“日志能写入”当作根盘安全的证明。
 
