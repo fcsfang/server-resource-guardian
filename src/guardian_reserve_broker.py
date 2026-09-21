@@ -223,10 +223,20 @@ class ReserveRecoveryBrokerClient:
         reasons = response.get("reason_codes")
         result = response.get("result")
         payload_result = dict(result) if isinstance(result, Mapping) else {}
+        status = response.get("status")
+        if status == "EXECUTED":
+            state = "released"
+            execution = "executed"
+        elif status == "UNKNOWN":
+            state = "unknown"
+            execution = "unknown"
+        else:
+            state = "blocked"
+            execution = "not_executed"
         return {
             "action": RESERVE_ACTION,
-            "state": "released" if response.get("status") == "EXECUTED" else "blocked",
-            "execution": "executed" if response.get("status") == "EXECUTED" else "not_executed",
+            "state": state,
+            "execution": execution,
             **payload_result,
             "reason_codes": list(reasons) if isinstance(reasons, list) else ["reserve_broker_denied"],
         }
@@ -431,6 +441,10 @@ class ReserveRecoveryBrokerServer:
                     channel, _ = server_socket.accept()
                 except socket.timeout:
                     continue
+                except OSError:
+                    if self._stop.is_set():
+                        break
+                    raise
                 threading.Thread(target=self._handle, args=(channel,), daemon=True).start()
         finally:
             try:

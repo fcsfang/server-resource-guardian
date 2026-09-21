@@ -37,7 +37,7 @@ def _systemctl(operation: str, unit: str, runner: Callable[..., Any]) -> str:
     if result.returncode == 0 and value:
         return value
     if operation == "is-active" and result.returncode != 0:
-        return "inactive"
+        return value or "inactive"
     if operation == "is-enabled" and result.returncode != 0:
         return value or "disabled"
     return value or f"error:{result.returncode}"
@@ -219,8 +219,8 @@ def build_status(
     protected_units = protection.get("systemd_units", []) if isinstance(protection, Mapping) else []
     protected_labels = protection.get("container_labels", []) if isinstance(protection, Mapping) else []
     automatic_actions = "disabled" if mode == "observe" and actions_enabled is False else "enabled_or_unknown"
-    broker_closed = not broker_marker.exists() and not broker_socket.exists() and broker_active != "active"
-    reserve_broker_closed = not reserve_broker_marker.exists() and not reserve_broker_socket.exists() and reserve_broker_active != "active"
+    broker_closed = broker_active == "inactive" and not broker_marker.exists() and not broker_socket.exists()
+    reserve_broker_closed = reserve_broker_active == "inactive" and not reserve_broker_marker.exists() and not reserve_broker_socket.exists()
     collector_socket_present = collector_socket.exists()
     collector_online = collector_active == "active" and collector_socket_present
     ready = runtime_active == "active" and readiness == "runtime:ready:observe"

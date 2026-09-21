@@ -9,7 +9,11 @@ from pathlib import Path
 
 from src.guardian_actions import Authorization
 from src.guardian_config import safe_defaults
-from src.guardian_reserve_broker import ReserveRecoveryBrokerClient, ReserveRecoveryBrokerServer
+from src.guardian_reserve_broker import (
+    RESERVE_BROKER_RESPONSE_SCHEMA,
+    ReserveRecoveryBrokerClient,
+    ReserveRecoveryBrokerServer,
+)
 from src.guardian_reserve_recovery import RESERVE_ACTION
 from src.guardian_state import GuardianStateStore
 
@@ -157,6 +161,56 @@ class GuardianReserveBrokerTests(unittest.TestCase):
                 thread.join(timeout=2)
             self.assertEqual(response["state"], "blocked")
             self.assertIn("reserve_broker_disabled", response["reason_codes"])
+
+    def test_unknown_broker_result_remains_unknown_and_is_not_replayed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            socket_path = Path(temp) / "unknown.sock"
+            server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            server.bind(str(socket_path))
+            server.listen(1)
+
+            def reply_once():
+                channel, _ = server.accept()
+                try:
+                    channel.recv(16 * 1024)
+                    channel.sendall(
+                        (
+                            json.dumps(
+                                {
+                                    "schema": RESERVE_BROKER_RESPONSE_SCHEMA,
+                                    "version": 1,
+                                    "status": "UNKNOWN",
+                                    "reason_codes": ["reserve_helper_outcome_unknown"],
+                                    "result": None,
+                                }
+                            )
+                            + "\n"
+                        ).encode()
+                    )
+                finally:
+                    channel.close()
+
+            thread = threading.Thread(target=reply_once)
+            thread.start()
+            try:
+                result = ReserveRecoveryBrokerClient(socket_path).release(
+                    incident_id="unknown-incident",
+                    authorization=Authorization(
+                        approval_id="approval",
+                        environment="local-disposable",
+                        target_id="/var/lib/guardian/reserve",
+                        action=RESERVE_ACTION,
+                        expires_at=time.time() + 60,
+                    ),
+                    config_digest="config-digest",
+                    mount_point="/",
+                )
+            finally:
+                thread.join(timeout=2)
+                server.close()
+            self.assertEqual(result["state"], "unknown")
+            self.assertEqual(result["execution"], "unknown")
+            self.assertIn("reserve_helper_outcome_unknown", result["reason_codes"])
 
 
 if __name__ == "__main__":

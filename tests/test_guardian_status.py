@@ -91,6 +91,36 @@ class GuardianStatusTests(unittest.TestCase):
             self.assertEqual(value["overall"], "unknown")
             self.assertEqual(exit_code(value), 2)
 
+    def test_failed_brokers_are_not_reported_as_closed_or_healthy(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            config = root / "guardian.json"
+            readiness = root / "ready"
+            audit = root / "events.jsonl"
+            collector_socket = root / "collector.sock"
+            collector_socket.touch()
+            config.write_text(json.dumps({"agent": {"mode": "observe"}, "actions": {"enabled": False}}), encoding="utf-8")
+            readiness.write_text("runtime:ready:observe\n", encoding="utf-8")
+            audit.write_text("", encoding="utf-8")
+
+            def runner(command, **kwargs):
+                if command[2] in {"guardian-broker.service", "guardian-reserve-broker.service"}:
+                    return subprocess.CompletedProcess(command, 3, "failed\n" if command[1] == "is-active" else "static\n", "")
+                value = "active" if command[1] == "is-active" else "enabled"
+                return subprocess.CompletedProcess(command, 0, value + "\n", "")
+
+            value = build_status(
+                config_path=config,
+                readiness_path=readiness,
+                audit_path=audit,
+                collector_socket=collector_socket,
+                runner=runner,
+            )
+            self.assertEqual(value["broker"]["active"], "failed")
+            self.assertFalse(value["broker"]["closed"])
+            self.assertFalse(value["reserve_broker"]["closed"])
+            self.assertEqual(value["overall"], "degraded")
+
     def test_status_surfaces_continuous_action_and_recovery_result(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
