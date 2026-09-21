@@ -1,0 +1,14 @@
+[Unit]
+Description=Guardian workload-plane resource domain
+Documentation=https://github.com/fcsfang/server-resource-guardian
+
+[Slice]
+# Relative competition fixture for disposable tests. These values do not
+# impose a production quota and deliberately omit MemoryMax.
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=100
+IOWeight=100
+TasksMax=4096

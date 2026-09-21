@@ -1,0 +1,17 @@
+[Unit]
+Description=Guardian Rescue Plane resource domain
+Documentation=https://github.com/fcsfang/server-resource-guardian
+
+[Slice]
+# Local disposable-VM starting values only. CPUWeight/IOWeight are relative
+# scheduling weights, not hard reservations or a guarantee under exhaustion.
+# MemoryMin/MemoryLow require a host-specific budget review before deployment.
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=1000
+IOWeight=1000
+MemoryMin=128M
+MemoryLow=512M
+TasksMax=512

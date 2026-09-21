@@ -1,0 +1,49 @@
+[Unit]
+Description=Guardian continuous observe runtime
+Documentation=https://github.com/fcsfang/server-resource-guardian
+After=local-fs.target systemd-tmpfiles-setup.service network-online.target ssh.service systemd-logind.service systemd-journald.service docker.service containerd.service
+StartLimitIntervalSec=5min
+StartLimitBurst=5
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=guardian
+Group=guardian
+# Runtime never joins docker. Container facts must come from a separately
+# reviewed read-only collector; absent facts fail closed. This group only
+# permits access to the Broker-owned Unix socket and does not enable Broker.
+SupplementaryGroups=guardian-shared guardian-broker
+WorkingDirectory=/opt/server-resource-guardian
+Environment=PYTHONPATH=/opt/server-resource-guardian
+Environment=GUARDIAN_READY_FILE=/run/guardian-runtime/ready
+ExecStartPre=/usr/bin/python3 -m src.guardian_preflight --role runtime --config /etc/guardian/guardian.json --state-db /var/lib/guardian/shared/state.db --outbox-db /var/lib/guardian/runtime/outbox.db --audit-file /var/lib/guardian/runtime/audit/events.jsonl
+ExecStart=/usr/bin/python3 -m src.guardian_orchestrator --config /etc/guardian/guardian.json --state-db /var/lib/guardian/shared/state.db --outbox-db /var/lib/guardian/runtime/outbox.db --audit-file /var/lib/guardian/runtime/audit/events.jsonl --snapshot-dir /var/lib/guardian/runtime/snapshots --broker-socket /run/guardian-broker/broker.sock
+Restart=on-failure
+RestartSec=5s
+WatchdogSec=90s
+TimeoutStartSec=30s
+TimeoutStopSec=15s
+KillMode=mixed
+KillSignal=SIGTERM
+OOMScoreAdjust=-900
+LimitNOFILE=4096
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/guardian/shared /var/lib/guardian/runtime /run/guardian-runtime
+RestrictAddressFamilies=AF_UNIX
+LockPersonality=true
+PrivateDevices=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0007
+Slice=guardian-runtime.slice
+LogRateLimitIntervalSec=30s
+LogRateLimitBurst=200
+RuntimeDirectory=guardian-runtime
+RuntimeDirectoryMode=0750
+
+[Install]
+WantedBy=multi-user.target
