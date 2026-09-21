@@ -1,0 +1,7 @@
+{
+  "action": "graceful_stop",
+  "approval_id": "user-authorized-p015a-1789971353",
+  "environment": "local-disposable",
+  "expires_at": 1789971473.290041,
+  "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+}

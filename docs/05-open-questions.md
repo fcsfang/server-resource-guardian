@@ -2,7 +2,7 @@
 
 ## 已确认信息
 
-- 技术路线已定（2026-09-18）：以 Beszel 为监控平台基础，救援与自动保护优先复用现成机制，Guardian 仅在缺口明确时开发；执行蓝图见 [docs/14-execution-roadmap.md](14-execution-roadmap.md)。
+- 当前路线只看根目录 [ROADMAP.md](../ROADMAP.md)：Beszel 负责监控、展示和告警，Guardian 负责本地判断、人工维护保障和有限止损。旧 Goal、任务号和旧路线已经失效。
 - 公司当前监控平台为 Beszel。
 - 生产服务器为 Ubuntu 22.04.5、systemd 249、cgroup v2，运行 Docker Engine 29.1.3。
 - 本地 Windows 已安装 Ubuntu 26.04.1 WSL2，并按 8 CPU、12 GB 内存和 4 GB swap 配置；Docker Engine 29.1.3、Compose 2.40.3、systemd cgroup driver 已验证可用。
@@ -46,6 +46,19 @@
 | Q-020 | 证书和密钥由什么系统签发、轮换和吊销？ | 决定控制通道安全 | 待确认 |
 | Q-021 | 是否要求等保、审计或敏感数据脱敏？ | 决定日志和快照内容 | 待确认 |
 | Q-022 | 全局紧急停用自动处置的责任人和流程是什么？ | 防止策略错误扩大影响 | 待确认 |
+
+## v2 双层三资源路线新增待确认项
+
+| 编号 | 优先级 | 问题 | 为什么重要 | 负责人/答案 |
+| --- | --- | --- | --- | --- |
+| Q-023 | P0 | “保留一个口进服务器”的验收 SLO 是什么：SSH 建连时限、命令完成时限、必须可用的诊断/控制命令、允许失败比例？ | 同主机软件不能给绝对保证，必须把口头目标改为可测试合同 | leader / SRE：待确认 |
+| Q-024 | P0 | 生产是否有 BMC/IPMI/iDRAC/iLO、云串口或救援控制台；谁有权限、多久可用？ | Rescue Plane 无法覆盖内核、网络、供电和根盘严重故障 | 运维：待确认 |
+| Q-025 | P0 | 哪些 systemd 服务组成最小救援链路：sshd、认证、网络、DNS、Docker/containerd、日志、Guardian？ | 决定 `rescue.slice` 范围，过宽会稀释保护，过窄会出现“Guardian 活着但无法操作” | SRE / 运维：待确认 |
+| Q-026 | P0 | `protected_set` 和 `actionable_set` 的首批对象分别是什么？每个对象的 owner、稳定身份、资源范围、允许动作和失效日期是什么？ | 非保护对象不自动等于可处置对象；这是防误杀的核心边界 | leader / 业务 owner：待确认 |
+| Q-027 | P0 | leader 所说“磁盘占满”指容量、inode、I/O 饱和、设备错误还是以上全部？涉及哪些挂载点、块设备和容器存储路径？ | 各类信号、归因、恢复和动作不同，不能使用一个“磁盘百分比”策略 | SRE：待确认 |
+| Q-028 | P1 | CPU 故障时业务不可用的客观指标是什么：SSH 时延、调度延迟、CPU PSI、应用 P99、load 或特定健康探针？ | CPU 100% 可能是正常满载，必须用服务退化和持续性共同判定 | 业务 owner / SRE：待确认 |
+| Q-029 | P1 | 是否允许把业务 workload 迁移到统一 slice，是否允许 cpuset、CPUWeight、IOWeight、memory.low/min 等资源域调整？ | Rescue Plane 需要真实的资源隔离；生产变更必须有 owner 和回滚 | 安全 / SRE / 变更管理：待确认 |
+| Q-030 | P1 | 对已登记 systemd unit 是否允许自动 `systemctl stop`，还是 v2 第一阶段仍只允许 Docker `graceful_stop`？ | 决定动作适配器范围，不能从“进程”一词推定授权 | leader / 业务 owner：待确认 |
 
 ## 建议优先收集的证据
 

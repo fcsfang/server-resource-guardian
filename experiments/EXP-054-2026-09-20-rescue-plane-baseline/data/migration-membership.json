@@ -1,0 +1,51 @@
+{
+  "schema": "guardian.rescue_migration_membership.v1",
+  "vm": "guardian-p011-migration",
+  "scope": "new disposable Multipass VM; current guardian-ubuntu was not modified",
+  "static_verify_exit": 0,
+  "before": {
+    "service_slice": "system.slice",
+    "services": {
+      "ssh.service": "/system.slice/ssh.service",
+      "systemd-logind.service": "/system.slice/systemd-logind.service",
+      "systemd-networkd.service": "/system.slice/systemd-networkd.service",
+      "systemd-resolved.service": "/system.slice/systemd-resolved.service",
+      "dbus.service": "/system.slice/dbus.service",
+      "containerd.service": "/system.slice/containerd.service",
+      "docker.service": "/system.slice/docker.service",
+      "systemd-journald.service": "/system.slice/systemd-journald.service"
+    },
+    "user_slice": {
+      "path": "/user.slice",
+      "CPUWeight": "not set",
+      "IOWeight": "not set",
+      "MemoryLowBytes": 0,
+      "TasksMax": "infinity"
+    }
+  },
+  "after": {
+    "service_slice": "rescue.slice",
+    "services": {
+      "ssh.service": "/rescue.slice/ssh.service",
+      "systemd-logind.service": "/rescue.slice/systemd-logind.service",
+      "systemd-networkd.service": "/rescue.slice/systemd-networkd.service",
+      "systemd-resolved.service": "/rescue.slice/systemd-resolved.service",
+      "dbus.service": "/rescue.slice/dbus.service",
+      "containerd.service": "/rescue.slice/containerd.service",
+      "docker.service": "/rescue.slice/docker.service",
+      "systemd-journald.service": "/rescue.slice/systemd-journald.service",
+      "guardian-p011-observer.service": "/rescue.slice/guardian-p011-observer.service"
+    },
+    "user_slice": {
+      "path": "/user.slice",
+      "CPUWeight": 1000,
+      "IOWeight": 1000,
+      "MemoryMinBytes": 134217728,
+      "MemoryLowBytes": 536870912,
+      "TasksMax": 512
+    }
+  },
+  "login_session_boundary": "systemd 249 encodes the parent of user.slice in the slice name; user-1000.slice was not reparented. Active login sessions remained under user.slice, which was protected as a parallel rescue resource domain.",
+  "workload_fixture_boundary": "CPU, memory, I/O and Tasks fixtures were placed under workload.slice; this is the bounded competition workload, not a production quota.",
+  "rollback": "All migration drop-ins and the observer unit were removable from the disposable VM; current guardian-ubuntu was never changed."
+}

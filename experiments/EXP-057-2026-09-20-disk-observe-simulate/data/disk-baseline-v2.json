@@ -1,0 +1,2153 @@
+{
+  "schema": "guardian.disk_probe.v1",
+  "config_digest": "0c2058dd9a7f2dd22e8b23318cc9b65d4b19a2fbcecc4d450f6e967f9edef812",
+  "config_source": "<builtin-safe-defaults>",
+  "mode": "observe",
+  "mount_points": [
+    "/mnt/guardian-disk-fixture"
+  ],
+  "samples": 3,
+  "interval_seconds": 1.0,
+  "object": {
+    "id": null,
+    "cgroup_path": null,
+    "protected": true
+  },
+  "allowed_actions": [],
+  "started_epoch_s": 1789905480.6833522,
+  "finished_epoch_s": 1789905482.7681608,
+  "records": [
+    {
+      "sample": 1,
+      "disk": {
+        "observed_monotonic_ns": 211349088768,
+        "mounts": [
+          {
+            "configured_path": "/mnt/guardian-disk-fixture",
+            "mount_point": "/mnt/guardian-disk-fixture",
+            "mount_id": 455,
+            "device": "7:3",
+            "filesystem_type": "ext4",
+            "source": "/dev/loop3",
+            "read_only": false,
+            "stats": {
+              "block_size_bytes": 4096,
+              "total_bytes": 90116096,
+              "free_bytes": 83050496,
+              "free_ratio_percent": 92.159,
+              "total_inodes": 24576,
+              "free_inodes": 24565,
+              "free_inode_ratio_percent": 99.955,
+              "read_only": false
+            },
+            "device_stats": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "capacity_quality": {
+          "status": "ok",
+          "flags": []
+        },
+        "io": {
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.18,
+              "avg300": 0.34,
+              "total": 2027910.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.14,
+              "avg300": 0.23,
+              "total": 1457866.0
+            }
+          },
+          "devices": {
+            "7:0": {
+              "name": "loop0",
+              "reads_completed": 294,
+              "reads_merged": 0,
+              "sectors_read": 6046,
+              "milliseconds_reading": 43,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 244,
+              "weighted_io_ms": 43
+            },
+            "7:1": {
+              "name": "loop1",
+              "reads_completed": 54,
+              "reads_merged": 0,
+              "sectors_read": 988,
+              "milliseconds_reading": 14,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 44,
+              "weighted_io_ms": 14
+            },
+            "7:2": {
+              "name": "loop2",
+              "reads_completed": 76,
+              "reads_merged": 0,
+              "sectors_read": 2462,
+              "milliseconds_reading": 20,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 60,
+              "weighted_io_ms": 20
+            },
+            "7:3": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20
+            },
+            "7:4": {
+              "name": "loop4",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:5": {
+              "name": "loop5",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:6": {
+              "name": "loop6",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:7": {
+              "name": "loop7",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "252:0": {
+              "name": "vda",
+              "reads_completed": 64,
+              "reads_merged": 0,
+              "sectors_read": 436,
+              "milliseconds_reading": 9,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 52,
+              "weighted_io_ms": 9
+            },
+            "8:0": {
+              "name": "sda",
+              "reads_completed": 9011,
+              "reads_merged": 2460,
+              "sectors_read": 919038,
+              "milliseconds_reading": 3454,
+              "writes_completed": 3507,
+              "writes_merged": 5627,
+              "sectors_written": 2802378,
+              "milliseconds_writing": 25320,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7764,
+              "weighted_io_ms": 29149
+            },
+            "8:1": {
+              "name": "sda1",
+              "reads_completed": 8603,
+              "reads_merged": 1906,
+              "sectors_read": 893704,
+              "milliseconds_reading": 3360,
+              "writes_completed": 3493,
+              "writes_merged": 5619,
+              "sectors_written": 2802272,
+              "milliseconds_writing": 25314,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7684,
+              "weighted_io_ms": 28802
+            },
+            "8:15": {
+              "name": "sda15",
+              "reads_completed": 196,
+              "reads_merged": 554,
+              "sectors_read": 17558,
+              "milliseconds_reading": 50,
+              "writes_completed": 2,
+              "writes_merged": 0,
+              "sectors_written": 2,
+              "milliseconds_writing": 1,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 88,
+              "weighted_io_ms": 52
+            }
+          },
+          "cgroup": {
+            "path": "/sys/fs/cgroup",
+            "io_stat": {
+              "8:0": {
+                "rbytes": 470547456,
+                "wbytes": 1434817536,
+                "rios": 9011,
+                "wios": 3507,
+                "dbytes": 1772756992,
+                "dios": 247
+              },
+              "252:0": {
+                "rbytes": 223232,
+                "wbytes": 0,
+                "rios": 64,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:7": {
+                "rbytes": 1772544,
+                "wbytes": 24576,
+                "rios": 69,
+                "wios": 6,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:2": {
+                "rbytes": 1260544,
+                "wbytes": 0,
+                "rios": 76,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:1": {
+                "rbytes": 505856,
+                "wbytes": 0,
+                "rios": 54,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:0": {
+                "rbytes": 3095552,
+                "wbytes": 0,
+                "rios": 294,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              }
+            },
+            "pressure": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.18,
+                "avg300": 0.34,
+                "total": 2027910.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.14,
+                "avg300": 0.23,
+                "total": 1457866.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": [],
+              "optional_flags": []
+            }
+          },
+          "objects": [],
+          "quality": {
+            "status": "ok",
+            "flags": []
+          }
+        },
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "capacity": {
+        "risk": {
+          "resource_kind": "disk_capacity",
+          "state": "degraded_observability",
+          "candidate_state": "normal",
+          "candidate_for_seconds": 0.0,
+          "required_for_seconds": 0.0,
+          "reasons": [
+            "insufficient_samples"
+          ],
+          "quality_flags": [
+            "insufficient_samples"
+          ],
+          "quality_status": "degraded",
+          "sample_count": 1,
+          "mounts": [
+            {
+              "configured_path": "/mnt/guardian-disk-fixture",
+              "mount_point": "/mnt/guardian-disk-fixture",
+              "mount_id": 455,
+              "device": "7:3",
+              "filesystem_type": "ext4",
+              "source": "/dev/loop3",
+              "read_only": false,
+              "stats": {
+                "block_size_bytes": 4096,
+                "total_bytes": 90116096,
+                "free_bytes": 83050496,
+                "free_ratio_percent": 92.159,
+                "total_inodes": 24576,
+                "free_inodes": 24565,
+                "free_inode_ratio_percent": 99.955,
+                "read_only": false
+              },
+              "device_stats": {
+                "name": "loop3",
+                "reads_completed": 69,
+                "reads_merged": 0,
+                "sectors_read": 3462,
+                "milliseconds_reading": 3,
+                "writes_completed": 6,
+                "writes_merged": 0,
+                "sectors_written": 48,
+                "milliseconds_writing": 9,
+                "ios_in_progress": 0,
+                "io_ticks_ms": 40,
+                "weighted_io_ms": 20
+              },
+              "quality": {
+                "status": "ok",
+                "flags": []
+              },
+              "free_bytes_per_second": null,
+              "time_to_full_seconds": null
+            }
+          ],
+          "warning_signals": [],
+          "critical_support": []
+        },
+        "attribution": {
+          "resource_kind": "disk_capacity",
+          "state": "DEGRADED_OBSERVABILITY",
+          "target": null,
+          "candidates": [],
+          "reason_codes": [
+            "capacity_writer_ownership_unavailable"
+          ],
+          "quality_flags": []
+        },
+        "decision": {
+          "mode": "observe",
+          "resource_kind": "disk_capacity",
+          "action": "none",
+          "execution": "not_applicable",
+          "reason_codes": [
+            "disk_capacity_observability_degraded"
+          ]
+        }
+      },
+      "io": {
+        "risk": {
+          "resource_kind": "io",
+          "state": "degraded_observability",
+          "candidate_state": "normal",
+          "candidate_for_seconds": 0.0,
+          "required_for_seconds": 0.0,
+          "reasons": [
+            "insufficient_samples"
+          ],
+          "quality_flags": [
+            "insufficient_samples"
+          ],
+          "quality_status": "degraded",
+          "sample_count": 1,
+          "io_psi_some_avg10": 0.0,
+          "io_psi_full_avg10": 0.0,
+          "max_device_utilization_percent": null,
+          "max_average_latency_ms": null,
+          "devices": {
+            "7:0": {
+              "name": "loop0",
+              "reads_completed": 294,
+              "reads_merged": 0,
+              "sectors_read": 6046,
+              "milliseconds_reading": 43,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 244,
+              "weighted_io_ms": 43,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "7:1": {
+              "name": "loop1",
+              "reads_completed": 54,
+              "reads_merged": 0,
+              "sectors_read": 988,
+              "milliseconds_reading": 14,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 44,
+              "weighted_io_ms": 14,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "7:2": {
+              "name": "loop2",
+              "reads_completed": 76,
+              "reads_merged": 0,
+              "sectors_read": 2462,
+              "milliseconds_reading": 20,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 60,
+              "weighted_io_ms": 20,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "7:3": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "7:4": {
+              "name": "loop4",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "7:5": {
+              "name": "loop5",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "7:6": {
+              "name": "loop6",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "7:7": {
+              "name": "loop7",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "252:0": {
+              "name": "vda",
+              "reads_completed": 64,
+              "reads_merged": 0,
+              "sectors_read": 436,
+              "milliseconds_reading": 9,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 52,
+              "weighted_io_ms": 9,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "8:0": {
+              "name": "sda",
+              "reads_completed": 9011,
+              "reads_merged": 2460,
+              "sectors_read": 919038,
+              "milliseconds_reading": 3454,
+              "writes_completed": 3507,
+              "writes_merged": 5627,
+              "sectors_written": 2802378,
+              "milliseconds_writing": 25320,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7764,
+              "weighted_io_ms": 29149,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "8:1": {
+              "name": "sda1",
+              "reads_completed": 8603,
+              "reads_merged": 1906,
+              "sectors_read": 893704,
+              "milliseconds_reading": 3360,
+              "writes_completed": 3493,
+              "writes_merged": 5619,
+              "sectors_written": 2802272,
+              "milliseconds_writing": 25314,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7684,
+              "weighted_io_ms": 28802,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            },
+            "8:15": {
+              "name": "sda15",
+              "reads_completed": 196,
+              "reads_merged": 554,
+              "sectors_read": 17558,
+              "milliseconds_reading": 50,
+              "writes_completed": 2,
+              "writes_merged": 0,
+              "sectors_written": 2,
+              "milliseconds_writing": 1,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 88,
+              "weighted_io_ms": 52,
+              "utilization_percent": null,
+              "average_latency_ms": null,
+              "throughput_bytes_per_second": null,
+              "deltas": {}
+            }
+          },
+          "warning_signals": [],
+          "critical_support": []
+        },
+        "attribution": {
+          "resource_kind": "io",
+          "state": "DEGRADED_OBSERVABILITY",
+          "target": null,
+          "candidates": [],
+          "reason_codes": [
+            "io_object_baseline_established",
+            "io_object_registry_empty"
+          ],
+          "quality_flags": [],
+          "sample_elapsed_seconds": null
+        },
+        "decision": {
+          "mode": "observe",
+          "resource_kind": "io",
+          "action": "none",
+          "execution": "not_applicable",
+          "reason_codes": [
+            "io_observability_degraded"
+          ]
+        }
+      },
+      "mode": "observe"
+    },
+    {
+      "sample": 2,
+      "disk": {
+        "observed_monotonic_ns": 212377175901,
+        "mounts": [
+          {
+            "configured_path": "/mnt/guardian-disk-fixture",
+            "mount_point": "/mnt/guardian-disk-fixture",
+            "mount_id": 455,
+            "device": "7:3",
+            "filesystem_type": "ext4",
+            "source": "/dev/loop3",
+            "read_only": false,
+            "stats": {
+              "block_size_bytes": 4096,
+              "total_bytes": 90116096,
+              "free_bytes": 83050496,
+              "free_ratio_percent": 92.159,
+              "total_inodes": 24576,
+              "free_inodes": 24565,
+              "free_inode_ratio_percent": 99.955,
+              "read_only": false
+            },
+            "device_stats": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "capacity_quality": {
+          "status": "ok",
+          "flags": []
+        },
+        "io": {
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.18,
+              "avg300": 0.34,
+              "total": 2027918.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.13,
+              "avg300": 0.23,
+              "total": 1457866.0
+            }
+          },
+          "devices": {
+            "7:0": {
+              "name": "loop0",
+              "reads_completed": 294,
+              "reads_merged": 0,
+              "sectors_read": 6046,
+              "milliseconds_reading": 43,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 244,
+              "weighted_io_ms": 43
+            },
+            "7:1": {
+              "name": "loop1",
+              "reads_completed": 54,
+              "reads_merged": 0,
+              "sectors_read": 988,
+              "milliseconds_reading": 14,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 44,
+              "weighted_io_ms": 14
+            },
+            "7:2": {
+              "name": "loop2",
+              "reads_completed": 76,
+              "reads_merged": 0,
+              "sectors_read": 2462,
+              "milliseconds_reading": 20,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 60,
+              "weighted_io_ms": 20
+            },
+            "7:3": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20
+            },
+            "7:4": {
+              "name": "loop4",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:5": {
+              "name": "loop5",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:6": {
+              "name": "loop6",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:7": {
+              "name": "loop7",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "252:0": {
+              "name": "vda",
+              "reads_completed": 64,
+              "reads_merged": 0,
+              "sectors_read": 436,
+              "milliseconds_reading": 9,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 52,
+              "weighted_io_ms": 9
+            },
+            "8:0": {
+              "name": "sda",
+              "reads_completed": 9011,
+              "reads_merged": 2460,
+              "sectors_read": 919038,
+              "milliseconds_reading": 3454,
+              "writes_completed": 3507,
+              "writes_merged": 5627,
+              "sectors_written": 2802378,
+              "milliseconds_writing": 25320,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7764,
+              "weighted_io_ms": 29149
+            },
+            "8:1": {
+              "name": "sda1",
+              "reads_completed": 8603,
+              "reads_merged": 1906,
+              "sectors_read": 893704,
+              "milliseconds_reading": 3360,
+              "writes_completed": 3493,
+              "writes_merged": 5619,
+              "sectors_written": 2802272,
+              "milliseconds_writing": 25314,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7684,
+              "weighted_io_ms": 28802
+            },
+            "8:15": {
+              "name": "sda15",
+              "reads_completed": 196,
+              "reads_merged": 554,
+              "sectors_read": 17558,
+              "milliseconds_reading": 50,
+              "writes_completed": 2,
+              "writes_merged": 0,
+              "sectors_written": 2,
+              "milliseconds_writing": 1,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 88,
+              "weighted_io_ms": 52
+            }
+          },
+          "cgroup": {
+            "path": "/sys/fs/cgroup",
+            "io_stat": {
+              "8:0": {
+                "rbytes": 470547456,
+                "wbytes": 1434817536,
+                "rios": 9011,
+                "wios": 3507,
+                "dbytes": 1772756992,
+                "dios": 247
+              },
+              "252:0": {
+                "rbytes": 223232,
+                "wbytes": 0,
+                "rios": 64,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:7": {
+                "rbytes": 1772544,
+                "wbytes": 24576,
+                "rios": 69,
+                "wios": 6,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:2": {
+                "rbytes": 1260544,
+                "wbytes": 0,
+                "rios": 76,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:1": {
+                "rbytes": 505856,
+                "wbytes": 0,
+                "rios": 54,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:0": {
+                "rbytes": 3095552,
+                "wbytes": 0,
+                "rios": 294,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              }
+            },
+            "pressure": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.18,
+                "avg300": 0.34,
+                "total": 2027918.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.13,
+                "avg300": 0.23,
+                "total": 1457866.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": [],
+              "optional_flags": []
+            }
+          },
+          "objects": [],
+          "quality": {
+            "status": "ok",
+            "flags": []
+          }
+        },
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "capacity": {
+        "risk": {
+          "resource_kind": "disk_capacity",
+          "state": "normal",
+          "candidate_state": "normal",
+          "candidate_for_seconds": 1.028,
+          "required_for_seconds": 0.0,
+          "reasons": [],
+          "quality_flags": [],
+          "quality_status": "ok",
+          "sample_count": 2,
+          "mounts": [
+            {
+              "configured_path": "/mnt/guardian-disk-fixture",
+              "mount_point": "/mnt/guardian-disk-fixture",
+              "mount_id": 455,
+              "device": "7:3",
+              "filesystem_type": "ext4",
+              "source": "/dev/loop3",
+              "read_only": false,
+              "stats": {
+                "block_size_bytes": 4096,
+                "total_bytes": 90116096,
+                "free_bytes": 83050496,
+                "free_ratio_percent": 92.159,
+                "total_inodes": 24576,
+                "free_inodes": 24565,
+                "free_inode_ratio_percent": 99.955,
+                "read_only": false
+              },
+              "device_stats": {
+                "name": "loop3",
+                "reads_completed": 69,
+                "reads_merged": 0,
+                "sectors_read": 3462,
+                "milliseconds_reading": 3,
+                "writes_completed": 6,
+                "writes_merged": 0,
+                "sectors_written": 48,
+                "milliseconds_writing": 9,
+                "ios_in_progress": 0,
+                "io_ticks_ms": 40,
+                "weighted_io_ms": 20
+              },
+              "quality": {
+                "status": "ok",
+                "flags": []
+              },
+              "free_bytes_per_second": 0.0,
+              "time_to_full_seconds": null
+            }
+          ],
+          "warning_signals": [],
+          "critical_support": []
+        },
+        "attribution": {
+          "resource_kind": "disk_capacity",
+          "state": "DEGRADED_OBSERVABILITY",
+          "target": null,
+          "candidates": [],
+          "reason_codes": [
+            "capacity_writer_ownership_unavailable"
+          ],
+          "quality_flags": []
+        },
+        "decision": {
+          "mode": "observe",
+          "resource_kind": "disk_capacity",
+          "action": "none",
+          "execution": "not_applicable",
+          "reason_codes": [
+            "disk_capacity_risk_not_actionable"
+          ]
+        }
+      },
+      "io": {
+        "risk": {
+          "resource_kind": "io",
+          "state": "normal",
+          "candidate_state": "normal",
+          "candidate_for_seconds": 1.029,
+          "required_for_seconds": 0.0,
+          "reasons": [],
+          "quality_flags": [],
+          "quality_status": "ok",
+          "sample_count": 2,
+          "io_psi_some_avg10": 0.0,
+          "io_psi_full_avg10": 0.0,
+          "max_device_utilization_percent": 0.0,
+          "max_average_latency_ms": null,
+          "devices": {
+            "7:0": {
+              "name": "loop0",
+              "reads_completed": 294,
+              "reads_merged": 0,
+              "sectors_read": 6046,
+              "milliseconds_reading": 43,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 244,
+              "weighted_io_ms": 43,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:1": {
+              "name": "loop1",
+              "reads_completed": 54,
+              "reads_merged": 0,
+              "sectors_read": 988,
+              "milliseconds_reading": 14,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 44,
+              "weighted_io_ms": 14,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:2": {
+              "name": "loop2",
+              "reads_completed": 76,
+              "reads_merged": 0,
+              "sectors_read": 2462,
+              "milliseconds_reading": 20,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 60,
+              "weighted_io_ms": 20,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:3": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:4": {
+              "name": "loop4",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:5": {
+              "name": "loop5",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:6": {
+              "name": "loop6",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:7": {
+              "name": "loop7",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "252:0": {
+              "name": "vda",
+              "reads_completed": 64,
+              "reads_merged": 0,
+              "sectors_read": 436,
+              "milliseconds_reading": 9,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 52,
+              "weighted_io_ms": 9,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "8:0": {
+              "name": "sda",
+              "reads_completed": 9011,
+              "reads_merged": 2460,
+              "sectors_read": 919038,
+              "milliseconds_reading": 3454,
+              "writes_completed": 3507,
+              "writes_merged": 5627,
+              "sectors_written": 2802378,
+              "milliseconds_writing": 25320,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7764,
+              "weighted_io_ms": 29149,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "8:1": {
+              "name": "sda1",
+              "reads_completed": 8603,
+              "reads_merged": 1906,
+              "sectors_read": 893704,
+              "milliseconds_reading": 3360,
+              "writes_completed": 3493,
+              "writes_merged": 5619,
+              "sectors_written": 2802272,
+              "milliseconds_writing": 25314,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7684,
+              "weighted_io_ms": 28802,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "8:15": {
+              "name": "sda15",
+              "reads_completed": 196,
+              "reads_merged": 554,
+              "sectors_read": 17558,
+              "milliseconds_reading": 50,
+              "writes_completed": 2,
+              "writes_merged": 0,
+              "sectors_written": 2,
+              "milliseconds_writing": 1,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 88,
+              "weighted_io_ms": 52,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            }
+          },
+          "warning_signals": [],
+          "critical_support": []
+        },
+        "attribution": {
+          "resource_kind": "io",
+          "state": "DEGRADED_OBSERVABILITY",
+          "target": null,
+          "candidates": [],
+          "reason_codes": [
+            "io_object_baseline_established",
+            "io_object_registry_empty"
+          ],
+          "quality_flags": [],
+          "sample_elapsed_seconds": 1.028087133
+        },
+        "decision": {
+          "mode": "observe",
+          "resource_kind": "io",
+          "action": "none",
+          "execution": "not_applicable",
+          "reason_codes": [
+            "io_risk_not_actionable"
+          ]
+        }
+      },
+      "mode": "observe"
+    },
+    {
+      "sample": 3,
+      "disk": {
+        "observed_monotonic_ns": 213430848387,
+        "mounts": [
+          {
+            "configured_path": "/mnt/guardian-disk-fixture",
+            "mount_point": "/mnt/guardian-disk-fixture",
+            "mount_id": 455,
+            "device": "7:3",
+            "filesystem_type": "ext4",
+            "source": "/dev/loop3",
+            "read_only": false,
+            "stats": {
+              "block_size_bytes": 4096,
+              "total_bytes": 90116096,
+              "free_bytes": 83050496,
+              "free_ratio_percent": 92.159,
+              "total_inodes": 24576,
+              "free_inodes": 24565,
+              "free_inode_ratio_percent": 99.955,
+              "read_only": false
+            },
+            "device_stats": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "capacity_quality": {
+          "status": "ok",
+          "flags": []
+        },
+        "io": {
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.18,
+              "avg300": 0.34,
+              "total": 2027918.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.13,
+              "avg300": 0.23,
+              "total": 1457866.0
+            }
+          },
+          "devices": {
+            "7:0": {
+              "name": "loop0",
+              "reads_completed": 294,
+              "reads_merged": 0,
+              "sectors_read": 6046,
+              "milliseconds_reading": 43,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 244,
+              "weighted_io_ms": 43
+            },
+            "7:1": {
+              "name": "loop1",
+              "reads_completed": 54,
+              "reads_merged": 0,
+              "sectors_read": 988,
+              "milliseconds_reading": 14,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 44,
+              "weighted_io_ms": 14
+            },
+            "7:2": {
+              "name": "loop2",
+              "reads_completed": 76,
+              "reads_merged": 0,
+              "sectors_read": 2462,
+              "milliseconds_reading": 20,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 60,
+              "weighted_io_ms": 20
+            },
+            "7:3": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20
+            },
+            "7:4": {
+              "name": "loop4",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:5": {
+              "name": "loop5",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:6": {
+              "name": "loop6",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "7:7": {
+              "name": "loop7",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0
+            },
+            "252:0": {
+              "name": "vda",
+              "reads_completed": 64,
+              "reads_merged": 0,
+              "sectors_read": 436,
+              "milliseconds_reading": 9,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 52,
+              "weighted_io_ms": 9
+            },
+            "8:0": {
+              "name": "sda",
+              "reads_completed": 9011,
+              "reads_merged": 2460,
+              "sectors_read": 919038,
+              "milliseconds_reading": 3454,
+              "writes_completed": 3507,
+              "writes_merged": 5627,
+              "sectors_written": 2802378,
+              "milliseconds_writing": 25320,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7764,
+              "weighted_io_ms": 29149
+            },
+            "8:1": {
+              "name": "sda1",
+              "reads_completed": 8603,
+              "reads_merged": 1906,
+              "sectors_read": 893704,
+              "milliseconds_reading": 3360,
+              "writes_completed": 3493,
+              "writes_merged": 5619,
+              "sectors_written": 2802272,
+              "milliseconds_writing": 25314,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7684,
+              "weighted_io_ms": 28802
+            },
+            "8:15": {
+              "name": "sda15",
+              "reads_completed": 196,
+              "reads_merged": 554,
+              "sectors_read": 17558,
+              "milliseconds_reading": 50,
+              "writes_completed": 2,
+              "writes_merged": 0,
+              "sectors_written": 2,
+              "milliseconds_writing": 1,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 88,
+              "weighted_io_ms": 52
+            }
+          },
+          "cgroup": {
+            "path": "/sys/fs/cgroup",
+            "io_stat": {
+              "8:0": {
+                "rbytes": 470547456,
+                "wbytes": 1434817536,
+                "rios": 9011,
+                "wios": 3507,
+                "dbytes": 1772756992,
+                "dios": 247
+              },
+              "252:0": {
+                "rbytes": 223232,
+                "wbytes": 0,
+                "rios": 64,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:7": {
+                "rbytes": 1772544,
+                "wbytes": 24576,
+                "rios": 69,
+                "wios": 6,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:2": {
+                "rbytes": 1260544,
+                "wbytes": 0,
+                "rios": 76,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:1": {
+                "rbytes": 505856,
+                "wbytes": 0,
+                "rios": 54,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              },
+              "7:0": {
+                "rbytes": 3095552,
+                "wbytes": 0,
+                "rios": 294,
+                "wios": 0,
+                "dbytes": 0,
+                "dios": 0
+              }
+            },
+            "pressure": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.18,
+                "avg300": 0.34,
+                "total": 2027918.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.13,
+                "avg300": 0.23,
+                "total": 1457866.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": [],
+              "optional_flags": []
+            }
+          },
+          "objects": [],
+          "quality": {
+            "status": "ok",
+            "flags": []
+          }
+        },
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "capacity": {
+        "risk": {
+          "resource_kind": "disk_capacity",
+          "state": "normal",
+          "candidate_state": "normal",
+          "candidate_for_seconds": 2.082,
+          "required_for_seconds": 0.0,
+          "reasons": [],
+          "quality_flags": [],
+          "quality_status": "ok",
+          "sample_count": 3,
+          "mounts": [
+            {
+              "configured_path": "/mnt/guardian-disk-fixture",
+              "mount_point": "/mnt/guardian-disk-fixture",
+              "mount_id": 455,
+              "device": "7:3",
+              "filesystem_type": "ext4",
+              "source": "/dev/loop3",
+              "read_only": false,
+              "stats": {
+                "block_size_bytes": 4096,
+                "total_bytes": 90116096,
+                "free_bytes": 83050496,
+                "free_ratio_percent": 92.159,
+                "total_inodes": 24576,
+                "free_inodes": 24565,
+                "free_inode_ratio_percent": 99.955,
+                "read_only": false
+              },
+              "device_stats": {
+                "name": "loop3",
+                "reads_completed": 69,
+                "reads_merged": 0,
+                "sectors_read": 3462,
+                "milliseconds_reading": 3,
+                "writes_completed": 6,
+                "writes_merged": 0,
+                "sectors_written": 48,
+                "milliseconds_writing": 9,
+                "ios_in_progress": 0,
+                "io_ticks_ms": 40,
+                "weighted_io_ms": 20
+              },
+              "quality": {
+                "status": "ok",
+                "flags": []
+              },
+              "free_bytes_per_second": 0.0,
+              "time_to_full_seconds": null
+            }
+          ],
+          "warning_signals": [],
+          "critical_support": []
+        },
+        "attribution": {
+          "resource_kind": "disk_capacity",
+          "state": "DEGRADED_OBSERVABILITY",
+          "target": null,
+          "candidates": [],
+          "reason_codes": [
+            "capacity_writer_ownership_unavailable"
+          ],
+          "quality_flags": []
+        },
+        "decision": {
+          "mode": "observe",
+          "resource_kind": "disk_capacity",
+          "action": "none",
+          "execution": "not_applicable",
+          "reason_codes": [
+            "disk_capacity_risk_not_actionable"
+          ]
+        }
+      },
+      "io": {
+        "risk": {
+          "resource_kind": "io",
+          "state": "normal",
+          "candidate_state": "normal",
+          "candidate_for_seconds": 2.082,
+          "required_for_seconds": 0.0,
+          "reasons": [],
+          "quality_flags": [],
+          "quality_status": "ok",
+          "sample_count": 3,
+          "io_psi_some_avg10": 0.0,
+          "io_psi_full_avg10": 0.0,
+          "max_device_utilization_percent": 0.0,
+          "max_average_latency_ms": null,
+          "devices": {
+            "7:0": {
+              "name": "loop0",
+              "reads_completed": 294,
+              "reads_merged": 0,
+              "sectors_read": 6046,
+              "milliseconds_reading": 43,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 244,
+              "weighted_io_ms": 43,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:1": {
+              "name": "loop1",
+              "reads_completed": 54,
+              "reads_merged": 0,
+              "sectors_read": 988,
+              "milliseconds_reading": 14,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 44,
+              "weighted_io_ms": 14,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:2": {
+              "name": "loop2",
+              "reads_completed": 76,
+              "reads_merged": 0,
+              "sectors_read": 2462,
+              "milliseconds_reading": 20,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 60,
+              "weighted_io_ms": 20,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:3": {
+              "name": "loop3",
+              "reads_completed": 69,
+              "reads_merged": 0,
+              "sectors_read": 3462,
+              "milliseconds_reading": 3,
+              "writes_completed": 6,
+              "writes_merged": 0,
+              "sectors_written": 48,
+              "milliseconds_writing": 9,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 40,
+              "weighted_io_ms": 20,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:4": {
+              "name": "loop4",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:5": {
+              "name": "loop5",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:6": {
+              "name": "loop6",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "7:7": {
+              "name": "loop7",
+              "reads_completed": 0,
+              "reads_merged": 0,
+              "sectors_read": 0,
+              "milliseconds_reading": 0,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 0,
+              "weighted_io_ms": 0,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "252:0": {
+              "name": "vda",
+              "reads_completed": 64,
+              "reads_merged": 0,
+              "sectors_read": 436,
+              "milliseconds_reading": 9,
+              "writes_completed": 0,
+              "writes_merged": 0,
+              "sectors_written": 0,
+              "milliseconds_writing": 0,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 52,
+              "weighted_io_ms": 9,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "8:0": {
+              "name": "sda",
+              "reads_completed": 9011,
+              "reads_merged": 2460,
+              "sectors_read": 919038,
+              "milliseconds_reading": 3454,
+              "writes_completed": 3507,
+              "writes_merged": 5627,
+              "sectors_written": 2802378,
+              "milliseconds_writing": 25320,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7764,
+              "weighted_io_ms": 29149,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "8:1": {
+              "name": "sda1",
+              "reads_completed": 8603,
+              "reads_merged": 1906,
+              "sectors_read": 893704,
+              "milliseconds_reading": 3360,
+              "writes_completed": 3493,
+              "writes_merged": 5619,
+              "sectors_written": 2802272,
+              "milliseconds_writing": 25314,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 7684,
+              "weighted_io_ms": 28802,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            },
+            "8:15": {
+              "name": "sda15",
+              "reads_completed": 196,
+              "reads_merged": 554,
+              "sectors_read": 17558,
+              "milliseconds_reading": 50,
+              "writes_completed": 2,
+              "writes_merged": 0,
+              "sectors_written": 2,
+              "milliseconds_writing": 1,
+              "ios_in_progress": 0,
+              "io_ticks_ms": 88,
+              "weighted_io_ms": 52,
+              "deltas": {
+                "reads_completed": 0,
+                "writes_completed": 0,
+                "sectors_read": 0,
+                "sectors_written": 0,
+                "io_ticks_ms": 0,
+                "weighted_io_ms": 0
+              },
+              "utilization_percent": 0.0,
+              "throughput_bytes_per_second": 0.0,
+              "average_latency_ms": null
+            }
+          },
+          "warning_signals": [],
+          "critical_support": []
+        },
+        "attribution": {
+          "resource_kind": "io",
+          "state": "DEGRADED_OBSERVABILITY",
+          "target": null,
+          "candidates": [],
+          "reason_codes": [
+            "io_object_baseline_established",
+            "io_object_registry_empty"
+          ],
+          "quality_flags": [],
+          "sample_elapsed_seconds": 1.053672486
+        },
+        "decision": {
+          "mode": "observe",
+          "resource_kind": "io",
+          "action": "none",
+          "execution": "not_applicable",
+          "reason_codes": [
+            "io_risk_not_actionable"
+          ]
+        }
+      },
+      "mode": "observe"
+    }
+  ],
+  "safety": {
+    "read_only_observation": true,
+    "mutation_commands_invoked": false,
+    "filesystem_mutation_invoked": false,
+    "production_connected": false
+  }
+}

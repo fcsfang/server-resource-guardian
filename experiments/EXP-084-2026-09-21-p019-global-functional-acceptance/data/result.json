@@ -1,0 +1,271 @@
+{
+  "schema": "guardian.p019.acceptance.v1",
+  "status": "PASS",
+  "case_count": 37,
+  "passed_cases": 37,
+  "failed_cases": [],
+  "real_docker_actions": 0,
+  "real_notification_deliveries": 0,
+  "external_connections": 0,
+  "matrix": [
+    {
+      "id": "normal_and_short_peak",
+      "test": "tests.test_guardian_emergency_shedding.EmergencySheddingTests.test_normal_and_short_peak_never_create_plan",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "cpu_risk_window",
+      "test": "tests.test_guardian_cpu.CpuRiskEvaluatorTests.test_high_cpu_requires_samples_and_dwell",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "memory_actionable_top",
+      "test": "tests.test_guardian_emergency_shedding.EmergencySheddingTests.test_actionable_resource_top_gets_one_simulate_plan",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "disk_capacity",
+      "test": "tests.test_guardian_disk.GuardianDiskTests.test_capacity_evaluator_requires_dwell_and_emits_recovery",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "disk_io",
+      "test": "tests.test_guardian_disk.GuardianDiskTests.test_io_evaluator_separates_pressure_from_capacity_and_requires_dwell",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "mixed_risk_one_plan",
+      "test": "tests.test_guardian_multirisk.GuardianMultiRiskTests.test_same_stable_target_can_create_one_simulate_plan",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "protected_top",
+      "test": "tests.test_guardian_emergency_shedding.EmergencySheddingTests.test_protected_global_top_blocks_lower_actionable_candidate",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "unknown_top",
+      "test": "tests.test_guardian_emergency_shedding.EmergencySheddingTests.test_unknown_global_top_blocks_lower_actionable_candidate",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "no_effective_target",
+      "test": "tests.test_guardian_emergency_shedding.EmergencySheddingTests.test_contribution_below_minimum_fails_closed",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "identity_change",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_execution_time_identity_recheck_refuses_changed_target",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "missing_data",
+      "test": "tests.test_guardian_emergency_shedding.EmergencySheddingTests.test_incomplete_sample_data_produces_zero_action",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "notification_write_failure",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_notification_persistence_failure_blocks_intent_and_adapter",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "intent_write_failure",
+      "test": "tests.test_guardian_state.GuardianStateStoreTests.test_controller_rejects_audit_failure_before_executor",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "capability_expiry",
+      "test": "tests.test_guardian_state.GuardianStateStoreTests.test_capability_conflict_and_expiry_fail_closed",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "capability_replay",
+      "test": "tests.test_guardian_state.GuardianStateStoreTests.test_capability_is_registered_and_consumed_once",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "default_observe",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_observe_is_the_default_and_does_not_claim_or_call_an_adapter",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "simulate_fake_only",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_simulate_rejects_non_fake_adapter_before_calling_it",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "simulate_success",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_simulate_runs_one_durable_fake_end_to_end_and_never_needs_capability",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "simulate_failure",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_failure_is_recorded_as_unmitigated_and_enters_manual_handoff",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "simulate_timeout",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_timeout_is_recorded_and_does_not_automatically_select_another_target",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "restart_reconciliation",
+      "test": "tests.test_guardian_coordinator.GuardianCoordinatorTests.test_restart_reconciles_unknown_intent_and_blocks_any_automatic_replay",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "runtime_observer_to_coordinator",
+      "test": "tests.test_guardian_orchestrator.GuardianOrchestratorTests.test_real_sampler_events_are_consumed_by_coordinator_in_process",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "runtime_queue_fail_closed",
+      "test": "tests.test_guardian_orchestrator.GuardianOrchestratorTests.test_queue_full_is_fail_closed_with_nonzero_outcome",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "runtime_startup_reconciliation",
+      "test": "tests.test_guardian_orchestrator.GuardianOrchestratorTests.test_startup_reconciliation_keeps_runtime_not_ready",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "runtime_coordinator_failure",
+      "test": "tests.test_guardian_orchestrator.GuardianOrchestratorTests.test_coordinator_failure_stops_runtime_fail_closed",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "outbox_restart",
+      "test": "tests.test_guardian_notification_outbox.DurableNotificationOutboxTests.test_inflight_restart_is_reconciliation_required_until_explicit_redrive",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "disabled_notification_channel",
+      "test": "tests.test_guardian_notifications.GuardianNotificationTests.test_disabled_channel_is_explicitly_fail_closed",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "host_mitigation",
+      "test": "tests.test_guardian_recovery.GuardianRecoveryTests.test_host_mitigation_requires_improvement_and_no_new_oom",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "business_degraded",
+      "test": "tests.test_guardian_recovery.GuardianRecoveryTests.test_two_layer_result_does_not_equate_stopped_target_with_business_recovery",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "business_recovered",
+      "test": "tests.test_guardian_recovery.GuardianRecoveryTests.test_two_layer_result_is_business_recovered_only_when_both_layers_pass",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "recovery_unmitigated",
+      "test": "tests.test_guardian_recovery.GuardianRecoveryTests.test_host_mitigation_fails_closed_on_missing_or_still_critical_evidence",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "recovery_pending",
+      "test": "tests.test_guardian_recovery.GuardianRecoveryTests.test_recovery_window_and_unknown_action_fail_closed",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "cooldown",
+      "test": "tests.test_guardian_controller.GuardianControllerTests.test_cooldown_blocks_second_action_and_failure_breaker_escalates",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "failure_breaker",
+      "test": "tests.test_guardian_controller.GuardianControllerTests.test_repeated_runtime_failures_escalate_and_trip_breaker",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "action_slot_serialization",
+      "test": "tests.test_guardian_state.GuardianStateStoreTests.test_action_slot_serializes_concurrent_execution_window",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "action_slot_restart",
+      "test": "tests.test_guardian_state.GuardianStateStoreTests.test_action_slot_restart_requires_manual_reconciliation",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    },
+    {
+      "id": "bounded_audit",
+      "test": "tests.test_guardian_state.GuardianStateStoreTests.test_audit_payload_size_is_bounded_before_intent_commit",
+      "status": "PASS",
+      "tests_run": 1,
+      "issues": []
+    }
+  ]
+}

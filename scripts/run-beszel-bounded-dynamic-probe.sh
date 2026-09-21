@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Local-only, bounded source probe for G6-T01.
+# Local-only, bounded Beszel source probe.
 # It creates no container and performs no Docker/systemd mutation. The probe
 # runs one CPU worker plus a 128 MiB disposable memory worker for 12 seconds,
 # then exits naturally. It is intended for guardian-ubuntu only.

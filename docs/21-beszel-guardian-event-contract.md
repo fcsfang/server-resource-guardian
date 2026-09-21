@@ -4,7 +4,7 @@
 
 状态：DRAFT-FROZEN-FOR-LOCAL-POC
 
-本文件冻结 Goal 6 的第一版本地联调边界。它描述 Beszel 观测事件如何进入 Guardian，不代表 Beszel 0.19.0 已经提供完全一致的原始 payload；实际 Adapter 接入前必须用脱敏实测 payload 补齐字段映射。
+本文件描述 Beszel 观测事件如何进入 Guardian，不代表 Beszel 0.19.0 已经提供完全一致的原始 payload；实际 Adapter 接入前必须用脱敏实测 payload 补齐字段映射。
 
 ## 1. 设计原则
 
@@ -125,7 +125,7 @@ Beszel event
 
 ## 7. 未决项
 
-- Beszel 0.19.0 实际 API/告警 payload 的字段名和分页方式，需在 G6-T03 使用脱敏 fixture 验证。
+- Beszel 0.19.0 实际 API/告警 payload 的字段名和分页方式已使用脱敏本地数据核对；目标环境仍需兼容性复查。
 - Hub 告警到达方式（轮询、通知或 API）尚未选定；第一版优先使用可重放的只读 API/fixture。
-- Beszel UI 是否承载 Guardian 自定义状态，留到 G6-T06 设计，不在 Adapter 中硬编码。
+- Beszel UI 是否承载 Guardian 自定义状态，按里程碑二的只读页面实现决定，不在 Adapter 中硬编码。
 - 当前已根据本地控制台 bundle 和 EXP-028 的本地 `data.db` 只读复核确认 `alerts_history` 的字段；API 会话中的原始 payload 仍不保存、不回显。缺少资源/严重级别映射或稳定系统 ID 时，Adapter 只保留低置信度观测或直接拒绝，不进入自动动作。

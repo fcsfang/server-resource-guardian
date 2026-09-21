@@ -1,0 +1,1626 @@
+{
+  "schema": "guardian.p017_disposable_sim.v1",
+  "experiment": "EXP-069",
+  "vm": "guardian-p017-sim",
+  "image": "guardian-p014-real:local",
+  "container_seconds": 45,
+  "container_names": [
+    "guardian-p017-actionable",
+    "guardian-p017-protected",
+    "guardian-p017-unknown"
+  ],
+  "container_ids": {
+    "guardian-p017-actionable": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+    "guardian-p017-protected": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+    "guardian-p017-unknown": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17"
+  },
+  "observation": {
+    "observed_at": "2026-09-20T17:55:10.218346Z",
+    "observed_monotonic_ns": 226323265879,
+    "memory": {
+      "total_bytes": 4100427776,
+      "available_bytes": 3656065024,
+      "available_ratio_percent": 89.163,
+      "swap_total_bytes": 0,
+      "swap_free_bytes": 0,
+      "swap_used_ratio_percent": null
+    },
+    "psi": {
+      "cpu": {
+        "some": {
+          "avg10": 3.12,
+          "avg60": 0.84,
+          "avg300": 0.59,
+          "total": 4748378.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "memory": {
+        "some": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "io": {
+        "some": {
+          "avg10": 1.26,
+          "avg60": 0.33,
+          "avg300": 0.27,
+          "total": 1613541.0
+        },
+        "full": {
+          "avg10": 1.08,
+          "avg60": 0.28,
+          "avg300": 0.21,
+          "total": 1306275.0
+        }
+      }
+    },
+    "cgroup": {
+      "memory_current_bytes": 13500416,
+      "memory_max": "max",
+      "memory_events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0
+      },
+      "pids_current": 4,
+      "pids_max": "max",
+      "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-70.scope"
+    },
+    "docker": {
+      "available": true,
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.08%",
+          "Container": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+          "ID": "9cf50c21f9f8",
+          "MemPerc": "0.01%",
+          "MemUsage": "552KiB / 3.819GiB",
+          "Name": "guardian-p017-unknown",
+          "NetIO": "1.12kB / 126B",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 4.1kB",
+          "CPUPerc": "0.07%",
+          "Container": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+          "ID": "6dd9a229b6e2",
+          "MemPerc": "0.01%",
+          "MemUsage": "564KiB / 3.819GiB",
+          "Name": "guardian-p017-protected",
+          "NetIO": "1.17kB / 126B",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 4.1kB",
+          "CPUPerc": "0.13%",
+          "Container": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+          "ID": "98234d4f0272",
+          "MemPerc": "0.01%",
+          "MemUsage": "540KiB / 3.819GiB",
+          "Name": "guardian-p017-actionable",
+          "NetIO": "1.32kB / 126B",
+          "PIDs": "3"
+        }
+      ]
+    },
+    "object_registry": {
+      "status": "ok",
+      "objects": [
+        {
+          "kind": "container",
+          "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+          "name": "guardian-p017-unknown",
+          "image": "guardian-p014-real:local",
+          "created_at": "2026-09-20T17:55:05.874279277Z",
+          "status": "running",
+          "health": "starting",
+          "labels": {
+            "guardian.exp": "p017-disposable-sim",
+            "guardian.role": "unknown"
+          },
+          "pid": 10951,
+          "cgroup_path": "/sys/fs/cgroup/system.slice/docker-9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17.scope",
+          "cgroup_inode": 7814,
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "memory_current_bytes": 569344,
+          "memory_max": "max",
+          "memory_events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0
+          }
+        },
+        {
+          "kind": "container",
+          "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+          "name": "guardian-p017-protected",
+          "image": "guardian-p014-real:local",
+          "created_at": "2026-09-20T17:55:05.706811051Z",
+          "status": "running",
+          "health": "starting",
+          "labels": {
+            "guardian.exp": "p017-disposable-sim",
+            "guardian.role": "protected"
+          },
+          "pid": 10835,
+          "cgroup_path": "/sys/fs/cgroup/system.slice/docker-6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc.scope",
+          "cgroup_inode": 7704,
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "memory_current_bytes": 569344,
+          "memory_max": "max",
+          "memory_events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0
+          }
+        },
+        {
+          "kind": "container",
+          "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+          "name": "guardian-p017-actionable",
+          "image": "guardian-p014-real:local",
+          "created_at": "2026-09-20T17:55:05.525858724Z",
+          "status": "running",
+          "health": "starting",
+          "labels": {
+            "guardian.exp": "p017-disposable-sim",
+            "guardian.role": "actionable"
+          },
+          "pid": 10679,
+          "cgroup_path": "/sys/fs/cgroup/system.slice/docker-98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92.scope",
+          "cgroup_inode": 7594,
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "memory_current_bytes": 561152,
+          "memory_max": "max",
+          "memory_events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0
+          }
+        }
+      ],
+      "errors": []
+    },
+    "cpu": {
+      "observed_monotonic_ns": 228381334878,
+      "host": {
+        "stat": {
+          "aggregate": {
+            "user": 1719,
+            "nice": 245,
+            "system": 1156,
+            "idle": 42072,
+            "iowait": 247,
+            "irq": 0,
+            "softirq": 62,
+            "steal": 0,
+            "guest": 0,
+            "guest_nice": 0,
+            "total_ticks": 45501,
+            "idle_ticks": 42319
+          },
+          "logical_cpus": 2,
+          "valid": true
+        },
+        "loadavg": {
+          "load1": 0.1,
+          "runnable_tasks": 1,
+          "total_tasks": 202,
+          "last_pid": 11142,
+          "valid": true
+        },
+        "logical_cpus": 2
+      },
+      "psi": {
+        "some": {
+          "avg10": 2.73,
+          "avg60": 0.85,
+          "avg300": 0.59,
+          "total": 4777840.0
+        },
+        "full": {
+          "avg10": 0.0,
+          "avg60": 0.0,
+          "avg300": 0.0,
+          "total": 0.0
+        }
+      },
+      "cgroup": {
+        "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-70.scope",
+        "cpu_stat": {
+          "usage_usec": 95701,
+          "user_usec": 73950,
+          "system_usec": 21750
+        },
+        "cpu_max": {
+          "quota_us": null,
+          "period_us": null,
+          "valid": false
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 6911.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 4021.0
+          }
+        },
+        "quality": {
+          "status": "ok",
+          "flags": [],
+          "optional_flags": [
+            "cpu_max_missing"
+          ]
+        }
+      },
+      "scheduler_probe": {
+        "valid": true,
+        "requested_sleep_ms": 1.0,
+        "elapsed_ms": 1.068,
+        "overshoot_ms": 0.068
+      },
+      "objects": [
+        {
+          "kind": "container",
+          "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+          "name": "guardian-p017-unknown",
+          "cgroup_path": "/sys/fs/cgroup/system.slice/docker-9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17.scope",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_stat": {
+            "usage_usec": 13000,
+            "user_usec": 4333,
+            "system_usec": 8666,
+            "nr_periods": 0,
+            "nr_throttled": 0,
+            "throttled_usec": 0
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": 100000,
+            "valid": true
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 6712.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 1451.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": []
+          }
+        },
+        {
+          "kind": "container",
+          "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+          "name": "guardian-p017-protected",
+          "cgroup_path": "/sys/fs/cgroup/system.slice/docker-6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc.scope",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_stat": {
+            "usage_usec": 13265,
+            "user_usec": 0,
+            "system_usec": 13265,
+            "nr_periods": 0,
+            "nr_throttled": 0,
+            "throttled_usec": 0
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": 100000,
+            "valid": true
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 2817.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 535.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": []
+          }
+        },
+        {
+          "kind": "container",
+          "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+          "name": "guardian-p017-actionable",
+          "cgroup_path": "/sys/fs/cgroup/system.slice/docker-98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92.scope",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_stat": {
+            "usage_usec": 12163,
+            "user_usec": 6081,
+            "system_usec": 6081,
+            "nr_periods": 0,
+            "nr_throttled": 0,
+            "throttled_usec": 0
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": 100000,
+            "valid": true
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 4284.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 550.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": []
+          }
+        }
+      ],
+      "quality": {
+        "status": "ok",
+        "flags": []
+      }
+    },
+    "disk": {
+      "observed_monotonic_ns": 228382557492,
+      "mounts": [
+        {
+          "configured_path": "/",
+          "mount_point": "/",
+          "mount_id": 32,
+          "device": "8:1",
+          "filesystem_type": "ext4",
+          "source": "/dev/sda1",
+          "read_only": false,
+          "stats": {
+            "block_size_bytes": 4096,
+            "total_bytes": 12302225408,
+            "free_bytes": 9983479808,
+            "free_ratio_percent": 81.152,
+            "total_inodes": 1555968,
+            "free_inodes": 1479284,
+            "free_inode_ratio_percent": 95.072,
+            "read_only": false
+          },
+          "device_stats": {
+            "name": "sda1",
+            "reads_completed": 8440,
+            "reads_merged": 1904,
+            "sectors_read": 866872,
+            "milliseconds_reading": 2089,
+            "writes_completed": 7469,
+            "writes_merged": 9177,
+            "sectors_written": 3431296,
+            "milliseconds_writing": 15007,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 6116,
+            "weighted_io_ms": 17201
+          },
+          "quality": {
+            "status": "ok",
+            "flags": []
+          }
+        }
+      ],
+      "capacity_quality": {
+        "status": "ok",
+        "flags": []
+      },
+      "io": {
+        "psi": {
+          "some": {
+            "avg10": 1.03,
+            "avg60": 0.32,
+            "avg300": 0.27,
+            "total": 1613541.0
+          },
+          "full": {
+            "avg10": 0.88,
+            "avg60": 0.27,
+            "avg300": 0.21,
+            "total": 1306275.0
+          }
+        },
+        "devices": {
+          "7:0": {
+            "name": "loop0",
+            "reads_completed": 294,
+            "reads_merged": 0,
+            "sectors_read": 6046,
+            "milliseconds_reading": 28,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 192,
+            "weighted_io_ms": 28
+          },
+          "7:1": {
+            "name": "loop1",
+            "reads_completed": 76,
+            "reads_merged": 0,
+            "sectors_read": 2462,
+            "milliseconds_reading": 14,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 52,
+            "weighted_io_ms": 14
+          },
+          "7:2": {
+            "name": "loop2",
+            "reads_completed": 54,
+            "reads_merged": 0,
+            "sectors_read": 988,
+            "milliseconds_reading": 10,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 32,
+            "weighted_io_ms": 10
+          },
+          "7:3": {
+            "name": "loop3",
+            "reads_completed": 11,
+            "reads_merged": 0,
+            "sectors_read": 28,
+            "milliseconds_reading": 1,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 8,
+            "weighted_io_ms": 1
+          },
+          "7:4": {
+            "name": "loop4",
+            "reads_completed": 0,
+            "reads_merged": 0,
+            "sectors_read": 0,
+            "milliseconds_reading": 0,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 0,
+            "weighted_io_ms": 0
+          },
+          "7:5": {
+            "name": "loop5",
+            "reads_completed": 0,
+            "reads_merged": 0,
+            "sectors_read": 0,
+            "milliseconds_reading": 0,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 0,
+            "weighted_io_ms": 0
+          },
+          "7:6": {
+            "name": "loop6",
+            "reads_completed": 0,
+            "reads_merged": 0,
+            "sectors_read": 0,
+            "milliseconds_reading": 0,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 0,
+            "weighted_io_ms": 0
+          },
+          "7:7": {
+            "name": "loop7",
+            "reads_completed": 0,
+            "reads_merged": 0,
+            "sectors_read": 0,
+            "milliseconds_reading": 0,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 0,
+            "weighted_io_ms": 0
+          },
+          "252:0": {
+            "name": "vda",
+            "reads_completed": 64,
+            "reads_merged": 0,
+            "sectors_read": 436,
+            "milliseconds_reading": 6,
+            "writes_completed": 0,
+            "writes_merged": 0,
+            "sectors_written": 0,
+            "milliseconds_writing": 0,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 56,
+            "weighted_io_ms": 6
+          },
+          "8:0": {
+            "name": "sda",
+            "reads_completed": 8848,
+            "reads_merged": 2458,
+            "sectors_read": 892206,
+            "milliseconds_reading": 2143,
+            "writes_completed": 7483,
+            "writes_merged": 9185,
+            "sectors_written": 3431402,
+            "milliseconds_writing": 15013,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 6152,
+            "weighted_io_ms": 17653
+          },
+          "8:1": {
+            "name": "sda1",
+            "reads_completed": 8440,
+            "reads_merged": 1904,
+            "sectors_read": 866872,
+            "milliseconds_reading": 2089,
+            "writes_completed": 7469,
+            "writes_merged": 9177,
+            "sectors_written": 3431296,
+            "milliseconds_writing": 15007,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 6116,
+            "weighted_io_ms": 17201
+          },
+          "8:15": {
+            "name": "sda15",
+            "reads_completed": 196,
+            "reads_merged": 554,
+            "sectors_read": 17558,
+            "milliseconds_reading": 28,
+            "writes_completed": 2,
+            "writes_merged": 0,
+            "sectors_written": 2,
+            "milliseconds_writing": 2,
+            "ios_in_progress": 0,
+            "io_ticks_ms": 64,
+            "weighted_io_ms": 31
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-70.scope",
+          "io_stat": {},
+          "pressure": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 0.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 0.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "io_stat_missing"
+            ]
+          }
+        },
+        "objects": [
+          {
+            "kind": "container",
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "cgroup_path": "/sys/fs/cgroup/system.slice/docker-9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17.scope",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "io_stat": {},
+            "pressure": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 0.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 0.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          },
+          {
+            "kind": "container",
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "cgroup_path": "/sys/fs/cgroup/system.slice/docker-6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc.scope",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "io_stat": {
+              "8:0": {
+                "rbytes": 0,
+                "wbytes": 4096,
+                "rios": 0,
+                "wios": 1,
+                "dbytes": 0,
+                "dios": 0
+              }
+            },
+            "pressure": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 0.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 0.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          },
+          {
+            "kind": "container",
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "cgroup_path": "/sys/fs/cgroup/system.slice/docker-98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92.scope",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "io_stat": {
+              "8:0": {
+                "rbytes": 0,
+                "wbytes": 4096,
+                "rios": 0,
+                "wios": 1,
+                "dbytes": 0,
+                "dios": 0
+              }
+            },
+            "pressure": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 0.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 0.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "quality": {
+        "status": "ok",
+        "flags": []
+      }
+    },
+    "quality": {
+      "status": "ok",
+      "flags": []
+    }
+  },
+  "real_registry_objects": [
+    {
+      "kind": "container",
+      "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+      "name": "guardian-p017-actionable",
+      "status": "running",
+      "created_at": "2026-09-20T17:55:05.525858724Z",
+      "cgroup_path": "/sys/fs/cgroup/system.slice/docker-98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92.scope",
+      "cgroup_inode": 7594
+    },
+    {
+      "kind": "container",
+      "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+      "name": "guardian-p017-protected",
+      "status": "running",
+      "created_at": "2026-09-20T17:55:05.706811051Z",
+      "cgroup_path": "/sys/fs/cgroup/system.slice/docker-6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc.scope",
+      "cgroup_inode": 7704
+    },
+    {
+      "kind": "container",
+      "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+      "name": "guardian-p017-unknown",
+      "status": "running",
+      "created_at": "2026-09-20T17:55:05.874279277Z",
+      "cgroup_path": "/sys/fs/cgroup/system.slice/docker-9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17.scope",
+      "cgroup_inode": 7814
+    }
+  ],
+  "cases": [
+    {
+      "name": "single_resource_actionable_top",
+      "mode": "simulate",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "simulate",
+        "action": "graceful_stop",
+        "execution": "not_executed",
+        "resource_kind": "memory",
+        "target_id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+        "top_consumer": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+        "reason_codes": [
+          "PLAN_GENERATED",
+          "TOP_ACTIONABLE_CONSUMER"
+        ],
+        "plan": {
+          "schema": "guardian.emergency_shedding.v1",
+          "plan_id": "es-v1-b6b158135082dc4ff6eea21b",
+          "resource_kind": "memory",
+          "target_id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+          "target": {
+            "kind": "container",
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "created_at": "2026-09-20T17:55:05.525858724Z",
+            "cgroup_path": "/sys/fs/cgroup/system.slice/docker-98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92.scope",
+            "cgroup_inode": 7594
+          },
+          "action": "graceful_stop",
+          "execution": "not_executed",
+          "max_actions": 1,
+          "root_cause_claimed": false
+        },
+        "plans_count": 1
+      },
+      "active_resources": [
+        "memory"
+      ],
+      "rankings": {
+        "memory": [
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 75.0,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 15.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 10.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ]
+      },
+      "expected_pass": true
+    },
+    {
+      "name": "mixed_resource_one_plan",
+      "mode": "simulate",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "simulate",
+        "action": "graceful_stop",
+        "execution": "not_executed",
+        "resource_kind": "cpu",
+        "target_id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+        "top_consumer": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+        "reason_codes": [
+          "PLAN_GENERATED",
+          "TOP_ACTIONABLE_CONSUMER"
+        ],
+        "plan": {
+          "schema": "guardian.emergency_shedding.v1",
+          "plan_id": "es-v1-378b66a9235ccd8d27cf74ec",
+          "resource_kind": "cpu",
+          "target_id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+          "target": {
+            "kind": "container",
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "created_at": "2026-09-20T17:55:05.525858724Z",
+            "cgroup_path": "/sys/fs/cgroup/system.slice/docker-98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92.scope",
+            "cgroup_inode": 7594
+          },
+          "action": "graceful_stop",
+          "execution": "not_executed",
+          "max_actions": 1,
+          "root_cause_claimed": false
+        },
+        "plans_count": 1
+      },
+      "active_resources": [
+        "cpu",
+        "memory"
+      ],
+      "rankings": {
+        "cpu": [
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 80.0,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 10.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 10.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ],
+        "memory": [
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 60.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 30.0,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 10.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ]
+      },
+      "expected_pass": true
+    },
+    {
+      "name": "protected_top",
+      "mode": "simulate",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "simulate",
+        "action": "none",
+        "execution": "not_executed",
+        "resource_kind": "memory",
+        "target_id": null,
+        "reason_codes": [
+          "NO_EFFECTIVE_SHEDDING_TARGET",
+          "PROTECTED_TOP_CONSUMER"
+        ],
+        "plan": null,
+        "plans_count": 0,
+        "top_consumer": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc"
+      },
+      "active_resources": [
+        "memory"
+      ],
+      "rankings": {
+        "memory": [
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 80.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 20.0,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 10.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ]
+      },
+      "expected_pass": true
+    },
+    {
+      "name": "unknown_top",
+      "mode": "simulate",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "simulate",
+        "action": "none",
+        "execution": "not_executed",
+        "resource_kind": "memory",
+        "target_id": null,
+        "reason_codes": [
+          "NO_EFFECTIVE_SHEDDING_TARGET",
+          "UNKNOWN_TOP_CONSUMER"
+        ],
+        "plan": null,
+        "plans_count": 0,
+        "top_consumer": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17"
+      },
+      "active_resources": [
+        "memory"
+      ],
+      "rankings": {
+        "memory": [
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 80.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 20.0,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 10.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ]
+      },
+      "expected_pass": true
+    },
+    {
+      "name": "contribution_below_minimum",
+      "mode": "simulate",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "simulate",
+        "action": "none",
+        "execution": "not_executed",
+        "resource_kind": "memory",
+        "target_id": null,
+        "reason_codes": [
+          "CONTRIBUTION_BELOW_MINIMUM",
+          "NO_EFFECTIVE_SHEDDING_TARGET"
+        ],
+        "plan": null,
+        "plans_count": 0,
+        "top_consumer": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92"
+      },
+      "active_resources": [
+        "memory"
+      ],
+      "rankings": {
+        "memory": [
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 19.9,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 10.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 10.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ]
+      },
+      "expected_pass": true
+    },
+    {
+      "name": "identity_churn",
+      "mode": "simulate",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "simulate",
+        "action": "none",
+        "execution": "not_executed",
+        "resource_kind": "memory",
+        "target_id": null,
+        "reason_codes": [
+          "NO_EFFECTIVE_SHEDDING_TARGET",
+          "TARGET_IDENTITY_CHANGED"
+        ],
+        "plan": null,
+        "plans_count": 0,
+        "top_consumer": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92"
+      },
+      "active_resources": [
+        "memory"
+      ],
+      "rankings": {
+        "memory": [
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 80.0,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": "TARGET_IDENTITY_CHANGED",
+            "writer_evidence": true
+          },
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 10.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 10.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ]
+      },
+      "expected_pass": true
+    },
+    {
+      "name": "normal",
+      "mode": "simulate",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "simulate",
+        "action": "none",
+        "execution": "not_executed",
+        "resource_kind": null,
+        "target_id": null,
+        "reason_codes": [
+          "HOST_RISK_NOT_CONFIRMED"
+        ],
+        "plan": null,
+        "plans_count": 0
+      },
+      "active_resources": [],
+      "rankings": {},
+      "expected_pass": true
+    },
+    {
+      "name": "observe_zero_action",
+      "mode": "observe",
+      "decision": {
+        "schema": "guardian.emergency_shedding.v1",
+        "mode": "observe",
+        "action": "none",
+        "execution": "not_applicable",
+        "resource_kind": "memory",
+        "target_id": null,
+        "reason_codes": [
+          "ACTION_NOT_ALLOWLISTED",
+          "NO_EFFECTIVE_SHEDDING_TARGET"
+        ],
+        "plan": null,
+        "plans_count": 0
+      },
+      "active_resources": [
+        "memory"
+      ],
+      "rankings": {
+        "memory": [
+          {
+            "id": "98234d4f02729795f409c7a23b56a71ac3ec85af52506fa5959451c609b9ce92",
+            "name": "guardian-p017-actionable",
+            "contribution_percent": 80.0,
+            "protected": false,
+            "actionable": true,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "6dd9a229b6e21ec0a38cee1118a71c9f525c961117d643ad994cce7e9031efcc",
+            "name": "guardian-p017-protected",
+            "contribution_percent": 10.0,
+            "protected": true,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          },
+          {
+            "id": "9cf50c21f9f8be0e1ddb72c0126f0dfa0ecee186860a117f6b3944778f55af17",
+            "name": "guardian-p017-unknown",
+            "contribution_percent": 10.0,
+            "protected": false,
+            "actionable": false,
+            "identity_reason": null,
+            "writer_evidence": true
+          }
+        ]
+      },
+      "expected_pass": true
+    }
+  ],
+  "natural_exit": {
+    "guardian-p017-actionable": {
+      "status": "exited",
+      "natural_exit_observed": true,
+      "attempts": 37,
+      "last": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-20T17:55:05.546492093Z",
+        "FinishedAt": "2026-09-20T17:55:50.553121947Z",
+        "Health": {
+          "Status": "unhealthy",
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "Start": "2026-09-21T01:55:45.125218083+08:00",
+              "End": "2026-09-21T01:55:45.172800313+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:46.173460745+08:00",
+              "End": "2026-09-21T01:55:46.211907027+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:47.268049752+08:00",
+              "End": "2026-09-21T01:55:47.320124546+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:48.365459255+08:00",
+              "End": "2026-09-21T01:55:48.414234916+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:49.42487084+08:00",
+              "End": "2026-09-21T01:55:49.462539767+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            }
+          ]
+        }
+      },
+      "samples": [
+        {
+          "observed_epoch_s": 1789926910.305255,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926911.453992,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926912.602603,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926913.7739651,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926914.93782,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926916.0749419,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926917.216807,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926918.344183,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926919.4564989,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926920.581162,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926921.731432,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926922.873476,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926924.018579,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926925.158975,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926926.30218,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926927.433878,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926928.609959,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926929.7516491,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926930.890503,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926931.9993029,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926933.121867,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926934.23424,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926935.3275461,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926936.473279,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926937.617006,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926938.748975,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926939.834816,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926940.9467149,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926942.08987,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926943.2276878,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926944.386712,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926945.53693,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926946.703263,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926947.8301692,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926948.931873,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926950.0728939,
+          "status": "running"
+        },
+        {
+          "observed_epoch_s": 1789926951.1776938,
+          "status": "exited"
+        }
+      ]
+    },
+    "guardian-p017-protected": {
+      "status": "exited",
+      "natural_exit_observed": true,
+      "attempts": 1,
+      "last": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-20T17:55:05.734964824Z",
+        "FinishedAt": "2026-09-20T17:55:50.564347863Z",
+        "Health": {
+          "Status": "unhealthy",
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "Start": "2026-09-21T01:55:45.12533121+08:00",
+              "End": "2026-09-21T01:55:45.164611526+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:46.170932347+08:00",
+              "End": "2026-09-21T01:55:46.222510684+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:47.267256848+08:00",
+              "End": "2026-09-21T01:55:47.319814+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:48.364871033+08:00",
+              "End": "2026-09-21T01:55:48.41333519+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:49.424995284+08:00",
+              "End": "2026-09-21T01:55:49.456638208+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            }
+          ]
+        }
+      },
+      "samples": [
+        {
+          "observed_epoch_s": 1789926951.2534752,
+          "status": "exited"
+        }
+      ]
+    },
+    "guardian-p017-unknown": {
+      "status": "exited",
+      "natural_exit_observed": true,
+      "attempts": 1,
+      "last": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-20T17:55:05.902384132Z",
+        "FinishedAt": "2026-09-20T17:55:50.545473494Z",
+        "Health": {
+          "Status": "unhealthy",
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "Start": "2026-09-21T01:55:45.124771158+08:00",
+              "End": "2026-09-21T01:55:45.164450523+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:46.170940346+08:00",
+              "End": "2026-09-21T01:55:46.222982793+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:47.267971011+08:00",
+              "End": "2026-09-21T01:55:47.31890961+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:48.365631526+08:00",
+              "End": "2026-09-21T01:55:48.407494717+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-09-21T01:55:49.424921918+08:00",
+              "End": "2026-09-21T01:55:49.470273613+08:00",
+              "ExitCode": 0,
+              "Output": ""
+            }
+          ]
+        }
+      },
+      "samples": [
+        {
+          "observed_epoch_s": 1789926951.323213,
+          "status": "exited"
+        }
+      ]
+    }
+  },
+  "code_gate": "PASS",
+  "status": "INCONCLUSIVE",
+  "limitations": [
+    "containers_are_bounded_idle_fixtures_and_do_not_claim_real_host_pressure",
+    "critical_risk_and_resource_contributions_are_explicit_scenario_labels",
+    "actionable_and_protected_sets_are_local_test_labels_not_production_approval",
+    "all_policy_results_are_observe_or_simulate_and_execution_count_is_zero"
+  ],
+  "safety": {
+    "local_disposable_vm_only": true,
+    "real_docker_daemon": true,
+    "real_full_id_created_at_cgroup_path_inode_captured": true,
+    "guardian_mode": "observe_and_simulate",
+    "guardian_action_adapter_invoked": false,
+    "guardian_capability_created": false,
+    "docker_run_fixture_invoked": true,
+    "docker_stop_restart_kill_remove_invoked_by_harness": false,
+    "fixture_workloads_natural_exit": true,
+    "production_connected": false
+  }
+}

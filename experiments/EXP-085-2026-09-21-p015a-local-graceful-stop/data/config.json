@@ -1,0 +1,149 @@
+{
+  "actions": {
+    "allow": [
+      "graceful_stop"
+    ],
+    "cooldown_seconds": 600,
+    "enabled": true,
+    "graceful_timeout_seconds": 30,
+    "max_actions_per_host_per_hour": 1,
+    "require_approval": true
+  },
+  "agent": {
+    "interval_seconds": 5,
+    "mode": "enforce",
+    "snapshot_directory": null,
+    "snapshot_max_total_bytes": 268435456
+  },
+  "audit": {
+    "local_buffer_enabled": true,
+    "max_total_bytes": 104857600,
+    "remote_export_enabled": false
+  },
+  "protection": {
+    "container_labels": [
+      "guardian.protected=true"
+    ],
+    "executable_paths": [],
+    "systemd_units": [
+      "server-resource-guardian.service",
+      "ssh.service",
+      "sshd.service"
+    ]
+  },
+  "recovery": {
+    "max_wait_seconds": 15,
+    "poll_interval_seconds": 0.5,
+    "require_business_health": true
+  },
+  "risk": {
+    "composite": {
+      "max_sample_age_seconds": 15,
+      "psi_memory_full_critical_avg10": 0.5,
+      "psi_memory_some_warning_avg10": 1,
+      "required_samples": 2,
+      "swap_used_critical_percent": 50,
+      "swap_used_warning_percent": 25,
+      "trend_critical_bytes_per_second": 16777216,
+      "trend_warning_bytes_per_second": 1048576
+    },
+    "cpu": {
+      "critical_for_seconds": 10,
+      "critical_psi_full_avg10": 0.5,
+      "critical_scheduler_delay_ms": 1000,
+      "critical_utilization_percent": 95,
+      "max_sample_age_seconds": 15,
+      "min_object_contribution_percent": 20,
+      "min_object_lead_margin": 0.15,
+      "required_samples": 2,
+      "warning_for_seconds": 30,
+      "warning_psi_some_avg10": 1,
+      "warning_scheduler_delay_ms": 250,
+      "warning_utilization_percent": 85
+    },
+    "disk_capacity": {
+      "critical_for_seconds": 30,
+      "critical_free_percent": 5,
+      "critical_inode_free_percent": 5,
+      "critical_time_to_full_seconds": 3600,
+      "max_sample_age_seconds": 15,
+      "min_object_contribution_percent": 20,
+      "min_object_lead_margin": 0.15,
+      "mount_points": [
+        "/"
+      ],
+      "required_samples": 2,
+      "warning_for_seconds": 180,
+      "warning_free_percent": 15,
+      "warning_inode_free_percent": 10,
+      "warning_time_to_full_seconds": 86400
+    },
+    "emergency_shedding": {
+      "action": "graceful_stop",
+      "actionable_set": [
+        {
+          "action": "graceful_stop",
+          "allowed_resources": [
+            "memory"
+          ],
+          "environment": "local-disposable",
+          "expires_at": "2026-09-21T06:25:53.290041Z",
+          "grace_timeout_seconds": 30,
+          "human_contact": "current-user",
+          "owner": "current-user",
+          "stable_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+        }
+      ],
+      "enabled": true,
+      "min_host_contribution_percent": 20,
+      "protected_set": [
+        {
+          "owner": "workspace-owner",
+          "reason": "pre-existing container goal4i-netlab-receiver; never touch in P0-15A",
+          "stable_id": "cd62158e0b7be398a05b929c3c2fc1a78958aa5bb76bda02bd9c316f949b098d"
+        },
+        {
+          "owner": "workspace-owner",
+          "reason": "pre-existing container goal4i-netlab-sender; never touch in P0-15A",
+          "stable_id": "5537f144aaf9bf9a8a0e4b08a0e6b38e45824cfd0d01caac11fc6add84d0994c"
+        },
+        {
+          "owner": "workspace-owner",
+          "reason": "pre-existing container infinite-canvas; never touch in P0-15A",
+          "stable_id": "d9136394d8b1ee78be59fd2cccb29266b126c411a8d27e82f6e1f341e2a5b537"
+        }
+      ],
+      "required_samples": 2,
+      "resource_priority": [
+        "memory",
+        "cpu",
+        "io",
+        "disk_capacity"
+      ],
+      "schema": "guardian.emergency_shedding.v1",
+      "window_seconds": 15
+    },
+    "io": {
+      "critical_average_latency_ms": 500,
+      "critical_device_utilization_percent": 90,
+      "critical_for_seconds": 10,
+      "critical_psi_full_avg10": 0.5,
+      "max_sample_age_seconds": 15,
+      "min_object_contribution_percent": 20,
+      "min_object_lead_margin": 0.15,
+      "required_samples": 2,
+      "warning_average_latency_ms": 100,
+      "warning_device_utilization_percent": 70,
+      "warning_for_seconds": 30,
+      "warning_psi_some_avg10": 1
+    },
+    "memory": {
+      "critical_available_percent": 10,
+      "critical_for_seconds": 30,
+      "warning_available_percent": 15,
+      "warning_for_seconds": 180
+    }
+  },
+  "schema": "guardian.config.v1",
+  "version": 1
+}

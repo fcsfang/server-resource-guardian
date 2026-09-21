@@ -1,0 +1,30 @@
+{
+  "schema": "guardian.beszel.alerts.v1",
+  "version": 1,
+  "beszel_version": "0.19.0",
+  "system_ids": [],
+  "rules": [
+    {
+      "resource": "cpu",
+      "threshold_percent": 85,
+      "duration_minutes": 1,
+      "enabled": true
+    },
+    {
+      "resource": "memory",
+      "threshold_percent": 85,
+      "duration_minutes": 1,
+      "enabled": true
+    },
+    {
+      "resource": "disk",
+      "threshold_percent": 90,
+      "duration_minutes": 1,
+      "enabled": true
+    }
+  ],
+  "notification": {
+    "mode": "local_ui_history",
+    "real_channels_enabled": false
+  }
+}

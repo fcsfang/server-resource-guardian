@@ -49,6 +49,16 @@ def _read_scalar(path: Path) -> int | str | None:
         return value
 
 
+def _path_inode(path: Path | None) -> int | None:
+    if path is None:
+        return None
+    try:
+        inode = path.stat().st_ino
+    except (FileNotFoundError, PermissionError, OSError):
+        return None
+    return inode if isinstance(inode, int) and inode > 0 else None
+
+
 def _parse_counters(text: str | None) -> dict[str, int]:
     result: dict[str, int] = {}
     for line in (text or "").splitlines():
@@ -209,6 +219,7 @@ def collect_object_registry(
                 "labels": dict(labels),
                 "pid": pid,
                 "cgroup_path": str(cgroup_path) if cgroup_path else None,
+                "cgroup_inode": _path_inode(cgroup_path),
                 "mapping_confidence": mapping_confidence,
                 "mapping_errors": sorted(set(object_errors)),
                 "memory_current_bytes": current,

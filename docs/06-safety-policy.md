@@ -1,70 +1,75 @@
-# 生产安全与处置策略
+# Guardian 生产安全策略
 
-## 1. 默认策略
+更新时间：2026-09-20
 
-- `observe` 模式为默认模式，只采集、告警和取证。
-- 未知进程、无业务归属对象、保护对象一律不自动处置。
-- 自动动作功能必须显式启用，且同时满足对象白名单和动作白名单。
-- 中心指令不能绕过本地保护策略。
+状态：`ACTIVE`
 
-## 2. 永久保护对象基线
+优先级：高于功能需求、演示脚本和历史 PoC 行为
 
-至少包括：
+## 1. 默认拒绝
 
-- PID 1、内核线程和 systemd 核心组件。
-- Guardian 自身及其受限执行 helper。
-- SSH 服务、网络管理和名称解析关键服务。
-- 监控、审计和日志转发组件。
-- 容器运行时和公司声明的核心业务服务。
+- 默认模式为 `observe`；配置缺失、未知字段、版本不兼容、数据过期或审计失败时不得执行动作。
+- `simulate` 只能产生 `execution=not_executed` 计划。
+- 告警、critical、Top 排名、Beszel webhook 或 UI 操作都不是授权。
+- 一次事件最多一个目标、一个动作；并发或重放只有一个胜者。
 
-最终名单必须按目标发行版和公司服务清单校准，不能只依赖进程名称；应结合 systemd unit、cgroup、可执行文件路径、容器标签和业务身份。
+## 2. 两份正向清单
 
-## 3. 动作优先级
+### `protected_set`
 
-从低风险到高风险依次为：
+Guardian/Action Broker、PID 1、SSH/认证/网络/DNS、Docker/containerd、日志审计、Beszel Agent、文件系统/挂载关键服务，以及业务 owner 指定的数据库、队列、quorum、有状态/唯一副本任务。
 
-1. 通知和建议。
-2. 保存快照。
-3. 对业务明确允许的非关键任务调低资源权重或施加临时上限；不作为通用默认动作。
-4. 暂停可恢复的批处理任务。
-5. 对白名单服务执行优雅停止或 SIGTERM。
-6. 超时后对同一已确认目标执行 SIGKILL。
-7. 通过容器运行时或编排器重建无状态实例。
-8. 整机重启只作为带外人工兜底，不作为 Guardian 常规自动动作。
+### `actionable_set`
 
-## 4. 执行前检查
+只有明确登记 owner、稳定身份、资源范围、允许动作、grace timeout、健康与恢复合同、最大频率、失效日期的对象才可产生动作计划。
 
-每个变更动作必须确认：
+两个集合独立：未命中保护名单仍不代表可处置。对象不在 `actionable_set` 时一律告警/升级人工。
 
-- 告警仍处于有效状态，而不是已恢复的过期事件。
-- 请求未过期且没有重复执行。
-- 目标身份未发生 PID 重用，启动时间和可执行文件匹配。
-- 目标不在保护名单，且在该动作白名单中。
-- 最近冷却期内没有达到动作次数上限。
-- 处置不会违反副本数、集群 quorum 或维护窗口要求。
-- 现场快照已完成，或在极端情况下记录无法完成的原因。
+## 3. 稳定身份
 
-## 5. 执行后检查
+- 容器：full ID、image digest、created time、labels、cgroup path/inode。
+- systemd：完整 unit、cgroup path、主进程 starttime、配置声明。
+- 裸进程：只能作为诊断证据，不能作为自动动作目标。
 
-- 目标动作是否成功，退出码或运行时返回值是什么。
-- CPU、内存、PSI 或 I/O 是否在验证窗口内改善。
-- 核心业务健康检查、错误率和延迟是否恢复。
-- 是否出现新 OOM、进程抖动或容器重启循环。
-- 未恢复时停止继续扩大动作并升级人工处置。
+决策时和执行前各核验一次；重建、PID 重用、cgroup 变化或身份字段缺失均拒绝。
 
-## 6. 熔断条件
+## 4. 动作边界
 
-任一条件成立时自动处置必须停止：
+| 动作 | observe | simulate | local enforce | production automatic |
+| --- | --- | --- | --- | --- |
+| 记录/快照/告警 | 允许 | 允许 | 允许 | 允许 |
+| owner drain hook | 不执行 | 可计划 | 需单次授权和幂等合同 | 逐对象审批后评估 |
+| `graceful_stop` | 不执行 | 可计划 | 仅 disposable、一次性授权 | 极小 actionable_set 多方审批后评估 |
+| restart | 不执行 | 仅展示建议 | 禁止 | 禁止自动 |
+| terminate/SIGKILL | 不执行 | 仅展示 break-glass | 禁止 | 永久禁止自动 |
+| 裸 PID kill/整机重启/批量动作 | 禁止 | 禁止 | 禁止 | 永久禁止自动 |
+| 删除文件/日志、修改任意资源上限 | 禁止 | 禁止 | 禁止 | 永久禁止自动 |
 
-- 单机或全局动作次数达到上限。
-- 保护名单或配置校验失败。
-- 中心审批信息无效或时钟偏差超限。
-- 业务健康在动作后继续恶化。
-- 多台同角色服务器同时进入危机，可能是全局故障。
-- Guardian 自身状态异常、审计写入失败或身份无法确认。
+仓库中的 restart/terminate adapter 代码是历史原型能力，不构成当前策略准入；生产路径必须在 broker 层不可达。
 
-## 7. 审计字段
+## 5. 执行事务
 
-每次决策至少记录：事件 ID、主机 ID、规则和配置版本、触发指标、目标身份、进程启动时间或容器 ID、动作、参数、审批人、执行人、开始/结束时间、结果、资源恢复情况和关联快照。
+1. 校验资源证据、对象归因、策略和 capability。
+2. 持久化不可变 plan digest 与 intent。
+3. 原子 claim capability；失败即拒绝。
+4. 执行前重新核验身份和保护/可处置状态。
+5. 调用参数数组 adapter，不经过 shell。
+6. 持久化 result，随后验证宿主缓解和业务恢复。
+7. 任意未知中间态进入 `RECONCILIATION_REQUIRED`，不得自动重试。
 
-审计应异步发送到主机外，并设置本地有界缓冲；不能因为中心不可用阻塞 Guardian 的保命逻辑。
+## 6. 熔断
+
+保护命中、目标歧义、采样过期、审计/状态库失败、动作超时/失败、恢复未确认、业务恶化、连续失败、达到频率上限、多资源指向不同目标时，立即 `CIRCUIT_OPEN + ESCALATED`。熔断后只允许告警、取证和人工处置。
+
+## 7. Rescue Plane 安全
+
+- Rescue Plane 参数先在 disposable VM 验证，不直接安装到生产。
+- CPU/IO weight 不写成绝对预留；memory.min/low 必须核算祖先层级和总保护量。
+- 不在生产根盘做填满实验；容量实验只使用隔离 loopback/挂载点。
+- 生产 Rescue Plane 变更需维护窗口、回滚、外部 SSH 客户端探针和带外通道。
+
+## 8. 审计最小字段
+
+`event_id`、host/boot、resource kind、sample/window、quality、policy/config digest、target identity、protected/actionable 结果、authorization、intent、adapter result、host verification、business verification、notification delivery、wall/monotonic time。
+
+本地审计有界且同步失败 fail-closed；生产还需批准的异地主机外保留机制。

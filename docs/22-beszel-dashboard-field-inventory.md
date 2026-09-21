@@ -6,7 +6,7 @@
 
 ## 1. 目的
 
-G6-T01 需要逐项核验 Beszel 主机、Docker、systemd 和历史指标。本文件先记录本地 Beszel 0.19.0 控制台静态 bundle 中实际使用的集合、字段和采集周期，再补充用户已登录 Chrome 会话中可复查的主机、容器和历史曲线证据。
+本文件记录本地 Beszel 0.19.0 控制台实际使用的主机、Docker、systemd、历史和告警字段，以及登录态页面中可复查的证据。
 
 ## 2. 已识别的集合与字段
 
@@ -78,4 +78,4 @@ G6-T01 需要逐项核验 Beszel 主机、Docker、systemd 和历史指标。本
 
 静态 bundle 还显示用户告警配置通过 `POST/DELETE /api/beszel/user-alerts` 写入；运行态告警由 `alerts` 集合订阅（字段 `id,name,system,value,min,triggered`），告警历史页由 `alerts_history` 订阅。因而 `alerts` 为空表示当前未观测到 active alert，不等于用户配置不存在；该配置接口的 GET 形式未暴露。
 
-静态资源能证明控制台代码请求哪些字段；登录态页面已经证明当前账号能看到主机、容器和历史曲线，EXP-026 证明当前 `systemd_services` 查询没有可见记录。G6-T01 以“可见字段 + 缺失字段 + 运行态条件 + 更新间隔 + 开销”完成验收；真实告警延迟和 systemd 采集原因不属于本项已证明结论。
+静态资源能证明控制台代码请求哪些字段；登录态页面已经证明当前账号能看到主机、容器和历史曲线，历史本地记录表明 `systemd_services` 查询没有可见记录。真实告警延迟和 systemd 采集原因不属于本文件已证明结论。

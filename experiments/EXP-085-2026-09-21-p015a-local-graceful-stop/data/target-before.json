@@ -1,0 +1,29 @@
+{
+  "created": "2026-09-21T06:00:13.082819164Z",
+  "host_config": {
+    "Memory": 67108864,
+    "NanoCpus": 100000000,
+    "NetworkMode": "none",
+    "PidsLimit": 32,
+    "Privileged": false,
+    "ReadonlyRootfs": true
+  },
+  "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+  "image": "ubuntu:24.04",
+  "labels": {
+    "guardian.action": "graceful_stop",
+    "guardian.owner": "codex-user-authorized",
+    "guardian.protected": "false",
+    "guardian.purpose": "p015a-graceful-stop",
+    "guardian.scope": "local-disposable",
+    "org.opencontainers.image.version": "24.04"
+  },
+  "name": "/guardian-p015a-disposable-20260921-01",
+  "state": {
+    "ExitCode": 0,
+    "FinishedAt": "0001-01-01T00:00:00Z",
+    "Running": true,
+    "StartedAt": "2026-09-21T06:00:13.165466664Z",
+    "Status": "running"
+  }
+}

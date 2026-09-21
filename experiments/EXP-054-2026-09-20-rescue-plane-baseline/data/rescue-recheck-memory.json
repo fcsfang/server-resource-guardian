@@ -1,0 +1,852 @@
+{
+  "schema": "guardian.rescue_probe.v1",
+  "vm": "guardian-p011-migration",
+  "label": "rescue-recheck-memory",
+  "count_per_probe": 20,
+  "timeout_seconds": 10.0,
+  "started_epoch_s": 1789899202.111422,
+  "finished_epoch_s": 1789899208.11973,
+  "records": [
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 122.348,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 1,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 80.109,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 1,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 66.212,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 1,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 107.846,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2627,
+      "stderr": "",
+      "round": 1,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 66.932,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 2,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 61.635,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 2,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 57.987,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 2,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 82.007,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2627,
+      "stderr": "",
+      "round": 2,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 78.094,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 3,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 53.817,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 3,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 61.939,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 3,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 96.881,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2628,
+      "stderr": "",
+      "round": 3,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 55.871,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 4,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.942,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 4,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 56.62,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 4,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 96.492,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2628,
+      "stderr": "",
+      "round": 4,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 63.543,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 5,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 60.849,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 5,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 69.043,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 5,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 91.385,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2628,
+      "stderr": "",
+      "round": 5,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 52.997,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 6,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 59.422,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 6,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 62.299,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 6,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 100.767,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2628,
+      "stderr": "",
+      "round": 6,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 50.661,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 7,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 57.524,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 7,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 83.342,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 7,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 91.792,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 7,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 79.67,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 8,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 161.504,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 8,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 75.441,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 8,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 108.306,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 8,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 77.357,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 9,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 81.438,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 9,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 65.247,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 9,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 93.311,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 9,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 60.603,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 10,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 58.908,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 10,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 70.373,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 10,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 113.207,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 10,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 57.526,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 11,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 52.729,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 11,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 76.31,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 11,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 108.397,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 11,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 63.012,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 12,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.63,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 12,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 76.507,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 12,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 111.603,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 12,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 62.25,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 13,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 68.28,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 13,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 60.835,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 13,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 93.116,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 13,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 69.627,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 14,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 54.374,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 14,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 66.485,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 14,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 109.364,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 14,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 71.221,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 15,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.413,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 15,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 65.352,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 15,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 101.291,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2629,
+      "stderr": "",
+      "round": 15,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 56.6,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 16,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 58.734,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 16,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 62.064,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 16,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 91.057,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 16,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 62.329,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 17,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 68.054,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 17,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 70.475,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 17,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 108.773,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 17,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 61.139,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 18,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 58.61,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 18,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 62.449,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 18,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 83.639,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 18,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 58.076,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 19,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 52.237,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 19,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 62.499,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 19,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 93.732,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 19,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 65.39,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 20,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 75.144,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 20,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 62.441,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 20,
+      "label": "rescue-recheck-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 90.644,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2631,
+      "stderr": "",
+      "round": 20,
+      "label": "rescue-recheck-memory"
+    }
+  ],
+  "summary": {
+    "diagnostic_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 60.849,
+      "p95_ms": 81.438,
+      "max_ms": 161.504
+    },
+    "docker_list_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 65.247,
+      "p95_ms": 76.507,
+      "max_ms": 83.342
+    },
+    "guardian_observe_once": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 96.492,
+      "p95_ms": 111.603,
+      "max_ms": 113.207
+    },
+    "ssh_managed_session": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 62.329,
+      "p95_ms": 79.67,
+      "max_ms": 122.348
+    }
+  },
+  "safety": {
+    "read_only_control_probes": true,
+    "temporary_audit_write_only": true,
+    "docker_mutation_invoked": false,
+    "systemd_mutation_invoked": false,
+    "production_connected": false
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "guardian.config.v1",
+  "version": 1,
+  "agent": {
+    "mode": "simulate",
+    "interval_seconds": 1,
+    "snapshot_directory": null,
+    "snapshot_max_total_bytes": 268435456
+  },
+  "risk": {
+    "memory": {
+      "warning_available_percent": 15,
+      "critical_available_percent": 10,
+      "warning_for_seconds": 180,
+      "critical_for_seconds": 30
+    },
+    "composite": {
+      "required_samples": 2,
+      "max_sample_age_seconds": 15,
+      "trend_warning_bytes_per_second": 1048576,
+      "trend_critical_bytes_per_second": 16777216,
+      "psi_memory_some_warning_avg10": 1,
+      "psi_memory_full_critical_avg10": 0.5,
+      "swap_used_warning_percent": 25,
+      "swap_used_critical_percent": 50
+    },
+    "cpu": {
+      "warning_utilization_percent": 85,
+      "critical_utilization_percent": 95,
+      "warning_psi_some_avg10": 1,
+      "critical_psi_full_avg10": 0.5,
+      "warning_scheduler_delay_ms": 250,
+      "critical_scheduler_delay_ms": 1000,
+      "warning_for_seconds": 3,
+      "critical_for_seconds": 5,
+      "required_samples": 2,
+      "max_sample_age_seconds": 15,
+      "min_object_contribution_percent": 20,
+      "min_object_lead_margin": 0.15
+    }
+  },
+  "actions": {
+    "enabled": false,
+    "require_approval": true,
+    "graceful_timeout_seconds": 30,
+    "cooldown_seconds": 600,
+    "max_actions_per_host_per_hour": 0,
+    "allow": ["graceful_stop"]
+  },
+  "protection": {
+    "systemd_units": [],
+    "executable_paths": [],
+    "container_labels": []
+  },
+  "recovery": {
+    "max_wait_seconds": 30,
+    "poll_interval_seconds": 1,
+    "require_business_health": true
+  },
+  "audit": {
+    "local_buffer_enabled": true,
+    "remote_export_enabled": false,
+    "max_total_bytes": 104857600
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "guardian.p014_real_docker.capacity_fixture_failure.v1",
+  "experiment": "EXP-064",
+  "status": "FAILED_FIXTURE_RETAINED",
+  "attempt": "v1",
+  "vm": "guardian-p014-capacity-loopback",
+  "cause": "128MiB_raw_loopback_provided_about_104MiB_ext4_space_but_the_first_workload_requested_120MiB",
+  "observed_result": "first_capacity_container_exited_1_and_the_shared_mount_was_full_for_later_rounds",
+  "correction": "request_100MiB_and_remove_only_the_known_fixture_capacity_bin_before_each_new_target_on_a_fresh_vm",
+  "safety": {
+    "production_connected": false,
+    "existing_guardian_ubuntu_touched": false,
+    "docker_stop_restart_kill_invoked_by_harness": false,
+    "host_root_fill_attempted": false
+  }
+}

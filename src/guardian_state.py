@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import stat
 import sqlite3
 import time
 import uuid
@@ -44,15 +46,31 @@ _ACTIVE_INTENT_STATES = (
     "RECONCILIATION_REQUIRED",
 )
 _FINAL_INTENT_STATES = {"PLANNED", "SUCCEEDED", "FAILED"}
+_MAX_STATE_JSON_BYTES = 64 * 1024
 
 
 class GuardianStateStore:
     """SQLite-backed capability, intent, audit and cooldown state."""
 
-    def __init__(self, path: Path) -> None:
+    def __init__(self, path: Path, *, file_mode: int = 0o600) -> None:
         self.path = Path(path)
+        if file_mode not in {0o600, 0o660}:
+            raise ValueError("state_store_file_mode_invalid")
+        self.file_mode = file_mode
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._initialize()
+        try:
+            os.chmod(self.path, self.file_mode)
+        except OSError as exc:
+            # The shared runtime database is intentionally group-writable by
+            # both guardian and guardian-broker. A non-owner process may use
+            # that existing mode safely but cannot chmod the file itself.
+            try:
+                current_mode = stat.S_IMODE(os.stat(self.path).st_mode)
+            except OSError as stat_exc:
+                raise StateStoreError(f"state_store_permissions_failed:{stat_exc}") from stat_exc
+            if current_mode & self.file_mode != self.file_mode:
+                raise StateStoreError(f"state_store_permissions_failed:{exc}") from exc
 
     def _connect(self) -> sqlite3.Connection:
         try:
@@ -109,6 +127,15 @@ class GuardianStateStore:
                     consecutive_failures INTEGER NOT NULL,
                     PRIMARY KEY(host_id, object_id, action)
                 );
+                CREATE TABLE IF NOT EXISTS action_slots (
+                    host_id TEXT NOT NULL,
+                    action TEXT NOT NULL,
+                    intent_id TEXT NOT NULL,
+                    state TEXT NOT NULL,
+                    acquired_at REAL NOT NULL,
+                    updated_at REAL NOT NULL,
+                    PRIMARY KEY(host_id, action)
+                );
                 """
             )
         except sqlite3.Error as exc:
@@ -133,9 +160,12 @@ class GuardianStateStore:
     @staticmethod
     def _json(value: Any) -> str:
         try:
-            return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+            encoded = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         except (TypeError, ValueError) as exc:
             raise StateStoreError("audit_payload_not_serializable") from exc
+        if len(encoded.encode("utf-8")) > _MAX_STATE_JSON_BYTES:
+            raise StateStoreError("audit_payload_too_large")
+        return encoded
 
     @staticmethod
     def _idempotency_key(host_id: str, object_id: str, action: str, event_id: str) -> str:
@@ -379,6 +409,30 @@ class GuardianStateStore:
                     timestamp,
                 )
                 pending.append(dict(row))
+            slot_rows = connection.execute(
+                "SELECT host_id,action,intent_id,state,acquired_at,updated_at FROM action_slots WHERE state='ACTIVE' ORDER BY acquired_at"
+            ).fetchall()
+            for row in slot_rows:
+                connection.execute(
+                    "UPDATE action_slots SET state='RECONCILIATION_REQUIRED',updated_at=? WHERE host_id=? AND action=? AND state='ACTIVE'",
+                    (timestamp, row[0], row[1]),
+                )
+                self._audit(
+                    connection,
+                    row[2],
+                    "action_slot_reconciliation_required",
+                    {"host_id": row[0], "action": row[1], "previous_state": row[3]},
+                    timestamp,
+                )
+                pending.append(
+                    {
+                        "kind": "action_slot",
+                        "host_id": row[0],
+                        "action": row[1],
+                        "intent_id": row[2],
+                        "state": "RECONCILIATION_REQUIRED",
+                    }
+                )
             connection.commit()
             for item in pending:
                 item["state"] = "RECONCILIATION_REQUIRED"
@@ -389,6 +443,85 @@ class GuardianStateStore:
         except sqlite3.Error as exc:
             connection.rollback()
             raise StateStoreError(f"reconciliation_failed:{exc}") from exc
+        finally:
+            connection.close()
+
+    def claim_action_slot(self, host_id: str, action: str, intent_id: str, *, now: float | None = None) -> bool:
+        """Reserve one host/action execution slot before calling an adapter.
+
+        The existing cooldown ledger records completed actions.  This separate
+        durable lease closes the concurrent gap between the preflight check and
+        the adapter call, so two targets cannot both become the first action
+        while the ledger is still empty.  A lease left behind by a crash is
+        converted to reconciliation-required on the next startup.
+        """
+
+        timestamp = time.time() if now is None else now
+        connection = self._connect()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            existing = connection.execute(
+                "SELECT intent_id,state FROM action_slots WHERE host_id=? AND action=?",
+                (host_id, action),
+            ).fetchone()
+            if existing is not None:
+                connection.rollback()
+                return False
+            connection.execute(
+                "INSERT INTO action_slots(host_id,action,intent_id,state,acquired_at,updated_at) VALUES (?,?,?,?,?,?)",
+                (host_id, action, intent_id, "ACTIVE", timestamp, timestamp),
+            )
+            self._audit(
+                connection,
+                intent_id,
+                "action_slot_claimed",
+                {"host_id": host_id, "action": action},
+                timestamp,
+            )
+            connection.commit()
+            return True
+        except StateStoreError:
+            connection.rollback()
+            raise
+        except sqlite3.Error as exc:
+            connection.rollback()
+            raise StateStoreError(f"action_slot_claim_failed:{exc}") from exc
+        finally:
+            connection.close()
+
+    def release_action_slot(self, host_id: str, action: str, intent_id: str, *, now: float | None = None) -> bool:
+        """Release a slot only when it still belongs to the same intent."""
+
+        timestamp = time.time() if now is None else now
+        connection = self._connect()
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            existing = connection.execute(
+                "SELECT intent_id,state FROM action_slots WHERE host_id=? AND action=?",
+                (host_id, action),
+            ).fetchone()
+            if existing is None or existing[0] != intent_id or existing[1] != "ACTIVE":
+                connection.rollback()
+                return False
+            connection.execute(
+                "DELETE FROM action_slots WHERE host_id=? AND action=? AND intent_id=? AND state='ACTIVE'",
+                (host_id, action, intent_id),
+            )
+            self._audit(
+                connection,
+                intent_id,
+                "action_slot_released",
+                {"host_id": host_id, "action": action},
+                timestamp,
+            )
+            connection.commit()
+            return True
+        except StateStoreError:
+            connection.rollback()
+            raise
+        except sqlite3.Error as exc:
+            connection.rollback()
+            raise StateStoreError(f"action_slot_release_failed:{exc}") from exc
         finally:
             connection.close()
 

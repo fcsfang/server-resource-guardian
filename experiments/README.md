@@ -1,64 +1,16 @@
-# 实验日志与核心数据目录
+# 历史实验档案
 
-本目录保存项目所有实验和故障测试的可追踪记录，以及经过脱敏、可复核的核心实验数据。实验记录是“实际做了什么、观察到什么”的唯一依据；计划和待办写在 [`goals/`](../goals/README.md)，环境原始采集仍按仓库的敏感信息规则处理。
+本目录保存已经发生过的实验及其数据，用于回答“以前实际验证过什么”。它不是项目路线，也不能产生新的任务。
 
-实验结果统一归档在本目录，不再另设 `docs/test-results/`。需要在 `PROGRESS.md` 或其他文档引用测试结论时，直接链接对应实验的 `record.md`，避免同一结果维护两份正文。
+## 使用规则
 
-## 目录结构
+- 默认不要通读本目录。
+- 只有需要核对某个具体事实时，才读取对应的一条 `record.md`。
+- 旧实验里的 Goal、P0、任务号和下一步建议全部失效。
+- 后续开发不再为单个阈值、持续时间、异常输入或相似压力场景创建新实验编号。
+- 每个里程碑只做一次整体验收；缺陷修复继续更新同一份验收结果。
+- 未经用户明确要求，不新建 `EXP-###`。
 
-每次实验建立一个独立目录：
+历史记录即使失败或结论不确定也保留，不能修改成成功。生产日志、凭据和未脱敏数据不得进入仓库。
 
-```text
-experiments/
-└── EXP-001-YYYY-MM-DD-<short-slug>/
-    ├── record.md       # 实验日志、环境、步骤、结果和结论
-    ├── data/           # 核心结构化数据：CSV/JSON/TSV 等，必须脱敏
-    ├── evidence/       # 可审阅的截图、图表或摘要证据
-    └── raw/            # 原始日志/快照，可选，默认不提交
-```
-
-`EXP-###` 全局递增且不复用。实验即使失败、提前停止或没有得到预期结果，也要保留记录；不要删除失败实验来美化结果。
-
-当前生产化路线最近的证据：[`EXP-052 ENOSPC fail-closed`](EXP-052-2026-09-20-enospc-fail-closed/record.md)、[`EXP-051 当前代码 watchdog 状态 observe soak`](EXP-051-2026-09-20-watchdog-status-observe-soak/record.md)、[`EXP-050 watchdog 状态 fail-closed`](EXP-050-2026-09-20-watchdog-status-fail-closed/record.md)、[`EXP-049 审计完整性校验器`](EXP-049-2026-09-20-audit-integrity-verifier/record.md)、[`EXP-048 异常退出码重启`](EXP-048-2026-09-20-systemd-abnormal-exit-restart/record.md)、[`EXP-047 审计 fsync fail-closed`](EXP-047-2026-09-20-audit-fsync-fail-closed/record.md)、[`EXP-044 systemd 自然失败重启`](EXP-044-2026-09-20-systemd-crash-restart/record.md)、[`EXP-043 有界高压采样`](EXP-043-2026-09-20-bounded-high-pressure-sampling/record.md)、[`EXP-042 高压预检失败`](EXP-042-2026-09-20-bounded-high-pressure-sampling/record.md)、[`EXP-041 systemd watchdog 通知`](EXP-041-2026-09-20-systemd-watchdog-notify/record.md)、[`EXP-040 systemd transient readiness`](EXP-040-2026-09-20-systemd-transient-notify/record.md)、[`EXP-039 24 小时 Observer soak`](EXP-039-2026-09-20-24h-observer-soak/record.md)、[`EXP-038 延长 Observer soak`](EXP-038-2026-09-20-extended-observer-soak/record.md)、[`EXP-037 依赖故障 fixture`](EXP-037-2026-09-20-dependency-failure-fixtures/record.md)、[`EXP-036 有界 Observer soak`](EXP-036-2026-09-20-bounded-observer-soak/record.md)、[`EXP-035 有界存储`](EXP-035-2026-09-20-bounded-storage-fail-closed/record.md)、[`EXP-034 systemd 常驻基线`](EXP-034-2026-09-20-systemd-runtime-baseline/record.md)、[`EXP-033 两层恢复`](EXP-033-2026-09-20-two-layer-recovery/record.md)、[`EXP-032 持久状态`](EXP-032-2026-09-20-durable-state-and-recovery/record.md)、[`EXP-031 对象归因`](EXP-031-2026-09-20-object-attribution/record.md) 和 [`EXP-030 组合风险引擎`](EXP-030-2026-09-20-composite-risk-engine/record.md)，分别对应 Goal 7 / PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-07、PG-P0-06、PG-P0-05、PG-P0-04、PG-P0-03。
-
-当前新增核心门禁证据：[`EXP-053 当前代码核心内存危机模拟门禁`](EXP-053-2026-09-20-core-memory-simulate-gate/record.md)。它只证明当前代码在唯一对象、歧义对象和保护对象场景中的 `observe/simulate` 决策边界，不替代真实故障预防对照。
-
-## 记录规范
-
-`record.md` 至少包含：
-
-1. 实验 ID、日期、关联 Goal 和实验目的。
-2. 测试环境：主机类型、OS、内核、systemd、cgroup、Docker 和组件版本。
-3. 授权范围、保护名单、测试对象和停止条件。
-4. 初始状态、注入方法、步骤、命令摘要和开始/结束时间。
-5. 观测结果：SSH、shell、诊断命令、压力指标、事件、告警和组件开销。
-6. 动作结果：只读、模拟还是实际变更；实际动作必须记录授权依据。
-7. 核心数据文件、证据链接、验收结论、异常和后续行动。
-8. 数据质量说明：缺失值、采样周期、时区、测量限制和是否可复现。
-
-## 数据边界
-
-- `data/` 只放推动技术判断所必需的核心数据，优先 CSV/JSON/TSV，避免提交无界原始日志。
-- `evidence/` 只保留脱敏后能支持结论的证据；大文件或敏感文件留在受控环境，并在记录中写明位置。
-- `raw/` 用于本机临时原始输出，默认不进入 Git；生产日志、凭据、token、IP/业务敏感标识不得提交。
-- `reports/` 用于按机器采集的环境原始报告；某次实验产生的原始输出应放在该实验的 `raw/`，不要跨目录散落。
-- 任何实验数据必须标记是“观测结果”“计算结果”还是“工程判断”，不能只给一个结论数字。
-- 实验完成后，在对应 Goal 勾选任务，并在 `PROGRESS.md` 增加一句话摘要和实验链接。
-- 对照实验必须同时回答两件事：无保护组是否真的产生了目标错误，以及保护组是否避免或缓解了同一错误；只有“有无动作但两组都正常”只能记为安全性/误报对照，不能写成有效性证明。
-
-## 实验状态
-
-统一使用：`PLANNED`、`RUNNING`、`PASSED`、`FAILED`、`STOPPED`、`INCONCLUSIVE`。状态变化必须写入 `record.md` 的更新记录。
-
-## 新建实验步骤
-
-```text
-1. 在 goals/ 当前 Goal 中新增或确认任务。
-2. 分配下一个 EXP-###，创建实验目录和 record.md。
-3. 实验前写授权、保护名单、停止条件和预期观测。
-4. 执行实验，核心数据实时或阶段性保存到 data/。
-5. 实验后补齐结论、证据、限制，并回链 Goal 与 PROGRESS.md。
-6. commit + push，即可读取完整记录。
-```
-
-记录模板见 [`_template.md`](_template.md)。
+当前任务和完成标准只看根目录的 [ROADMAP.md](../ROADMAP.md)。

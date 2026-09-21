@@ -1,0 +1,18 @@
+[Unit]
+Description=Guardian PG-P0-11 migrated Rescue Plane observer fixture
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+SupplementaryGroups=docker
+WorkingDirectory=/home/ubuntu/guardian-p011-code
+ExecStart=/usr/bin/python3 -m src.guardian_observer --interval 5 --config /home/ubuntu/guardian-p011-code/config/guardian.example.json --audit-file /home/ubuntu/guardian-p011-probe/migrated-observer.jsonl
+Restart=on-failure
+RestartSec=1s
+TimeoutStopSec=10s
+NoNewPrivileges=true
+Slice=rescue.slice
+StandardOutput=journal
+StandardError=journal

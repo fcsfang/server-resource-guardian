@@ -1,0 +1,43 @@
+{
+  "schema": "guardian.cpu_negative_cases.v1",
+  "cases": [
+    {
+      "name": "short_burst",
+      "input": "high utilization for one sample, then normal",
+      "expected_risk_state": "normal",
+      "expected_action": "none",
+      "reason": "dwell window prevents a short CPU burst from becoming a plan"
+    },
+    {
+      "name": "two_close_objects",
+      "input": "two stable cgroups with 54.2% and 45.8% CPU deltas",
+      "expected_attribution_state": "AMBIGUOUS_TARGET",
+      "expected_action": "escalate",
+      "reason": "lead margin is below the 15% attribution gate"
+    },
+    {
+      "name": "cgroup_recreated",
+      "input": "same stable id observed with a changed cgroup path",
+      "expected_attribution_state": "AMBIGUOUS_TARGET",
+      "expected_action": "escalate",
+      "reason": "identity continuity is not proven"
+    },
+    {
+      "name": "unknown_mapping",
+      "input": "CPU counter exists but mapping confidence is low or has errors",
+      "expected_attribution_state": "DEGRADED_OBSERVABILITY",
+      "expected_action": "escalate",
+      "reason": "unknown objects never receive an executable plan"
+    },
+    {
+      "name": "protected_target",
+      "input": "stable target under an active protection gate",
+      "expected_action": "escalate",
+      "reason": "protected objects cannot receive a CPU simulate action"
+    }
+  ],
+  "safety": {
+    "real_action_invoked": false,
+    "host_or_production_modified": false
+  }
+}

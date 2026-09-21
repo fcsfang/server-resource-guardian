@@ -1,0 +1,852 @@
+{
+  "schema": "guardian.rescue_probe.v1",
+  "vm": "guardian-ubuntu",
+  "label": "idle-baseline",
+  "count_per_probe": 20,
+  "timeout_seconds": 10.0,
+  "started_epoch_s": 1789895617.436741,
+  "finished_epoch_s": 1789895659.1555042,
+  "records": [
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 168.528,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 1,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 72.254,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 1,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 77.635,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 1,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 2164.431,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 1,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 63.753,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 2,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 64.76,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 2,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 74.716,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 2,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1884.667,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 2,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 69.123,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 3,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 72.323,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 3,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 78.675,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 3,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1883.733,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 3,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 72.613,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 4,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 74.42,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 4,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 79.03,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 4,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1821.257,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 4,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 72.649,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 5,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.789,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 5,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 72.372,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 5,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1818.179,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 5,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 68.93,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 6,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.47,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 6,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 75.729,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 6,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1872.301,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 6,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 77.127,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 7,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 68.331,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 7,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 88.996,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 7,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1797.809,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 7,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 79.651,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 8,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 69.946,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 8,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 70.424,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 8,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1864.932,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 8,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 67.639,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 9,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 73.601,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 9,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 74.14,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 9,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1863.162,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7909,
+      "stderr": "",
+      "round": 9,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 72.72,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 10,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.08,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 10,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 71.143,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 10,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1869.233,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 10,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 76.914,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 11,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.405,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 11,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 80.637,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 11,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1851.274,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 11,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 76.881,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 12,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 75.051,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 12,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 71.758,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 12,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1852.93,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 12,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 77.163,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 13,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 74.44,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 13,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 69.939,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 13,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1813.04,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 13,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 70.393,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 14,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 64.437,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 14,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 69.412,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 14,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1863.638,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 14,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 93.326,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 15,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 71.074,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 15,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 71.291,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 15,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1900.716,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 15,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 79.326,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 16,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.074,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 16,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 86.397,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 16,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1784.386,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 16,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 69.096,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 17,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.846,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 17,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 182.481,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 17,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1717.091,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 17,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 89.455,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 18,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 71.987,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 18,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 79.787,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 18,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1838.21,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 18,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 72.34,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 19,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 64.596,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 19,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 72.883,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 19,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1843.129,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 19,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 69.837,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 20,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 64.676,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 20,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 72.238,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 20,
+      "label": "idle-baseline"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1826.049,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 20,
+      "label": "idle-baseline"
+    }
+  ],
+  "summary": {
+    "diagnostic_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 66.789,
+      "p95_ms": 74.44,
+      "max_ms": 75.051
+    },
+    "docker_list_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 74.14,
+      "p95_ms": 88.996,
+      "max_ms": 182.481
+    },
+    "guardian_observe_once": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 1851.274,
+      "p95_ms": 1900.716,
+      "max_ms": 2164.431
+    },
+    "ssh_managed_session": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 72.649,
+      "p95_ms": 93.326,
+      "max_ms": 168.528
+    }
+  },
+  "safety": {
+    "read_only_control_probes": true,
+    "temporary_audit_write_only": true,
+    "docker_mutation_invoked": false,
+    "systemd_mutation_invoked": false,
+    "production_connected": false
+  }
+}

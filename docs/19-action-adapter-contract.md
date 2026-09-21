@@ -1,51 +1,55 @@
-# Guardian 受控动作适配器契约（G4-T05）
+# Guardian Action Broker 与 Adapter 契约
 
-更新时间：2026-09-19
+更新时间：2026-09-20
 
-> 本文定义 `enforce` 的最小安全接口。当前只实现校验和可注入执行器；没有获得明确授权前，不对真实 Docker 对象执行动作。当前只有本地 disposable `graceful_stop` 具备一次有效闭环证据；`restart`/`terminate` 不是默认动作，也不是生产准入结论。
+状态：`ACTIVE`
 
-## 1. 允许进入执行器的必要条件
+## 1. 当前产品动作面
 
-一个动作请求必须同时满足：
+v2 自动路径的唯一候选变更动作是对明确 `actionable_set` 对象执行一次 `graceful_stop`。仓库保留的 `restart`/`terminate` adapter 是历史原型代码；它们不得因代码存在而进入当前自动策略或生产准入。
 
-- 动作属于有限集合：`graceful_stop`、`restart`、`terminate`；
-- 目标是稳定且格式有效的完整/短 Docker container ID，不能只传名称；
-- 目标未命中保护名单；
-- 动作在目标的动作白名单中；
-- 存在明确授权 ID；
-- 授权环境必须是 `local-disposable`；
-- 授权目标和动作与请求完全一致；
-- 授权未过期；
-- 优雅动作超时在 1–120 秒范围内。
+## 2. 不可变请求
 
-任何一项失败都在调用 Docker 之前拒绝。
+请求至少绑定：schema version、event/plan ID、host/boot/environment、resource kind、完整目标身份、action、grace timeout、policy/config digest、authorization ID、nonce、签发/过期时间、最大执行次数 1。
 
-## 2. 执行器边界
+Broker 只接受结构化枚举，不接受 shell、命令字符串、路径删除、PID kill、批量对象或任意资源参数。
 
-- `MockActionExecutor` 只记录请求并返回 `mock_only_not_executed`，用于单元测试和 simulate 验证。
-- `DockerActionAdapter` 只接受已经通过校验的请求，并以参数数组调用 Docker，不经过 shell 字符串拼接。
-- `graceful_stop` 使用 `docker stop --timeout`；`restart` 使用 `docker restart --timeout`；`terminate` 使用 `docker kill`。
-- `terminate` 不是默认动作，必须同时通过动作白名单和短期授权。
-- 本模块不负责决定风险等级、保护名单或恢复成功；这些由上层策略和恢复验证负责。
-- `GuardianController` 负责把 `enforce` 事件接入动作适配器：只有显式 `enforce`、单一稳定对象、可行动风险、授权和策略校验全部通过，才会调用注入式执行器。
-- `MockActionExecutor` 的计划结果不会消耗真实动作冷却或失败计数；只有真实执行器返回结果后才更新动作门禁。
-- `guardian_enforce.py` 提供单次运行桥接：默认使用 mock；真实 Docker 路径还要求授权文件、`--executor docker` 和 `--confirm-local-disposable`，动作完成后只读探测容器状态，并输出 `guardian.enforce.v1` 结构化审计记录。CLI 可显式配置冷却、动作窗口和连续失败阈值，实验参数不得直接当作生产默认值。
-- 真实 Docker 路径还必须同时提供持久化 `--ledger-file` 和 SQLite WAL `--state-db`；缺少任一项时 fail-closed，避免独立进程绕过 capability、intent、冷却和连续失败熔断。
-- Docker runner 超时会转换为 `action_timeout` 失败结果并计入 ledger；动作失败或超时不会继续调用恢复探针，避免二次错误覆盖原始故障。
+## 3. 执行前门禁
 
-## 3. 当前完成与未完成
+1. 事件为 `enforce` 且仍新鲜；observe/simulate 永不进入 adapter。
+2. 联合风险已确认，且计划只有一个稳定目标。
+3. 目标同时在 `actionable_set`、不在 `protected_set`，动作被逐对象允许。
+4. capability 与 host/boot/environment/target/action/plan digest 完全一致、未过期且未消费。
+5. durable state、审计和熔断可用；intent 在 adapter 前提交。
+6. 执行前重新 inspect unit/container，身份未变化。
 
-- [x] 授权对象、动作白名单、保护对象和容器 ID 校验。
-- [x] Mock executor，确保测试不会改变容器状态。
-- [x] Docker 参数数组构造，禁止 shell 注入路径。
-- [x] 5 个动作安全单元测试。
-- [x] 恢复状态、冷却窗口和失败熔断的纯逻辑模型，见 EXP-008。
-- [x] `enforce` 控制层集成：门禁、mock/fake 执行器、恢复和冷却路径，见 EXP-009。
-- [x] 单次 `enforce` 运行桥接和只读恢复探测，见 EXP-010。
-- [x] 动作前事件与动作后结果的统一审计记录，见 EXP-013。
-- [x] 真实动作后的跨进程冷却阻断，见 EXP-016。
-- [x] 连续真实恢复失败后的升级和执行器/恢复窗口超时 fail-closed，见 EXP-017。
-- [x] 在修正测试进程并重新获得明确本地可丢弃对象授权后，复测一次 `graceful_stop`；EXP-014 的 exit 137 已被识别为失败，EXP-015 以 exit 0 完成真实闭环。
-- [x] 多对象竞争、无稳定身份和不健康业务状态 fail-closed，见 EXP-018。
-- [ ] 接入真实业务健康接口和生产保护名单；需外部业务信息和测试授权。
-- [x] 将 capability 一次性消费、原子 intent/result 和崩溃恢复接入本地生产化状态层；生产发行、权限和部署仍待后续审批，见 Goal 7 PG-P0-05。
+## 4. Adapter 规则
+
+- 参数数组调用，不经过 shell。
+- Docker `graceful_stop` 使用完整 container ID 和批准 timeout。
+- stdout/stderr 有界、脱敏；runner timeout 转换为明确失败结果。
+- adapter 不自行重试、不升级 restart/terminate、不选择其他目标。
+- 返回成功只表示运行时接受/完成该动作，不表示资源或业务恢复。
+
+## 5. 状态与崩溃恢复
+
+```text
+PLANNED -> INTENT_DURABLE -> CLAIMED -> EXECUTING -> RESULT_DURABLE
+Any unknown crash point -> RECONCILIATION_REQUIRED
+```
+
+intent 前崩溃可以安全重新规划；intent/claim 后任何未知状态必须人工对账，禁止自动重试。并发 claim 只能有一个胜者，重复结果幂等。
+
+## 6. 恢复与熔断
+
+动作后先判断对应资源是否 `MITIGATED`，再执行业务 probe。结果为 `BUSINESS_RECOVERED`、`BUSINESS_DEGRADED` 或 `NOT_MITIGATED`。动作失败、超时、验证失败、新风险、审计/状态写失败均打开熔断并通知人工，不继续扩大动作。
+
+## 7. 权限模型
+
+- Observer/API 不应持有 Docker/systemd 写权。
+- Broker 使用本机 Unix socket、peer credential、有限协议和输入上限；生产 capability 由受控发行方签发并可撤销。
+- 当前 `local-disposable` JSON/CLI 授权只用于本地实验，不能复制到生产。
+
+## 8. 当前证据
+
+历史本地记录证明单个可丢弃容器曾完成一次正常温和停止，持久状态和两层恢复逻辑也已有实现。当前仍缺少持续服务中的真实压力自动闭环、管理员告警展示和目标环境权限审计。

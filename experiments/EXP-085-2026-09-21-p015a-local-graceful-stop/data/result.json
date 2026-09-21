@@ -1,0 +1,47 @@
+{
+  "action_executed": true,
+  "action_returncode": 0,
+  "business_recovered": false,
+  "cleanup": {
+    "attempted": true,
+    "removed": true,
+    "returncode": 0,
+    "stderr": ""
+  },
+  "config_digest": "51f4c5ced58d01c8074acae17a883b5325532d1ba32586556a5e9b4e4244d57e",
+  "coordinator_state": "failed",
+  "external_connections": 0,
+  "host_recovery_verified": false,
+  "intent_record": {
+    "action": "graceful_stop",
+    "created_at": 1789971353.290041,
+    "event_id": "p015a-1789971353-ca6deff28803",
+    "host_id": "orbstack-local-p015a",
+    "idempotency_key": "e5a3ae555b1d8f65e212dd077389330fcdf1bb5496e5883934f1a9b04291a2ca",
+    "intent_id": "d59b0405-22a0-410e-ade6-6e7db6fee6bb",
+    "object_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+    "result_json": "{\"action\":{\"action\":\"graceful_stop\",\"executed\":true,\"reason\":\"authorized_runtime_call\",\"returncode\":0,\"stderr\":\"\",\"stdout\":\"ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600\",\"target_id\":\"ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600\"},\"manual_handoff\":true,\"stage\":\"verification\",\"verification\":{\"business_recovered\":false,\"business_state\":\"BUSINESS_DEGRADED\",\"host_mitigated\":false,\"host_state\":\"failed\",\"overall_state\":\"RECOVERY_FAILED\",\"reason_codes\":[\"host_recovery_observation_incomplete\",\"business_target_not_running\"]}}",
+    "state": "FAILED",
+    "updated_at": 1789971353.290041
+  },
+  "manual_handoff": true,
+  "notification_audit": {
+    "errors": [],
+    "records": 1,
+    "valid": true
+  },
+  "policy_digest": "369a58a5c1f869143708e690d61b01b66fce1797d172cdf27018a1d4a88a3f77",
+  "real_docker_actions": 1,
+  "real_notification_deliveries": 0,
+  "reason_codes": [
+    "action_failed",
+    "host_recovery_observation_incomplete",
+    "business_target_not_running"
+  ],
+  "schema": "guardian.p015a.action.v1",
+  "scope": "local-disposable-only",
+  "status": "PASS_ACTION",
+  "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+  "target_name": "guardian-p015a-disposable-20260921-01",
+  "target_stopped": true
+}

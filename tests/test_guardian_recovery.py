@@ -171,6 +171,41 @@ class GuardianRecoveryTests(unittest.TestCase):
         self.assertTrue(result.host_mitigated)
         self.assertTrue(result.business_recovered)
 
+    def test_cpu_stop_recovery_separates_host_mitigation_from_business_health(self):
+        host = self.host_observation(
+            before_available_percent=None,
+            after_available_percent=None,
+            before_psi_full_avg10=None,
+            after_psi_full_avg10=None,
+            before_oom_events=None,
+            after_oom_events=None,
+            resource_kind="cpu",
+            before_resource_state="critical",
+            after_resource_state="normal",
+        )
+        business = self.business_observation(target_running=False, health_status="exited", probe_ok=None)
+        result = assess_two_layer_recovery(
+            HostRecoveryPolicy(),
+            host,
+            BusinessRecoveryPolicy(action="graceful_stop"),
+            business,
+            expected_target_id="abcdef123456",
+        )
+        self.assertEqual(result.overall_state, "MITIGATED")
+        self.assertTrue(result.host_mitigated)
+        self.assertFalse(result.business_recovered)
+        self.assertIn("business_health_check_not_configured", result.reason_codes)
+
+    def test_stopped_target_can_only_claim_business_recovery_with_explicit_probe(self):
+        business = self.business_observation(target_running=False, health_status="exited", probe_ok=True)
+        result = assess_business_recovery(
+            BusinessRecoveryPolicy(action="graceful_stop"),
+            business,
+            expected_target_id="abcdef123456",
+        )
+        self.assertEqual(result.state, "BUSINESS_RECOVERED")
+        self.assertEqual(result.reason_codes, ("business_health_confirmed",))
+
 
 if __name__ == "__main__":
     unittest.main()

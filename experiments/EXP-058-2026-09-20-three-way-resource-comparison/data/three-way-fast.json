@@ -1,0 +1,917 @@
+{
+  "schema": "guardian.p014_three_way.v1",
+  "vm": "guardian-p014",
+  "groups": [
+    "unprotected",
+    "rescue",
+    "guardian"
+  ],
+  "scenarios": [
+    "cpu",
+    "memory",
+    "capacity",
+    "io",
+    "mixed"
+  ],
+  "rounds": 1,
+  "workload_seconds": 3.0,
+  "started_epoch_s": 1789910614.298986,
+  "finished_epoch_s": 1789910674.445297,
+  "records": [
+    {
+      "group": "unprotected",
+      "scenario": "cpu",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-cpu.service",
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 122.445,
+        "stdout": " 21:23:34 up 10 min,  0 users,  load average: 0.44, 0.40, 0.21\n               total        used        free      shared  buff/cache   available\nMem:            2969         162        2094           1         712        2717\nSwap:              0           0           0\nsome avg10=0.11 avg60=1.18 avg300=1.07 total=11656572\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.25 avg300=0.30 total=3421763\nfull avg10=0.00 avg60=0.21 avg300=0.25 total=2903584\n    PID COMMAND         STAT\n  44701 head            S\n  44700 ps              R\n  44691 bash            Ss\n  44690 sshd            S\n  44644 sshd            Ss\n  44643 python3         R\n  44642 python3         R\n  44641 python3         Ss\n  27583 kworker/0:0-cgr I\n  26649 kworker/1:0-cgr I\n  23277 kworker/u4:6-ex I\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "memory",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-memory.service",
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 71.176,
+        "stdout": " 21:23:38 up 10 min,  0 users,  load average: 0.48, 0.41, 0.21\n               total        used        free      shared  buff/cache   available\nMem:            2969         285        1970           1         712        2594\nSwap:              0           0           0\nsome avg10=0.66 avg60=1.23 avg300=1.08 total=11712662\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.23 avg300=0.30 total=3421763\nfull avg10=0.00 avg60=0.20 avg300=0.24 total=2903584\n    PID COMMAND         STAT\n  45150 head            S\n  45149 ps              R\n  45140 bash            Ss\n  45139 sshd            S\n  45093 sshd            Ss\n  45092 python3         Ss\n  27583 kworker/0:0-cgr I\n  26649 kworker/1:0-eve I\n  23277 kworker/u4:6-ex I\n  23276 kworker/u4:5-ev I\n   2812 polkitd         Ssl\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "capacity",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-capacity.service",
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 66.621,
+        "stdout": " 21:23:42 up 10 min,  0 users,  load average: 0.48, 0.41, 0.21\n               total        used        free      shared  buff/cache   available\nMem:            2969         187        2039           1         741        2689\nSwap:              0           0           0\nsome avg10=0.92 avg60=1.25 avg300=1.09 total=11788502\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.22 avg300=0.29 total=3451030\nfull avg10=0.00 avg60=0.19 avg300=0.24 total=2931037\n    PID COMMAND         STAT\n  45812 bash            R\n  45811 ps              R\n  45802 bash            Ss\n  45801 sshd            S\n  45755 sshd            Ss\n  45754 python3         Rs\n  45701 ext4lazyinit    S\n  45699 ext4-rsv-conver I<\n  45698 jbd2/loop3-8    S\n  45697 systemd-udevd   S\n  27583 kworker/0:0-cgr I\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "io",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-io.service",
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 60.45,
+        "stdout": " 21:23:46 up 10 min,  0 users,  load average: 0.44, 0.41, 0.21\n               total        used        free      shared  buff/cache   available\nMem:            2969         158        1998           1         811        2720\nSwap:              0           0           0\nsome avg10=1.24 avg60=1.29 avg300=1.10 total=11902156\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.14 avg60=0.24 avg300=0.29 total=3585351\nfull avg10=0.14 avg60=0.20 avg300=0.24 total=3040629\n    PID COMMAND         STAT\n  46684 head            S\n  46683 ps              R\n  46674 bash            Ss\n  46673 sshd            S\n  46627 sshd            Ss\n  46626 python3         Ds\n  46573 ext4-rsv-conver I<\n  46572 jbd2/loop3-8    D\n  45701 ext4lazyinit    S\n  45697 systemd-udevd   S\n  27583 kworker/0:0-cgr I\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "mixed",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-mixed.service",
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 112.592,
+        "stdout": " 21:23:50 up 10 min,  0 users,  load average: 0.41, 0.40, 0.21\n               total        used        free      shared  buff/cache   available\nMem:            2969         290        1963           1         714        2589\nSwap:              0           0           0\nsome avg10=1.28 avg60=1.30 avg300=1.10 total=12037412\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.98 avg60=0.41 avg300=0.33 total=3653447\nfull avg10=0.84 avg60=0.35 avg300=0.27 total=3105310\n    PID COMMAND         STAT\n  47560 head            S\n  47559 ps              R\n  47550 bash            Ss\n  47549 sshd            S\n  47503 sshd            Ss\n  47502 python3         R\n  47501 python3         R\n  47500 python3         Ss\n  47447 ext4lazyinit    S\n  47446 ext4-rsv-conver I<\n  47445 jbd2/loop3-8    S\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "cpu",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-cpu.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-cpu-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 81.748,
+        "stdout": " 21:23:54 up 10 min,  0 users,  load average: 0.54, 0.43, 0.22\n               total        used        free      shared  buff/cache   available\nMem:            2969         162        2093           1         713        2717\nSwap:              0           0           0\nsome avg10=1.74 avg60=1.41 avg300=1.13 total=12146211\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=1.10 avg60=0.48 avg300=0.35 total=3654667\nfull avg10=1.00 avg60=0.42 avg300=0.29 total=3106491\n    PID COMMAND         STAT\n  48413 head            S\n  48412 ps              R\n  48402 bash            Ss\n  48401 systemd-run     S\n  48397 sudo            Ss\n  48396 sshd            S\n  48350 sshd            Ss\n  48349 python3         R\n  48348 python3         R\n  48347 python3         Ss\n  27583 kworker/0:0-eve I\n",
+        "stderr": "Running as unit: guardian-p014-control-cpu-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 4ms\nCPU time consumed: 5ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "memory",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-memory.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-memory-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 64.192,
+        "stdout": " 21:23:58 up 10 min,  0 users,  load average: 0.65, 0.45, 0.23\n               total        used        free      shared  buff/cache   available\nMem:            2969         289        1966           1         713        2590\nSwap:              0           0           0\nsome avg10=1.91 avg60=1.48 avg300=1.15 total=12202105\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.74 avg60=0.45 avg300=0.34 total=3654667\nfull avg10=0.67 avg60=0.39 avg300=0.28 total=3106491\n    PID COMMAND         STAT\n  48868 head            S\n  48867 ps              R\n  48857 bash            Ss\n  48856 systemd-run     R\n  48852 sudo            Ss\n  48851 sshd            S\n  48805 sshd            Ss\n  48804 python3         Ss\n  27583 kworker/0:0-eve I\n  26649 kworker/1:0+eve R\n  23277 kworker/u4:6-ev I\n",
+        "stderr": "Running as unit: guardian-p014-control-memory-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "capacity",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-capacity.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-capacity-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 79.043,
+        "stdout": " 21:24:02 up 10 min,  0 users,  load average: 0.65, 0.45, 0.23\n               total        used        free      shared  buff/cache   available\nMem:            2969         169        2037           1         761        2707\nSwap:              0           0           0\nsome avg10=1.43 avg60=1.41 avg300=1.14 total=12285009\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.49 avg60=0.42 avg300=0.34 total=3703819\nfull avg10=0.45 avg60=0.37 avg300=0.28 total=3152749\n    PID COMMAND         STAT\n  49537 head            S\n  49536 ps              R\n  49526 bash            Ss\n  49525 systemd-run     S\n  49521 sudo            Ss\n  49520 sshd            S\n  49474 sshd            Ss\n  49473 python3         Ss\n  49418 ext4-rsv-conver I<\n  49417 jbd2/loop3-8    S\n  49416 systemd-udevd   S\n",
+        "stderr": "Running as unit: guardian-p014-control-capacity-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "io",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-io.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-io-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 73.012,
+        "stdout": " 21:24:06 up 10 min,  0 users,  load average: 0.60, 0.44, 0.23\n               total        used        free      shared  buff/cache   available\nMem:            2969         157        1999           1         812        2721\nSwap:              0           0           0\nsome avg10=1.58 avg60=1.45 avg300=1.15 total=12381535\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.63 avg60=0.45 avg300=0.35 total=3811923\nfull avg10=0.60 avg60=0.41 avg300=0.29 total=3238557\n    PID COMMAND         STAT\n  50416 head            S\n  50415 ps              R\n  50405 bash            Ss\n  50404 systemd-run     S\n  50400 sudo            Ss\n  50399 sshd            S\n  50353 sshd            Ss\n  50352 python3         Ss\n  50299 ext4lazyinit    S\n  50298 ext4-rsv-conver I<\n  50297 jbd2/loop3-8    S\n",
+        "stderr": "Running as unit: guardian-p014-control-io-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "mixed",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-mixed.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-mixed-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 130.303,
+        "stdout": " 21:24:10 up 10 min,  0 users,  load average: 0.55, 0.44, 0.23\n               total        used        free      shared  buff/cache   available\nMem:            2969         294        1959           1         715        2585\nSwap:              0           0           0\nsome avg10=1.50 avg60=1.45 avg300=1.15 total=12517945\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=1.01 avg60=0.55 avg300=0.37 total=3858892\nfull avg10=0.84 avg60=0.48 avg300=0.31 total=3284814\n    PID COMMAND         STAT\n  51299 head            S\n  51298 ps              R\n  51288 bash            Ss\n  51287 systemd-run     S\n  51283 sudo            Ss\n  51282 sshd            S\n  51236 sshd            Ss\n  51235 python3         R\n  51234 python3         R\n  51233 python3         Ss\n  51180 ext4lazyinit    S\n",
+        "stderr": "Running as unit: guardian-p014-control-mixed-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      }
+    },
+    {
+      "group": "guardian",
+      "scenario": "cpu",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-cpu.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-cpu-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 74.048,
+        "stdout": " 21:24:14 up 11 min,  0 users,  load average: 0.67, 0.46, 0.24\n               total        used        free      shared  buff/cache   available\nMem:            2969         163        2090           1         714        2715\nSwap:              0           0           0\nsome avg10=1.90 avg60=1.55 avg300=1.18 total=12605584\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.97 avg60=0.58 avg300=0.38 total=3865232\nfull avg10=0.86 avg60=0.51 avg300=0.31 total=3289791\n    PID COMMAND         STAT\n  51969 head            S\n  51968 ps              R\n  51958 bash            Ss\n  51957 systemd-run     S\n  51953 sudo            Ss\n  51952 sshd            S\n  51906 sshd            Ss\n  51905 python3         R\n  51904 python3         R\n  51903 python3         Ss\n  51482 systemd-udevd   S\n",
+        "stderr": "Running as unit: guardian-p014-control-cpu-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      },
+      "guardian": {
+        "probe": {
+          "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-observer-cpu-1.service --slice=rescue.slice /usr/bin/bash -lc 'env PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --once --config /home/ubuntu/p014-fast-config.json --mode simulate --samples 2 --interval 1 --allow-unprotected --allow-action graceful_stop'",
+          "returncode": 0,
+          "ok": true,
+          "elapsed_ms": 129.73,
+          "stdout": "{\"event_id\": \"e48fd7a9-78c4-4a9f-a58d-3ad61318b8d2\", \"observed_at\": \"2026-09-20T13:24:14.591557Z\", \"state\": \"degraded_observability\", \"host_id\": \"guardian-p014\", \"signals\": {\"observed_at\": \"2026-09-20T13:24:14.591557Z\", \"observed_monotonic_ns\": 662172015524, \"memory\": {\"total_bytes\": 3113459712, \"available_bytes\": 2840944640, \"available_ratio_percent\": 91.247, \"swap_total_bytes\": 0, \"swap_free_bytes\": 0, \"swap_used_ratio_percent\": null}, \"psi\": {\"cpu\": {\"some\": {\"avg10\": 1.9, \"avg60\": 1.55, \"avg300\": 1.18, \"total\": 12655826.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"memory\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"io\": {\"some\": {\"avg10\": 0.97, \"avg60\": 0.58, \"avg300\": 0.38, \"total\": 3865232.0}, \"full\": {\"avg10\": 0.86, \"avg60\": 0.51, \"avg300\": 0.31, \"total\": 3289791.0}}}, \"cgroup\": {\"memory_current_bytes\": 9400320, \"memory_max\": \"max\", \"memory_events\": {\"low\": 0, \"high\": 0, \"max\": 0, \"oom\": 0, \"oom_kill\": 0}, \"pids_current\": 1, \"pids_max\": 3475, \"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-cpu-1.service\"}, \"docker\": {\"available\": false, \"error\": \"[Errno 2] No such file or directory: 'docker'\", \"containers\": []}, \"object_registry\": {\"status\": \"unavailable\", \"objects\": [], \"errors\": [\"docker_stats_unavailable\"]}, \"cpu\": {\"observed_monotonic_ns\": 662177219041, \"host\": {\"stat\": {\"aggregate\": {\"user\": 15830, \"nice\": 100, \"system\": 3014, \"idle\": 111838, \"iowait\": 627, \"irq\": 0, \"softirq\": 184, \"steal\": 0, \"guest\": 0, \"guest_nice\": 0, \"total_ticks\": 131593, \"idle_ticks\": 112465}, \"logical_cpus\": 2, \"valid\": true}, \"loadavg\": {\"load1\": 0.67, \"runnable_tasks\": 3, \"total_tasks\": 133, \"last_pid\": 52027, \"valid\": true}, \"logical_cpus\": 2}, \"psi\": {\"some\": {\"avg10\": 1.9, \"avg60\": 1.55, \"avg300\": 1.18, \"total\": 12657845.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-cpu-1.service\", \"cpu_stat\": {\"usage_usec\": 24222, \"user_usec\": 16148, \"system_usec\": 8074}, \"cpu_max\": {\"quota_us\": null, \"period_us\": null, \"valid\": false}, \"psi\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 3982.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 3982.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"cpu_max_missing\"]}}, \"scheduler_probe\": {\"valid\": true, \"requested_sleep_ms\": 1.0, \"elapsed_ms\": 1.058, \"overshoot_ms\": 0.058}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"disk\": {\"observed_monotonic_ns\": 662177573929, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10325233664, \"free_ratio_percent\": 83.93, \"total_inodes\": 1555968, \"free_inodes\": 1479928, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638}, \"quality\": {\"status\": \"ok\", \"flags\": []}}], \"capacity_quality\": {\"status\": \"ok\", \"flags\": []}, \"io\": {\"psi\": {\"some\": {\"avg10\": 0.97, \"avg60\": 0.58, \"avg300\": 0.38, \"total\": 3865232.0}, \"full\": {\"avg10\": 0.86, \"avg60\": 0.51, \"avg300\": 0.31, \"total\": 3289791.0}}, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 1961, \"reads_merged\": 0, \"sectors_read\": 80070, \"milliseconds_reading\": 52, \"writes_completed\": 57128, \"writes_merged\": 0, \"sectors_written\": 2069168, \"milliseconds_writing\": 4728, \"ios_in_progress\": 0, \"io_ticks_ms\": 2060, \"weighted_io_ms\": 5862}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 17526, \"writes_merged\": 7114, \"sectors_written\": 13616306, \"milliseconds_writing\": 29588, \"ios_in_progress\": 0, \"io_ticks_ms\": 10436, \"weighted_io_ms\": 32424}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-cpu-1.service\", \"io_stat\": {}, \"pressure\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"io_stat_missing\"]}}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"degraded\", \"flags\": [\"docker_observation_unavailable\"]}}, \"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"object_candidates\": [], \"object_attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}, \"evidence\": {\"snapshot_path\": null, \"sample_window\": null, \"config_digest\": \"3a87015eefa41eadccaa0826f84d1dff5299c2116461badedb3e06b988eebf50\", \"config_source\": \"/home/ubuntu/p014-fast-config.json\", \"watchdog_status\": \"not_configured\"}, \"resource_evaluations\": {\"memory\": {\"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"action\": \"none\", \"reason_codes\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"protected\": false, \"execution\": \"not_executed\"}}, \"cpu\": {\"risk\": {\"resource_kind\": \"cpu\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"cpu_counter_baseline_established\", \"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"cpu_utilization_percent\": null, \"load1\": 0.67, \"logical_cpus\": 2, \"cpu_psi_some_avg10\": 1.9, \"cpu_psi_full_avg10\": 0.0, \"scheduler_delay_ms\": 1.058, \"cgroup_throttled_delta\": null, \"warning_signals\": [\"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"critical_support\": []}, \"attribution\": {\"resource_kind\": \"cpu\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"cpu_object_baseline_established\", \"cpu_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"cpu\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"cpu_risk_not_actionable\"]}}, \"disk_capacity\": {\"risk\": {\"resource_kind\": \"disk_capacity\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"disk_capacity_free_critical\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10325233664, \"free_ratio_percent\": 83.93, \"total_inodes\": 1555968, \"free_inodes\": 1479928, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638}, \"quality\": {\"status\": \"ok\", \"flags\": []}, \"free_bytes_per_second\": null, \"time_to_full_seconds\": null}], \"warning_signals\": [], \"critical_support\": [\"disk_capacity_free_critical\"]}, \"attribution\": {\"resource_kind\": \"disk_capacity\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"capacity_writer_ownership_unavailable\"], \"quality_flags\": []}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"disk_capacity\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"disk_capacity_risk_not_actionable\"]}}, \"io\": {\"risk\": {\"resource_kind\": \"io\", \"state\": \"normal\", \"candidate_state\": \"critical\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"io_psi_full_critical\", \"io_psi_some_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"io_psi_some_avg10\": 0.97, \"io_psi_full_avg10\": 0.86, \"max_device_utilization_percent\": null, \"max_average_latency_ms\": null, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 1961, \"reads_merged\": 0, \"sectors_read\": 80070, \"milliseconds_reading\": 52, \"writes_completed\": 57128, \"writes_merged\": 0, \"sectors_written\": 2069168, \"milliseconds_writing\": 4728, \"ios_in_progress\": 0, \"io_ticks_ms\": 2060, \"weighted_io_ms\": 5862, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 17526, \"writes_merged\": 7114, \"sectors_written\": 13616306, \"milliseconds_writing\": 29588, \"ios_in_progress\": 0, \"io_ticks_ms\": 10436, \"weighted_io_ms\": 32424, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}}, \"warning_signals\": [\"io_psi_some_warning\"], \"critical_support\": [\"io_psi_full_critical\"]}, \"attribution\": {\"resource_kind\": \"io\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"io_object_baseline_established\", \"io_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"io\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"io_risk_not_actionable\"]}}}, \"joint_evaluation\": {\"state\": \"degraded_observability\", \"active_resources\": [], \"target_state\": \"NO_TARGET\", \"target\": null, \"targets_by_resource\": {}, \"attribution_states\": {}, \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}}, \"target_attribution\": null}\n",
+          "stderr": "Running as unit: guardian-p014-observer-cpu-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 34ms\nCPU time consumed: 29ms\n"
+        },
+        "state": "degraded_observability",
+        "decision": {
+          "mode": "simulate",
+          "resource_kind": "multi_resource",
+          "action": "none",
+          "execution": "not_executed",
+          "reason_codes": [
+            "no_active_resource_risk"
+          ],
+          "target_state": "NO_TARGET",
+          "target_id": null,
+          "active_resources": [],
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ]
+        },
+        "joint_evaluation": {
+          "state": "degraded_observability",
+          "active_resources": [],
+          "target_state": "NO_TARGET",
+          "target": null,
+          "targets_by_resource": {},
+          "attribution_states": {},
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ],
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "docker_observation_unavailable",
+              "observation_quality_status_missing"
+            ]
+          }
+        },
+        "records": [
+          {
+            "state": "degraded_observability",
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ]
+            },
+            "joint_evaluation": {
+              "state": "degraded_observability",
+              "active_resources": [],
+              "target_state": "NO_TARGET",
+              "target": null,
+              "targets_by_resource": {},
+              "attribution_states": {},
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ],
+              "decision": {
+                "mode": "simulate",
+                "resource_kind": "multi_resource",
+                "action": "none",
+                "execution": "not_executed",
+                "reason_codes": [
+                  "no_active_resource_risk"
+                ],
+                "target_state": "NO_TARGET",
+                "target_id": null,
+                "active_resources": [],
+                "quality_flags": [
+                  "docker_observation_unavailable",
+                  "observation_quality_status_missing"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "guardian",
+      "scenario": "memory",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-memory.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-memory-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 64.937,
+        "stdout": " 21:24:18 up 11 min,  0 users,  load average: 0.70, 0.47, 0.24\n               total        used        free      shared  buff/cache   available\nMem:            2969         291        1963           1         714        2588\nSwap:              0           0           0\nsome avg10=2.16 avg60=1.64 avg300=1.20 total=12713644\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.65 avg60=0.54 avg300=0.37 total=3865232\nfull avg10=0.57 avg60=0.47 avg300=0.31 total=3289791\n    PID COMMAND         STAT\n  52482 head            S\n  52481 ps              R\n  52471 bash            Ss\n  52470 systemd-run     S\n  52466 sudo            Ss\n  52465 sshd            S\n  52419 sshd            Ss\n  52418 python3         Ss\n  50656 kworker/0:1-eve I\n  49415 kworker/1:3-eve I\n  27583 kworker/0:0-eve I\n",
+        "stderr": "Running as unit: guardian-p014-control-memory-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 6ms\n"
+      },
+      "guardian": {
+        "probe": {
+          "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-observer-memory-1.service --slice=rescue.slice /usr/bin/bash -lc 'env PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --once --config /home/ubuntu/p014-fast-config.json --mode simulate --samples 2 --interval 1 --allow-unprotected --allow-action graceful_stop'",
+          "returncode": 0,
+          "ok": true,
+          "elapsed_ms": 93.109,
+          "stdout": "{\"event_id\": \"19d7db26-85b4-405f-a252-accd0a73701e\", \"observed_at\": \"2026-09-20T13:24:18.243737Z\", \"state\": \"degraded_observability\", \"host_id\": \"guardian-p014\", \"signals\": {\"observed_at\": \"2026-09-20T13:24:18.243737Z\", \"observed_monotonic_ns\": 665827918483, \"memory\": {\"total_bytes\": 3113459712, \"available_bytes\": 2703646720, \"available_ratio_percent\": 86.837, \"swap_total_bytes\": 0, \"swap_free_bytes\": 0, \"swap_used_ratio_percent\": null}, \"psi\": {\"cpu\": {\"some\": {\"avg10\": 2.16, \"avg60\": 1.64, \"avg300\": 1.2, \"total\": 12725774.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"memory\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"io\": {\"some\": {\"avg10\": 0.65, \"avg60\": 0.54, \"avg300\": 0.37, \"total\": 3865232.0}, \"full\": {\"avg10\": 0.57, \"avg60\": 0.47, \"avg300\": 0.31, \"total\": 3289791.0}}}, \"cgroup\": {\"memory_current_bytes\": 9342976, \"memory_max\": \"max\", \"memory_events\": {\"low\": 0, \"high\": 0, \"max\": 0, \"oom\": 0, \"oom_kill\": 0}, \"pids_current\": 1, \"pids_max\": 3475, \"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-memory-1.service\"}, \"docker\": {\"available\": false, \"error\": \"[Errno 2] No such file or directory: 'docker'\", \"containers\": []}, \"object_registry\": {\"status\": \"unavailable\", \"objects\": [], \"errors\": [\"docker_stats_unavailable\"]}, \"cpu\": {\"observed_monotonic_ns\": 665829453079, \"host\": {\"stat\": {\"aggregate\": {\"user\": 16410, \"nice\": 100, \"system\": 3033, \"idle\": 111967, \"iowait\": 627, \"irq\": 0, \"softirq\": 184, \"steal\": 0, \"guest\": 0, \"guest_nice\": 0, \"total_ticks\": 132321, \"idle_ticks\": 112594}, \"logical_cpus\": 2, \"valid\": true}, \"loadavg\": {\"load1\": 0.7, \"runnable_tasks\": 1, \"total_tasks\": 130, \"last_pid\": 52540, \"valid\": true}, \"logical_cpus\": 2}, \"psi\": {\"some\": {\"avg10\": 2.16, \"avg60\": 1.64, \"avg300\": 1.2, \"total\": 12725774.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-memory-1.service\", \"cpu_stat\": {\"usage_usec\": 22455, \"user_usec\": 14970, \"system_usec\": 7485}, \"cpu_max\": {\"quota_us\": null, \"period_us\": null, \"valid\": false}, \"psi\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 128.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 128.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"cpu_max_missing\"]}}, \"scheduler_probe\": {\"valid\": true, \"requested_sleep_ms\": 1.0, \"elapsed_ms\": 1.058, \"overshoot_ms\": 0.058}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"disk\": {\"observed_monotonic_ns\": 665829760757, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10325225472, \"free_ratio_percent\": 83.93, \"total_inodes\": 1555968, \"free_inodes\": 1479928, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638}, \"quality\": {\"status\": \"ok\", \"flags\": []}}], \"capacity_quality\": {\"status\": \"ok\", \"flags\": []}, \"io\": {\"psi\": {\"some\": {\"avg10\": 0.65, \"avg60\": 0.54, \"avg300\": 0.37, \"total\": 3865232.0}, \"full\": {\"avg10\": 0.57, \"avg60\": 0.47, \"avg300\": 0.31, \"total\": 3289791.0}}, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 1961, \"reads_merged\": 0, \"sectors_read\": 80070, \"milliseconds_reading\": 52, \"writes_completed\": 57128, \"writes_merged\": 0, \"sectors_written\": 2069168, \"milliseconds_writing\": 4728, \"ios_in_progress\": 0, \"io_ticks_ms\": 2060, \"weighted_io_ms\": 5862}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 17526, \"writes_merged\": 7114, \"sectors_written\": 13616306, \"milliseconds_writing\": 29588, \"ios_in_progress\": 0, \"io_ticks_ms\": 10436, \"weighted_io_ms\": 32424}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-memory-1.service\", \"io_stat\": {}, \"pressure\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"io_stat_missing\"]}}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"degraded\", \"flags\": [\"docker_observation_unavailable\"]}}, \"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"object_candidates\": [], \"object_attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}, \"evidence\": {\"snapshot_path\": null, \"sample_window\": null, \"config_digest\": \"3a87015eefa41eadccaa0826f84d1dff5299c2116461badedb3e06b988eebf50\", \"config_source\": \"/home/ubuntu/p014-fast-config.json\", \"watchdog_status\": \"not_configured\"}, \"resource_evaluations\": {\"memory\": {\"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"action\": \"none\", \"reason_codes\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"protected\": false, \"execution\": \"not_executed\"}}, \"cpu\": {\"risk\": {\"resource_kind\": \"cpu\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"cpu_counter_baseline_established\", \"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"cpu_utilization_percent\": null, \"load1\": 0.7, \"logical_cpus\": 2, \"cpu_psi_some_avg10\": 2.16, \"cpu_psi_full_avg10\": 0.0, \"scheduler_delay_ms\": 1.058, \"cgroup_throttled_delta\": null, \"warning_signals\": [\"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"critical_support\": []}, \"attribution\": {\"resource_kind\": \"cpu\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"cpu_object_baseline_established\", \"cpu_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"cpu\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"cpu_risk_not_actionable\"]}}, \"disk_capacity\": {\"risk\": {\"resource_kind\": \"disk_capacity\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"disk_capacity_free_critical\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10325225472, \"free_ratio_percent\": 83.93, \"total_inodes\": 1555968, \"free_inodes\": 1479928, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638}, \"quality\": {\"status\": \"ok\", \"flags\": []}, \"free_bytes_per_second\": null, \"time_to_full_seconds\": null}], \"warning_signals\": [], \"critical_support\": [\"disk_capacity_free_critical\"]}, \"attribution\": {\"resource_kind\": \"disk_capacity\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"capacity_writer_ownership_unavailable\"], \"quality_flags\": []}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"disk_capacity\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"disk_capacity_risk_not_actionable\"]}}, \"io\": {\"risk\": {\"resource_kind\": \"io\", \"state\": \"normal\", \"candidate_state\": \"critical\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"io_psi_full_critical\", \"io_psi_some_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"io_psi_some_avg10\": 0.65, \"io_psi_full_avg10\": 0.57, \"max_device_utilization_percent\": null, \"max_average_latency_ms\": null, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 1961, \"reads_merged\": 0, \"sectors_read\": 80070, \"milliseconds_reading\": 52, \"writes_completed\": 57128, \"writes_merged\": 0, \"sectors_written\": 2069168, \"milliseconds_writing\": 4728, \"ios_in_progress\": 0, \"io_ticks_ms\": 2060, \"weighted_io_ms\": 5862, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 17526, \"writes_merged\": 7114, \"sectors_written\": 13616306, \"milliseconds_writing\": 29588, \"ios_in_progress\": 0, \"io_ticks_ms\": 10436, \"weighted_io_ms\": 32424, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17512, \"writes_merged\": 7106, \"sectors_written\": 13616200, \"milliseconds_writing\": 29581, \"ios_in_progress\": 0, \"io_ticks_ms\": 10388, \"weighted_io_ms\": 31638, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}}, \"warning_signals\": [\"io_psi_some_warning\"], \"critical_support\": [\"io_psi_full_critical\"]}, \"attribution\": {\"resource_kind\": \"io\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"io_object_baseline_established\", \"io_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"io\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"io_risk_not_actionable\"]}}}, \"joint_evaluation\": {\"state\": \"degraded_observability\", \"active_resources\": [], \"target_state\": \"NO_TARGET\", \"target\": null, \"targets_by_resource\": {}, \"attribution_states\": {}, \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}}, \"target_attribution\": null}\n",
+          "stderr": "Running as unit: guardian-p014-observer-memory-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 28ms\nCPU time consumed: 26ms\n"
+        },
+        "state": "degraded_observability",
+        "decision": {
+          "mode": "simulate",
+          "resource_kind": "multi_resource",
+          "action": "none",
+          "execution": "not_executed",
+          "reason_codes": [
+            "no_active_resource_risk"
+          ],
+          "target_state": "NO_TARGET",
+          "target_id": null,
+          "active_resources": [],
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ]
+        },
+        "joint_evaluation": {
+          "state": "degraded_observability",
+          "active_resources": [],
+          "target_state": "NO_TARGET",
+          "target": null,
+          "targets_by_resource": {},
+          "attribution_states": {},
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ],
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "docker_observation_unavailable",
+              "observation_quality_status_missing"
+            ]
+          }
+        },
+        "records": [
+          {
+            "state": "degraded_observability",
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ]
+            },
+            "joint_evaluation": {
+              "state": "degraded_observability",
+              "active_resources": [],
+              "target_state": "NO_TARGET",
+              "target": null,
+              "targets_by_resource": {},
+              "attribution_states": {},
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ],
+              "decision": {
+                "mode": "simulate",
+                "resource_kind": "multi_resource",
+                "action": "none",
+                "execution": "not_executed",
+                "reason_codes": [
+                  "no_active_resource_risk"
+                ],
+                "target_state": "NO_TARGET",
+                "target_id": null,
+                "active_resources": [],
+                "quality_flags": [
+                  "docker_observation_unavailable",
+                  "observation_quality_status_missing"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "guardian",
+      "scenario": "capacity",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-capacity.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-capacity-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 71.045,
+        "stdout": " 21:24:22 up 11 min,  0 users,  load average: 0.70, 0.47, 0.24\n               total        used        free      shared  buff/cache   available\nMem:            2969         169        2037           1         762        2707\nSwap:              0           0           0\nsome avg10=1.74 avg60=1.59 avg300=1.20 total=12792417\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.43 avg60=0.50 avg300=0.36 total=3892837\nfull avg10=0.38 avg60=0.44 avg300=0.30 total=3314996\n    PID COMMAND         STAT\n  53208 head            S\n  53207 ps              R\n  53197 bash            Ss\n  53196 systemd-run     S\n  53192 sudo            Ss\n  53191 sshd            S\n  53145 sshd            Ss\n  53144 python3         Ss\n  53091 ext4lazyinit    S\n  53090 ext4-rsv-conver I<\n  53089 jbd2/loop3-8    S\n",
+        "stderr": "Running as unit: guardian-p014-control-capacity-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      },
+      "guardian": {
+        "probe": {
+          "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-observer-capacity-1.service --slice=rescue.slice /usr/bin/bash -lc 'env PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --once --config /home/ubuntu/p014-fast-config.json --mode simulate --samples 2 --interval 1 --allow-unprotected --allow-action graceful_stop'",
+          "returncode": 0,
+          "ok": true,
+          "elapsed_ms": 86.585,
+          "stdout": "{\"event_id\": \"5b891546-c7a1-40f4-a615-60d242fee9ff\", \"observed_at\": \"2026-09-20T13:24:22.159032Z\", \"state\": \"degraded_observability\", \"host_id\": \"guardian-p014\", \"signals\": {\"observed_at\": \"2026-09-20T13:24:22.159032Z\", \"observed_monotonic_ns\": 669743202801, \"memory\": {\"total_bytes\": 3113459712, \"available_bytes\": 2836348928, \"available_ratio_percent\": 91.1, \"swap_total_bytes\": 0, \"swap_free_bytes\": 0, \"swap_used_ratio_percent\": null}, \"psi\": {\"cpu\": {\"some\": {\"avg10\": 1.74, \"avg60\": 1.59, \"avg300\": 1.2, \"total\": 12803847.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"memory\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"io\": {\"some\": {\"avg10\": 0.43, \"avg60\": 0.5, \"avg300\": 0.36, \"total\": 3892837.0}, \"full\": {\"avg10\": 0.38, \"avg60\": 0.44, \"avg300\": 0.3, \"total\": 3314996.0}}}, \"cgroup\": {\"memory_current_bytes\": 9347072, \"memory_max\": \"max\", \"memory_events\": {\"low\": 0, \"high\": 0, \"max\": 0, \"oom\": 0, \"oom_kill\": 0}, \"pids_current\": 1, \"pids_max\": 3475, \"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-capacity-1.service\"}, \"docker\": {\"available\": false, \"error\": \"[Errno 2] No such file or directory: 'docker'\", \"containers\": []}, \"object_registry\": {\"status\": \"unavailable\", \"objects\": [], \"errors\": [\"docker_stats_unavailable\"]}, \"cpu\": {\"observed_monotonic_ns\": 669744747064, \"host\": {\"stat\": {\"aggregate\": {\"user\": 16445, \"nice\": 100, \"system\": 3062, \"idle\": 112681, \"iowait\": 632, \"irq\": 0, \"softirq\": 186, \"steal\": 0, \"guest\": 0, \"guest_nice\": 0, \"total_ticks\": 133106, \"idle_ticks\": 113313}, \"logical_cpus\": 2, \"valid\": true}, \"loadavg\": {\"load1\": 0.7, \"runnable_tasks\": 1, \"total_tasks\": 134, \"last_pid\": 53266, \"valid\": true}, \"logical_cpus\": 2}, \"psi\": {\"some\": {\"avg10\": 1.74, \"avg60\": 1.59, \"avg300\": 1.2, \"total\": 12803847.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-capacity-1.service\", \"cpu_stat\": {\"usage_usec\": 23285, \"user_usec\": 23285, \"system_usec\": 0}, \"cpu_max\": {\"quota_us\": null, \"period_us\": null, \"valid\": false}, \"psi\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 200.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 161.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"cpu_max_missing\"]}}, \"scheduler_probe\": {\"valid\": true, \"requested_sleep_ms\": 1.0, \"elapsed_ms\": 1.058, \"overshoot_ms\": 0.058}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"disk\": {\"observed_monotonic_ns\": 669745055658, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10320846848, \"free_ratio_percent\": 83.894, \"total_inodes\": 1555968, \"free_inodes\": 1479925, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17658, \"writes_merged\": 7173, \"sectors_written\": 13815200, \"milliseconds_writing\": 29727, \"ios_in_progress\": 0, \"io_ticks_ms\": 10468, \"weighted_io_ms\": 31790}, \"quality\": {\"status\": \"ok\", \"flags\": []}}], \"capacity_quality\": {\"status\": \"ok\", \"flags\": []}, \"io\": {\"psi\": {\"some\": {\"avg10\": 0.43, \"avg60\": 0.5, \"avg300\": 0.36, \"total\": 3892837.0}, \"full\": {\"avg10\": 0.38, \"avg60\": 0.44, \"avg300\": 0.3, \"total\": 3314996.0}}, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 2022, \"reads_merged\": 0, \"sectors_read\": 84032, \"milliseconds_reading\": 52, \"writes_completed\": 57332, \"writes_merged\": 0, \"sectors_written\": 2070800, \"milliseconds_writing\": 4739, \"ios_in_progress\": 0, \"io_ticks_ms\": 2076, \"weighted_io_ms\": 5878}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 17672, \"writes_merged\": 7181, \"sectors_written\": 13815306, \"milliseconds_writing\": 29734, \"ios_in_progress\": 0, \"io_ticks_ms\": 10516, \"weighted_io_ms\": 32579}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17658, \"writes_merged\": 7173, \"sectors_written\": 13815200, \"milliseconds_writing\": 29727, \"ios_in_progress\": 0, \"io_ticks_ms\": 10468, \"weighted_io_ms\": 31790}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-capacity-1.service\", \"io_stat\": {}, \"pressure\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"io_stat_missing\"]}}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"degraded\", \"flags\": [\"docker_observation_unavailable\"]}}, \"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"object_candidates\": [], \"object_attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}, \"evidence\": {\"snapshot_path\": null, \"sample_window\": null, \"config_digest\": \"3a87015eefa41eadccaa0826f84d1dff5299c2116461badedb3e06b988eebf50\", \"config_source\": \"/home/ubuntu/p014-fast-config.json\", \"watchdog_status\": \"not_configured\"}, \"resource_evaluations\": {\"memory\": {\"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"action\": \"none\", \"reason_codes\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"protected\": false, \"execution\": \"not_executed\"}}, \"cpu\": {\"risk\": {\"resource_kind\": \"cpu\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"cpu_counter_baseline_established\", \"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"cpu_utilization_percent\": null, \"load1\": 0.7, \"logical_cpus\": 2, \"cpu_psi_some_avg10\": 1.74, \"cpu_psi_full_avg10\": 0.0, \"scheduler_delay_ms\": 1.058, \"cgroup_throttled_delta\": null, \"warning_signals\": [\"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"critical_support\": []}, \"attribution\": {\"resource_kind\": \"cpu\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"cpu_object_baseline_established\", \"cpu_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"cpu\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"cpu_risk_not_actionable\"]}}, \"disk_capacity\": {\"risk\": {\"resource_kind\": \"disk_capacity\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"disk_capacity_free_critical\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10320846848, \"free_ratio_percent\": 83.894, \"total_inodes\": 1555968, \"free_inodes\": 1479925, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17658, \"writes_merged\": 7173, \"sectors_written\": 13815200, \"milliseconds_writing\": 29727, \"ios_in_progress\": 0, \"io_ticks_ms\": 10468, \"weighted_io_ms\": 31790}, \"quality\": {\"status\": \"ok\", \"flags\": []}, \"free_bytes_per_second\": null, \"time_to_full_seconds\": null}], \"warning_signals\": [], \"critical_support\": [\"disk_capacity_free_critical\"]}, \"attribution\": {\"resource_kind\": \"disk_capacity\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"capacity_writer_ownership_unavailable\"], \"quality_flags\": []}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"disk_capacity\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"disk_capacity_risk_not_actionable\"]}}, \"io\": {\"risk\": {\"resource_kind\": \"io\", \"state\": \"normal\", \"candidate_state\": \"critical\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"io_psi_full_critical\", \"io_psi_some_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"io_psi_some_avg10\": 0.43, \"io_psi_full_avg10\": 0.38, \"max_device_utilization_percent\": null, \"max_average_latency_ms\": null, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 2022, \"reads_merged\": 0, \"sectors_read\": 84032, \"milliseconds_reading\": 52, \"writes_completed\": 57332, \"writes_merged\": 0, \"sectors_written\": 2070800, \"milliseconds_writing\": 4739, \"ios_in_progress\": 0, \"io_ticks_ms\": 2076, \"weighted_io_ms\": 5878, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 17672, \"writes_merged\": 7181, \"sectors_written\": 13815306, \"milliseconds_writing\": 29734, \"ios_in_progress\": 0, \"io_ticks_ms\": 10516, \"weighted_io_ms\": 32579, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 17658, \"writes_merged\": 7173, \"sectors_written\": 13815200, \"milliseconds_writing\": 29727, \"ios_in_progress\": 0, \"io_ticks_ms\": 10468, \"weighted_io_ms\": 31790, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}}, \"warning_signals\": [\"io_psi_some_warning\"], \"critical_support\": [\"io_psi_full_critical\"]}, \"attribution\": {\"resource_kind\": \"io\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"io_object_baseline_established\", \"io_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"io\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"io_risk_not_actionable\"]}}}, \"joint_evaluation\": {\"state\": \"degraded_observability\", \"active_resources\": [], \"target_state\": \"NO_TARGET\", \"target\": null, \"targets_by_resource\": {}, \"attribution_states\": {}, \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}}, \"target_attribution\": null}\n",
+          "stderr": "Running as unit: guardian-p014-observer-capacity-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 28ms\nCPU time consumed: 27ms\n"
+        },
+        "state": "degraded_observability",
+        "decision": {
+          "mode": "simulate",
+          "resource_kind": "multi_resource",
+          "action": "none",
+          "execution": "not_executed",
+          "reason_codes": [
+            "no_active_resource_risk"
+          ],
+          "target_state": "NO_TARGET",
+          "target_id": null,
+          "active_resources": [],
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ]
+        },
+        "joint_evaluation": {
+          "state": "degraded_observability",
+          "active_resources": [],
+          "target_state": "NO_TARGET",
+          "target": null,
+          "targets_by_resource": {},
+          "attribution_states": {},
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ],
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "docker_observation_unavailable",
+              "observation_quality_status_missing"
+            ]
+          }
+        },
+        "records": [
+          {
+            "state": "degraded_observability",
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ]
+            },
+            "joint_evaluation": {
+              "state": "degraded_observability",
+              "active_resources": [],
+              "target_state": "NO_TARGET",
+              "target": null,
+              "targets_by_resource": {},
+              "attribution_states": {},
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ],
+              "decision": {
+                "mode": "simulate",
+                "resource_kind": "multi_resource",
+                "action": "none",
+                "execution": "not_executed",
+                "reason_codes": [
+                  "no_active_resource_risk"
+                ],
+                "target_state": "NO_TARGET",
+                "target_id": null,
+                "active_resources": [],
+                "quality_flags": [
+                  "docker_observation_unavailable",
+                  "observation_quality_status_missing"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "guardian",
+      "scenario": "io",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-io.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-io-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 68.599,
+        "stdout": " 21:24:26 up 11 min,  0 users,  load average: 0.64, 0.46, 0.24\n               total        used        free      shared  buff/cache   available\nMem:            2969         157        1997           1         814        2720\nSwap:              0           0           0\nsome avg10=1.79 avg60=1.62 avg300=1.21 total=12899993\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.62 avg60=0.54 avg300=0.37 total=3992681\nfull avg10=0.58 avg60=0.48 avg300=0.31 total=3394653\n    PID COMMAND         STAT\n  54155 head            S\n  54154 ps              R\n  54144 bash            Ss\n  54143 systemd-run     S\n  54139 sudo            Ss\n  54138 sshd            S\n  54092 sshd            Ss\n  54091 python3         Ds\n  54038 ext4lazyinit    S\n  54037 ext4-rsv-conver I<\n  54036 jbd2/loop3-8    D\n",
+        "stderr": "Running as unit: guardian-p014-control-io-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 6ms\nCPU time consumed: 6ms\n"
+      },
+      "guardian": {
+        "probe": {
+          "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-observer-io-1.service --slice=rescue.slice /usr/bin/bash -lc 'env PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --once --config /home/ubuntu/p014-fast-config.json --mode simulate --samples 2 --interval 1 --allow-unprotected --allow-action graceful_stop'",
+          "returncode": 0,
+          "ok": true,
+          "elapsed_ms": 89.978,
+          "stdout": "{\"event_id\": \"8a0f1767-bc18-4784-bb18-afeddff8563a\", \"observed_at\": \"2026-09-20T13:24:26.624222Z\", \"state\": \"degraded_observability\", \"host_id\": \"guardian-p014\", \"signals\": {\"observed_at\": \"2026-09-20T13:24:26.624222Z\", \"observed_monotonic_ns\": 674208430520, \"memory\": {\"total_bytes\": 3113459712, \"available_bytes\": 2844565504, \"available_ratio_percent\": 91.363, \"swap_total_bytes\": 0, \"swap_free_bytes\": 0, \"swap_used_ratio_percent\": null}, \"psi\": {\"cpu\": {\"some\": {\"avg10\": 1.79, \"avg60\": 1.62, \"avg300\": 1.21, \"total\": 12913998.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"memory\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"io\": {\"some\": {\"avg10\": 0.62, \"avg60\": 0.54, \"avg300\": 0.37, \"total\": 3998983.0}, \"full\": {\"avg10\": 0.58, \"avg60\": 0.48, \"avg300\": 0.31, \"total\": 3396860.0}}}, \"cgroup\": {\"memory_current_bytes\": 9383936, \"memory_max\": \"max\", \"memory_events\": {\"low\": 0, \"high\": 0, \"max\": 0, \"oom\": 0, \"oom_kill\": 0}, \"pids_current\": 1, \"pids_max\": 3475, \"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-io-1.service\"}, \"docker\": {\"available\": false, \"error\": \"[Errno 2] No such file or directory: 'docker'\", \"containers\": []}, \"object_registry\": {\"status\": \"unavailable\", \"objects\": [], \"errors\": [\"docker_stats_unavailable\"]}, \"cpu\": {\"observed_monotonic_ns\": 674209934781, \"host\": {\"stat\": {\"aggregate\": {\"user\": 16488, \"nice\": 100, \"system\": 3110, \"idle\": 113461, \"iowait\": 649, \"irq\": 0, \"softirq\": 188, \"steal\": 0, \"guest\": 0, \"guest_nice\": 0, \"total_ticks\": 133996, \"idle_ticks\": 114110}, \"logical_cpus\": 2, \"valid\": true}, \"loadavg\": {\"load1\": 0.64, \"runnable_tasks\": 1, \"total_tasks\": 134, \"last_pid\": 54213, \"valid\": true}, \"logical_cpus\": 2}, \"psi\": {\"some\": {\"avg10\": 1.79, \"avg60\": 1.62, \"avg300\": 1.21, \"total\": 12913998.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-io-1.service\", \"cpu_stat\": {\"usage_usec\": 23040, \"user_usec\": 14604, \"system_usec\": 8436}, \"cpu_max\": {\"quota_us\": null, \"period_us\": null, \"valid\": false}, \"psi\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 147.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 147.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"cpu_max_missing\"]}}, \"scheduler_probe\": {\"valid\": true, \"requested_sleep_ms\": 1.0, \"elapsed_ms\": 1.057, \"overshoot_ms\": 0.057}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"disk\": {\"observed_monotonic_ns\": 674210243959, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10249478144, \"free_ratio_percent\": 83.314, \"total_inodes\": 1555968, \"free_inodes\": 1479925, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18440, \"writes_merged\": 7312, \"sectors_written\": 14338960, \"milliseconds_writing\": 30369, \"ios_in_progress\": 0, \"io_ticks_ms\": 10704, \"weighted_io_ms\": 32441}, \"quality\": {\"status\": \"ok\", \"flags\": []}}], \"capacity_quality\": {\"status\": \"ok\", \"flags\": []}, \"io\": {\"psi\": {\"some\": {\"avg10\": 0.62, \"avg60\": 0.54, \"avg300\": 0.37, \"total\": 3998983.0}, \"full\": {\"avg10\": 0.58, \"avg60\": 0.48, \"avg300\": 0.31, \"total\": 3396860.0}}, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 2079, \"reads_merged\": 0, \"sectors_read\": 86186, \"milliseconds_reading\": 53, \"writes_completed\": 62304, \"writes_merged\": 0, \"sectors_written\": 2257192, \"milliseconds_writing\": 5017, \"ios_in_progress\": 0, \"io_ticks_ms\": 2208, \"weighted_io_ms\": 6227}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 18454, \"writes_merged\": 7320, \"sectors_written\": 14339066, \"milliseconds_writing\": 30375, \"ios_in_progress\": 0, \"io_ticks_ms\": 10752, \"weighted_io_ms\": 33282}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18440, \"writes_merged\": 7312, \"sectors_written\": 14338960, \"milliseconds_writing\": 30369, \"ios_in_progress\": 0, \"io_ticks_ms\": 10704, \"weighted_io_ms\": 32441}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-io-1.service\", \"io_stat\": {}, \"pressure\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"io_stat_missing\"]}}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"degraded\", \"flags\": [\"docker_observation_unavailable\"]}}, \"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"object_candidates\": [], \"object_attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}, \"evidence\": {\"snapshot_path\": null, \"sample_window\": null, \"config_digest\": \"3a87015eefa41eadccaa0826f84d1dff5299c2116461badedb3e06b988eebf50\", \"config_source\": \"/home/ubuntu/p014-fast-config.json\", \"watchdog_status\": \"not_configured\"}, \"resource_evaluations\": {\"memory\": {\"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"action\": \"none\", \"reason_codes\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"protected\": false, \"execution\": \"not_executed\"}}, \"cpu\": {\"risk\": {\"resource_kind\": \"cpu\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"cpu_counter_baseline_established\", \"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"cpu_utilization_percent\": null, \"load1\": 0.64, \"logical_cpus\": 2, \"cpu_psi_some_avg10\": 1.79, \"cpu_psi_full_avg10\": 0.0, \"scheduler_delay_ms\": 1.057, \"cgroup_throttled_delta\": null, \"warning_signals\": [\"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"critical_support\": []}, \"attribution\": {\"resource_kind\": \"cpu\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"cpu_object_baseline_established\", \"cpu_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"cpu\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"cpu_risk_not_actionable\"]}}, \"disk_capacity\": {\"risk\": {\"resource_kind\": \"disk_capacity\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"disk_capacity_free_critical\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10249478144, \"free_ratio_percent\": 83.314, \"total_inodes\": 1555968, \"free_inodes\": 1479925, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18440, \"writes_merged\": 7312, \"sectors_written\": 14338960, \"milliseconds_writing\": 30369, \"ios_in_progress\": 0, \"io_ticks_ms\": 10704, \"weighted_io_ms\": 32441}, \"quality\": {\"status\": \"ok\", \"flags\": []}, \"free_bytes_per_second\": null, \"time_to_full_seconds\": null}], \"warning_signals\": [], \"critical_support\": [\"disk_capacity_free_critical\"]}, \"attribution\": {\"resource_kind\": \"disk_capacity\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"capacity_writer_ownership_unavailable\"], \"quality_flags\": []}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"disk_capacity\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"disk_capacity_risk_not_actionable\"]}}, \"io\": {\"risk\": {\"resource_kind\": \"io\", \"state\": \"normal\", \"candidate_state\": \"critical\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"io_psi_full_critical\", \"io_psi_some_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"io_psi_some_avg10\": 0.62, \"io_psi_full_avg10\": 0.58, \"max_device_utilization_percent\": null, \"max_average_latency_ms\": null, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 2079, \"reads_merged\": 0, \"sectors_read\": 86186, \"milliseconds_reading\": 53, \"writes_completed\": 62304, \"writes_merged\": 0, \"sectors_written\": 2257192, \"milliseconds_writing\": 5017, \"ios_in_progress\": 0, \"io_ticks_ms\": 2208, \"weighted_io_ms\": 6227, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 18454, \"writes_merged\": 7320, \"sectors_written\": 14339066, \"milliseconds_writing\": 30375, \"ios_in_progress\": 0, \"io_ticks_ms\": 10752, \"weighted_io_ms\": 33282, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18440, \"writes_merged\": 7312, \"sectors_written\": 14338960, \"milliseconds_writing\": 30369, \"ios_in_progress\": 0, \"io_ticks_ms\": 10704, \"weighted_io_ms\": 32441, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}}, \"warning_signals\": [\"io_psi_some_warning\"], \"critical_support\": [\"io_psi_full_critical\"]}, \"attribution\": {\"resource_kind\": \"io\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"io_object_baseline_established\", \"io_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"io\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"io_risk_not_actionable\"]}}}, \"joint_evaluation\": {\"state\": \"degraded_observability\", \"active_resources\": [], \"target_state\": \"NO_TARGET\", \"target\": null, \"targets_by_resource\": {}, \"attribution_states\": {}, \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}}, \"target_attribution\": null}\n",
+          "stderr": "Running as unit: guardian-p014-observer-io-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 28ms\nCPU time consumed: 27ms\n"
+        },
+        "state": "degraded_observability",
+        "decision": {
+          "mode": "simulate",
+          "resource_kind": "multi_resource",
+          "action": "none",
+          "execution": "not_executed",
+          "reason_codes": [
+            "no_active_resource_risk"
+          ],
+          "target_state": "NO_TARGET",
+          "target_id": null,
+          "active_resources": [],
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ]
+        },
+        "joint_evaluation": {
+          "state": "degraded_observability",
+          "active_resources": [],
+          "target_state": "NO_TARGET",
+          "target": null,
+          "targets_by_resource": {},
+          "attribution_states": {},
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ],
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "docker_observation_unavailable",
+              "observation_quality_status_missing"
+            ]
+          }
+        },
+        "records": [
+          {
+            "state": "degraded_observability",
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ]
+            },
+            "joint_evaluation": {
+              "state": "degraded_observability",
+              "active_resources": [],
+              "target_state": "NO_TARGET",
+              "target": null,
+              "targets_by_resource": {},
+              "attribution_states": {},
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ],
+              "decision": {
+                "mode": "simulate",
+                "resource_kind": "multi_resource",
+                "action": "none",
+                "execution": "not_executed",
+                "reason_codes": [
+                  "no_active_resource_risk"
+                ],
+                "target_state": "NO_TARGET",
+                "target_id": null,
+                "active_resources": [],
+                "quality_flags": [
+                  "docker_observation_unavailable",
+                  "observation_quality_status_missing"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "group": "guardian",
+      "scenario": "mixed",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-mixed.service",
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-mixed-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 114.644,
+        "stdout": " 21:24:30 up 11 min,  0 users,  load average: 0.59, 0.46, 0.24\n               total        used        free      shared  buff/cache   available\nMem:            2969         287        1965           1         716        2592\nSwap:              0           0           0\nsome avg10=1.65 avg60=1.61 avg300=1.22 total=13052356\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.86 avg60=0.60 avg300=0.39 total=4044183\nfull avg10=0.69 avg60=0.51 avg300=0.32 total=3441467\n    PID COMMAND         STAT\n  55094 bash            R\n  55093 ps              R\n  55083 bash            Ss\n  55082 systemd-run     S\n  55078 sudo            Ss\n  55077 sshd            S\n  55031 sshd            Ss\n  55030 python3         R\n  55029 python3         R\n  55028 python3         Ss\n  54975 ext4-rsv-conver I<\n",
+        "stderr": "Running as unit: guardian-p014-control-mixed-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      },
+      "guardian": {
+        "probe": {
+          "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-observer-mixed-1.service --slice=rescue.slice /usr/bin/bash -lc 'env PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --once --config /home/ubuntu/p014-fast-config.json --mode simulate --samples 2 --interval 1 --allow-unprotected --allow-action graceful_stop'",
+          "returncode": 0,
+          "ok": true,
+          "elapsed_ms": 167.459,
+          "stdout": "{\"event_id\": \"a7faed1e-a6c9-4580-a8c1-dba7ed20b577\", \"observed_at\": \"2026-09-20T13:24:31.031744Z\", \"state\": \"degraded_observability\", \"host_id\": \"guardian-p014\", \"signals\": {\"observed_at\": \"2026-09-20T13:24:31.031744Z\", \"observed_monotonic_ns\": 678611998397, \"memory\": {\"total_bytes\": 3113459712, \"available_bytes\": 2708492288, \"available_ratio_percent\": 86.993, \"swap_total_bytes\": 0, \"swap_free_bytes\": 0, \"swap_used_ratio_percent\": null}, \"psi\": {\"cpu\": {\"some\": {\"avg10\": 1.65, \"avg60\": 1.61, \"avg300\": 1.22, \"total\": 13121259.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"memory\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"io\": {\"some\": {\"avg10\": 0.86, \"avg60\": 0.6, \"avg300\": 0.39, \"total\": 4044183.0}, \"full\": {\"avg10\": 0.69, \"avg60\": 0.51, \"avg300\": 0.32, \"total\": 3441467.0}}}, \"cgroup\": {\"memory_current_bytes\": 9302016, \"memory_max\": \"max\", \"memory_events\": {\"low\": 0, \"high\": 0, \"max\": 0, \"oom\": 0, \"oom_kill\": 0}, \"pids_current\": 1, \"pids_max\": 3475, \"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-mixed-1.service\"}, \"docker\": {\"available\": false, \"error\": \"[Errno 2] No such file or directory: 'docker'\", \"containers\": []}, \"object_registry\": {\"status\": \"unavailable\", \"objects\": [], \"errors\": [\"docker_stats_unavailable\"]}, \"cpu\": {\"observed_monotonic_ns\": 678617414088, \"host\": {\"stat\": {\"aggregate\": {\"user\": 16565, \"nice\": 100, \"system\": 3153, \"idle\": 114212, \"iowait\": 657, \"irq\": 0, \"softirq\": 192, \"steal\": 0, \"guest\": 0, \"guest_nice\": 0, \"total_ticks\": 134879, \"idle_ticks\": 114869}, \"logical_cpus\": 2, \"valid\": true}, \"loadavg\": {\"load1\": 0.59, \"runnable_tasks\": 4, \"total_tasks\": 136, \"last_pid\": 55152, \"valid\": true}, \"logical_cpus\": 2}, \"psi\": {\"some\": {\"avg10\": 1.65, \"avg60\": 1.61, \"avg300\": 1.22, \"total\": 13123571.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-mixed-1.service\", \"cpu_stat\": {\"usage_usec\": 26060, \"user_usec\": 26060, \"system_usec\": 0}, \"cpu_max\": {\"quota_us\": null, \"period_us\": null, \"valid\": false}, \"psi\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 4800.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 4790.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"cpu_max_missing\"]}}, \"scheduler_probe\": {\"valid\": true, \"requested_sleep_ms\": 1.0, \"elapsed_ms\": 1.063, \"overshoot_ms\": 0.063}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"disk\": {\"observed_monotonic_ns\": 678617767809, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10299789312, \"free_ratio_percent\": 83.723, \"total_inodes\": 1555968, \"free_inodes\": 1479925, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18685, \"writes_merged\": 7379, \"sectors_written\": 14667920, \"milliseconds_writing\": 30583, \"ios_in_progress\": 0, \"io_ticks_ms\": 10832, \"weighted_io_ms\": 32671}, \"quality\": {\"status\": \"ok\", \"flags\": []}}], \"capacity_quality\": {\"status\": \"ok\", \"flags\": []}, \"io\": {\"psi\": {\"some\": {\"avg10\": 0.86, \"avg60\": 0.6, \"avg300\": 0.39, \"total\": 4044183.0}, \"full\": {\"avg10\": 0.69, \"avg60\": 0.51, \"avg300\": 0.32, \"total\": 3441467.0}}, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 2132, \"reads_merged\": 0, \"sectors_read\": 88308, \"milliseconds_reading\": 54, \"writes_completed\": 62319, \"writes_merged\": 0, \"sectors_written\": 2257272, \"milliseconds_writing\": 5023, \"ios_in_progress\": 0, \"io_ticks_ms\": 2228, \"weighted_io_ms\": 6240}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 18699, \"writes_merged\": 7387, \"sectors_written\": 14668026, \"milliseconds_writing\": 30589, \"ios_in_progress\": 0, \"io_ticks_ms\": 10880, \"weighted_io_ms\": 33517}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18685, \"writes_merged\": 7379, \"sectors_written\": 14667920, \"milliseconds_writing\": 30583, \"ios_in_progress\": 0, \"io_ticks_ms\": 10832, \"weighted_io_ms\": 32671}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28}}, \"cgroup\": {\"path\": \"/sys/fs/cgroup/rescue.slice/guardian-p014-observer-mixed-1.service\", \"io_stat\": {}, \"pressure\": {\"some\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}, \"full\": {\"avg10\": 0.0, \"avg60\": 0.0, \"avg300\": 0.0, \"total\": 0.0}}, \"quality\": {\"status\": \"ok\", \"flags\": [], \"optional_flags\": [\"io_stat_missing\"]}}, \"objects\": [], \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"ok\", \"flags\": []}}, \"quality\": {\"status\": \"degraded\", \"flags\": [\"docker_observation_unavailable\"]}}, \"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"object_candidates\": [], \"object_attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}, \"evidence\": {\"snapshot_path\": null, \"sample_window\": null, \"config_digest\": \"3a87015eefa41eadccaa0826f84d1dff5299c2116461badedb3e06b988eebf50\", \"config_source\": \"/home/ubuntu/p014-fast-config.json\", \"watchdog_status\": \"not_configured\"}, \"resource_evaluations\": {\"memory\": {\"risk\": {\"state\": \"degraded_observability\", \"candidate_state\": \"normal\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 0.0, \"reasons\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"sample_count\": 1, \"oom_events_delta\": null, \"memory_available_growth_bytes_per_second\": null, \"quality_status\": \"degraded\", \"signal_summary\": {\"warning_signals\": [], \"critical_support\": [], \"psi_memory_some_avg10\": 0.0, \"psi_memory_full_avg10\": 0.0, \"swap_used_ratio_percent\": null}}, \"attribution\": {\"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"docker_stats_unavailable\", \"insufficient_object_history\", \"object_baseline_established\", \"object_registry_degraded\", \"object_registry_empty\"], \"quality_flags\": [], \"host_decline_bytes_per_second\": null, \"lead_margin\": null, \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"action\": \"none\", \"reason_codes\": [\"oom_counter_baseline_established\", \"risk_not_actionable\"], \"protected\": false, \"execution\": \"not_executed\"}}, \"cpu\": {\"risk\": {\"resource_kind\": \"cpu\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"cpu_counter_baseline_established\", \"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"cpu_utilization_percent\": null, \"load1\": 0.59, \"logical_cpus\": 2, \"cpu_psi_some_avg10\": 1.65, \"cpu_psi_full_avg10\": 0.0, \"scheduler_delay_ms\": 1.063, \"cgroup_throttled_delta\": null, \"warning_signals\": [\"cpu_psi_some_warning\", \"scheduler_delay_warning\"], \"critical_support\": []}, \"attribution\": {\"resource_kind\": \"cpu\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"cpu_object_baseline_established\", \"cpu_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"cpu\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"cpu_risk_not_actionable\"]}}, \"disk_capacity\": {\"risk\": {\"resource_kind\": \"disk_capacity\", \"state\": \"normal\", \"candidate_state\": \"warning\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"disk_capacity_free_critical\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"mounts\": [{\"configured_path\": \"/\", \"mount_point\": \"/\", \"mount_id\": 32, \"device\": \"8:1\", \"filesystem_type\": \"ext4\", \"source\": \"/dev/sda1\", \"read_only\": false, \"stats\": {\"block_size_bytes\": 4096, \"total_bytes\": 12302225408, \"free_bytes\": 10299789312, \"free_ratio_percent\": 83.723, \"total_inodes\": 1555968, \"free_inodes\": 1479925, \"free_inode_ratio_percent\": 95.113, \"read_only\": false}, \"device_stats\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18685, \"writes_merged\": 7379, \"sectors_written\": 14667920, \"milliseconds_writing\": 30583, \"ios_in_progress\": 0, \"io_ticks_ms\": 10832, \"weighted_io_ms\": 32671}, \"quality\": {\"status\": \"ok\", \"flags\": []}, \"free_bytes_per_second\": null, \"time_to_full_seconds\": null}], \"warning_signals\": [], \"critical_support\": [\"disk_capacity_free_critical\"]}, \"attribution\": {\"resource_kind\": \"disk_capacity\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"capacity_writer_ownership_unavailable\"], \"quality_flags\": []}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"disk_capacity\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"disk_capacity_risk_not_actionable\"]}}, \"io\": {\"risk\": {\"resource_kind\": \"io\", \"state\": \"normal\", \"candidate_state\": \"critical\", \"candidate_for_seconds\": 0.0, \"required_for_seconds\": 1, \"reasons\": [\"io_psi_full_critical\", \"io_psi_some_warning\"], \"quality_flags\": [], \"quality_status\": \"ok\", \"sample_count\": 1, \"io_psi_some_avg10\": 0.86, \"io_psi_full_avg10\": 0.69, \"max_device_utilization_percent\": null, \"max_average_latency_ms\": null, \"devices\": {\"7:0\": {\"name\": \"loop0\", \"reads_completed\": 76, \"reads_merged\": 0, \"sectors_read\": 2462, \"milliseconds_reading\": 18, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 52, \"weighted_io_ms\": 18, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:1\": {\"name\": \"loop1\", \"reads_completed\": 294, \"reads_merged\": 0, \"sectors_read\": 6046, \"milliseconds_reading\": 29, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 184, \"weighted_io_ms\": 29, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:2\": {\"name\": \"loop2\", \"reads_completed\": 54, \"reads_merged\": 0, \"sectors_read\": 988, \"milliseconds_reading\": 12, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 44, \"weighted_io_ms\": 12, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:3\": {\"name\": \"loop3\", \"reads_completed\": 2132, \"reads_merged\": 0, \"sectors_read\": 88308, \"milliseconds_reading\": 54, \"writes_completed\": 62319, \"writes_merged\": 0, \"sectors_written\": 2257272, \"milliseconds_writing\": 5023, \"ios_in_progress\": 0, \"io_ticks_ms\": 2228, \"weighted_io_ms\": 6240, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:4\": {\"name\": \"loop4\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:5\": {\"name\": \"loop5\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:6\": {\"name\": \"loop6\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"7:7\": {\"name\": \"loop7\", \"reads_completed\": 0, \"reads_merged\": 0, \"sectors_read\": 0, \"milliseconds_reading\": 0, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 0, \"weighted_io_ms\": 0, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"252:0\": {\"name\": \"vda\", \"reads_completed\": 64, \"reads_merged\": 0, \"sectors_read\": 436, \"milliseconds_reading\": 6, \"writes_completed\": 0, \"writes_merged\": 0, \"sectors_written\": 0, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 40, \"weighted_io_ms\": 6, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:0\": {\"name\": \"sda\", \"reads_completed\": 7400, \"reads_merged\": 2053, \"sectors_read\": 815166, \"milliseconds_reading\": 1769, \"writes_completed\": 18699, \"writes_merged\": 7387, \"sectors_written\": 14668026, \"milliseconds_writing\": 30589, \"ios_in_progress\": 0, \"io_ticks_ms\": 10880, \"weighted_io_ms\": 33517, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:1\": {\"name\": \"sda1\", \"reads_completed\": 6992, \"reads_merged\": 1499, \"sectors_read\": 789832, \"milliseconds_reading\": 1716, \"writes_completed\": 18685, \"writes_merged\": 7379, \"sectors_written\": 14667920, \"milliseconds_writing\": 30583, \"ios_in_progress\": 0, \"io_ticks_ms\": 10832, \"weighted_io_ms\": 32671, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}, \"8:15\": {\"name\": \"sda15\", \"reads_completed\": 196, \"reads_merged\": 554, \"sectors_read\": 17558, \"milliseconds_reading\": 27, \"writes_completed\": 2, \"writes_merged\": 0, \"sectors_written\": 2, \"milliseconds_writing\": 0, \"ios_in_progress\": 0, \"io_ticks_ms\": 64, \"weighted_io_ms\": 28, \"utilization_percent\": null, \"average_latency_ms\": null, \"throughput_bytes_per_second\": null, \"deltas\": {}}}, \"warning_signals\": [\"io_psi_some_warning\"], \"critical_support\": [\"io_psi_full_critical\"]}, \"attribution\": {\"resource_kind\": \"io\", \"state\": \"DEGRADED_OBSERVABILITY\", \"target\": null, \"candidates\": [], \"reason_codes\": [\"io_object_baseline_established\", \"io_object_registry_empty\"], \"quality_flags\": [], \"sample_elapsed_seconds\": null}, \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"io\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"io_risk_not_actionable\"]}}}, \"joint_evaluation\": {\"state\": \"degraded_observability\", \"active_resources\": [], \"target_state\": \"NO_TARGET\", \"target\": null, \"targets_by_resource\": {}, \"attribution_states\": {}, \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"], \"decision\": {\"mode\": \"simulate\", \"resource_kind\": \"multi_resource\", \"action\": \"none\", \"execution\": \"not_executed\", \"reason_codes\": [\"no_active_resource_risk\"], \"target_state\": \"NO_TARGET\", \"target_id\": null, \"active_resources\": [], \"quality_flags\": [\"docker_observation_unavailable\", \"observation_quality_status_missing\"]}}, \"target_attribution\": null}\n",
+          "stderr": "Running as unit: guardian-p014-observer-mixed-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 36ms\nCPU time consumed: 30ms\n"
+        },
+        "state": "degraded_observability",
+        "decision": {
+          "mode": "simulate",
+          "resource_kind": "multi_resource",
+          "action": "none",
+          "execution": "not_executed",
+          "reason_codes": [
+            "no_active_resource_risk"
+          ],
+          "target_state": "NO_TARGET",
+          "target_id": null,
+          "active_resources": [],
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ]
+        },
+        "joint_evaluation": {
+          "state": "degraded_observability",
+          "active_resources": [],
+          "target_state": "NO_TARGET",
+          "target": null,
+          "targets_by_resource": {},
+          "attribution_states": {},
+          "quality_flags": [
+            "docker_observation_unavailable",
+            "observation_quality_status_missing"
+          ],
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "docker_observation_unavailable",
+              "observation_quality_status_missing"
+            ]
+          }
+        },
+        "records": [
+          {
+            "state": "degraded_observability",
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ]
+            },
+            "joint_evaluation": {
+              "state": "degraded_observability",
+              "active_resources": [],
+              "target_state": "NO_TARGET",
+              "target": null,
+              "targets_by_resource": {},
+              "attribution_states": {},
+              "quality_flags": [
+                "docker_observation_unavailable",
+                "observation_quality_status_missing"
+              ],
+              "decision": {
+                "mode": "simulate",
+                "resource_kind": "multi_resource",
+                "action": "none",
+                "execution": "not_executed",
+                "reason_codes": [
+                  "no_active_resource_risk"
+                ],
+                "target_state": "NO_TARGET",
+                "target_id": null,
+                "active_resources": [],
+                "quality_flags": [
+                  "docker_observation_unavailable",
+                  "observation_quality_status_missing"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "unprotected/cpu": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 122.445,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/memory": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 71.176,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/capacity": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 66.621,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/io": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 60.45,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/mixed": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 112.592,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/cpu": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 81.748,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/memory": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 64.192,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/capacity": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 79.043,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/io": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 73.012,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/mixed": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 130.303,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "guardian/cpu": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 74.048,
+      "guardian_samples": 1,
+      "guardian_states": [
+        "degraded_observability"
+      ],
+      "guardian_actions": [
+        "none"
+      ]
+    },
+    "guardian/memory": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 64.937,
+      "guardian_samples": 1,
+      "guardian_states": [
+        "degraded_observability"
+      ],
+      "guardian_actions": [
+        "none"
+      ]
+    },
+    "guardian/capacity": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 71.045,
+      "guardian_samples": 1,
+      "guardian_states": [
+        "degraded_observability"
+      ],
+      "guardian_actions": [
+        "none"
+      ]
+    },
+    "guardian/io": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 68.599,
+      "guardian_samples": 1,
+      "guardian_states": [
+        "degraded_observability"
+      ],
+      "guardian_actions": [
+        "none"
+      ]
+    },
+    "guardian/mixed": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 114.644,
+      "guardian_samples": 1,
+      "guardian_states": [
+        "degraded_observability"
+      ],
+      "guardian_actions": [
+        "none"
+      ]
+    }
+  },
+  "safety": {
+    "local_disposable_vm_only": true,
+    "guardian_mode": "simulate",
+    "guardian_action_adapter_invoked": false,
+    "docker_mutation_invoked": false,
+    "production_connected": false,
+    "fixture_cleanup_only": true
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "guardian.cpu_verification.v1",
+  "host_tests": {
+    "command": "python3 -m unittest discover -s tests -q",
+    "passed": 149,
+    "failed": 0
+  },
+  "static_checks": {
+    "python_compile": "passed",
+    "git_diff_check": "passed",
+    "config_example_validation": "passed",
+    "schema_json_parse": "passed"
+  },
+  "local_vm": {
+    "name": "guardian-p011-migration",
+    "os": "Ubuntu 22.04.5 LTS ARM64",
+    "systemd": "249.11",
+    "docker": "29.1.3",
+    "cgroup": "v2",
+    "vcpus": 2,
+    "production_connected": false,
+    "fixture": "systemd transient workload.slice + stress-ng --cpu 2 --timeout 15s",
+    "mutation_scope": "only bounded disposable workload fixture"
+  },
+  "windows": {
+    "baseline": {
+      "samples": 6,
+      "risk_states": {"degraded_observability": 1, "normal": 5},
+      "candidate_states": {"normal": 6},
+      "attribution_states": {"DEGRADED_OBSERVABILITY": 1, "NO_TARGET": 5},
+      "actions": {"none": 6},
+      "utilization_percent_min_max": [0.917, 2.97],
+      "scheduler_delay_ms_min_max": [1.059, 1.108]
+    },
+    "cpu_pressure": {
+      "samples": 12,
+      "risk_states": {"degraded_observability": 1, "normal": 11},
+      "candidate_states": {"normal": 1, "warning": 11},
+      "attribution_states": {"DEGRADED_OBSERVABILITY": 1, "NO_TARGET": 11},
+      "actions": {"none": 12},
+      "utilization_percent_min_max": [100.0, 100.0],
+      "scheduler_delay_ms_min_max": [1.057, 1.083]
+    },
+    "cpu_attribution": {
+      "samples": 10,
+      "risk_states": {"degraded_observability": 1, "normal": 9},
+      "candidate_states": {"normal": 1, "warning": 9},
+      "attribution_states": {"DEGRADED_OBSERVABILITY": 1, "TARGET_CONFIRMED": 9},
+      "actions": {"escalate": 1, "none": 9},
+      "execution": {"not_executed": 10},
+      "utilization_percent_min_max": [100.0, 100.0],
+      "scheduler_delay_ms_min_max": [1.053, 1.076]
+    },
+    "cpu_simulate_short_dwell": {
+      "samples": 10,
+      "risk_states": {"degraded_observability": 1, "normal": 4, "recovered": 1, "warning": 4},
+      "candidate_states": {"normal": 3, "warning": 7},
+      "attribution_states": {"DEGRADED_OBSERVABILITY": 1, "NO_TARGET": 2, "TARGET_CONFIRMED": 7},
+      "actions": {"escalate": 1, "graceful_stop": 4, "none": 5},
+      "execution": {"not_executed": 10},
+      "utilization_percent_min_max": [0.0, 100.0],
+      "scheduler_delay_ms_min_max": [1.056, 1.114]
+    }
+  },
+  "negative_paths": {
+    "short_burst_no_action": true,
+    "close_competing_objects_ambiguous": true,
+    "cgroup_recreation_ambiguous": true,
+    "unknown_mapping_degraded": true,
+    "protected_target_escalates": true,
+    "audit_or_mutation_invoked": false
+  }
+}

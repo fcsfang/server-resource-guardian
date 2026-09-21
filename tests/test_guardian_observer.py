@@ -3,25 +3,103 @@ import json
 import subprocess
 import tempfile
 import unittest
+from argparse import Namespace
 from pathlib import Path
 from unittest.mock import patch
 
+from src.guardian_config import safe_defaults, validate_config
 from src.guardian_observer import (
     RiskEvaluator,
+    _build_runtime_presentation,
     append_audit,
     build_event,
+    build_cpu_simulation_decision,
     collect_docker_stats,
     collect_observation,
     parse_meminfo,
     parse_psi,
     record_watchdog_status,
     resolve_process_cgroup_root,
+    run,
     validate_interval_seconds,
     write_snapshot,
 )
 
 
 class GuardianObserverTests(unittest.TestCase):
+    def test_runtime_presentation_exposes_ranked_candidate_protection_and_simulation(self):
+        config_value = safe_defaults().as_dict()
+        config_value["protection"]["container_labels"] = ["guardian.role=control-plane"]
+        config = validate_config(config_value, source="<presentation-fixture>")
+        candidate_id = "a" * 64
+        event = {
+            "object_candidates": [
+                {
+                    "id": candidate_id,
+                    "name": "control-plane",
+                    "score": 0.9,
+                    "confidence": "high",
+                    "host_contribution_percent": 90.0,
+                    "mapping_errors": [],
+                }
+            ]
+        }
+        observation = {
+            "object_registry": {
+                "status": "ok",
+                "objects": [{
+                    "id": candidate_id,
+                    "name": "control-plane",
+                    "labels": {"guardian.role": "control-plane"},
+                }],
+            }
+        }
+        emergency = {
+            "rankings": {},
+            "decision": {
+                "mode": "simulate",
+                "action": "graceful_stop",
+                "execution": "not_executed",
+                "resource_kind": "memory",
+                "target_id": candidate_id,
+                "reason_codes": ["TOP_ACTIONABLE_CONSUMER"],
+            },
+        }
+
+        value = _build_runtime_presentation(event, observation, emergency, config)
+
+        self.assertEqual(value["candidate_ranking"]["top"]["name"], "control-plane")
+        self.assertTrue(value["candidate_ranking"]["top"]["protected"])
+        self.assertIn("container_label:guardian.role=control-plane", value["candidate_ranking"]["top"]["protection_reasons"])
+        self.assertEqual(value["simulation"]["target_name"], "control-plane")
+        self.assertEqual(value["simulation"]["execution"], "not_executed")
+
+    def test_cpu_simulation_is_plan_only_and_fail_closed_on_unknown_target(self):
+        risk = {"state": "critical"}
+        confirmed = {"state": "TARGET_CONFIRMED"}
+        plan = build_cpu_simulation_decision(
+            risk,
+            confirmed,
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(plan["action"], "graceful_stop")
+        self.assertEqual(plan["execution"], "not_executed")
+        self.assertIn("cpu_simulate_only", plan["reason_codes"])
+        rejected = build_cpu_simulation_decision(
+            risk,
+            {"state": "AMBIGUOUS_TARGET"},
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(rejected["action"], "escalate")
+        self.assertEqual(rejected["execution"], "not_executed")
+        self.assertIn("cpu_attribution_not_confirmed", rejected["reason_codes"])
+
     def test_interval_validation_accepts_schema_boundaries(self):
         self.assertEqual(validate_interval_seconds(0.1), 0.1)
         self.assertEqual(validate_interval_seconds(60), 60.0)
@@ -69,9 +147,42 @@ class GuardianObserverTests(unittest.TestCase):
             observation = collect_observation(root, cgroup, fake_runner)
             self.assertEqual(observation["cgroup"]["memory_events"]["oom_kill"], 1)
             self.assertTrue(observation["psi"]["memory"]["some"])
+            self.assertIn("disk", observation)
+            self.assertIn("capacity_quality", observation["disk"])
+            self.assertIn("io", observation["disk"])
             event = build_event(observation)
             self.assertEqual(event["state"], "critical")
             self.assertEqual(event["decision"]["action"], "none")
+
+    def test_collect_observation_uses_external_container_collector(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "pressure").mkdir()
+            (root / "meminfo").write_text("MemTotal: 100000 kB\nMemAvailable: 90000 kB\n")
+            cgroup = root / "cgroup"
+            cgroup.mkdir()
+            (cgroup / "memory.current").write_text("1234\n")
+            (cgroup / "memory.max").write_text("max\n")
+            (cgroup / "memory.events").write_text("oom 0\noom_kill 0\n")
+            (cgroup / "pids.current").write_text("3\n")
+            (cgroup / "pids.max").write_text("max\n")
+
+            def forbidden_runner(*_args, **_kwargs):
+                raise AssertionError("runtime must not invoke docker commands")
+
+            observation = collect_observation(
+                root,
+                cgroup,
+                forbidden_runner,
+                container_collector=lambda: {
+                    "docker": {"available": True, "containers": [{"Container": "abc"}]},
+                    "object_registry": {"status": "ok", "objects": [], "errors": []},
+                    "collector": {"status": "ok", "read_only": True},
+                },
+            )
+            self.assertEqual(observation["docker"]["containers"][0]["Container"], "abc")
+            self.assertEqual(observation["object_registry"]["status"], "ok")
+            self.assertNotIn("docker_observation_unavailable", observation["quality"]["flags"])
 
     def test_resolves_current_process_cgroup_v2_path(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -330,6 +441,183 @@ class GuardianObserverTests(unittest.TestCase):
         )
         self.assertEqual(event["decision"]["action"], "escalate")
         self.assertIn("object_attribution_not_confirmed", event["decision"]["reason_codes"])
+
+    def test_run_makes_emergency_decision_authoritative_in_observe_and_simulate(self):
+        candidate_id = "a" * 64
+        protected_id = "b" * 64
+        identity = {
+            "kind": "container",
+            "id": candidate_id,
+            "name": "fixture-shed-target",
+            "status": "running",
+            "created_at": "2026-09-21T00:00:00Z",
+            "cgroup_path": f"/sys/fs/cgroup/docker/{candidate_id}",
+            "cgroup_inode": 12345,
+        }
+        observation = {
+            "observed_at": "2026-09-21T00:00:00Z",
+            "memory": {"available_ratio_percent": 4.0, "available_bytes": 400},
+            "cgroup": {"memory_events": {"oom": 1}},
+            "psi": {},
+            "docker": {"containers": [{"ID": candidate_id, "Name": identity["name"]}]},
+            "object_registry": {"objects": [identity]},
+            "cpu": {},
+            "disk": {},
+        }
+        memory_risk = {
+            "state": "critical",
+            "candidate_state": "critical",
+            "candidate_for_seconds": 30.0,
+            "required_for_seconds": 30.0,
+            "reasons": ["fixture_critical"],
+            "sample_count": 3,
+            "quality_status": "ok",
+            "quality_flags": [],
+        }
+        object_attribution = {
+            "state": "TARGET_CONFIRMED",
+            "target": dict(identity),
+            "candidates": [
+                {
+                    "kind": "container",
+                    "id": candidate_id,
+                    "name": identity["name"],
+                    "confidence": "high",
+                    "cgroup_path": identity["cgroup_path"],
+                    "host_contribution_percent": 90.0,
+                    "mapping_errors": [],
+                }
+            ],
+            "reason_codes": [],
+            "quality_flags": [],
+        }
+
+        def enabled_config(mode):
+            value = safe_defaults().as_dict()
+            value["agent"]["mode"] = mode
+            value["actions"]["allow"] = ["graceful_stop"]
+            if mode == "enforce":
+                value["actions"]["enabled"] = True
+                value["actions"]["require_approval"] = True
+                value["actions"]["authorization_file"] = "/fixture/authorization.json"
+            value["risk"]["emergency_shedding"] = {
+                "schema": "guardian.emergency_shedding.v1",
+                "enabled": True,
+                "window_seconds": 15,
+                "required_samples": 2,
+                "min_host_contribution_percent": 20,
+                "resource_priority": ["memory", "cpu", "io", "disk_capacity"],
+                "action": "graceful_stop",
+                "protected_set": [
+                    {
+                        "stable_id": protected_id,
+                        "owner": "platform",
+                        "reason": "fixture-protected",
+                    }
+                ],
+                "actionable_set": [
+                    {
+                        "stable_id": candidate_id,
+                        "owner": "fixture",
+                        "environment": "local-disposable",
+                        "allowed_resources": ["memory"],
+                        "action": "graceful_stop",
+                        "grace_timeout_seconds": 30,
+                        "expires_at": "2099-01-01T00:00:00Z",
+                        "human_contact": "fixture@example.invalid",
+                    }
+                ],
+            }
+            return validate_config(value, source=f"<observer-{mode}-fixture>")
+
+        configs = [enabled_config("observe"), enabled_config("simulate"), enabled_config("enforce")]
+        args = Namespace(
+            config=Path("/fixture/guardian.json"),
+            mode=None,
+            interval=0.1,
+            warning_available=None,
+            critical_available=None,
+            warning_for=None,
+            critical_for=None,
+            snapshot_dir=None,
+            snapshot_all=False,
+            audit_file=None,
+            simulate_action=None,
+            allow_action=None,
+            allow_unprotected=True,
+            once=True,
+            samples=None,
+        )
+
+        with (
+            patch("src.guardian_observer.load_config", side_effect=configs),
+            patch("src.guardian_observer.collect_observation", return_value=observation),
+            patch("src.guardian_observer.CompositeRiskEvaluator") as composite_class,
+            patch("src.guardian_observer.ObjectAttributionEvaluator") as object_attributor_class,
+            patch("src.guardian_observer.CpuRiskEvaluator") as cpu_risk_class,
+            patch("src.guardian_observer.CpuAttributionEvaluator") as cpu_attributor_class,
+            patch("src.guardian_observer.DiskCapacityRiskEvaluator") as capacity_risk_class,
+            patch("src.guardian_observer.CapacityAttributionEvaluator") as capacity_attributor_class,
+            patch("src.guardian_observer.IoRiskEvaluator") as io_risk_class,
+            patch("src.guardian_observer.DiskIoAttributionEvaluator") as io_attributor_class,
+            patch("src.guardian_observer._emergency_host_risks") as emergency_host_risks,
+            patch("src.guardian_observer._emergency_candidates") as emergency_candidates,
+            patch("src.guardian_observer.notify_watchdog", return_value=False),
+            patch("src.guardian_observer.notify_ready", return_value=False),
+            patch("builtins.print") as printed,
+        ):
+            composite_class.return_value.evaluate.return_value = memory_risk
+            object_attributor_class.return_value.evaluate.return_value = object_attribution
+            cpu_risk_class.return_value.evaluate.return_value = {"state": "normal", "quality_flags": []}
+            cpu_attributor_class.return_value.evaluate.return_value = {"state": "NO_TARGET", "quality_flags": []}
+            capacity_risk_class.return_value.evaluate.return_value = {"state": "normal", "quality_flags": []}
+            capacity_attributor_class.return_value.evaluate.return_value = {"state": "NO_TARGET", "quality_flags": []}
+            io_risk_class.return_value.evaluate.return_value = {"state": "normal", "quality_flags": []}
+            io_attributor_class.return_value.evaluate.return_value = {"state": "NO_TARGET", "quality_flags": []}
+            emergency_host_risks.return_value = {
+                "memory": {
+                    "state": "CRITICAL_CONFIRMED",
+                    "sample_complete": True,
+                    "sample_count": 3,
+                    "quality_status": "ok",
+                    "quality_flags": [],
+                }
+            }
+            emergency_candidates.return_value = [
+                {
+                    **identity,
+                    "running": True,
+                    "resource_contributions": {"memory": 90.0},
+                    "contribution_window_seconds": 15.0,
+                }
+            ]
+
+            for _ in configs:
+                run(args)
+            events = [json.loads(call.args[0]) for call in printed.call_args_list]
+
+        self.assertEqual(len(events), 3)
+        observe_event, simulate_event, enforce_event = events
+        for event in events:
+            self.assertEqual(event["target_attribution"], None)
+            self.assertEqual(event["decision"], event["emergency_shedding"]["decision"])
+        self.assertEqual(observe_event["decision"]["mode"], "observe")
+        self.assertEqual(observe_event["decision"]["action"], "none")
+        self.assertEqual(observe_event["decision"]["execution"], "not_applicable")
+        self.assertEqual(observe_event["decision"]["plans_count"], 0)
+        self.assertEqual(observe_event["decision"]["top_consumer"], candidate_id)
+        self.assertIn("OBSERVE_ONLY", observe_event["decision"]["reason_codes"])
+        self.assertEqual(simulate_event["decision"]["mode"], "simulate")
+        self.assertEqual(simulate_event["decision"]["action"], "graceful_stop")
+        self.assertEqual(simulate_event["decision"]["execution"], "not_executed")
+        self.assertEqual(simulate_event["decision"]["plans_count"], 1)
+        self.assertEqual(simulate_event["decision"]["plan"]["target_id"], candidate_id)
+        self.assertEqual(enforce_event["decision"]["mode"], "enforce")
+        self.assertEqual(enforce_event["decision"]["action"], "graceful_stop")
+        self.assertEqual(enforce_event["decision"]["execution"], "not_executed")
+        self.assertEqual(enforce_event["decision"]["plans_count"], 1)
+        self.assertEqual(enforce_event["decision"]["plan"]["target_id"], candidate_id)
+        self.assertEqual(enforce_event["state"], "critical_confirmed")
 
 
 if __name__ == "__main__":

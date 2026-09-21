@@ -1,0 +1,938 @@
+{
+  "schema": "guardian.p014_real_docker.check.v1",
+  "source_schema": "guardian.p014_real_docker.v1",
+  "experiment": "EXP-063",
+  "code_gate": "FAIL",
+  "status": "INCONCLUSIVE",
+  "checks": {
+    "schema": {
+      "status": "PASS",
+      "detail": "guardian.p014_real_docker.v1"
+    },
+    "declared_coverage": {
+      "status": "PASS",
+      "detail": {
+        "groups": [
+          "unprotected",
+          "rescue",
+          "guardian"
+        ],
+        "scenarios": [
+          "cpu",
+          "memory",
+          "capacity",
+          "io",
+          "mixed"
+        ]
+      }
+    },
+    "three_round_coverage": {
+      "status": "PASS",
+      "detail": {
+        "records": 45,
+        "per_pair": 3
+      }
+    },
+    "control_probes": {
+      "status": "FAIL",
+      "detail": {
+        "probes": 180,
+        "successes": 179,
+        "failures": [
+          {
+            "record": "r3/guardian/io",
+            "probe": 2,
+            "stderr": "probe_timeout",
+            "elapsed_ms": 12007.186
+          }
+        ]
+      }
+    },
+    "safety_boundary": {
+      "status": "PASS",
+      "detail": "local real-Docker observe/simulate only"
+    },
+    "guardian_continuous_samples": {
+      "status": "PASS",
+      "detail": {
+        "windows": 15,
+        "samples": 480
+      }
+    },
+    "no_action_execution": {
+      "status": "PASS",
+      "detail": {
+        "samples": 480,
+        "actions": [
+          "escalate",
+          "graceful_stop",
+          "none"
+        ]
+      }
+    },
+    "real_full_id_cgroup_mapping": {
+      "status": "PASS",
+      "detail": {
+        "windows": 15,
+        "rows": [
+          {
+            "target_id": "d19e0b5137b4b1e5bb3acd7ffb101a5dd2da7ffaf2941569f8dce76930bdd0a2",
+            "target_id_is_full_hex": true,
+            "target_samples": 3,
+            "target_ids": [
+              "d19e0b5137b4b1e5bb3acd7ffb101a5dd2da7ffaf2941569f8dce76930bdd0a2"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-d19e0b5137b4b1e5bb3acd7ffb101a5dd2da7ffaf2941569f8dce76930bdd0a2.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 3,
+            "mapping_errors": [],
+            "docker_available_samples": 31,
+            "docker_unavailable_samples": 1,
+            "record": "r1/cpu"
+          },
+          {
+            "target_id": "350f7dcee4dfc24bfafb2f233919256a956585cd3e9f76b772beb0ccde727d49",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "350f7dcee4dfc24bfafb2f233919256a956585cd3e9f76b772beb0ccde727d49"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-350f7dcee4dfc24bfafb2f233919256a956585cd3e9f76b772beb0ccde727d49.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r1/memory"
+          },
+          {
+            "target_id": "4a963d4ba0e7c0271622edbfcbad441d41bba39d565b2cab4e198ca9e294a4d9",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "4a963d4ba0e7c0271622edbfcbad441d41bba39d565b2cab4e198ca9e294a4d9"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-4a963d4ba0e7c0271622edbfcbad441d41bba39d565b2cab4e198ca9e294a4d9.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r1/capacity"
+          },
+          {
+            "target_id": "64ac8f6d40710ad931e7e721b70407f12869f84621a4cc0ce706078c01f6ca05",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "64ac8f6d40710ad931e7e721b70407f12869f84621a4cc0ce706078c01f6ca05"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-64ac8f6d40710ad931e7e721b70407f12869f84621a4cc0ce706078c01f6ca05.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r1/io"
+          },
+          {
+            "target_id": "f50b80b2111f4a35965cb04ff35e5fc84c6458745a024bd65b9a0f366d81eacd",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "f50b80b2111f4a35965cb04ff35e5fc84c6458745a024bd65b9a0f366d81eacd"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-f50b80b2111f4a35965cb04ff35e5fc84c6458745a024bd65b9a0f366d81eacd.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r1/mixed"
+          },
+          {
+            "target_id": "d47ea853d6bd80c3164b3f1c2626fca79459f53c8117978f137d9a0ee6e42064",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "d47ea853d6bd80c3164b3f1c2626fca79459f53c8117978f137d9a0ee6e42064"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-d47ea853d6bd80c3164b3f1c2626fca79459f53c8117978f137d9a0ee6e42064.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r2/cpu"
+          },
+          {
+            "target_id": "a6d730c4b0d5d988fc710f5e0dad3314579c246e379edcc0c30007f5de8af43d",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "a6d730c4b0d5d988fc710f5e0dad3314579c246e379edcc0c30007f5de8af43d"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-a6d730c4b0d5d988fc710f5e0dad3314579c246e379edcc0c30007f5de8af43d.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 3,
+            "mapping_errors": [
+              "container_cgroup_file_missing"
+            ],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r2/memory"
+          },
+          {
+            "target_id": "d4f5564c724d183ce80a123a751f407230506008511cf2049e90b8591e96e2af",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "d4f5564c724d183ce80a123a751f407230506008511cf2049e90b8591e96e2af"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-d4f5564c724d183ce80a123a751f407230506008511cf2049e90b8591e96e2af.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r2/capacity"
+          },
+          {
+            "target_id": "49985492fb6350395e0cce2a878e437e95820d1f62e5124f9256085d7e279519",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "49985492fb6350395e0cce2a878e437e95820d1f62e5124f9256085d7e279519"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-49985492fb6350395e0cce2a878e437e95820d1f62e5124f9256085d7e279519.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r2/io"
+          },
+          {
+            "target_id": "913ac9316ce18aa52778151b7be304cc9d39206bbd1513e39e95a78b23f89086",
+            "target_id_is_full_hex": true,
+            "target_samples": 3,
+            "target_ids": [
+              "913ac9316ce18aa52778151b7be304cc9d39206bbd1513e39e95a78b23f89086"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-913ac9316ce18aa52778151b7be304cc9d39206bbd1513e39e95a78b23f89086.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 3,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r2/mixed"
+          },
+          {
+            "target_id": "deccd3e3740f7082c2c858f62532f1a2935f96d95a504c7834f9a7b93911e32c",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "deccd3e3740f7082c2c858f62532f1a2935f96d95a504c7834f9a7b93911e32c"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-deccd3e3740f7082c2c858f62532f1a2935f96d95a504c7834f9a7b93911e32c.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r3/cpu"
+          },
+          {
+            "target_id": "5069070a99e65648e78efa3014bcbd0b64db170a2684e214040c6dd13541cf7c",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "5069070a99e65648e78efa3014bcbd0b64db170a2684e214040c6dd13541cf7c"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-5069070a99e65648e78efa3014bcbd0b64db170a2684e214040c6dd13541cf7c.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r3/memory"
+          },
+          {
+            "target_id": "8e0606afcb315d3b52ea058692eca26e34eee04d7c07c7c48b710349fe7850c9",
+            "target_id_is_full_hex": true,
+            "target_samples": 4,
+            "target_ids": [
+              "8e0606afcb315d3b52ea058692eca26e34eee04d7c07c7c48b710349fe7850c9"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-8e0606afcb315d3b52ea058692eca26e34eee04d7c07c7c48b710349fe7850c9.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 4,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r3/capacity"
+          },
+          {
+            "target_id": "eab882322ce03c118ca36890cc5e5a37e8711c69f49ae0bf4832faad1ce17823",
+            "target_id_is_full_hex": true,
+            "target_samples": 3,
+            "target_ids": [
+              "eab882322ce03c118ca36890cc5e5a37e8711c69f49ae0bf4832faad1ce17823"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-eab882322ce03c118ca36890cc5e5a37e8711c69f49ae0bf4832faad1ce17823.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 3,
+            "mapping_errors": [],
+            "docker_available_samples": 31,
+            "docker_unavailable_samples": 1,
+            "record": "r3/io"
+          },
+          {
+            "target_id": "ca8dc29f51e50630dfe14a736b282c433db230ba016f5398a535783b3ae1e80e",
+            "target_id_is_full_hex": true,
+            "target_samples": 3,
+            "target_ids": [
+              "ca8dc29f51e50630dfe14a736b282c433db230ba016f5398a535783b3ae1e80e"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-ca8dc29f51e50630dfe14a736b282c433db230ba016f5398a535783b3ae1e80e.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 3,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r3/mixed"
+          }
+        ]
+      }
+    },
+    "business_health_probe": {
+      "status": "PASS",
+      "detail": {
+        "healthy_windows": 15
+      }
+    },
+    "object_churn": {
+      "status": "PASS",
+      "detail": {
+        "windows": 15,
+        "three_ids_per_window": true
+      }
+    },
+    "guardian_overhead_observed": {
+      "status": "PASS",
+      "detail": {
+        "samples": 1058,
+        "cpu_usage_ns_p95": 18264064.0,
+        "memory_current_bytes_p95": 674845000.0,
+        "tasks_current_p95": 8.0,
+        "audit_bytes_min": 642373,
+        "audit_bytes_max": 663688,
+        "control_p95_ms_max": 12007.186
+      }
+    },
+    "false_positive_miss_truth": {
+      "status": "PASS",
+      "detail": {
+        "windows": 15,
+        "mismatch_windows": [
+          {
+            "record": "r1/cpu",
+            "expected_active_resources": [
+              "cpu"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r1/memory",
+            "expected_active_resources": [
+              "memory"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r1/capacity",
+            "expected_active_resources": [
+              "disk_capacity"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [
+              "disk_capacity"
+            ],
+            "unexpected_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r1/io",
+            "expected_active_resources": [
+              "io"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "cpu",
+              "memory"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r1/mixed",
+            "expected_active_resources": [
+              "cpu",
+              "memory"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r2/cpu",
+            "expected_active_resources": [
+              "cpu"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r2/memory",
+            "expected_active_resources": [
+              "memory"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [
+              "memory"
+            ],
+            "unexpected_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r2/capacity",
+            "expected_active_resources": [
+              "disk_capacity"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [
+              "disk_capacity"
+            ],
+            "unexpected_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r2/io",
+            "expected_active_resources": [
+              "io"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "cpu"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r2/mixed",
+            "expected_active_resources": [
+              "cpu",
+              "memory"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [
+              "memory"
+            ],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r3/cpu",
+            "expected_active_resources": [
+              "cpu"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r3/memory",
+            "expected_active_resources": [
+              "memory"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [
+              "memory"
+            ],
+            "unexpected_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r3/capacity",
+            "expected_active_resources": [
+              "disk_capacity"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [
+              "disk_capacity"
+            ],
+            "unexpected_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r3/io",
+            "expected_active_resources": [
+              "io"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "cpu",
+              "memory"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r3/mixed",
+            "expected_active_resources": [
+              "cpu",
+              "memory"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          }
+        ],
+        "recovery_windows": []
+      }
+    }
+  },
+  "gate_failures": [
+    "control_probes"
+  ],
+  "evidence_gaps": [
+    "beszel_time_delta_missing",
+    "business_recovery_not_proven_by_healthcheck_only",
+    "control_probe_failure_retained",
+    "docker_stats_unavailable_samples:2",
+    "guardian_overhead_has_no_owner_approved_slo",
+    "owner_rescue_slo_missing",
+    "resource_false_positive_or_miss_observed",
+    "same_observer_recovery_not_observed_for_all_windows",
+    "transient_cgroup_mapping_errors:r2/memory",
+    "workload_window_shorter_than_30s"
+  ],
+  "summary": {
+    "control_probes": 180,
+    "control_successes": 179,
+    "guardian_windows": 15,
+    "guardian_samples": 480,
+    "identity_windows": 15,
+    "healthy_windows": 15,
+    "churn_windows": 15,
+    "overhead_rows": 1058
+  },
+  "resource_truth": [
+    {
+      "record": "r1/cpu",
+      "expected_active_resources": [
+        "cpu"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r1/memory",
+      "expected_active_resources": [
+        "memory"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r1/capacity",
+      "expected_active_resources": [
+        "disk_capacity"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [
+        "disk_capacity"
+      ],
+      "unexpected_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r1/io",
+      "expected_active_resources": [
+        "io"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "cpu",
+        "memory"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r1/mixed",
+      "expected_active_resources": [
+        "cpu",
+        "memory"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r2/cpu",
+      "expected_active_resources": [
+        "cpu"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r2/memory",
+      "expected_active_resources": [
+        "memory"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [
+        "memory"
+      ],
+      "unexpected_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r2/capacity",
+      "expected_active_resources": [
+        "disk_capacity"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [
+        "disk_capacity"
+      ],
+      "unexpected_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r2/io",
+      "expected_active_resources": [
+        "io"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "cpu"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r2/mixed",
+      "expected_active_resources": [
+        "cpu",
+        "memory"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [
+        "memory"
+      ],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r3/cpu",
+      "expected_active_resources": [
+        "cpu"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r3/memory",
+      "expected_active_resources": [
+        "memory"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [
+        "memory"
+      ],
+      "unexpected_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r3/capacity",
+      "expected_active_resources": [
+        "disk_capacity"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [
+        "disk_capacity"
+      ],
+      "unexpected_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r3/io",
+      "expected_active_resources": [
+        "io"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "cpu",
+        "memory"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r3/mixed",
+      "expected_active_resources": [
+        "cpu",
+        "memory"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    }
+  ],
+  "safety": {
+    "local_disposable_vm_only": true,
+    "real_docker_daemon": true,
+    "guardian_mode": "simulate",
+    "guardian_action_adapter_invoked": false,
+    "guardian_capability_created": false,
+    "guardian_docker_control_mutation_invoked": false,
+    "fixture_docker_run_invoked": true,
+    "fixture_workloads_natural_exit": true,
+    "docker_stop_restart_kill_invoked_by_harness": false,
+    "production_connected": false,
+    "beszel_connected": false
+  }
+}

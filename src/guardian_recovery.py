@@ -50,6 +50,9 @@ class HostRecoveryObservation:
     after_oom_events: int | None
     after_risk_state: str
     observed_after_seconds: float
+    resource_kind: str = "memory"
+    before_resource_state: str | None = None
+    after_resource_state: str | None = None
 
 
 @dataclass(frozen=True)
@@ -74,6 +77,7 @@ class BusinessRecoveryPolicy:
     max_wait_seconds: float = 30.0
     healthy_statuses: frozenset[str] = field(default_factory=lambda: frozenset({"healthy", "running"}))
     require_probe: bool = True
+    action: str = "restart"
 
 
 @dataclass(frozen=True)
@@ -140,6 +144,15 @@ def assess_host_mitigation(
         return RecoveryResult("failed", False, ("invalid_observation_time",))
     if observation.observed_after_seconds > policy.max_wait_seconds:
         return RecoveryResult("failed", False, ("host_recovery_window_expired",))
+    if observation.resource_kind != "memory":
+        before_state = observation.before_resource_state
+        after_state = observation.after_resource_state
+        if before_state not in {"warning", "critical", "critical_confirmed", "CRITICAL_CONFIRMED"}:
+            return RecoveryResult("failed", False, ("resource_recovery_before_state_not_actionable",))
+        if after_state not in {"normal", "recovered"}:
+            return RecoveryResult("failed", False, ("resource_risk_still_actionable",))
+        return RecoveryResult("MITIGATED", True, ("resource_risk_mitigated",))
+
     required = (
         observation.before_available_percent,
         observation.after_available_percent,
@@ -178,6 +191,15 @@ def assess_business_recovery(
         return RecoveryResult("BUSINESS_DEGRADED", False, ("invalid_observation_time",))
     if observation.observed_after_seconds > policy.max_wait_seconds:
         return RecoveryResult("BUSINESS_DEGRADED", False, ("business_recovery_window_expired",))
+    if policy.action in {"graceful_stop", "terminate"}:
+        if observation.target_present and observation.target_running:
+            return RecoveryResult("BUSINESS_DEGRADED", False, ("business_target_still_running",))
+        # Stopping a disposable or failed target proves containment, not that
+        # the surrounding business service is healthy.  A separate, real
+        # health check must explicitly confirm the business layer.
+        if policy.require_probe and observation.probe_ok is not True:
+            return RecoveryResult("BUSINESS_DEGRADED", False, ("business_health_check_not_configured",))
+        return RecoveryResult("BUSINESS_RECOVERED", True, ("business_health_confirmed",))
     if not observation.target_present or not observation.target_running:
         return RecoveryResult("BUSINESS_DEGRADED", False, ("business_target_not_running",))
     if observation.health_status not in policy.healthy_statuses:

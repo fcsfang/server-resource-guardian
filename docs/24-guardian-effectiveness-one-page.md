@@ -68,7 +68,7 @@ Beszel 是否有效，不能只看页面是否有曲线，要看它是否提供�
 - [离线可点击演示页](../demo/guardian-beszel-review/index.html)：展示效果对照、Beszel/Guardian 分工和现场回放。
 - [UI 集成设计](23-beszel-guardian-ui-integration-design.md)：冻结 `guardian.ui.v1`、降级状态和人工确认边界。
 - [现场演示 Runbook](26-guardian-beszel-live-demo-runbook.md)：明早验收和组长演示步骤。
-- [交付前执行路线](25-leader-review-delivery-roadmap.md)：交付物、验收标准和剩余边界。
+- [三里程碑上线路线](../ROADMAP.md)：当前任务、验收标准和剩余边界。
 
 ## 必须明确的限制
 
@@ -76,7 +76,7 @@ Beszel 是否有效，不能只看页面是否有曲线，要看它是否提供�
 - 只验证 disposable 泄漏对象和本地健康探针，不代表真实业务自动恢复。
 - 当前不接生产、不读取生产凭据、不默认执行重启或强制终止。
 - 真实生产接入仍需要非生产 x86_64 测试机、保护名单、业务 health check 和明确动作授权。
-- EXP-020 的 5 组计时记录分散在多个数据文件，不能作为独立可重算的生产统计；完整声称边界见 [docs/28](28-claim-evidence-boundary.md)。
+- EXP-020 的 5 组计时记录分散在多个数据文件，不能作为独立可重算的生产统计；它只作为历史本地证据保留。
 
 ## 希望组长评审并决定的事项
 

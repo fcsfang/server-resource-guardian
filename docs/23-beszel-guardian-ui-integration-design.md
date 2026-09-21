@@ -4,7 +4,7 @@
 
 状态：`DESIGN-READY-FOR-REVIEW`
 
-关联任务：Goal 6 / G6-T06
+关联里程碑：里程碑二和里程碑三
 
 本设计描述如何在 Beszel 现有监控和告警页面旁边呈现 Guardian 的风险判断与受控处置状态。第一版只定义接口、页面信息层级和安全边界，不直接修改 Beszel 上游核心代码，也不把 UI 按钮当作动作授权。
 
@@ -21,7 +21,7 @@
 
 - 不在 UI 中统一设置 Docker 内存上限。
 - 不让 Beszel 告警直接触发 Docker/systemd 操作。
-- 不在 G6-T06 修改 Beszel 上游核心、现有告警规则或通知凭据。
+- 当前不修改 Beszel 上游核心、现有告警规则或通知凭据。
 - 不把本地 ARM64 的阈值和延迟写成生产承诺。
 
 ## 2. 信息来源和权威关系
@@ -139,7 +139,7 @@ UI 只消费脱敏后的 `guardian.ui.v1` 视图模型，不直接消费 Beszel 
 - 确认后 UI 只提交一个不可变的计划 ID 给控制层；不直接调用 Docker/systemd。
 - 任何保护对象、未知对象、多候选对象、过期事件、审计失败或 Hub/Adapter 不可用都隐藏确认按钮并显示人工升级。
 
-当前 G6-T06 不实现上述 `enforce` UI，只冻结状态和接口语义；真实动作仍受 G6-T07 及独立授权约束。
+当前不实现上述 `enforce` UI，只冻结状态和接口语义；真实动作属于里程碑三，并且仍需独立授权。
 
 ## 6. 降级和错误展示
 
@@ -177,7 +177,7 @@ UI 只消费脱敏后的 `guardian.ui.v1` 视图模型，不直接消费 Beszel 
 - [x] `guardian_ui_model.py` 已用 5 个纯函数测试验证冻结字段、模拟计划、拒绝事件、多对象和缺失身份降级；宿主机与 Multipass 全量测试均通过。
 - [x] 已形成离线静态展示页 [demo/guardian-beszel-review](../demo/guardian-beszel-review/index.html)，覆盖效果对照、Beszel/Guardian 分工和现场回放；页面不连接 Hub、不读取凭据、不调用执行器。
 - [ ] 由 leader 或项目协作者评审字段、页面入口和人工确认流程。
-- [ ] 评审通过后再实现旁路 view-model endpoint；在此之前不进入 G6-T07。
+- [ ] 在里程碑二实现旁路只读 view-model endpoint；在此之前不开发 UI 动作入口。
 
 ## 9. 与当前证据的对应关系
 

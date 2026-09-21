@@ -1,0 +1,1915 @@
+{
+  "schema": "guardian.cpu_repro_external.v1",
+  "label": "cpu_runnable_storm",
+  "started_epoch_seconds": 1789903228.989085,
+  "duration_seconds": 60.0,
+  "interval_seconds": 1.0,
+  "target": {
+    "host": "192.168.252.4",
+    "user": "ubuntu",
+    "http_port": 18080
+  },
+  "samples": [
+    {
+      "index": 0,
+      "monotonic_seconds": 222105.567923,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 109.35,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 108.608,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 13.849,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "monotonic_seconds": 222106.579079,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 108.702,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 126.822,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.313,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "monotonic_seconds": 222107.577407,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.48,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 118.953,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.778,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "monotonic_seconds": 222108.566214,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.257,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 111.845,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.832,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "monotonic_seconds": 222109.569589,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 117.089,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 110.759,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.951,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "monotonic_seconds": 222110.57395,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 121.192,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 111.231,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.132,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "monotonic_seconds": 222111.566171,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.766,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 112.123,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.958,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "monotonic_seconds": 222112.557872,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 109.912,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 109.896,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.761,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "monotonic_seconds": 222113.580685,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 108.997,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 129.485,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.208,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "monotonic_seconds": 222114.589973,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 122.956,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 123.493,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.28,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "monotonic_seconds": 222115.585993,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 117.568,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 126.501,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.308,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "monotonic_seconds": 222116.573687,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 114.939,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 117.51,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.147,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "monotonic_seconds": 222117.580895,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.636,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 121.647,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.405,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "monotonic_seconds": 222118.593273,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 119.938,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 131.466,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.706,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "monotonic_seconds": 222119.56491,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.797,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 110.848,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.956,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "monotonic_seconds": 222120.57756,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 121.347,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 113.038,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.924,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "monotonic_seconds": 222121.589026,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 128.45,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 117.697,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.628,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "monotonic_seconds": 222122.577118,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 116.141,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 119.414,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.695,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "monotonic_seconds": 222123.58016,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 123.183,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 113.784,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.91,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "monotonic_seconds": 222124.568971,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.792,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 113.286,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.976,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "monotonic_seconds": 222125.58951,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 118.574,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 127.846,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.866,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "monotonic_seconds": 222126.57667,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.359,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.112,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.722,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "monotonic_seconds": 222127.573673,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 110.856,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 123.451,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.04,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 23,
+      "monotonic_seconds": 222128.565147,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 111.068,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 111.718,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.586,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "monotonic_seconds": 222129.576021,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.532,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 122.09,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.936,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "monotonic_seconds": 222130.573805,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.305,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.121,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.2,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 26,
+      "monotonic_seconds": 222131.629195,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 173.205,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 111.727,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.907,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "monotonic_seconds": 222132.56351,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 114.375,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 104.677,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 3.283,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 28,
+      "monotonic_seconds": 222133.561227,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 110.535,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 107.405,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.101,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 29,
+      "monotonic_seconds": 222134.569541,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.038,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 105.554,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.736,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 30,
+      "monotonic_seconds": 222135.563516,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 112.908,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 112.786,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.56,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 31,
+      "monotonic_seconds": 222136.557897,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 103.281,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 110.668,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.738,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 32,
+      "monotonic_seconds": 222137.573209,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 114.915,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 116.144,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.864,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 33,
+      "monotonic_seconds": 222138.568626,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 112.22,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.473,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.816,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 34,
+      "monotonic_seconds": 222139.592286,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 126.02,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 123.463,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.616,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 35,
+      "monotonic_seconds": 222140.55695,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 106.608,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 106.898,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.347,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 36,
+      "monotonic_seconds": 222141.581367,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 118.036,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.128,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.993,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 37,
+      "monotonic_seconds": 222142.57188,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 111.406,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.719,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.681,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 38,
+      "monotonic_seconds": 222143.581057,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 123.515,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.585,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.271,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 39,
+      "monotonic_seconds": 222144.580797,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 121.854,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.89,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.837,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 40,
+      "monotonic_seconds": 222145.614535,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 135.994,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 137.258,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.528,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 41,
+      "monotonic_seconds": 222146.576021,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 118.295,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 114.862,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.685,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 42,
+      "monotonic_seconds": 222147.584716,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.133,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 122.371,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.566,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 43,
+      "monotonic_seconds": 222148.576395,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.429,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.592,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.125,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 44,
+      "monotonic_seconds": 222149.568294,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 112.034,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 114.063,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.186,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 45,
+      "monotonic_seconds": 222150.575873,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 114.348,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 118.481,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.837,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 46,
+      "monotonic_seconds": 222151.581263,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 113.638,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 124.262,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.149,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 47,
+      "monotonic_seconds": 222152.572535,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 113.644,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 116.029,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.945,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 48,
+      "monotonic_seconds": 222153.605387,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 143.208,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.747,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.318,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 49,
+      "monotonic_seconds": 222154.583302,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 125.415,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 119.145,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.659,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 50,
+      "monotonic_seconds": 222155.583299,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 134.751,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 107.582,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.434,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 51,
+      "monotonic_seconds": 222156.571685,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 118.347,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 109.73,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.403,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 52,
+      "monotonic_seconds": 222157.591883,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 126.623,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 125.676,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.033,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 53,
+      "monotonic_seconds": 222158.588151,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 124.802,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 119.622,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.475,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 54,
+      "monotonic_seconds": 222159.591438,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 135.898,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 115.362,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.912,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 55,
+      "monotonic_seconds": 222160.576464,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 120.795,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 116.816,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.765,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 56,
+      "monotonic_seconds": 222161.629984,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 157.036,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 131.221,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.173,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 57,
+      "monotonic_seconds": 222162.689116,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 189.633,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 156.935,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 1.868,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 58,
+      "monotonic_seconds": 222163.645685,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 157.632,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 143.972,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.795,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 59,
+      "monotonic_seconds": 222164.672882,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 170.856,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 158.323,
+          "stderr": null
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.448,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "http_external": {
+      "samples": 60,
+      "successes": 60,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "latency_ms": {
+        "p50": 1.967,
+        "p95": 2.741,
+        "p99": 7.615,
+        "max": 13.849
+      },
+      "timeouts": 0
+    },
+    "ssh_connect": {
+      "samples": 60,
+      "successes": 60,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "latency_ms": {
+        "p50": 117.802,
+        "p95": 158.293,
+        "p99": 179.94,
+        "max": 189.633
+      },
+      "timeouts": 0
+    },
+    "ssh_health": {
+      "samples": 60,
+      "successes": 60,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "latency_ms": {
+        "p50": 116.087,
+        "p95": 137.594,
+        "p99": 157.504,
+        "max": 158.323
+      },
+      "timeouts": 0
+    }
+  }
+}

@@ -57,10 +57,24 @@ def _write_readiness(value: str, readiness_file: str | None = None) -> bool:
     return True
 
 
+def write_readiness(status: str = "starting") -> bool:
+    """Write the local readiness marker without claiming systemd READY=1."""
+
+    return _write_readiness(status)
+
+
+def notify_status(status: str) -> bool:
+    """Publish a status transition while preserving readiness semantics."""
+
+    file_written = write_readiness(status)
+    notified = send_systemd_notification(f"STATUS={status}")
+    return file_written or notified
+
+
 def notify_ready(status: str = "ready") -> bool:
     """Mark the process ready and notify systemd when running under systemd."""
 
-    file_written = _write_readiness(status)
+    file_written = write_readiness(status)
     notified = send_systemd_notification(f"READY=1\nSTATUS={status}")
     return file_written or notified
 
@@ -73,7 +87,9 @@ def notify_watchdog(status: str = "sampling") -> bool:
 
 __all__ = [
     "notify_ready",
+    "notify_status",
     "notify_watchdog",
     "send_systemd_notification",
     "systemd_notification_status",
+    "write_readiness",
 ]

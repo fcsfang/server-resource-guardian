@@ -1,0 +1,852 @@
+{
+  "schema": "guardian.rescue_probe.v1",
+  "vm": "guardian-ubuntu",
+  "label": "cpu-workload-slice",
+  "count_per_probe": 20,
+  "timeout_seconds": 10.0,
+  "started_epoch_s": 1789895877.623591,
+  "finished_epoch_s": 1789895919.129642,
+  "records": [
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 112.968,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 1,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 78.511,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 1,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 70.912,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 1,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 2128.587,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 1,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 195.073,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 2,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 61.681,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 2,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 76.334,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 2,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1679.166,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 2,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 63.005,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 3,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.452,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 3,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 81.596,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 3,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1918.88,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 3,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 76.668,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 4,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.966,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 4,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 78.351,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 4,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1866.577,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 4,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 64.414,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 5,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 63.359,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 5,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 74.103,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 5,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1818.389,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 5,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 65.671,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 6,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 63.556,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 6,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 91.466,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 6,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1793.739,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 6,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 90.062,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 7,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 77.864,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 7,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 73.322,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 7,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1868.725,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 7,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 65.234,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 8,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 59.942,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 8,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 75.52,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 8,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1886.563,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 8,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 84.619,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 9,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.745,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 9,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 83.48,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 9,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1779.831,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 9,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 73.864,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 10,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 72.819,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 10,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 71.615,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 10,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1815.073,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 10,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 80.538,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 11,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.541,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 11,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 71.236,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 11,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1785.099,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 11,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 58.649,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 12,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 80.316,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 12,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 75.233,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 12,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1796.487,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 12,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 65.486,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 13,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 64.116,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 13,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 76.172,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 13,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1802.577,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 13,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 67.341,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 14,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 73.126,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 14,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 74.374,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 14,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1833.861,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 14,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 63.503,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 15,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 74.021,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 15,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 89.621,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 15,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1860.917,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 15,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 94.01,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 16,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 101.426,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 16,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 85.209,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 16,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1758.946,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 16,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 71.833,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 17,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 68.626,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 17,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 69.709,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 17,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1890.623,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7910,
+      "stderr": "",
+      "round": 17,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 95.284,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 18,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 78.961,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 18,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 73.532,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 18,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1908.344,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 18,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 75.971,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 19,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 77.654,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 19,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 85.235,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 19,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1768.733,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7911,
+      "stderr": "",
+      "round": 19,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 96.811,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 20,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 70.665,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 471,
+      "stderr": "",
+      "round": 20,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 70.804,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 50,
+      "stderr": "",
+      "round": 20,
+      "label": "cpu-workload-slice"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 1902.021,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 7909,
+      "stderr": "",
+      "round": 20,
+      "label": "cpu-workload-slice"
+    }
+  ],
+  "summary": {
+    "diagnostic_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 68.626,
+      "p95_ms": 80.316,
+      "max_ms": 101.426
+    },
+    "docker_list_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 75.233,
+      "p95_ms": 89.621,
+      "max_ms": 91.466
+    },
+    "guardian_observe_once": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 1818.389,
+      "p95_ms": 1918.88,
+      "max_ms": 2128.587
+    },
+    "ssh_managed_session": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 73.864,
+      "p95_ms": 112.968,
+      "max_ms": 195.073
+    }
+  },
+  "safety": {
+    "read_only_control_probes": true,
+    "temporary_audit_write_only": true,
+    "docker_mutation_invoked": false,
+    "systemd_mutation_invoked": false,
+    "production_connected": false
+  }
+}

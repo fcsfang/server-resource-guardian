@@ -1,4 +1,4 @@
-# 历史讨论样例，不是当前运行时格式；PG-P0-02 的 canonical runtime config 是 guardian.example.json。
+# 历史讨论样例，不是当前运行时格式；当前运行配置是 guardian.example.json。
 # 当前 JSON schema：../config/guardian.schema.json；本 YAML 不被 Guardian 读取。
 version: 1
 
@@ -39,11 +39,25 @@ actions:
 
 protection:
   systemd_units:
-    - server-resource-guardian.service
+    - guardian-runtime.service
+    - guardian-collector.service
+    - guardian-broker.service
+    - beszel.service
+    - beszel-agent.service
     - ssh.service
     - sshd.service
+    - systemd-logind.service
+    - systemd-journald.service
+    - docker.service
+    - containerd.service
   executable_paths: []
-  container_labels: []
+  container_labels:
+    - guardian.role=control-plane
+    - guardian.role=guardian
+    - com.docker.compose.service=beszel
+    - com.docker.compose.service=beszel-agent
+    - com.docker.compose.service=beszel-isolated
+    - com.docker.compose.service=beszel-agent-isolated
 
 audit:
   local_buffer_enabled: true

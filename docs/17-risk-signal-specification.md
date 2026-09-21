@@ -1,115 +1,71 @@
-# Guardian 风险信号规范（G4-T01）
+# Guardian 三资源风险信号规范
 
-更新时间：2026-09-19
+更新时间：2026-09-20
 
-> 本文定义 Guardian 的第一版风险信号接口和判定原则。数值阈值是待本地实验校准的配置，不是生产阈值。它是 G4 设计规范；PG-P0-03 已完成本地 MVP 组合风险接入，但不等于生产化完成。当前源码与证据边界见 [docs/28](28-claim-evidence-boundary.md) 和 [EXP-030](../experiments/EXP-030-2026-09-20-composite-risk-engine/record.md)。
+状态：`ACTIVE`
 
-## 1. 设计原则
+## 1. 统一规则
 
-- 以宿主机内存风险为 P0 主线；历史实验表明 CPU 饱和通常不会直接导致 SSH 失效，宿主机内存耗尽才是整机崩溃的主要风险。
-- 单点瞬时值不能直接触发处置；必须结合持续时间、增长趋势、压力指标或内核事件。
-- “信号采集”和“动作决策”分离：信号只说明风险，策略层决定是否允许动作。
-- 指标缺失、对象身份不稳定或时间窗口不完整时，风险可以升级告警，但默认不能升级为自动破坏性动作。
-- 初始采样周期目标为 1–5 秒；实际检测时延和开销必须通过新的 EXP 实测。
+- CPU、内存、磁盘容量/inode、磁盘 I/O 使用独立输入、阈值、dwell、恢复和 reason code。
+- 单点高值不产生可执行计划；至少需要持续性和第二类支持证据，硬事件除外。
+- 每个样本带 monotonic time、wall time、source、quality、新鲜度和配置 digest。
+- `missing`、`not_supported`、`stale`、`error` 与有效的零值分开；核心信号缺失进入 `degraded_observability`。
+- 阈值是版本化配置，通过目标环境基线校准，不在代码或文档中声明通用生产数字。
 
-## 2. 信号分层
+## 2. 信号
 
-### P0：宿主机内存风险
-
-| 信号 | 来源 | 作用 | 备注 |
+| 通道 | 宿主信号 | 对象信号 | 硬边界 |
 | --- | --- | --- | --- |
-| 内存可用比例 | `/proc/meminfo` | 判断可分配余量 | 记录总量、可用量、缓存和回收变化 |
-| 内存增长速率 | 连续采样计算 | 判断泄漏或突增 | 至少记录窗口长度、斜率和样本数 |
-| swap 使用比例与增长速率 | `/proc/meminfo`、`swapon` | 判断是否进入换页退化 | swap 本身不是故障，需结合 PSI 和趋势 |
-| memory PSI | `/proc/pressure/memory` | 判断任务等待内存的压力 | 保存 `some/full` 的 `avg10/avg60/avg300` |
-| OOM/cgroup 事件增量 | cgroup v2 `memory.events`、内核事件 | 判断是否已发生硬风险 | 记录采样前后计数，不能只读当前布尔状态 |
+| CPU | `/proc/stat`、loadavg、CPU PSI、调度探针、持续时间 | cgroup `cpu.stat`、`cpu.max`、对象 PSI、throttling | 100% 利用率本身不是故障 |
+| 内存 | MemAvailable、趋势、time-to-threshold、memory PSI、swap、root OOM 增量 | `memory.current/stat/events`、增量和宿主下降贡献 | OOM 是硬事件/滞后证据，不是提前预测 |
+| 容量/inode | mount identity、free bytes/inodes、下降斜率、time-to-full、只读/写错误 | writer ownership/配额/已登记目录写速率 | 没有所有权证据不能归因 |
+| I/O | I/O PSI、diskstats、设备利用率/延迟/队列/错误 | cgroup `io.stat` 增量、device mapping | 容量与 I/O 不共用阈值；writeback 可使归因失真 |
 
-### P1：对象定位与局部风险
+## 3. 状态机
 
-| 信号 | 来源 | 作用 |
-| --- | --- | --- |
-| 容器内存使用量、限制和增长速率 | `docker stats`、Docker inspect | 排序候选肇事容器 |
-| 容器 OOM、die、restart 事件 | Docker events | 关联对象生命周期和历史事件 |
-| cgroup `memory.current`、`memory.events` | `/sys/fs/cgroup` | 避免只依赖 Docker 展示层 |
-| 进程启动时间、PID、cgroup 路径 | `/proc`、cgroup 文件 | 防止 PID 重用导致误处理 |
-| 容器健康状态和重启次数 | Docker inspect | 判断动作后是否恢复 |
-
-### P2：辅助退化信号
-
-| 信号 | 来源 | 作用 |
-| --- | --- | --- |
-| CPU 使用率、load、CPU PSI | `/proc/stat`、`/proc/loadavg`、`/proc/pressure/cpu` | 判断调度争用和响应退化 |
-| I/O PSI、磁盘可用空间 | `/proc/pressure/io`、文件系统统计 | 判断 I/O 堵塞或日志/快照风险 |
-| PID 使用率和 fork 失败 | cgroup `pids.current/pids.max`、进程事件 | 识别 PID 耗尽导致的服务异常 |
-
-P2 信号不会单独触发高风险动作；它们主要用于解释、排序和恢复验证。
-
-## 3. 风险状态
-
-| 状态 | 进入条件 | 允许输出 |
-| --- | --- | --- |
-| `normal` | 无持续风险或风险已恢复 | 采样记录 |
-| `warning` | 低余量、持续增长或压力超过校准阈值，但尚有恢复窗口 | 告警、对象排序、快照建议 |
-| `critical` | 硬事件、临界趋势或多信号组合确认风险接近失效 | 生成动作计划；是否执行由策略层决定 |
-| `recovered` | 资源和服务健康在验证窗口内恢复 | 关闭事件或进入冷却 |
-| `escalated` | 无法定位、动作失败、保护对象命中或重复恶化 | 停止自动升级并通知人工 |
-
-## 4. 第一版判定规则
-
-第一版只固化结构，不固化生产数字：
-
-1. 每次采样保存原始信号和采样时间，所有派生值保存计算窗口和样本数。
-2. `warning` 至少需要一个趋势/余量信号持续超过配置窗口，或一个可解释的局部风险信号持续出现。
-3. `critical` 需要硬事件，或“宿主机余量/增长趋势 + memory PSI/swap 退化”的组合确认；单次瞬时高值不能直接进入 `enforce`。
-4. 同一事件必须有去抖和冷却 ID，避免每个采样周期重复触发动作。
-5. 只有对象身份、保护策略和动作白名单均确认后，风险状态才允许生成可执行动作计划。
-6. 任何信号缺失、采样中断或时钟异常都要写入审计；不得把缺失当作安全。
-
-## 5. 事件输出字段
-
-最小事件结构应包含：
-
-```yaml
-event_id: <stable-id>
-observed_at: <RFC3339>
-state: warning|critical|recovered|escalated
-host_id: <stable-host-id>
-signals:
-  memory_available_ratio: <value>
-  memory_growth_rate: <value>
-  swap_used_ratio: <value>
-  memory_psi: <snapshot>
-  oom_events_delta: <value>
-object_candidates:
-  - kind: container|cgroup|process|host
-    id: <stable-id>
-    confidence: <value>
-decision:
-  mode: observe|simulate|enforce
-  action: none|notify|snapshot|graceful_stop|restart|terminate|escalate
-  reason_codes: []
-  protected: true|false
-evidence:
-  snapshot_path: <path>
-  sample_window: <duration>
+```text
+STARTING -> NORMAL -> WATCHING -> WARNING -> CRITICAL_CONFIRMED
+CRITICAL_CONFIRMED -> PLAN_ONLY | AWAITING_AUTHORIZATION
+ACTIONING -> VERIFYING -> MITIGATED -> BUSINESS_RECOVERED | BUSINESS_DEGRADED
+Any -> DEGRADED_OBSERVABILITY | ESCALATED | CIRCUIT_OPEN
+Recovered + cooldown -> NORMAL
 ```
 
-该结构用于设计讨论，正式 schema 需要在实现前通过测试和配置校验固化。
+进程启动先建立 counter baseline；不得从 STARTING 直接执行动作。enter/exit 阈值和最小停留分开，采样 gap 超限时旧窗口失效。
 
-## 5.1 当前实现差异
+## 4. 混合风险仲裁
 
-- 当前 `guardian_observer.py` 的实际风险候选主要使用宿主 `MemAvailable` 比例和 cgroup `memory.events` 的非零值；OOM 计数增量、计数重置和启动基线尚未完成。
-- 当前实现会计算可用内存下降速率，但它尚未与 PSI、swap 和数据质量组合成可执行的生产风险判断。
-- CPU、I/O、PID、PSI 和 swap 可以被采集或输出，但不能据此声称已经形成独立的自动处置策略。
-- “初始采样周期 1–5 秒”和文中的阈值都是设计/PoC 参数，不是生产 SLA。
+联合事件包含各通道独立结果，不把多个资源折成一个不可解释分数：
 
-## 6. 验收与下一步
+1. 任一 critical 可产生管理员告警。
+2. 只有同一稳定对象在至少一个通道确认且其余 critical 通道不指向冲突对象，才允许形成单目标计划。
+3. 多个资源指向不同对象、候选接近或任一关键证据过期时，输出 `MULTI_RESOURCE_AMBIGUOUS`，不执行动作。
+4. 动作后每个 critical 通道分别验证恢复；不能用内存改善证明 CPU/I/O 恢复。
 
-- [x] 明确 P0/P1/P2 信号及其来源。
-- [x] 明确状态机、去抖、冷却和缺失数据边界。
-- [x] 明确风险信号与动作决策分离。
-- [ ] 在 Mac Ubuntu 上用可丢弃对象校准采样周期、增长速率和 PSI 窗口。
-- [ ] 将对象策略和保护名单形成 G4-T02 配置规范。
-- [x] 用 `observe` 实现第一版事件输出，不执行自动动作；验证记录见 EXP-007 和 G4-T03。
-- [x] 在 `simulate` 中复用风险事件和对象策略，只生成动作计划；默认输出 `execution=not_executed`。
-- [x] 按 Goal 7 PG-P0-03 将 OOM 增量、趋势、PSI、swap 和采集质量门禁接入组合风险引擎；生产阈值校准、长跑和 x86_64 兼容性仍待后续阶段。
+## 5. 事件结构
+
+```json
+{
+  "event_id": "...",
+  "observed_at": "...",
+  "observed_monotonic_ns": 0,
+  "state": "warning|critical|recovered|escalated",
+  "resource_evaluations": {
+    "cpu": {},
+    "memory": {},
+    "disk_capacity": {},
+    "io": {}
+  },
+  "target_attribution": {},
+  "decision": {"mode": "observe", "action": "none", "execution": "not_executed"},
+  "quality_flags": [],
+  "config_digest": "..."
+}
+```
+
+## 6. 当前证据与缺口
+
+- 内存：EXP-030/031 完成本地组合风险和容器/cgroup 归因。
+- CPU：EXP-055 完成本地 observe/simulate、调度探针和 cgroup 归因。
+- 磁盘：EXP-057 完成本地容量/inode 与 I/O fixture；容量 writer ownership 仍默认放弃。
+- 联合仲裁代码已实现并通过同目标合并、冲突放弃、缺失归因和降级观测的负向测试；P0-14 证据包的本地代码/安全门禁已通过，EXP-062 已补部分同会话长窗口恢复，但真实 Docker、对象 churn、memory/I/O 稳定恢复、业务 health 和相关效果指标仍未完成；P0-16A 已有本地 fake sink 通知合同，P0-16B 耐久投递、P0-16C 真实通知渠道、x86_64 长期校准和生产 observe/simulate 仍未完成。

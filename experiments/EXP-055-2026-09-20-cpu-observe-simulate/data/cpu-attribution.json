@@ -1,0 +1,1998 @@
+{
+  "schema": "guardian.cpu_probe.v1",
+  "config_digest": "924c01647ceb55d31c5be4ddd6902bf9c5d22f99f8f9d4f43b0c9e6cc8984b9e",
+  "config_source": "config/guardian.example.json",
+  "mode": "simulate",
+  "samples": 10,
+  "interval_seconds": 1.0,
+  "object": {
+    "id": "guardian-p012-cpu-fixture.service",
+    "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+    "protected": false
+  },
+  "allowed_actions": [
+    "graceful_stop"
+  ],
+  "started_epoch_s": 1789901195.070675,
+  "finished_epoch_s": 1789901204.1746578,
+  "records": [
+    {
+      "sample": 1,
+      "observed_at": "2026-09-20T10:46:35.080239Z",
+      "cpu": {
+        "observed_monotonic_ns": 2087183484684,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 15794,
+              "nice": 0,
+              "system": 6129,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 416661,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.46,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235269,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.27,
+            "avg60": 0.25,
+            "avg300": 0.27,
+            "total": 34207641.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 47856,
+            "user_usec": 23928,
+            "system_usec": 23928
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 5232.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 1054.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.056,
+          "overshoot_ms": 0.056
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 139462,
+              "user_usec": 135792,
+              "system_usec": 3670,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 35462.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 25511.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "degraded_observability",
+        "candidate_state": "normal",
+        "candidate_for_seconds": 0.0,
+        "required_for_seconds": 0.0,
+        "reasons": [
+          "cpu_counter_baseline_established",
+          "insufficient_samples"
+        ],
+        "quality_flags": [
+          "insufficient_samples"
+        ],
+        "quality_status": "degraded",
+        "sample_count": 1,
+        "cpu_utilization_percent": null,
+        "load1": 0.46,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.27,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.056,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": []
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "DEGRADED_OBSERVABILITY",
+        "target": null,
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": null,
+            "cpu_contribution_percent": null
+          }
+        ],
+        "reason_codes": [
+          "cpu_object_baseline_established"
+        ],
+        "quality_flags": [],
+        "sample_elapsed_seconds": null
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "escalate",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_observability_degraded"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 2,
+      "observed_at": "2026-09-20T10:46:36.089646Z",
+      "cpu": {
+        "observed_monotonic_ns": 2088192983384,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 15995,
+              "nice": 0,
+              "system": 6130,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 416863,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.46,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235276,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.77,
+            "avg60": 0.34,
+            "avg300": 0.29,
+            "total": 34211995.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 53895,
+            "user_usec": 24497,
+            "system_usec": 29397
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 6147.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 1293.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.076,
+          "overshoot_ms": 0.076
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 2149391,
+              "user_usec": 2145410,
+              "system_usec": 3980,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 39659.0
+              },
+              "full": {
+                "avg10": 0.0,
+                "avg60": 0.0,
+                "avg300": 0.0,
+                "total": 28897.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 0.0,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 2,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.46,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.77,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.076,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 2009929,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 2009929,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.0094987
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 3,
+      "observed_at": "2026-09-20T10:46:37.100950Z",
+      "cpu": {
+        "observed_monotonic_ns": 2089204175180,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 16196,
+              "nice": 0,
+              "system": 6131,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 417065,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.46,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235329,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.77,
+            "avg60": 0.34,
+            "avg300": 0.29,
+            "total": 34225654.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 61119,
+            "user_usec": 28208,
+            "system_usec": 32910
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 8348.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 1576.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.058,
+          "overshoot_ms": 0.058
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 4144461,
+              "user_usec": 4140476,
+              "system_usec": 3985,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.36,
+                "avg60": 0.06,
+                "avg300": 0.01,
+                "total": 52928.0
+              },
+              "full": {
+                "avg10": 0.18,
+                "avg60": 0.03,
+                "avg300": 0.0,
+                "total": 42165.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 1.011,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 3,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.46,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.77,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.058,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 1995070,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 1995070,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.011191796
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 4,
+      "observed_at": "2026-09-20T10:46:38.110392Z",
+      "cpu": {
+        "observed_monotonic_ns": 2090213615176,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 16398,
+              "nice": 0,
+              "system": 6131,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 417267,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.46,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235336,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.63,
+            "avg60": 0.33,
+            "avg300": 0.29,
+            "total": 34229373.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 67608,
+            "user_usec": 33804,
+            "system_usec": 33804
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 9299.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 1683.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.057,
+          "overshoot_ms": 0.057
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 6157725,
+              "user_usec": 6153740,
+              "system_usec": 3985,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.36,
+                "avg60": 0.06,
+                "avg300": 0.01,
+                "total": 56548.0
+              },
+              "full": {
+                "avg10": 0.18,
+                "avg60": 0.03,
+                "avg300": 0.0,
+                "total": 45786.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 2.021,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 4,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.46,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.63,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.057,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 2013264,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 2013264,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.009439996
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 5,
+      "observed_at": "2026-09-20T10:46:39.121559Z",
+      "cpu": {
+        "observed_monotonic_ns": 2091224951933,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 16599,
+              "nice": 0,
+              "system": 6132,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 417469,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.46,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235382,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.63,
+            "avg60": 0.33,
+            "avg300": 0.29,
+            "total": 34240150.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 74915,
+            "user_usec": 33804,
+            "system_usec": 41110
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 9554.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 1784.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.059,
+          "overshoot_ms": 0.059
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 8155700,
+              "user_usec": 8151710,
+              "system_usec": 3990,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.29,
+                "avg60": 0.06,
+                "avg300": 0.01,
+                "total": 67190.0
+              },
+              "full": {
+                "avg10": 0.14,
+                "avg60": 0.03,
+                "avg300": 0.0,
+                "total": 56427.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 3.032,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 5,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.46,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.63,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.059,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 1997975,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 1997975,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.011336757
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 6,
+      "observed_at": "2026-09-20T10:46:40.131713Z",
+      "cpu": {
+        "observed_monotonic_ns": 2092235014767,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 16801,
+              "nice": 0,
+              "system": 6132,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 417671,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.59,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235389,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.51,
+            "avg60": 0.32,
+            "avg300": 0.29,
+            "total": 34243578.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 81016,
+            "user_usec": 33804,
+            "system_usec": 47211
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 10583.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 1974.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.065,
+          "overshoot_ms": 0.065
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 10170040,
+              "user_usec": 10166050,
+              "system_usec": 3990,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.29,
+                "avg60": 0.06,
+                "avg300": 0.01,
+                "total": 70561.0
+              },
+              "full": {
+                "avg10": 0.14,
+                "avg60": 0.03,
+                "avg300": 0.0,
+                "total": 59798.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 4.042,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 6,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.59,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.51,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.065,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 2014340,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 2014340,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.010062834
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 7,
+      "observed_at": "2026-09-20T10:46:41.142328Z",
+      "cpu": {
+        "observed_monotonic_ns": 2093245606875,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 17003,
+              "nice": 0,
+              "system": 6133,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 417874,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.59,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235435,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.51,
+            "avg60": 0.32,
+            "avg300": 0.29,
+            "total": 34253428.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 88103,
+            "user_usec": 40891,
+            "system_usec": 47211
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 12847.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 2210.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.06,
+          "overshoot_ms": 0.06
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 12172562,
+              "user_usec": 12168572,
+              "system_usec": 3990,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.24,
+                "avg60": 0.06,
+                "avg300": 0.01,
+                "total": 80288.0
+              },
+              "full": {
+                "avg10": 0.12,
+                "avg60": 0.02,
+                "avg300": 0.0,
+                "total": 69526.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 5.053,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 7,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.59,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.51,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.06,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 2002522,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 2002522,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.010592108
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 8,
+      "observed_at": "2026-09-20T10:46:42.152800Z",
+      "cpu": {
+        "observed_monotonic_ns": 2094256015092,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 17204,
+              "nice": 0,
+              "system": 6134,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 418076,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.59,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235449,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.42,
+            "avg60": 0.31,
+            "avg300": 0.29,
+            "total": 34260917.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 94535,
+            "user_usec": 40891,
+            "system_usec": 53643
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 12847.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 2210.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.053,
+          "overshoot_ms": 0.053
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 14176391,
+              "user_usec": 14172400,
+              "system_usec": 3991,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.24,
+                "avg60": 0.06,
+                "avg300": 0.01,
+                "total": 87321.0
+              },
+              "full": {
+                "avg10": 0.12,
+                "avg60": 0.02,
+                "avg300": 0.0,
+                "total": 76559.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 6.063,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 8,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.59,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.42,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.053,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 2003829,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 2003829,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.010408217
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 9,
+      "observed_at": "2026-09-20T10:46:43.163106Z",
+      "cpu": {
+        "observed_monotonic_ns": 2095266331755,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 17405,
+              "nice": 0,
+              "system": 6135,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 418278,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.59,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235495,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.42,
+            "avg60": 0.31,
+            "avg300": 0.29,
+            "total": 34270958.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 100787,
+            "user_usec": 45728,
+            "system_usec": 55059
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 13983.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 2552.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.061,
+          "overshoot_ms": 0.061
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 16177852,
+              "user_usec": 16173861,
+              "system_usec": 3991,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.19,
+                "avg60": 0.05,
+                "avg300": 0.01,
+                "total": 97173.0
+              },
+              "full": {
+                "avg10": 0.09,
+                "avg60": 0.02,
+                "avg300": 0.0,
+                "total": 86410.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 7.073,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 9,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.59,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.42,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.061,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 2001461,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 2001461,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.010316663
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    },
+    {
+      "sample": 10,
+      "observed_at": "2026-09-20T10:46:44.173236Z",
+      "cpu": {
+        "observed_monotonic_ns": 2096276525403,
+        "host": {
+          "stat": {
+            "aggregate": {
+              "user": 17606,
+              "nice": 0,
+              "system": 6135,
+              "idle": 393564,
+              "iowait": 819,
+              "irq": 0,
+              "softirq": 355,
+              "steal": 0,
+              "guest": 0,
+              "guest_nice": 0,
+              "total_ticks": 418479,
+              "idle_ticks": 394383
+            },
+            "logical_cpus": 2,
+            "valid": true
+          },
+          "loadavg": {
+            "load1": 0.59,
+            "runnable_tasks": 3,
+            "total_tasks": 136,
+            "last_pid": 235503,
+            "valid": true
+          },
+          "logical_cpus": 2
+        },
+        "psi": {
+          "some": {
+            "avg10": 0.34,
+            "avg60": 0.3,
+            "avg300": 0.28,
+            "total": 34274624.0
+          },
+          "full": {
+            "avg10": 0.0,
+            "avg60": 0.0,
+            "avg300": 0.0,
+            "total": 0.0
+          }
+        },
+        "cgroup": {
+          "path": "/sys/fs/cgroup/user.slice/user-1000.slice/session-376.scope",
+          "cpu_stat": {
+            "usage_usec": 106978,
+            "user_usec": 49374,
+            "system_usec": 57603
+          },
+          "cpu_max": {
+            "quota_us": null,
+            "period_us": null,
+            "valid": false
+          },
+          "psi": {
+            "some": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 13983.0
+            },
+            "full": {
+              "avg10": 0.0,
+              "avg60": 0.0,
+              "avg300": 0.0,
+              "total": 2552.0
+            }
+          },
+          "quality": {
+            "status": "ok",
+            "flags": [],
+            "optional_flags": [
+              "cpu_max_missing"
+            ]
+          }
+        },
+        "scheduler_probe": {
+          "valid": true,
+          "requested_sleep_ms": 1.0,
+          "elapsed_ms": 1.06,
+          "overshoot_ms": 0.06
+        },
+        "objects": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_stat": {
+              "usage_usec": 18189343,
+              "user_usec": 18185349,
+              "system_usec": 3993,
+              "nr_periods": 0,
+              "nr_throttled": 0,
+              "throttled_usec": 0
+            },
+            "cpu_max": {
+              "quota_us": null,
+              "period_us": 100000,
+              "valid": true
+            },
+            "psi": {
+              "some": {
+                "avg10": 0.19,
+                "avg60": 0.05,
+                "avg300": 0.01,
+                "total": 100717.0
+              },
+              "full": {
+                "avg10": 0.09,
+                "avg60": 0.02,
+                "avg300": 0.0,
+                "total": 89954.0
+              }
+            },
+            "quality": {
+              "status": "ok",
+              "flags": []
+            }
+          }
+        ],
+        "quality": {
+          "status": "ok",
+          "flags": []
+        }
+      },
+      "risk": {
+        "resource_kind": "cpu",
+        "state": "normal",
+        "candidate_state": "warning",
+        "candidate_for_seconds": 8.084,
+        "required_for_seconds": 30,
+        "reasons": [
+          "cpu_utilization_critical"
+        ],
+        "quality_flags": [],
+        "quality_status": "ok",
+        "sample_count": 10,
+        "cpu_utilization_percent": 100.0,
+        "load1": 0.59,
+        "logical_cpus": 2,
+        "cpu_psi_some_avg10": 0.34,
+        "cpu_psi_full_avg10": 0.0,
+        "scheduler_delay_ms": 1.06,
+        "cgroup_throttled_delta": null,
+        "warning_signals": [],
+        "critical_support": [
+          "cpu_utilization_critical"
+        ]
+      },
+      "attribution": {
+        "resource_kind": "cpu",
+        "state": "TARGET_CONFIRMED",
+        "target": {
+          "kind": "systemd_unit",
+          "id": "guardian-p012-cpu-fixture.service",
+          "name": "guardian-p012-cpu-fixture.service",
+          "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+          "mapping_confidence": "high",
+          "mapping_errors": [],
+          "cpu_usage_delta_usec": 2011491,
+          "cpu_contribution_percent": 100.0,
+          "lead_margin_percent": 100.0
+        },
+        "candidates": [
+          {
+            "kind": "systemd_unit",
+            "id": "guardian-p012-cpu-fixture.service",
+            "name": "guardian-p012-cpu-fixture.service",
+            "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p012-cpu-fixture.service",
+            "mapping_confidence": "high",
+            "mapping_errors": [],
+            "cpu_usage_delta_usec": 2011491,
+            "cpu_contribution_percent": 100.0
+          }
+        ],
+        "reason_codes": [],
+        "quality_flags": [],
+        "sample_elapsed_seconds": 1.010193648
+      },
+      "decision": {
+        "mode": "simulate",
+        "resource_kind": "cpu",
+        "action": "none",
+        "execution": "not_executed",
+        "reason_codes": [
+          "cpu_risk_not_actionable"
+        ]
+      },
+      "mode": "simulate"
+    }
+  ],
+  "safety": {
+    "read_only_observation": true,
+    "mutation_commands_invoked": false,
+    "production_connected": false
+  }
+}

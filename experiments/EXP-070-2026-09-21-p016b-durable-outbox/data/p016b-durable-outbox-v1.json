@@ -1,0 +1,94 @@
+{
+  "schema": "guardian.p016b_durable_outbox.v1",
+  "experiment": "EXP-070",
+  "code_gate": "PASS",
+  "status": "PASSED_LOCAL",
+  "cases": {
+    "durable_enqueue_before_delivery": true,
+    "restart_delivery_and_dedup": true,
+    "recovery_and_post_recovery": true,
+    "dead_letter_and_redrive": true,
+    "inflight_reconciliation": true,
+    "durable_rate_limit_redrive": true,
+    "capacity_and_action_boundary": true,
+    "audit_hash_chains": true
+  },
+  "main_status_counts": {
+    "PENDING": 0,
+    "IN_FLIGHT": 0,
+    "DELIVERED": 3,
+    "DEAD_LETTER": 0
+  },
+  "failure_status_counts": {
+    "PENDING": 0,
+    "IN_FLIGHT": 0,
+    "DELIVERED": 1,
+    "DEAD_LETTER": 0
+  },
+  "inflight_status_counts": {
+    "PENDING": 0,
+    "IN_FLIGHT": 0,
+    "DELIVERED": 1,
+    "DEAD_LETTER": 0
+  },
+  "rate_status_counts": {
+    "PENDING": 0,
+    "IN_FLIGHT": 0,
+    "DELIVERED": 2,
+    "DEAD_LETTER": 0
+  },
+  "capacity_status_counts": {
+    "PENDING": 1,
+    "IN_FLIGHT": 0,
+    "DELIVERED": 0,
+    "DEAD_LETTER": 0
+  },
+  "sink_delivered_counts": {
+    "main": 3,
+    "failure": 1,
+    "inflight": 1,
+    "rate": 2
+  },
+  "reconciled_row": {
+    "status": "DEAD_LETTER",
+    "last_error": "delivery_interrupted"
+  },
+  "audit_verifications": {
+    "main": {
+      "valid": true,
+      "records": 10,
+      "errors": []
+    },
+    "failure": {
+      "valid": true,
+      "records": 6,
+      "errors": []
+    },
+    "inflight": {
+      "valid": true,
+      "records": 6,
+      "errors": []
+    },
+    "rate": {
+      "valid": true,
+      "records": 9,
+      "errors": []
+    },
+    "capacity": {
+      "valid": true,
+      "records": 3,
+      "errors": []
+    }
+  },
+  "safety": {
+    "fake_sink_only": true,
+    "sqlite_wal": true,
+    "network_connected": false,
+    "production_connected": false,
+    "credentials_read": false,
+    "action_adapter_invoked": false,
+    "all_results_not_executed": true,
+    "all_audits_preserve_action_authorization": true,
+    "explicit_redrive_required_after_inflight": true
+  }
+}

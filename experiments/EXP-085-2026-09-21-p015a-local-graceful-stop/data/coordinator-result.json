@@ -1,0 +1,81 @@
+{
+  "broker": {
+    "action_result": {
+      "action": "graceful_stop",
+      "executed": true,
+      "reason": "authorized_runtime_call",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+      "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+    },
+    "adapter_called": true,
+    "capability_reason": "capability_consumed",
+    "cooldown_state": "allowed",
+    "reason_codes": [
+      "action_completed"
+    ],
+    "requires_reconciliation": false,
+    "state": "executed",
+    "verification": {
+      "business_recovered": false,
+      "business_state": "BUSINESS_DEGRADED",
+      "host_mitigated": false,
+      "host_state": "failed",
+      "overall_state": "RECOVERY_FAILED",
+      "reason_codes": [
+        "host_recovery_observation_incomplete",
+        "business_target_not_running"
+      ]
+    }
+  },
+  "event_id": "p015a-1789971353-ca6deff28803",
+  "intent": {
+    "action": "graceful_stop",
+    "config_digest": "51f4c5ced58d01c8074acae17a883b5325532d1ba32586556a5e9b4e4244d57e",
+    "event_id": "p015a-1789971353-ca6deff28803",
+    "expires_at": 1789971383.290041,
+    "host_id": "orbstack-local-p015a",
+    "idempotency_key": "e5a3ae555b1d8f65e212dd077389330fcdf1bb5496e5883934f1a9b04291a2ca",
+    "incident_id": "p015a-1789971353-ca6deff28803",
+    "issued_at": 1789971353.290041,
+    "plan_id": "es-v1-9f5c2de004b4ddaac37d3536",
+    "policy_digest": "369a58a5c1f869143708e690d61b01b66fce1797d172cdf27018a1d4a88a3f77",
+    "reason_codes": [
+      "PLAN_GENERATED",
+      "TOP_ACTIONABLE_CONSUMER"
+    ],
+    "resource_kind": "memory",
+    "sample_id": "p015a-sample-288015131364750",
+    "schema": "guardian.action_intent.v1",
+    "target": {
+      "cgroup_inode": 467,
+      "cgroup_path": "/sys/fs/cgroup",
+      "created_at": "2026-09-21T06:00:13.082819164Z",
+      "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+      "kind": "container"
+    },
+    "timeout_seconds": 30
+  },
+  "intent_id": "d59b0405-22a0-410e-ade6-6e7db6fee6bb",
+  "manual_handoff": true,
+  "mode": "enforce",
+  "notification": {
+    "action_authorization": "unchanged",
+    "attempts": 0,
+    "dedup_key": "notification:a0ffd3dfa08fc5b2331a9681f73da112bcbfc7bdc7fd8bf3451b5e7559fa11e9",
+    "execution": "not_executed",
+    "notification_id": "5fe329fd88fc3409a2793b50081c9fda68675d3179ab9e69864d3cd82a7ef123",
+    "outbox_status": "PENDING",
+    "reason": null,
+    "schema": "guardian.notification.outbox.v1",
+    "status": "queued"
+  },
+  "reason_codes": [
+    "action_failed",
+    "host_recovery_observation_incomplete",
+    "business_target_not_running"
+  ],
+  "schema": "guardian.coordinator.result.v1",
+  "state": "failed"
+}

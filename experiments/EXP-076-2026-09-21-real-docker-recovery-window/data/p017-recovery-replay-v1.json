@@ -1,0 +1,1628 @@
+{
+  "schema": "guardian.p017_replay_bundle.v1",
+  "inputs": [
+    "experiments/EXP-076-2026-09-21-real-docker-recovery-window/data/real-docker-recovery-source-v1.json"
+  ],
+  "code_gate": "PASS",
+  "status": "INCONCLUSIVE",
+  "results": [
+    {
+      "schema": "guardian.p017_replay.v1",
+      "source": "experiments/EXP-076-2026-09-21-real-docker-recovery-window/data/real-docker-recovery-source-v1.json",
+      "experiment": "EXP-076",
+      "code_gate": "PASS",
+      "status": "INCONCLUSIVE",
+      "summary": {
+        "guardian_samples": 96,
+        "old_plan_samples": 0,
+        "new_plan_samples": 0,
+        "new_action_execution_count": 0,
+        "historical_samples_missing_cgroup_inode": 1,
+        "plan_contract_failure_count": 0,
+        "reason_counts": {
+          "HOST_RISK_NOT_CONFIRMED": 57,
+          "INCOMPLETE_SAMPLES": 39,
+          "NO_EFFECTIVE_SHEDDING_TARGET": 39
+        }
+      },
+      "rows": [
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "none",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": "io",
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": "io",
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 1,
+          "scenario": "memory",
+          "target_id": "ace1c92402b2cc3f0583277e3f6807970cfc1aea4a6777ab0f5d2b5d1c63fdac",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "none",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": "io",
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 2,
+          "scenario": "memory",
+          "target_id": "ca8707a4491958fa744dab5071d72ab0b9a1fcbbe56acefcdf12cf8313eba0f8",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "none",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": "io",
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "INCOMPLETE_SAMPLES",
+            "NO_EFFECTIVE_SHEDDING_TARGET"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        },
+        {
+          "round": 3,
+          "scenario": "memory",
+          "target_id": "3748b35a2ced93ae2667127f9513f3e5bb716e7d1aa27540972aee590a3f8fa3",
+          "old_action": "escalate",
+          "old_execution": "not_executed",
+          "new_action": "none",
+          "new_execution": "not_executed",
+          "new_resource_kind": null,
+          "new_reason_codes": [
+            "HOST_RISK_NOT_CONFIRMED"
+          ],
+          "new_target_id": null,
+          "new_plan": null,
+          "new_plan_contract_failures": []
+        }
+      ],
+      "plan_contract_failures": [],
+      "limitations": [
+        "historical_p014_records_predate_emergency_shedding_v1_registry_inode_field",
+        "replay_actionable_set_is_a_test_label_for_the_recorded_target_only",
+        "replay_does_not_infer_production_owner_or_authorize_an_action",
+        "p014_short_windows_and_inconclusive_evidence_are_preserved"
+      ],
+      "safety": {
+        "read_only_replay": true,
+        "guardian_mode": "simulate",
+        "action_adapter_invoked": false,
+        "docker_mutation_invoked": false,
+        "production_connected": false
+      }
+    }
+  ],
+  "safety": {
+    "read_only_replay": true,
+    "guardian_mode": "simulate",
+    "action_adapter_invoked": false,
+    "docker_mutation_invoked": false,
+    "production_connected": false
+  }
+}

@@ -1,0 +1,868 @@
+{
+  "schema": "guardian.cpu_repro_external.v1",
+  "label": "baseline_tty",
+  "started_epoch_seconds": 1789903621.571101,
+  "duration_seconds": 20.0,
+  "interval_seconds": 1.0,
+  "target": {
+    "host": "192.168.252.4",
+    "user": "ubuntu",
+    "http_port": 18080
+  },
+  "samples": [
+    {
+      "index": 0,
+      "monotonic_seconds": 222498.433495,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 184.903,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 139.936,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 166.596,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n100\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 24.783,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "monotonic_seconds": 222499.484818,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 190.033,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 164.29,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 204.572,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n100\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 3.504,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "monotonic_seconds": 222500.433338,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 178.351,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 149.74,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 180.394,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n100\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.454,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "monotonic_seconds": 222501.375232,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 159.234,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 138.742,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 154.022,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 3.017,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "monotonic_seconds": 222502.374071,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 153.12,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 122.664,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 173.104,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.761,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "monotonic_seconds": 222503.395548,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 156.166,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 148.942,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 169.348,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.459,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "monotonic_seconds": 222504.474346,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 182.128,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 182.567,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 184.833,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 3.173,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "monotonic_seconds": 222505.425398,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 205.915,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 144.207,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 149.81,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 3.077,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "monotonic_seconds": 222506.395169,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 171.527,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 148.693,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 150.067,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.42,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "monotonic_seconds": 222507.456667,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 181.056,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 175.893,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 177.829,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.536,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "monotonic_seconds": 222508.400973,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 172.542,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 137.438,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 167.434,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 3.185,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "monotonic_seconds": 222509.419716,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 151.657,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 173.884,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 170.092,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.748,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "monotonic_seconds": 222510.398448,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 202.166,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 134.805,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 136.481,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 3.053,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "monotonic_seconds": 222511.476241,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 224.357,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 160.511,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 170.463,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.61,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "monotonic_seconds": 222512.396771,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 184.288,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 136.405,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 151.601,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n101\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.078,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "monotonic_seconds": 222513.410673,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 212.401,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 134.527,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 138.838,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n102\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.481,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "monotonic_seconds": 222514.366755,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 166.433,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 135.987,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 138.946,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n102\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.932,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "monotonic_seconds": 222515.39348,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 184.995,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 130.904,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 152.831,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n102\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.283,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "monotonic_seconds": 222516.367079,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 159.889,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 142.482,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 142.303,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n102\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.634,
+          "error": null
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "monotonic_seconds": 222517.45363,
+      "target": "ubuntu@192.168.252.4",
+      "probes": [
+        {
+          "label": "ssh_connect",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 179.473,
+          "stderr": null
+        },
+        {
+          "label": "ssh_health",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 167.032,
+          "stderr": null
+        },
+        {
+          "label": "ssh_interactive_ops",
+          "ok": true,
+          "timed_out": false,
+          "returncode": 0,
+          "elapsed_ms": 182.932,
+          "stderr": null,
+          "stdout_tail": "sr/bin/ps -e --no-headers | /usr/bin/wc -l\n102\nbash-5.1$ /usr/bin/systemctl is-active guardian-cpu-repro-http.service\nactive\nbash-5.1$ /bin/ls -la /home/ubuntu/guardian-cpu-repro >/dev/null\nbash-5.1$ printf 'done\\n'\ndone\nbash-5.1$ exit\nexit"
+        },
+        {
+          "label": "http_external",
+          "ok": true,
+          "timed_out": false,
+          "status": 200,
+          "elapsed_ms": 2.554,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "http_external": {
+      "samples": 20,
+      "successes": 20,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "latency_ms": {
+        "p50": 2.691,
+        "p95": 4.568,
+        "p99": 20.74,
+        "max": 24.783
+      },
+      "timeouts": 0
+    },
+    "ssh_connect": {
+      "samples": 20,
+      "successes": 20,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "latency_ms": {
+        "p50": 180.264,
+        "p95": 212.999,
+        "p99": 222.085,
+        "max": 224.357
+      },
+      "timeouts": 0
+    },
+    "ssh_health": {
+      "samples": 20,
+      "successes": 20,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "latency_ms": {
+        "p50": 143.344,
+        "p95": 176.227,
+        "p99": 181.299,
+        "max": 182.567
+      },
+      "timeouts": 0
+    },
+    "ssh_interactive_ops": {
+      "samples": 20,
+      "successes": 20,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "latency_ms": {
+        "p50": 167.015,
+        "p95": 185.82,
+        "p99": 200.822,
+        "max": 204.572
+      },
+      "timeouts": 0
+    }
+  }
+}

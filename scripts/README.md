@@ -1,30 +1,19 @@
-# 实验辅助脚本
+# 脚本目录
 
-本目录的脚本用于环境采集、有限实验和本地演示。脚本必须明确适用环境、停止条件和副作用；不能把本地实验脚本当作生产部署入口。
+脚本只用于安装、检查、演示或核对历史证据，不能自己定义项目路线。
 
-## Guardian 资源采样器
+## 当前产品开发会使用
 
-[`guardian_resource_sampler.py`](guardian_resource_sampler.py) 对指定 PID 做只读采样，输出有界 TSV：RSS、CPU 百分比、FD 数和线程数。它不会向目标进程发送信号，也不会修改目标进程；目标消失、持续时间到达或输出达到 `--max-bytes` 时退出。
+- `guardian_rescue_plan.py`：生成维护通道的安装、诊断、停用和回滚计划。
+- `install-guardian-local.sh`：在显式 `local-disposable` 标记下安装并启动 observe-only Guardian Runtime；默认只打印计划。
+- `guardian_status.py`：只读输出 Runtime、Collector、observe 模式、候选排名、保护原因、模拟目标和 Broker 边界；安装流程会提供 `guardian-status` 命令。
+- `guardian_rescue_probe.py`：执行固定的只读维护探针。
+- `guardian_rescue_matrix.py`：汇总维护通道综合结果。
+- `beszel_alerts.py`：生成 Beszel 三资源告警计划或只读回读告警状态。
+- `check-repository.sh`：运行当前代码的统一回归检查。
 
-示例：
+## 历史工具
 
-```bash
-python3 scripts/guardian_resource_sampler.py \
-  --pid <observer-pid> \
-  --output /tmp/guardian-resource.tsv \
-  --interval 10 \
-  --duration 300 \
-  --max-bytes 10485760
-```
+只服务于旧任务编号和零碎实验的脚本已从当前工作区移除，可在 Git 历史中恢复。历史实验数据仍保留在 `experiments/`，但不参与当前回归和任务调度。
 
-该脚本只用于本地 disposable 实验和证据重算，不提供生产监控、动作授权或资源限制能力。
-
-## Guardian 资源时序汇总器
-
-[`guardian_resource_summary.py`](guardian_resource_summary.py) 以只读方式读取已有 TSV，最多读取 `--max-bytes` 指定的字节数，计算 RSS、CPU、FD、线程的 min/P50/P95/P99/max/mean，并输出 JSON。它不连接 systemd/Docker，也不向目标进程发送信号；对仍在追加的文件会忽略不完整的最后一行。
-
-```bash
-python3 scripts/guardian_resource_summary.py \
-  --input /tmp/guardian-resource.tsv \
-  --max-bytes 10485760
-```
+新功能应接入 `src/` 的实际服务入口，不能只增加一个脚本就宣布完成。

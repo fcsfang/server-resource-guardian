@@ -1,103 +1,91 @@
-# 推荐架构
+# Guardian v2 当前架构
 
-## 1. 总体结构
+更新时间：2026-09-21
 
-架构分为三层：资源边界负责事前预防，观测通路负责发现和定位，恢复通路负责经过授权的处置。Guardian 是最后一层的可选组件，不是监控平台的替代品。
+状态：`ACTIVE`
+
+## 1. 架构目标
+
+系统采用“双层三资源”架构：Rescue Plane 保障最小人工维护链路，Guardian 在故障前检测 CPU、内存和磁盘风险并执行受控止损。Beszel 负责中心侧历史、展示和通知，不直接控制本机对象。
 
 ```text
-                    中心侧
-  +---------------------------------------------+
-  | Beszel Hub：历史数据/告警/界面 -> 通知渠道  |
-  |       |                  |                  |
-  |       +-> 资源与容器视图  +-> 独立审批/控制  |
-  +------------------------+--------------------+
-                           | mTLS、出站长连接
-                           v
-                    被监控 Linux 主机
-  +---------------------------------------------+
-  | Beszel Agent：主机/Docker/systemd 指标       |
-  |                                             |
-  | Guardian（可选，受保护的 systemd service）  |
-  |  |- 本机指标与 PSI 观察                     |
-  |  |- 现场快照                                |
-  |  |- 固定动作执行器                          |
-  |  |- 保护名单、冷却、熔断、审计              |
-  |                                             |
-  | 业务 cgroup/容器：CPU、内存、I/O 资源边界   |
-  | systemd / cgroup / Docker / journald         |
-  +---------------------------------------------+
-                           |
-                           v
-              云控制台或 BMC 带外管理（兜底）
+                 Beszel Hub / approved notifier
+                  history · UI · alert delivery
+                              ^
+                              | read-only evidence/view
+                              |
+Docker -> filtered read-only collector ┐
+procfs/cgroup/PSI ----------------------┴-> resource engines -> attribution -> policy -> immutable plan
+                                           CPU/memory/disk       |             |
+                                                | simulate    | capability
+                                                v             v
+                                          audit/view     Action Broker
+                                                              |
+                                                              v
+                                                allowlisted Docker/systemd adapter
+                                                              |
+                                                mitigation + business verification
+
+Rescue Plane: ssh/network/auth + Guardian + broker + runtime control + minimal audit
+Workload Plane: registered containers/systemd units/cgroups
+Out-of-band console: final recovery when the host plane itself is unavailable
 ```
 
-## 2. 两条通路
+## 2. 组件职责
 
-### 观测通路
+| 组件 | 职责 | 明确不做 |
+| --- | --- | --- |
+| Beszel Agent/Hub | 长周期监控、历史、可视化、常规告警、批准渠道通知 | 不选择动作目标，不签发本地动作权限 |
+| Container Collector | 通过窄化 Unix Socket 提供容器身份、状态、一次性 stats 和 cgroup 映射 | 不提供通用 Docker API，不执行 stop/restart/kill/exec |
+| Observer | 只读采集、质量/新鲜度判断、产生资源事件 | 不持有写动作权限 |
+| Resource Engines | CPU、内存、容量/inode、I/O 独立状态机 | 不跨资源借用阈值，不直接执行动作 |
+| Attribution | 使用稳定容器或 unit/cgroup 身份计算贡献与置信度 | 不以 PID、容器名、Top 排名作为自动身份 |
+| Policy | 保护/可处置资格、允许动作、频率、环境、健康合同 | 不把“非保护”解释为“可杀” |
+| Action Broker | 复验 capability、身份、时效、幂等、审计和熔断 | 不接受 shell 文本和任意命令 |
+| Recovery Verifier | 区分宿主缓解和业务恢复 | 不把目标停止当作业务恢复 |
+| Rescue Plane | 在资源竞争中提高维护链路获得 CPU/内存/I/O 的机会 | 不承诺覆盖内核、网络、供电、硬盘硬故障 |
 
-Beszel Agent 采集主机、Docker 和 systemd 服务指标，Hub 保存历史数据、展示趋势并产生告警。根据网络条件，可由 Hub 通过 SSH 主动连接 Agent，或由 Agent 通过 WebSocket 主动连接 Hub。
+## 3. 三条运行通路
 
-### 控制通路
+### 3.1 告警通路
 
-Beszel 的通信连接只传输监控数据，不能执行命令。若 PoC 证明必须开发 Guardian，则由 Guardian 主动向独立控制端建立加密连接并发送心跳。控制端指令必须包含目标、固定动作、规则版本、审批信息、过期时间和唯一请求 ID，Guardian 本地再次校验后执行。
+Guardian 产生本机事件和审计；Beszel 或独立批准的 notifier 负责发送 warning、critical、recovered、escalated 通知。投递失败不授权动作，但必须可重试、去重并记录。告警时间与本机风险时间分开保存。
 
-使用出站连接的原因是：当普通 SSH 因负载或入口网络策略不可用时，已有的轻量长连接仍可能保持工作。它不能替代真正的带外管理，但比“再开一个普通 SSH 端口”更可靠。
+### 3.2 救援通路
 
-### 资源边界
+`rescue.slice` 候选包含 SSH/必要认证网络、Guardian、未来 Action Broker、Docker/containerd 控制面和最小审计；登录 session 可能仍位于 `user.slice`，因此必须作为并行资源域验证。CPU/IO weight 是相对竞争，memory.low/min 受层级影响，所有值需要目标机实测。
 
-业务工作负载在正常运行时就应具有明确的 systemd/cgroup 或 Docker 资源边界。`MemoryHigh` 用于主动回收和节流，`MemoryMax` 作为最后防线；CPU/IO 权重用于竞争时的相对分配。资源边界的目标是把故障限制在业务 cgroup 内，减少触发终止动作的机会。
+### 3.3 自动修复通路
 
-## 3. Guardian 生存设计
+只有 `critical_confirmed + target_confirmed + actionable + fresh capability + durable intent` 同时成立时，Action Broker 才能执行一次有限动作。当前产品唯一候选真实动作是 `graceful_stop`；失败、超时或恢复未确认后熔断并升级人工。
 
-部署时应评估并验证以下 systemd/cgroup 策略，而不是仅调整 nice 值：
+## 4. 资源与混合风险
 
-- 独立 slice，避免与业务工作负载共享完全相同的资源竞争边界。
-- 较高 CPU 和 I/O 权重，在资源竞争时提高获得调度机会的相对份额；权重不是绝对资源预留。
-- 合理的 `MemoryMin`/`MemoryLow` 与自身 `MemoryHigh`/`MemoryMax`；内存保护必须在祖先 cgroup 正确分配后才有效。
-- 降低被 OOM Killer 选择的概率，但不能设置到掩盖自身内存泄漏。
-- `Restart=always`、启动速率限制和 watchdog。
-- 有界队列、有界快照大小和磁盘空间配额。
-- 最小 Linux capabilities；把高权限动作拆到受限 helper，而非让整个服务长期拥有 root 权限。
+- CPU、内存、磁盘容量/inode、磁盘 I/O 分别采样、判定和恢复。
+- 多资源同时异常形成一个联合事件，不并发执行多个动作。
+- 同一稳定对象获得多资源一致证据时可提高解释置信度，但不能绕过每个通道的质量门。
+- 多个对象接近、资源指向不同对象或容量 writer 不明时输出 `AMBIGUOUS_TARGET`/`DEGRADED_OBSERVABILITY`，只告警。
 
-所有参数需要根据目标 OS、systemd 和 cgroup 版本生成，当前阶段不写死生产值。
+## 5. 进程与权限边界
 
-## 4. 危机判断模型
+- Observer/Runtime 非 root，只读 procfs/cgroup 和 Collector view，写有界本地审计；不加入 `docker` 组，不直接访问 Docker socket。
+- Container Collector 与 Action Broker 使用不同账户、socket 和协议。Collector 的应用层只读接口不是 Docker socket 的权限降级；进入非生产前必须有过滤代理、Docker AuthZ、rootless 或等价守护进程侧限制。
+- Action Broker 独立进程/服务，通过本机受限协议接收不可变计划；执行前重新读取稳定身份。
+- Docker socket 等价高权限。当前 Collector 尚未实现；缺少容器事实时 Runtime 只能继续宿主观测和告警，目标选择/动作必须 fail-closed。
+- Beszel/UI 不共享 Action Broker capability；中心侧失联时 Guardian 保持本地 observe/fail-closed。
 
-规则不应只依赖一个百分比。建议使用以下信号组合：
+## 6. 当前实现映射
 
-- CPU：利用率、load、运行队列、CPU PSI、持续时间、Top 进程变化。
-- 内存：MemAvailable、swap 活动、memory PSI、cgroup memory.events、OOM 记录。
-- I/O：磁盘延迟、队列、I/O PSI、磁盘剩余空间、inode。
-- 业务：健康检查、请求错误率、延迟和关键服务状态。
-- 管理面：SSH 探测、Guardian 心跳和指标抓取状态。
+| 层 | 当前模块/证据 | 状态 |
+| --- | --- | --- |
+| 内存风险 | `guardian_risk.py`、EXP-030 | 本地实现 |
+| 内存归因 | `guardian_attribution.py`、EXP-031 | 本地实现 |
+| CPU | `guardian_cpu.py`、EXP-055 | 本地 observe/simulate |
+| 磁盘 | `guardian_disk.py`、EXP-057 | 本地 observe/simulate |
+| 耐久策略/动作 | `guardian_state.py`、`guardian_controller.py`、独立 Broker、EXP-032 | 本地实现，生产权限尚未完成准入 |
+| 恢复 | `guardian_recovery.py`、EXP-033 | 内存主线本地实现 |
+| Rescue Plane | `deploy/guardian/rescue.slice`、本地综合验证 | 本地安装、重启和回滚已通过；生产尚未验证 |
+| Container Collector | 里程碑二 | 尚未实现；Runtime 已移出 `docker` 组 |
+| 告警投递 | Beszel memory 告警、Guardian 事件 | 三资源端到端管理员通知未完成 |
 
-状态机建议为：`NORMAL -> WARNING -> CRITICAL -> MITIGATING -> VERIFYING -> RECOVERED/ESCALATED`。每次状态变化都必须满足持续时间和恢复迟滞条件。
-
-## 5. 处置顺序
-
-1. 保存轻量现场快照。
-2. 通知并给出建议动作。
-3. 对预批准对象降低 CPU/IO 权重或限制资源。
-4. 对可恢复工作负载发送 SIGTERM 或执行编排器的优雅停止。
-5. 超时且危机仍存在时，按策略执行 SIGKILL。
-6. 验证资源和业务是否恢复。
-7. 未恢复则熔断自动动作并升级人工/带外处理。
-
-## 6. 安全模型
-
-- 控制端与 Guardian 双向认证，证书可轮换和吊销。
-- 控制端使用 RBAC；高风险动作至少需要明确审批人。
-- API 只接受枚举动作和结构化参数，不接受 shell 文本。
-- Guardian 以本地保护名单作为最终拒绝层，中心端不能绕过。
-- 请求有短有效期、唯一 ID 和防重放校验。
-- 审计日志发送到主机外，避免故障机磁盘损坏后丢失。
-
-## 7. 尚未作出的技术决定
-
-- Guardian 开发语言和 RPC 协议。
-- 复用公司监控平台还是搭建 Prometheus 体系。
-- 控制端是否需要自研，或接入现有运维审批平台。
-- 首版是否包含独立 rescue SSH，以及它的网络隔离方式。
-- 指标和审计数据的保存位置与周期。
-
-这些决定依赖 [待确认问题](05-open-questions.md) 中的环境信息。
+运行顺序和完成标准只看根目录 [`ROADMAP.md`](../ROADMAP.md)。

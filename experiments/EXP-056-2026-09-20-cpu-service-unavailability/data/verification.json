@@ -1,0 +1,71 @@
+{
+  "schema": "guardian.cpu_service_unavailability.v1",
+  "status": "INCONCLUSIVE",
+  "target_chain_reproduced": false,
+  "environment": {
+    "vm": "guardian-cpu-repro",
+    "os": "Ubuntu 22.04.5 LTS",
+    "arch": "aarch64",
+    "kernel": "5.15.0-191-generic",
+    "systemd": "249.11",
+    "cgroup": "v2",
+    "vcpus": 2,
+    "memory_gib": 4
+  },
+  "pressure": {
+    "cpu_only": {
+      "workers": 8,
+      "duration_seconds": 60,
+      "cpu_utilization_max_percent": 100.0,
+      "load1_max": 5.51,
+      "cpu_psi_some_max_avg10_percent": 98.46,
+      "cpu_psi_full_max_avg10_percent": 0.0,
+      "scheduler_probe_p95_ms": 1.08,
+      "stress_cgroup_cpu_time_delta_seconds": 116.789058
+    },
+    "cpu_runnable_storm_tty": {
+      "workers": 256,
+      "duration_seconds": 60,
+      "cpu_utilization_max_percent": 100.0,
+      "load1_max": 166.52,
+      "cpu_psi_some_max_avg10_percent": 98.77,
+      "cpu_psi_full_max_avg10_percent": 0.0,
+      "scheduler_probe_p95_ms": 1.081,
+      "stress_cgroup_cpu_time_delta_seconds": 116.572083
+    }
+  },
+  "probes": {
+    "baseline_tty": {
+      "samples": 20,
+      "ssh_interactive_ops_successes": 20,
+      "ssh_interactive_ops_failures": 0,
+      "ssh_interactive_ops_timeouts": 0,
+      "ssh_interactive_ops_p95_ms": 185.82,
+      "http_external_successes": 20,
+      "ssh_connect_successes": 20
+    },
+    "cpu_runnable_storm_tty": {
+      "samples": 60,
+      "ssh_interactive_ops_successes": 60,
+      "ssh_interactive_ops_failures": 0,
+      "ssh_interactive_ops_timeouts": 0,
+      "ssh_interactive_ops_p95_ms": 177.544,
+      "http_external_successes": 60,
+      "ssh_connect_successes": 60,
+      "ssh_health_successes": 60
+    }
+  },
+  "actions": {
+    "reboot": 0,
+    "kill": 0,
+    "service_restart": 0,
+    "production_host_touched": false
+  },
+  "limits": [
+    "local ARM64 Multipass VM only",
+    "minimal HTTP fixture rather than production workload",
+    "CPU-only pressure; no memory, I/O, network or PID exhaustion",
+    "interactive probe covers bounded common commands, not a human session or every production operation",
+    "does not establish a production SSH SLO"
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "decision": {
+    "action": "graceful_stop",
+    "execution": "not_executed",
+    "mode": "simulate",
+    "plan": {
+      "action": "graceful_stop",
+      "config_digest": "51f4c5ced58d01c8074acae17a883b5325532d1ba32586556a5e9b4e4244d57e",
+      "event_id": "p015a-1789971353-ca6deff28803",
+      "execution": "not_executed",
+      "expires_at": "2026-09-21T06:25:53.290041Z",
+      "max_actions": 1,
+      "plan_id": "es-v1-9f5c2de004b4ddaac37d3536",
+      "policy_digest": "369a58a5c1f869143708e690d61b01b66fce1797d172cdf27018a1d4a88a3f77",
+      "resource_kind": "memory",
+      "root_cause_claimed": false,
+      "sample_id": "p015a-sample-288015131364750",
+      "schema": "guardian.emergency_shedding.v1",
+      "target": {
+        "cgroup_inode": 467,
+        "cgroup_path": "/sys/fs/cgroup",
+        "created_at": "2026-09-21T06:00:13.082819164Z",
+        "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+        "kind": "container"
+      },
+      "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+    },
+    "plans_count": 1,
+    "reason_codes": [
+      "PLAN_GENERATED",
+      "TOP_ACTIONABLE_CONSUMER"
+    ],
+    "resource_kind": "memory",
+    "schema": "guardian.emergency_shedding.v1",
+    "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+    "top_consumer": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+  },
+  "emergency_shedding": {
+    "active_resources": [
+      "memory"
+    ],
+    "decision": {
+      "action": "graceful_stop",
+      "execution": "not_executed",
+      "mode": "simulate",
+      "plan": {
+        "action": "graceful_stop",
+        "config_digest": "51f4c5ced58d01c8074acae17a883b5325532d1ba32586556a5e9b4e4244d57e",
+        "event_id": "p015a-1789971353-ca6deff28803",
+        "execution": "not_executed",
+        "expires_at": "2026-09-21T06:25:53.290041Z",
+        "max_actions": 1,
+        "plan_id": "es-v1-9f5c2de004b4ddaac37d3536",
+        "policy_digest": "369a58a5c1f869143708e690d61b01b66fce1797d172cdf27018a1d4a88a3f77",
+        "resource_kind": "memory",
+        "root_cause_claimed": false,
+        "sample_id": "p015a-sample-288015131364750",
+        "schema": "guardian.emergency_shedding.v1",
+        "target": {
+          "cgroup_inode": 467,
+          "cgroup_path": "/sys/fs/cgroup",
+          "created_at": "2026-09-21T06:00:13.082819164Z",
+          "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+          "kind": "container"
+        },
+        "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+      },
+      "plans_count": 1,
+      "reason_codes": [
+        "PLAN_GENERATED",
+        "TOP_ACTIONABLE_CONSUMER"
+      ],
+      "resource_kind": "memory",
+      "schema": "guardian.emergency_shedding.v1",
+      "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+      "top_consumer": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+    },
+    "plan": {
+      "action": "graceful_stop",
+      "config_digest": "51f4c5ced58d01c8074acae17a883b5325532d1ba32586556a5e9b4e4244d57e",
+      "event_id": "p015a-1789971353-ca6deff28803",
+      "execution": "not_executed",
+      "expires_at": "2026-09-21T06:25:53.290041Z",
+      "max_actions": 1,
+      "plan_id": "es-v1-9f5c2de004b4ddaac37d3536",
+      "policy_digest": "369a58a5c1f869143708e690d61b01b66fce1797d172cdf27018a1d4a88a3f77",
+      "resource_kind": "memory",
+      "root_cause_claimed": false,
+      "sample_id": "p015a-sample-288015131364750",
+      "schema": "guardian.emergency_shedding.v1",
+      "target": {
+        "cgroup_inode": 467,
+        "cgroup_path": "/sys/fs/cgroup",
+        "created_at": "2026-09-21T06:00:13.082819164Z",
+        "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+        "kind": "container"
+      },
+      "target_id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600"
+    },
+    "rankings": {
+      "memory": [
+        {
+          "actionable": true,
+          "contribution_percent": 100.0,
+          "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+          "identity_reason": null,
+          "name": "guardian-p015a-disposable-20260921-01",
+          "protected": false,
+          "writer_evidence": true
+        }
+      ]
+    },
+    "schema": "guardian.emergency_shedding.v1"
+  },
+  "event_id": "p015a-1789971353-ca6deff28803",
+  "evidence": {
+    "config_digest": "51f4c5ced58d01c8074acae17a883b5325532d1ba32586556a5e9b4e4244d57e",
+    "host_pressure_effectiveness": "not_tested",
+    "policy_digest": "369a58a5c1f869143708e690d61b01b66fce1797d172cdf27018a1d4a88a3f77",
+    "source": "controlled_local_action_gate"
+  },
+  "host_id": "orbstack-local-p015a",
+  "incident_id": "p015a-1789971353-ca6deff28803",
+  "object_candidates": [
+    {
+      "cgroup_inode": 467,
+      "cgroup_path": "/sys/fs/cgroup",
+      "created_at": "2026-09-21T06:00:13.082819164Z",
+      "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+      "kind": "container",
+      "name": "guardian-p015a-disposable-20260921-01",
+      "resource_contributions": {
+        "memory": 100.0
+      },
+      "running": true,
+      "status": "running"
+    }
+  ],
+  "observed_at": "2026-09-21T06:15:53.290041Z",
+  "observed_monotonic_ns": 288015132514458,
+  "resource_evaluations": {
+    "memory": {
+      "risk": {
+        "danger_confirmed": true,
+        "quality_flags": [],
+        "quality_status": "ok",
+        "required_samples": 2,
+        "sample_count": 2,
+        "state": "CRITICAL_CONFIRMED"
+      }
+    }
+  },
+  "sample_id": "p015a-sample-288015131364750",
+  "schema": "guardian.risk.event.v1",
+  "signals": {
+    "object_registry": {
+      "objects": [
+        {
+          "cgroup_inode": 467,
+          "cgroup_path": "/sys/fs/cgroup",
+          "created_at": "2026-09-21T06:00:13.082819164Z",
+          "id": "ca6deff288030771a32a0eb62a9e5401b49bfd01f1f85563fafd66ec4faad600",
+          "kind": "container",
+          "name": "guardian-p015a-disposable-20260921-01",
+          "running": true,
+          "status": "running"
+        }
+      ]
+    },
+    "observed_monotonic_ns": 288015132514625,
+    "sample_id": "p015a-sample-288015131364750",
+    "source": "controlled_local_action_gate"
+  },
+  "state": "critical"
+}

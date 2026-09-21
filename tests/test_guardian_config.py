@@ -37,6 +37,7 @@ def config_data():
         "actions": {
             "enabled": False,
             "require_approval": True,
+            "authorization_file": None,
             "graceful_timeout_seconds": 30,
             "cooldown_seconds": 600,
             "max_actions_per_host_per_hour": 0,
@@ -61,6 +62,86 @@ class GuardianConfigTests(unittest.TestCase):
         second = load_config(path)
         self.assertEqual(first.config_digest, second.config_digest)
         self.assertEqual(first.schema, SCHEMA)
+        self.assertEqual(first.disk_mount_points, ("/",))
+        self.assertEqual(first.disk_capacity_policy["critical_free_percent"], 5)
+        self.assertEqual(first.io_policy["critical_device_utilization_percent"], 90)
+        self.assertFalse(first.emergency_shedding_policy["enabled"])
+
+    def test_emergency_shedding_requires_explicit_local_disposable_sets(self):
+        value = config_data()
+        value["risk"]["emergency_shedding"] = {
+            "schema": "guardian.emergency_shedding.v1",
+            "enabled": True,
+            "window_seconds": 15,
+            "required_samples": 2,
+            "min_host_contribution_percent": 20,
+            "resource_priority": ["memory", "cpu", "io", "disk_capacity"],
+            "action": "graceful_stop",
+            "protected_set": [
+                {"stable_id": "a" * 64, "owner": "platform", "reason": "control-plane"},
+            ],
+            "actionable_set": [
+                {
+                    "stable_id": "b" * 64,
+                    "owner": "experiment-owner",
+                    "environment": "local-disposable",
+                    "allowed_resources": ["memory", "cpu", "io"],
+                    "action": "graceful_stop",
+                    "grace_timeout_seconds": 30,
+                    "expires_at": "2026-12-31T00:00:00Z",
+                    "human_contact": "on-call",
+                },
+            ],
+        }
+        config = validate_config(value)
+        self.assertTrue(config.emergency_shedding_policy["enabled"])
+        self.assertEqual(config.emergency_shedding_policy["action"], "graceful_stop")
+
+        invalid = config_data()
+        invalid["risk"]["emergency_shedding"] = value["risk"]["emergency_shedding"].copy()
+        invalid["risk"]["emergency_shedding"]["actionable_set"] = []
+        with self.assertRaisesRegex(ConfigError, "actionable_set:non_empty_when_enabled"):
+            validate_config(invalid)
+
+        duplicate = config_data()
+        duplicate["risk"]["emergency_shedding"] = value["risk"]["emergency_shedding"].copy()
+        duplicate["risk"]["emergency_shedding"]["protected_set"] = [
+            value["risk"]["emergency_shedding"]["protected_set"][0],
+            value["risk"]["emergency_shedding"]["protected_set"][0].copy(),
+        ]
+        with self.assertRaisesRegex(ConfigError, "protected_set:duplicate_stable_id"):
+            validate_config(duplicate)
+
+        overlap = config_data()
+        overlap["risk"]["emergency_shedding"] = value["risk"]["emergency_shedding"].copy()
+        overlap["risk"]["emergency_shedding"]["actionable_set"] = [
+            {
+                **value["risk"]["emergency_shedding"]["actionable_set"][0],
+                "stable_id": value["risk"]["emergency_shedding"]["protected_set"][0]["stable_id"],
+            }
+        ]
+        with self.assertRaisesRegex(ConfigError, "protected_actionable_overlap"):
+            validate_config(overlap)
+
+    def test_disk_policy_rejects_relative_mount_point(self):
+        value = config_data()
+        value["risk"]["disk_capacity"] = {
+            "mount_points": ["relative"],
+            "warning_free_percent": 15,
+            "critical_free_percent": 5,
+            "warning_inode_free_percent": 10,
+            "critical_inode_free_percent": 5,
+            "warning_time_to_full_seconds": 86400,
+            "critical_time_to_full_seconds": 3600,
+            "warning_for_seconds": 180,
+            "critical_for_seconds": 30,
+            "required_samples": 2,
+            "max_sample_age_seconds": 15,
+            "min_object_contribution_percent": 20,
+            "min_object_lead_margin": 0.15,
+        }
+        with self.assertRaisesRegex(ConfigError, "absolute_non_empty_required"):
+            validate_config(value)
 
     def test_unknown_top_level_field_is_rejected(self):
         value = config_data()
@@ -88,6 +169,19 @@ class GuardianConfigTests(unittest.TestCase):
             validate_config(value)
         value["actions"]["allow"] = ["terminate"]
         with self.assertRaisesRegex(ConfigError, "automatic_terminate_forbidden"):
+            validate_config(value)
+
+    def test_enforce_requires_absolute_authorization_file(self):
+        value = config_data()
+        value["agent"]["mode"] = "enforce"
+        value["actions"].update({
+            "enabled": True,
+            "allow": ["graceful_stop"],
+        })
+        with self.assertRaisesRegex(ConfigError, "enforce_requires_authorization_file"):
+            validate_config(value)
+        value["actions"]["authorization_file"] = "relative/authorization.json"
+        with self.assertRaisesRegex(ConfigError, "absolute_path_required"):
             validate_config(value)
 
     def test_remote_export_is_fail_closed_until_implemented(self):

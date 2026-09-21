@@ -1,0 +1,290 @@
+{
+  "schema": "guardian.p014_real_docker.check.v1",
+  "source_schema": "guardian.p014_real_docker.v1",
+  "experiment": "EXP-077",
+  "code_gate": "PASS",
+  "status": "INCONCLUSIVE",
+  "checks": {
+    "schema": {
+      "status": "PASS",
+      "detail": "guardian.p014_real_docker.v1"
+    },
+    "declared_coverage": {
+      "status": "PASS",
+      "detail": {
+        "groups": [
+          "unprotected",
+          "rescue",
+          "guardian"
+        ],
+        "scenarios": [
+          "cpu"
+        ]
+      }
+    },
+    "three_round_coverage": {
+      "status": "PASS",
+      "detail": {
+        "records": 9,
+        "per_pair": 3
+      }
+    },
+    "control_probes": {
+      "status": "PASS",
+      "detail": {
+        "probes": 36,
+        "successes": 36,
+        "failures": []
+      }
+    },
+    "safety_boundary": {
+      "status": "PASS",
+      "detail": "local real-Docker observe/simulate only"
+    },
+    "guardian_continuous_samples": {
+      "status": "PASS",
+      "detail": {
+        "windows": 3,
+        "samples": 96
+      }
+    },
+    "no_action_execution": {
+      "status": "PASS",
+      "detail": {
+        "samples": 96,
+        "actions": [
+          "escalate",
+          "graceful_stop",
+          "none"
+        ]
+      }
+    },
+    "real_full_id_cgroup_mapping": {
+      "status": "PASS",
+      "detail": {
+        "windows": 3,
+        "rows": [
+          {
+            "target_id": "230ab977a64a0a8a4649b1adf03edaea5656594864e33adb647b0a9e19323032",
+            "target_id_is_full_hex": true,
+            "target_samples": 11,
+            "target_ids": [
+              "230ab977a64a0a8a4649b1adf03edaea5656594864e33adb647b0a9e19323032"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-230ab977a64a0a8a4649b1adf03edaea5656594864e33adb647b0a9e19323032.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 11,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r1/cpu"
+          },
+          {
+            "target_id": "1015650f5799193a9eef22f8153ebdf2e3d20417303ee7b96dc9f058e2345d08",
+            "target_id_is_full_hex": true,
+            "target_samples": 11,
+            "target_ids": [
+              "1015650f5799193a9eef22f8153ebdf2e3d20417303ee7b96dc9f058e2345d08"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-1015650f5799193a9eef22f8153ebdf2e3d20417303ee7b96dc9f058e2345d08.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 11,
+            "mapping_errors": [],
+            "docker_available_samples": 32,
+            "docker_unavailable_samples": 0,
+            "record": "r2/cpu"
+          },
+          {
+            "target_id": "e87e16335b35d22e7591fd4a592edcaf6b88e66a06828f5ce18f0819ebe640e7",
+            "target_id_is_full_hex": true,
+            "target_samples": 10,
+            "target_ids": [
+              "e87e16335b35d22e7591fd4a592edcaf6b88e66a06828f5ce18f0819ebe640e7"
+            ],
+            "target_identity_seen": true,
+            "cgroup_paths": [
+              "/sys/fs/cgroup/workload.slice/docker-e87e16335b35d22e7591fd4a592edcaf6b88e66a06828f5ce18f0819ebe640e7.scope"
+            ],
+            "cgroup_path_stable": true,
+            "high_confidence_samples": 10,
+            "mapping_errors": [],
+            "docker_available_samples": 31,
+            "docker_unavailable_samples": 1,
+            "record": "r3/cpu"
+          }
+        ]
+      }
+    },
+    "business_health_probe": {
+      "status": "PASS",
+      "detail": {
+        "healthy_windows": 3
+      }
+    },
+    "object_churn": {
+      "status": "PASS",
+      "detail": {
+        "windows": 3,
+        "three_ids_per_window": true
+      }
+    },
+    "guardian_overhead_observed": {
+      "status": "PASS",
+      "detail": {
+        "samples": 255,
+        "cpu_usage_ns_p95": 19234816.0,
+        "memory_current_bytes_p95": 582331000.0,
+        "tasks_current_p95": 8.0,
+        "audit_bytes_min": 689770,
+        "audit_bytes_max": 707775,
+        "control_p95_ms_max": 157.602
+      }
+    },
+    "false_positive_miss_truth": {
+      "status": "PASS",
+      "detail": {
+        "windows": 3,
+        "mismatch_windows": [
+          {
+            "record": "r1/cpu",
+            "expected_active_resources": [
+              "cpu"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io",
+              "memory"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r2/cpu",
+            "expected_active_resources": [
+              "cpu"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r3/cpu",
+            "expected_active_resources": [
+              "cpu"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "io"
+            ],
+            "same_observer_recovery": false
+          }
+        ],
+        "recovery_windows": []
+      }
+    }
+  },
+  "gate_failures": [],
+  "evidence_gaps": [
+    "beszel_time_delta_missing",
+    "business_recovery_not_proven_by_healthcheck_only",
+    "docker_stats_unavailable_samples:1",
+    "guardian_overhead_has_no_owner_approved_slo",
+    "owner_rescue_slo_missing",
+    "resource_false_positive_or_miss_observed",
+    "same_observer_recovery_not_observed_for_all_windows",
+    "workload_window_shorter_than_30s"
+  ],
+  "summary": {
+    "control_probes": 36,
+    "control_successes": 36,
+    "guardian_windows": 3,
+    "guardian_samples": 96,
+    "identity_windows": 3,
+    "healthy_windows": 3,
+    "churn_windows": 3,
+    "overhead_rows": 255
+  },
+  "resource_truth": [
+    {
+      "record": "r1/cpu",
+      "expected_active_resources": [
+        "cpu"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io",
+        "memory"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r2/cpu",
+      "expected_active_resources": [
+        "cpu"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r3/cpu",
+      "expected_active_resources": [
+        "cpu"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "io"
+      ],
+      "same_observer_recovery": false
+    }
+  ],
+  "safety": {
+    "local_disposable_vm_only": true,
+    "real_docker_daemon": true,
+    "guardian_mode": "simulate",
+    "guardian_action_adapter_invoked": false,
+    "guardian_capability_created": false,
+    "guardian_docker_control_mutation_invoked": false,
+    "fixture_docker_run_invoked": true,
+    "fixture_workloads_natural_exit": true,
+    "docker_stop_restart_kill_invoked_by_harness": false,
+    "production_connected": false,
+    "beszel_connected": false,
+    "capacity_loopback_fixture": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "guardian.disk_observe_simulate.v1",
+  "status": "PASSED",
+  "environment": {
+    "vm": "guardian-disk-repro",
+    "os": "Ubuntu 22.04.5 LTS",
+    "arch": "aarch64",
+    "kernel": "5.15.0-191-generic",
+    "systemd": "249.11",
+    "cgroup": "v2",
+    "vcpus": 2,
+    "memory_gib": 3
+  },
+  "capacity_inode": {
+    "mount_point": "/mnt/guardian-disk-fixture",
+    "free_ratio_percent_min": 4.15,
+    "free_inode_ratio_percent_min": 4.329,
+    "candidate_state": "critical",
+    "state_after_dwell": "critical",
+    "attribution_state": "DEGRADED_OBSERVABILITY",
+    "attribution_reason": "capacity_writer_ownership_unavailable",
+    "mutation_commands_invoked_by_probe": false
+  },
+  "io": {
+    "mount_point": "/mnt/guardian-io-fixture",
+    "pressure_unit": "guardian-disk-io-pressure.service",
+    "psi_some_avg10_max_percent": 26.6,
+    "psi_full_avg10_max_percent": 19.21,
+    "device_utilization_max_percent": 70.955,
+    "average_latency_max_ms": 15.417,
+    "attribution_state_during_pressure": "TARGET_CONFIRMED",
+    "attribution_contribution_percent": 100.0,
+    "risk_state_after_dwell": "critical",
+    "unit_result": "success",
+    "unit_exit_status": 0
+  },
+  "safety": {
+    "production_connected": false,
+    "existing_guardian_ubuntu_touched": false,
+    "actions_executed": 0,
+    "files_deleted_by_guardian": false,
+    "io_limits_changed": false,
+    "reboot": false
+  },
+  "limits": [
+    "local ARM64 Multipass VM only",
+    "loopback fixture rather than production block device",
+    "writer ownership is intentionally unavailable for capacity attribution",
+    "does not establish production thresholds or action safety",
+    "overlay/writeback and x86_64 device mapping remain unverified"
+  ]
+}

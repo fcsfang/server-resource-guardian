@@ -1,0 +1,25 @@
+{
+  "schema": "guardian.rescue_capacity_fixture.v1",
+  "host_root_disk_modified": false,
+  "mountpoint": "/tmp/guardian-p011-loop",
+  "reserve_check_bytes": 16000000,
+  "runs": [
+    {
+      "fixture_bytes": 41943040,
+      "before_available_bytes": 53956608,
+      "after_available_bytes": 12013568,
+      "reserve_check_passed": false,
+      "expected_result": "negative",
+      "interpretation": "The deliberately larger write crossed the 16 MiB reserve; the fixture was stopped and cleaned up."
+    },
+    {
+      "fixture_bytes": 33554432,
+      "before_available_bytes": 53956608,
+      "after_available_bytes": 20402176,
+      "reserve_check_passed": true,
+      "expected_result": "pass",
+      "interpretation": "The bounded loopback fixture retained more than the configured reserve and was unmounted and deleted."
+    }
+  ],
+  "interpretation": "Capacity evidence is isolated to a loopback filesystem. No host root-disk fill or production storage mutation was performed."
+}

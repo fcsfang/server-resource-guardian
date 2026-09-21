@@ -13,7 +13,7 @@
 - 动作是否已经进入执行阶段但尚未写回结果？
 - 本机是否仍处于冷却或连续失败熔断状态？
 
-PG-P0-05 将这些状态收敛到 [`src/guardian_state.py`](../src/guardian_state.py) 的 SQLite WAL 本地状态库。它是动作前安全门，不是动作执行器。
+这些状态保存在 [`src/guardian_state.py`](../src/guardian_state.py) 的 SQLite WAL 本地状态库中。它是动作前安全门，不是动作执行器。
 
 ## 2. 数据模型
 
@@ -53,7 +53,7 @@ INTENT_RECORDED → EXECUTION_STARTED → SUCCEEDED / FAILED / PLANNED
 ## 5. 尚未完成的边界
 
 - capability 的生产发行者、密钥保护和多方审批尚未定义；当前只接受显式 `local-disposable` 授权对象。
-- SQLite 是单机本地状态，不是多主机共享协调器；生产安装路径、权限、备份和磁盘满策略属于 PG-P0-07/P2。
+- SQLite 是单机本地状态，不是多主机共享协调器；生产安装路径、权限、备份和磁盘满策略必须在非生产环境复核。
 - Docker 动作、业务 probe 和生产 enforce 均未因本任务自动开启；当前实验只用 mock/fake executor。
 
 ## 6. 回滚

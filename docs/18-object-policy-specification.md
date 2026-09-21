@@ -1,124 +1,72 @@
-# Guardian 对象策略规范（G4-T02）
+# Guardian 对象与策略规范
 
-更新时间：2026-09-19
+更新时间：2026-09-20
 
-> 本文定义风险对象如何识别、保护、授权和审计。它是 `observe/simulate/enforce` 的策略设计输入，不等同于已经执行的自动动作。PG-P0-04 已完成只读 Docker↔cgroup 归因 MVP；保护名单、业务 owner、动作合同和耐久授权仍按 PG-P0-05 接入。
+状态：`ACTIVE`
 
-## 1. 策略总原则
+## 1. 决策公式
 
-- 风险信号说明“可能要出问题”，对象策略决定“能不能碰、可以做什么”。
-- 未知对象默认只观测和告警；不能因为资源占用高就自动终止。
-- 保护名单优先于风险等级；任何保护对象命中后必须升级人工。
-- 对象身份必须由稳定身份组合确认，不能只依赖短生命周期 PID 或容器名称。
-- 业务动作按对象配置，不设置所有容器统一的资源限制或统一的重启策略。
-
-## 2. 对象身份
-
-| 对象类型 | 最低身份组合 | 处理要求 |
-| --- | --- | --- |
-| 主机 | 稳定 host ID、采样时间、实例状态 | 默认只告警和快照；不自动重启整机 |
-| systemd unit | unit 名、主 PID、启动时间、cgroup 路径 | unit 在动作白名单中才允许动作 |
-| 容器 | container ID、image digest、创建时间、标签、所属业务 | 名称只能展示，不能作为唯一身份 |
-| 进程组 | PID、starttime、可执行路径、cgroup 路径、父对象 | 必须确认 PID 未重用，优先通过 cgroup/服务归属操作 |
-
-对象解析失败时输出 `unknown`，进入 `escalated`，不进入 `enforce`。
-
-## 3. 保护名单
-
-### 3.1 永久保护
-
-- PID 1、内核线程、systemd 核心组件。
-- Guardian 自身、执行 helper、审计写入链路。
-- SSH、网络管理、DNS、容器运行时和基础文件系统服务。
-- 监控、日志和告警转发组件。
-- 公司声明的核心业务服务和具有 quorum/副本约束的组件。
-
-### 3.2 配置保护
-
-策略文件可以按 unit、可执行路径、容器标签和稳定业务身份扩展保护对象。保护条件需要写明来源和更新时间；空白配置不能被解释为“全部允许”。
-
-### 3.3 保护命中行为
-
-保护对象即使处于 `critical`：
-
-1. 保存现场快照；
-2. 输出带原因码的高优先级告警；
-3. 停止自动动作升级；
-4. 进入 `escalated`，等待人工或外部控制面处理。
-
-## 4. 动作策略
-
-| 等级 | 动作 | 默认 | 前置条件 |
-| --- | --- | --- | --- |
-| L0 | 记录指标和事件 | 启用 | 采样可用 |
-| L1 | 快照、告警、生成动作计划 | 启用 | 事件去抖通过 |
-| L2 | 暂停/优雅停止可恢复测试任务 | 关闭 | 对象白名单、动作白名单、健康检查通过 |
-| L3 | 重启无状态容器或服务 | 关闭 | 明确业务允许、恢复方式已定义、未命中熔断 |
-| L4 | 强制终止 | 关闭 | 显式授权、对象身份稳定、保护检查通过、前置快照成功 |
-| L5 | 整机重启或带外操作 | 永不自动 | 只能人工或外部控制面执行 |
-
-`observe` 只允许 L0/L1；`simulate` 可以生成 L2–L4 的计划但不执行；`enforce` 仍需对象和动作白名单同时允许。
-
-## 5. 冷却和熔断
-
-- 同一对象同一事件使用稳定 `event_id`，在冷却窗口内不重复执行相同动作。
-- 主机级动作计数和对象级动作计数分开统计。
-- 达到单机/全局动作上限、出现连续恢复失败、审计失败、策略解析失败或多对象同时恶化时，停止自动升级并进入 `escalated`。
-- 服务重启后进入观察窗口；在健康检查完成前不得再次动作。
-- 任何配置变更都产生新的策略版本号，旧事件不能使用新策略追溯执行。
-
-## 6. 执行前后检查
-
-执行前必须确认：
-
-- 风险事件仍在有效窗口内；
-- 对象身份、启动时间和 cgroup 未发生变化；
-- 对象不在保护名单，且动作在白名单；
-- 最近冷却和动作上限未触发；
-- 快照已成功或明确记录失败原因。
-
-执行后必须确认：
-
-- 动作返回结果和运行时状态；
-- 内存、PSI、swap 或相关风险信号是否改善；
-- 服务健康、容器状态和重启次数；
-- 是否进入重启循环或出现新的 OOM/错误；
-- 未恢复时停止继续升级并告警。
-
-## 7. 配置结构草案
-
-正式 schema 之前，先使用以下概念结构讨论，不把示例名单当成真实生产名单：
-
-```yaml
-policy:
-  mode: observe
-  protected:
-    systemd_units: []
-    executable_paths: []
-    container_labels: []
-    business_ids: []
-  targets:
-    - selector: {}
-      identity: [container_id, image_digest, created_at]
-      allowed_actions: [snapshot, graceful_stop]
-      recovery_check: healthcheck
-  cooldown: 10m
-  limits:
-    per_object_actions: 1
-    per_host_actions: 2
-    per_hour: 2
-  on_unknown: escalate
-  on_protected: escalate
+```text
+action_eligible =
+  risk_confirmed
+  AND target_confirmed
+  AND target in actionable_set
+  AND target not in protected_set
+  AND action in target.allowed_actions
+  AND identity_unchanged
+  AND capability_valid
+  AND audit_and_state_writable
+  AND circuit_closed
 ```
 
-## 8. 验收与下一步
+任何一项为 false/unknown 都不得执行。
 
-当前实现边界：Observer 通过 Docker inspect、容器 PID 和 cgroup v2 读取对象身份与内存证据；PG-P0-04 的评分器按内存贡献、领先幅度和置信度进行本地 MVP 归因，复杂 fleet、生产阈值、业务 owner 和策略配置仍未完成。`config/guardian.example.yaml` 仍是样例，不是运行时已加载的生产策略。
+## 2. 对象类型与身份
 
-- [x] 定义主机、unit、容器和进程组对象身份。
-- [x] 定义永久保护对象、配置保护对象和命中后的行为。
-- [x] 定义 L0–L5 动作等级，以及三种运行模式的边界。
-- [x] 定义冷却、动作上限、熔断和恢复检查。
-- [x] 定义未知对象默认 `escalate`，不自动处置。
-- [ ] 将策略结构接入 `observe` 事件输出。
-- [ ] 使用可丢弃容器验证策略匹配、保护名单和模拟动作计划。
+| 类型 | 最低稳定身份 | 自动边界 |
+| --- | --- | --- |
+| Docker 容器 | full ID、image digest、created time、labels、cgroup path/inode | v2 首个可评估对象 |
+| systemd unit | 完整 unit、cgroup path、主进程 starttime、配置版本 | 只做 observe/simulate，是否 stop 待 owner 明确 |
+| cgroup | 规范路径/inode、owner、父层级、控制器 | 只用于归因；不对任意 cgroup 动作 |
+| 裸进程 | PID、starttime、exe、父/cgroup | 只用于诊断；永久不自动 kill |
+| 主机 | host ID、boot ID、环境 | 只告警/救援；不自动重启 |
+
+## 3. `protected_set`
+
+永久保护包含 Guardian/Broker、PID 1、SSH/认证/网络/DNS、Docker/containerd、日志审计、Beszel、文件系统/挂载关键服务。业务保护包含数据库、队列、quorum、唯一副本、有状态任务和 owner 指定对象。
+
+每条记录必须有 owner、原因、环境、创建/复核/失效时间和策略版本。
+
+## 4. `actionable_set`
+
+每条记录至少包含：
+
+- stable selector 与期望身份字段；
+- owner、业务重要级、状态/副本语义；
+- 允许资源类型和允许动作；
+- grace timeout、最大频率、冷却、失效日期；
+- host mitigation 与 business probe 合同；
+- 回滚、值班和升级联系人。
+
+空集合表示没有任何对象可自动处置。禁止 wildcard “all non-protected”、短 ID、容器名、进程名或 Top N 规则。
+
+## 5. 目标选择
+
+先资格过滤，再按资源贡献、时间相关性、置信度和领先幅度排名。只有第一名达到 `min_confidence`、`min_contribution` 且领先第二名 `min_margin` 才确认。多资源事件最多选择一个共同目标；证据冲突时放弃。
+
+## 6. 结果与原因码
+
+- `TARGET_CONFIRMED`
+- `NO_TARGET`
+- `AMBIGUOUS_TARGET`
+- `PROTECTED_TARGET`
+- `NOT_ACTIONABLE`
+- `IDENTITY_CHANGED`
+- `DEGRADED_OBSERVABILITY`
+- `MULTI_RESOURCE_AMBIGUOUS`
+
+所有放弃结果必须包含可解释 reason codes 并进入审计/告警，不允许静默降级。
+
+## 7. 当前实现
+
+内存与 CPU/I/O cgroup 归因已有本地实现；容量 writer ownership 尚未建立，因此容量风险固定不可自动归因。SQLite 状态层已实现 capability、intent/result、冷却、熔断和 reconciliation。本规范的生产清单、业务 owner 和 systemd unit 动作权限仍需外部确认。

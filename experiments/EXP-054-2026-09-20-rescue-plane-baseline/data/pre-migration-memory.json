@@ -1,0 +1,852 @@
+{
+  "schema": "guardian.rescue_probe.v1",
+  "vm": "guardian-p011-migration",
+  "label": "pre-migration-memory",
+  "count_per_probe": 20,
+  "timeout_seconds": 10.0,
+  "started_epoch_s": 1789898965.78953,
+  "finished_epoch_s": 1789898971.9530509,
+  "records": [
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 87.709,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 1,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 94.577,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 1,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 72.31,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 1,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 98.819,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 1,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 60.183,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 2,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 71.497,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 2,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 73.423,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 2,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 93.754,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 2,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 64.258,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 3,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 80.978,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 3,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 78.947,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 3,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 92.501,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 3,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 56.909,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 4,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 76.219,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 4,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 69.159,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 4,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 103.511,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 4,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 60.301,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 5,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.175,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 5,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 79.441,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 5,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 104.17,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 5,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 57.014,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 6,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 68.017,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 6,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 77.217,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 6,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 115.858,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 6,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 61.445,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 7,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 60.466,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 7,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 78.008,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 7,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 90.937,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 7,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 57.905,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 8,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 65.989,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 8,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 71.729,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 8,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 91.127,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 8,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 59.888,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 9,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 70.15,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 9,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 67.958,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 9,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 106.979,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2633,
+      "stderr": "",
+      "round": 9,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 56.064,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 10,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 60.396,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 10,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 75.808,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 10,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 94.674,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2631,
+      "stderr": "",
+      "round": 10,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 60.359,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 11,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 56.98,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 11,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 63.329,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 11,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 89.924,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2631,
+      "stderr": "",
+      "round": 11,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 65.057,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 12,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 74.518,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 12,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 66.914,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 12,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 125.556,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2631,
+      "stderr": "",
+      "round": 12,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 68.749,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 13,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 80.541,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 13,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 68.565,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 13,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 86.008,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2631,
+      "stderr": "",
+      "round": 13,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 69.158,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 14,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 76.945,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 14,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 80.185,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 14,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 92.604,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2631,
+      "stderr": "",
+      "round": 14,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 58.263,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 15,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 69.114,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 15,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 69.113,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 15,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 93.197,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2630,
+      "stderr": "",
+      "round": 15,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 68.937,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 16,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 66.619,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 16,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 71.328,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 16,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 107.943,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2631,
+      "stderr": "",
+      "round": 16,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 52.958,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 17,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 85.467,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 17,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 70.543,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 17,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 101.033,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2632,
+      "stderr": "",
+      "round": 17,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 77.94,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 18,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 74.991,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 18,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 63.937,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 18,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 128.29,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2632,
+      "stderr": "",
+      "round": 18,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 60.67,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 19,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 63.874,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 19,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 60.41,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 19,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 100.598,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2632,
+      "stderr": "",
+      "round": 19,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "ssh_managed_session",
+      "elapsed_ms": 62.817,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 20,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "diagnostic_read_only",
+      "elapsed_ms": 61.495,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 467,
+      "stderr": "",
+      "round": 20,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "docker_list_read_only",
+      "elapsed_ms": 76.638,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 0,
+      "stderr": "",
+      "round": 20,
+      "label": "pre-migration-memory"
+    },
+    {
+      "name": "guardian_observe_once",
+      "elapsed_ms": 115.799,
+      "returncode": 0,
+      "ok": true,
+      "stdout_bytes": 2632,
+      "stderr": "",
+      "round": 20,
+      "label": "pre-migration-memory"
+    }
+  ],
+  "summary": {
+    "diagnostic_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 69.114,
+      "p95_ms": 85.467,
+      "max_ms": 94.577
+    },
+    "docker_list_read_only": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 71.328,
+      "p95_ms": 79.441,
+      "max_ms": 80.185
+    },
+    "guardian_observe_once": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 98.819,
+      "p95_ms": 125.556,
+      "max_ms": 128.29
+    },
+    "ssh_managed_session": {
+      "count": 20,
+      "successes": 20,
+      "failures": 0,
+      "p50_ms": 60.359,
+      "p95_ms": 77.94,
+      "max_ms": 87.709
+    }
+  },
+  "safety": {
+    "read_only_control_probes": true,
+    "temporary_audit_write_only": true,
+    "docker_mutation_invoked": false,
+    "systemd_mutation_invoked": false,
+    "production_connected": false
+  }
+}

@@ -1,0 +1,18 @@
+[Unit]
+Description=Guardian Action Broker execution-plane resource domain
+Documentation=https://github.com/fcsfang/server-resource-guardian
+
+[Slice]
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+# The broker is intentionally small and serialized; it must not compete with
+# the rescue plane during host pressure.
+CPUWeight=100
+IOWeight=100
+MemoryMin=16M
+MemoryLow=32M
+MemoryHigh=128M
+MemoryMax=256M
+TasksMax=64

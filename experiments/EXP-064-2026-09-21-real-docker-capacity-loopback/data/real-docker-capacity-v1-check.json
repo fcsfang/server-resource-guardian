@@ -1,0 +1,252 @@
+{
+  "schema": "guardian.p014_real_docker.check.v1",
+  "source_schema": "guardian.p014_real_docker.v1",
+  "experiment": "EXP-064",
+  "code_gate": "FAIL",
+  "status": "INCONCLUSIVE",
+  "checks": {
+    "schema": {
+      "status": "PASS",
+      "detail": "guardian.p014_real_docker.v1"
+    },
+    "declared_coverage": {
+      "status": "FAIL",
+      "detail": {
+        "groups": [
+          "unprotected",
+          "rescue",
+          "guardian"
+        ],
+        "scenarios": [
+          "capacity"
+        ]
+      }
+    },
+    "three_round_coverage": {
+      "status": "PASS",
+      "detail": {
+        "records": 9,
+        "per_pair": 3
+      }
+    },
+    "control_probes": {
+      "status": "PASS",
+      "detail": {
+        "probes": 36,
+        "successes": 36,
+        "failures": []
+      }
+    },
+    "safety_boundary": {
+      "status": "PASS",
+      "detail": "local real-Docker observe/simulate only"
+    },
+    "guardian_continuous_samples": {
+      "status": "PASS",
+      "detail": {
+        "windows": 3,
+        "samples": 96
+      }
+    },
+    "no_action_execution": {
+      "status": "PASS",
+      "detail": {
+        "samples": 96,
+        "actions": [
+          "escalate",
+          "none"
+        ]
+      }
+    },
+    "real_full_id_cgroup_mapping": {
+      "status": "FAIL",
+      "detail": [
+        "r1/capacity",
+        "r2/capacity",
+        "r3/capacity"
+      ]
+    },
+    "business_health_probe": {
+      "status": "FAIL",
+      "detail": [
+        "r1/capacity",
+        "r2/capacity",
+        "r3/capacity"
+      ]
+    },
+    "object_churn": {
+      "status": "PASS",
+      "detail": {
+        "windows": 3,
+        "three_ids_per_window": true
+      }
+    },
+    "guardian_overhead_observed": {
+      "status": "PASS",
+      "detail": {
+        "samples": 196,
+        "cpu_usage_ns_p95": 18034688.0,
+        "memory_current_bytes_p95": 582289000.0,
+        "tasks_current_p95": 8.0,
+        "audit_bytes_min": 695258,
+        "audit_bytes_max": 695692,
+        "control_p95_ms_max": 224.128
+      }
+    },
+    "false_positive_miss_truth": {
+      "status": "PASS",
+      "detail": {
+        "windows": 3,
+        "mismatch_windows": [
+          {
+            "record": "r1/capacity",
+            "expected_active_resources": [
+              "disk_capacity"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "disk_capacity",
+              "io",
+              "memory"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "cpu",
+              "io",
+              "memory"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r2/capacity",
+            "expected_active_resources": [
+              "disk_capacity"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "disk_capacity",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "same_observer_recovery": false
+          },
+          {
+            "record": "r3/capacity",
+            "expected_active_resources": [
+              "disk_capacity"
+            ],
+            "observed_active_resources": [
+              "cpu",
+              "disk_capacity",
+              "io"
+            ],
+            "missed_expected_resources": [],
+            "unexpected_active_resources": [
+              "cpu",
+              "io"
+            ],
+            "same_observer_recovery": false
+          }
+        ],
+        "recovery_windows": []
+      }
+    }
+  },
+  "gate_failures": [
+    "business_health_probe",
+    "declared_coverage",
+    "real_full_id_cgroup_mapping"
+  ],
+  "evidence_gaps": [
+    "beszel_time_delta_missing",
+    "business_recovery_not_proven_by_healthcheck_only",
+    "guardian_overhead_has_no_owner_approved_slo",
+    "owner_rescue_slo_missing",
+    "resource_false_positive_or_miss_observed",
+    "same_observer_recovery_not_observed_for_all_windows",
+    "workload_window_shorter_than_30s"
+  ],
+  "summary": {
+    "control_probes": 36,
+    "control_successes": 36,
+    "guardian_windows": 3,
+    "guardian_samples": 96,
+    "identity_windows": 0,
+    "healthy_windows": 0,
+    "churn_windows": 3,
+    "overhead_rows": 196
+  },
+  "resource_truth": [
+    {
+      "record": "r1/capacity",
+      "expected_active_resources": [
+        "disk_capacity"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "disk_capacity",
+        "io",
+        "memory"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "cpu",
+        "io",
+        "memory"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r2/capacity",
+      "expected_active_resources": [
+        "disk_capacity"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "disk_capacity",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "same_observer_recovery": false
+    },
+    {
+      "record": "r3/capacity",
+      "expected_active_resources": [
+        "disk_capacity"
+      ],
+      "observed_active_resources": [
+        "cpu",
+        "disk_capacity",
+        "io"
+      ],
+      "missed_expected_resources": [],
+      "unexpected_active_resources": [
+        "cpu",
+        "io"
+      ],
+      "same_observer_recovery": false
+    }
+  ],
+  "safety": {
+    "local_disposable_vm_only": true,
+    "real_docker_daemon": true,
+    "guardian_mode": "simulate",
+    "guardian_action_adapter_invoked": false,
+    "guardian_capability_created": false,
+    "guardian_docker_control_mutation_invoked": false,
+    "fixture_docker_run_invoked": true,
+    "fixture_workloads_natural_exit": true,
+    "docker_stop_restart_kill_invoked_by_harness": false,
+    "production_connected": false,
+    "beszel_connected": false,
+    "capacity_loopback_fixture": true
+  }
+}

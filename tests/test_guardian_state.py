@@ -1,6 +1,8 @@
 import tempfile
 import threading
 import unittest
+import stat
+from unittest.mock import patch
 from pathlib import Path
 
 from src.guardian_actions import ActionResult, Authorization, MockActionExecutor
@@ -30,6 +32,23 @@ def enforce_event(event_id="event-1", target="abcdef123456", action="graceful_st
 class GuardianStateStoreTests(unittest.TestCase):
     def store(self, temp):
         return GuardianStateStore(Path(temp) / "guardian-state.db")
+
+    def test_shared_state_mode_is_explicit_and_bounded(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "shared-state.db"
+            GuardianStateStore(path, file_mode=0o660)
+            self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o660)
+            with self.assertRaises(ValueError):
+                GuardianStateStore(Path(temp) / "invalid.db", file_mode=0o666)
+
+    def test_shared_state_owner_can_leave_sufficient_group_mode_unchanged(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "shared-state.db"
+            path.touch(mode=0o660)
+            path.chmod(0o660)
+            with patch("src.guardian_state.os.chmod", side_effect=PermissionError("not owner")):
+                GuardianStateStore(path, file_mode=0o660)
+            self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o660)
 
     def test_capability_is_registered_and_consumed_once(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -78,6 +97,28 @@ class GuardianStateStoreTests(unittest.TestCase):
                 )
             retry = store.claim_intent(
                 host_id="host", object_id="object", action="graceful_stop", event_id="event-1", audit_payload={"ok": True}, now=101
+            )
+            self.assertTrue(retry.claimed)
+
+    def test_audit_payload_size_is_bounded_before_intent_commit(self):
+        with tempfile.TemporaryDirectory() as temp:
+            store = self.store(temp)
+            with self.assertRaisesRegex(StateStoreError, "audit_payload_too_large"):
+                store.claim_intent(
+                    host_id="host",
+                    object_id="object",
+                    action="graceful_stop",
+                    event_id="event-large",
+                    audit_payload={"large": "x" * (64 * 1024)},
+                    now=100,
+                )
+            retry = store.claim_intent(
+                host_id="host",
+                object_id="object",
+                action="graceful_stop",
+                event_id="event-large",
+                audit_payload={"ok": True},
+                now=101,
             )
             self.assertTrue(retry.claimed)
 
@@ -149,6 +190,25 @@ class GuardianStateStoreTests(unittest.TestCase):
             self.assertEqual(store.allow_action("host", "object", "stop", 105, 10, 2, 300), (False, "cooldown_active"))
             store.record_action("host", "object", "stop", 111, success=False)
             self.assertTrue(store.failure_breaker("host", "object", "stop", 2))
+
+    def test_action_slot_serializes_concurrent_execution_window(self):
+        with tempfile.TemporaryDirectory() as temp:
+            store = self.store(temp)
+            self.assertTrue(store.claim_action_slot("host", "graceful_stop", "intent-1", now=100))
+            self.assertFalse(store.claim_action_slot("host", "graceful_stop", "intent-2", now=101))
+            self.assertFalse(store.release_action_slot("host", "graceful_stop", "intent-2", now=102))
+            self.assertTrue(store.release_action_slot("host", "graceful_stop", "intent-1", now=103))
+            self.assertTrue(store.claim_action_slot("host", "graceful_stop", "intent-2", now=104))
+
+    def test_action_slot_restart_requires_manual_reconciliation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "guardian-state.db"
+            first = self.store(temp)
+            self.assertTrue(first.claim_action_slot("host", "graceful_stop", "intent-1", now=100))
+            restarted = GuardianStateStore(path)
+            pending = restarted.reconcile_pending(now=101)
+            self.assertTrue(any(item.get("kind") == "action_slot" for item in pending))
+            self.assertFalse(restarted.claim_action_slot("host", "graceful_stop", "intent-2", now=102))
 
     def test_controller_uses_durable_intent_before_executor(self):
         class Executor:

@@ -1,0 +1,37 @@
+{
+  "schema": "guardian.rescue_static_verification.v1",
+  "systemd_analyze_verify_exit": 0,
+  "systemd_analyze_verify_warnings": [
+    "netplan-ovs-cleanup.service: Failed to open /run/systemd/system/netplan-ovs-cleanup.service: Permission denied",
+    "/lib/systemd/system/snapd.service:23: Unknown key RestartMode"
+  ],
+  "slice_values": {
+    "rescue.slice": {
+      "CPUAccounting": "yes",
+      "CPUWeight": 1000,
+      "IOAccounting": "yes",
+      "IOWeight": 1000,
+      "MemoryAccounting": "yes",
+      "MemoryMinBytes": 134217728,
+      "MemoryLowBytes": 536870912,
+      "TasksAccounting": "yes",
+      "TasksMax": 512
+    },
+    "workload.slice": {
+      "CPUAccounting": "yes",
+      "CPUWeight": 100,
+      "IOAccounting": "yes",
+      "IOWeight": 100,
+      "MemoryAccounting": "yes",
+      "MemoryMinBytes": 0,
+      "MemoryLowBytes": 0,
+      "TasksAccounting": "yes",
+      "TasksMax": 4096
+    }
+  },
+  "transient_fixture_cgroup_paths": {
+    "rescue": "0::/rescue.slice/guardian-p011-rescue-fixture.service",
+    "workload": "0::/workload.slice/guardian-p011-workload-fixture.service"
+  },
+  "interpretation": "Static parsing and transient membership passed. Existing ssh.service, docker.service and containerd.service were not migrated; the fixture does not prove production service protection."
+}

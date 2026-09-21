@@ -1,0 +1,44 @@
+[Unit]
+Description=Guardian independent Action Broker
+Documentation=https://github.com/fcsfang/server-resource-guardian
+After=local-fs.target docker.service guardian-runtime.service
+Wants=docker.service
+ConditionPathExists=/etc/guardian/broker.enabled
+StartLimitIntervalSec=5min
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=guardian-broker
+Group=guardian-broker
+# This group is a high-privilege Docker-socket boundary.  It is kept out of
+# the Runtime account and must be replaced by a rootless/authorization-aware
+# Docker integration before any production enforce approval.
+SupplementaryGroups=docker guardian-shared
+WorkingDirectory=/opt/server-resource-guardian
+Environment=PYTHONPATH=/opt/server-resource-guardian
+ExecStartPre=/usr/bin/python3 -m src.guardian_preflight --role broker --config /etc/guardian/guardian.json --state-db /var/lib/guardian/shared/state.db --socket /run/guardian-broker/broker.sock
+ExecStart=/usr/bin/python3 -m src.guardian_broker_service --socket /run/guardian-broker/broker.sock --state-db /var/lib/guardian/shared/state.db --config /etc/guardian/guardian.json --enable --allowed-uid guardian --allowed-gid guardian
+Restart=on-failure
+RestartSec=5s
+TimeoutStartSec=30s
+TimeoutStopSec=15s
+KillMode=mixed
+KillSignal=SIGTERM
+LimitNOFILE=1024
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/guardian/shared /run/guardian-broker
+RestrictAddressFamilies=AF_UNIX
+LockPersonality=true
+PrivateDevices=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0007
+Slice=guardian-broker.slice
+RuntimeDirectory=guardian-broker
+RuntimeDirectoryMode=0750
+
+# Deliberately no [Install] section: the Broker is not enabled by default.

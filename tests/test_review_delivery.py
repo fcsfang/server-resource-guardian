@@ -5,7 +5,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 DEMO = ROOT / "demo" / "guardian-beszel-review" / "index.html"
 ONE_PAGE = ROOT / "docs" / "24-guardian-effectiveness-one-page.md"
-ROADMAP = ROOT / "docs" / "25-leader-review-delivery-roadmap.md"
+ROADMAP = ROOT / "ROADMAP.md"
 RUNBOOK = ROOT / "docs" / "26-guardian-beszel-live-demo-runbook.md"
 SERVE_SCRIPT = ROOT / "scripts" / "serve-review-demo.sh"
 
@@ -38,7 +38,7 @@ class ReviewDeliveryTests(unittest.TestCase):
         self.assertIn("不连接生产", runbook)
         self.assertIn("不读取 `.env`", runbook)
         self.assertIn("不调用 Docker/systemd 变更接口", runbook)
-        self.assertIn("66 tests", runbook)
+        self.assertIn("统一回归", runbook)
 
     def test_delivery_script_uses_local_demo_directory(self):
         script = SERVE_SCRIPT.read_text(encoding="utf-8")

@@ -1,0 +1,3118 @@
+{
+  "schema": "guardian.p014_three_way.v3",
+  "experiment": "EXP-062",
+  "vm": "guardian-p014-recovery",
+  "groups": [
+    "unprotected",
+    "rescue",
+    "guardian"
+  ],
+  "scenarios": [
+    "cpu",
+    "memory",
+    "capacity",
+    "io",
+    "mixed"
+  ],
+  "rounds": 1,
+  "workload_seconds": 50.0,
+  "observer_interval_seconds": 1.0,
+  "observer_samples_expected": 36,
+  "active_seconds_before_stop": 8.0,
+  "started_epoch_s": 1789915518.02387,
+  "finished_epoch_s": 1789915734.653638,
+  "records": [
+    {
+      "group": "unprotected",
+      "scenario": "cpu",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-cpu.service",
+      "workload_started_monotonic_ns": 537227568000,
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 79.011,
+        "stdout": " 22:45:19 up 8 min,  0 users,  load average: 0.10, 0.25, 0.16\n               total        used        free      shared  buff/cache   available\nMem:            2969         177        2074           1         717        2702\nSwap:              0           0           0\nsome avg10=0.56 avg60=0.40 avg300=0.60 total=8889288\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.04 avg300=0.20 total=2804660\nfull avg10=0.00 avg60=0.03 avg300=0.15 total=2352820\n    PID COMMAND         STAT\n  28659 head            S\n  28658 ps              R\n  28649 bash            Ss\n  28648 sshd            R\n  28602 sshd            Ss\n  28549 python3         R\n  28548 python3         R\n  28547 python3         Ss\n  24024 kworker/0:0-cgr I\n  22925 kworker/1:0-eve I\n  20501 kworker/u4:1-fl I\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "memory",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-memory.service",
+      "workload_started_monotonic_ns": 537877107000,
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 83.261,
+        "stdout": " 22:45:20 up 8 min,  0 users,  load average: 0.10, 0.25, 0.16\n               total        used        free      shared  buff/cache   available\nMem:            2969         191        2059           1         717        2688\nSwap:              0           0           0\nsome avg10=0.56 avg60=0.40 avg300=0.60 total=8945601\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.04 avg300=0.20 total=2804660\nfull avg10=0.00 avg60=0.03 avg300=0.15 total=2352820\n    PID COMMAND         STAT\n  29134 head            S\n  29133 ps              R\n  29124 bash            Ss\n  29123 sshd            S\n  29077 sshd            Ss\n  29024 python3         Ss\n  24024 kworker/0:0-cgr I\n  22925 kworker/1:0-eve I\n  20501 kworker/u4:1-fl I\n   7736 sshfs           Sl\n   7735 sudo            Ss\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "capacity",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-capacity.service",
+      "workload_started_monotonic_ns": 539042621000,
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 88.745,
+        "stdout": " 22:45:21 up 8 min,  0 users,  load average: 0.10, 0.25, 0.16\n               total        used        free      shared  buff/cache   available\nMem:            2969         185        2016           1         767        2691\nSwap:              0           0           0\nsome avg10=1.91 avg60=0.65 avg300=0.66 total=9006544\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.54 avg60=0.13 avg300=0.22 total=2878985\nfull avg10=0.54 avg60=0.13 avg300=0.17 total=2419697\n    PID COMMAND         STAT\n  29861 head            S\n  29860 ps              R\n  29851 bash            Ss\n  29850 sshd            S\n  29804 sshd            Ss\n  29751 python3         Ss\n  29697 systemd-udevd   S\n  29696 ext4lazyinit    S\n  29695 ext4-rsv-conver I<\n  29694 jbd2/loop5-8    S\n  24024 kworker/0:0-cgr I\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "io",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-io.service",
+      "workload_started_monotonic_ns": 540827211000,
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 75.472,
+        "stdout": " 22:45:23 up 9 min,  0 users,  load average: 0.25, 0.28, 0.17\n               total        used        free      shared  buff/cache   available\nMem:            2969         170        1980           1         817        2707\nSwap:              0           0           0\nsome avg10=1.91 avg60=0.65 avg300=0.66 total=9090981\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.54 avg60=0.13 avg300=0.22 total=3095154\nfull avg10=0.54 avg60=0.13 avg300=0.17 total=2599770\n    PID COMMAND         STAT\n  30798 head            S\n  30797 ps              R\n  30788 bash            Ss\n  30787 sshd            S\n  30741 sshd            Ss\n  30649 python3         Ss\n  30596 ext4-rsv-conver I<\n  30595 jbd2/loop5-8    S\n  29697 systemd-udevd   S\n  29696 ext4lazyinit    S\n  24024 kworker/0:0-cgr I\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "unprotected",
+      "scenario": "mixed",
+      "round": 1,
+      "workload_unit": "guardian-p014-unprotected-mixed.service",
+      "workload_started_monotonic_ns": 542307874000,
+      "control": {
+        "command": "uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 72.007,
+        "stdout": " 22:45:24 up 9 min,  0 users,  load average: 0.25, 0.28, 0.17\n               total        used        free      shared  buff/cache   available\nMem:            2969         195        2053           1         720        2684\nSwap:              0           0           0\nsome avg10=2.29 avg60=0.76 avg300=0.68 total=9232910\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=2.25 avg60=0.46 avg300=0.28 total=3185924\nfull avg10=2.07 avg60=0.42 avg300=0.23 total=2689811\n    PID COMMAND         STAT\n  31698 head            S\n  31697 ps              R\n  31688 bash            Ss\n  31687 sshd            R\n  31641 sshd            Ss\n  31588 python3         R\n  31587 python3         R\n  31586 python3         Ss\n  31533 ext4-rsv-conver I<\n  31532 jbd2/loop5-8    S\n  29697 systemd-udevd   S\n",
+        "stderr": ""
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "cpu",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-cpu.service",
+      "workload_started_monotonic_ns": 543411722000,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-cpu-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 87.968,
+        "stdout": " 22:45:26 up 9 min,  0 users,  load average: 0.25, 0.28, 0.17\n               total        used        free      shared  buff/cache   available\nMem:            2969         176        2073           1         719        2703\nSwap:              0           0           0\nsome avg10=3.50 avg60=1.03 avg300=0.74 total=9371823\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=2.57 avg60=0.57 avg300=0.31 total=3191417\nfull avg10=2.42 avg60=0.54 avg300=0.26 total=2694467\n    PID COMMAND         STAT\n  32432 head            S\n  32431 ps              R\n  32421 bash            Ss\n  32420 systemd-run     S\n  32416 sudo            Ss\n  32415 sshd            S\n  32369 sshd            Ss\n  32316 python3         R\n  32315 python3         R\n  32314 python3         Ss\n  29697 systemd-udevd   S\n",
+        "stderr": "Running as unit: guardian-p014-control-cpu-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "memory",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-memory.service",
+      "workload_started_monotonic_ns": 544182943000,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-memory-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 74.292,
+        "stdout": " 22:45:26 up 9 min,  0 users,  load average: 0.25, 0.28, 0.17\n               total        used        free      shared  buff/cache   available\nMem:            2969         195        2054           1         719        2684\nSwap:              0           0           0\nsome avg10=3.50 avg60=1.03 avg300=0.74 total=9452078\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=2.57 avg60=0.57 avg300=0.31 total=3191423\nfull avg10=2.42 avg60=0.54 avg300=0.26 total=2694474\n    PID COMMAND         STAT\n  32913 head            S\n  32912 ps              R\n  32902 bash            Ss\n  32901 systemd-run     R\n  32897 sudo            Ss\n  32896 sshd            S\n  32850 sshd            Ss\n  32797 python3         Ss\n  29697 systemd-udevd   S\n  24024 kworker/0:0-cgr I\n  22925 kworker/1:0-eve I\n",
+        "stderr": "Running as unit: guardian-p014-control-memory-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 6ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "capacity",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-capacity.service",
+      "workload_started_monotonic_ns": 545273422000,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-capacity-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 93.859,
+        "stdout": " 22:45:27 up 9 min,  0 users,  load average: 0.25, 0.28, 0.17\n               total        used        free      shared  buff/cache   available\nMem:            2969         184        2015           1         768        2691\nSwap:              0           0           0\nsome avg10=4.68 avg60=1.32 avg300=0.80 total=9509842\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=2.65 avg60=0.65 avg300=0.33 total=3266624\nfull avg10=2.52 avg60=0.62 avg300=0.27 total=2765487\n    PID COMMAND         STAT\n  33645 head            S\n  33644 ps              R\n  33634 bash            Ss\n  33633 systemd-run     S\n  33629 sudo            Ss\n  33628 sshd            S\n  33582 sshd            Ss\n  33529 python3         Ss\n  33476 ext4lazyinit    S\n  33475 ext4-rsv-conver I<\n  33474 jbd2/loop5-8    S\n",
+        "stderr": "Running as unit: guardian-p014-control-capacity-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "io",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-io.service",
+      "workload_started_monotonic_ns": 546996139000,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-io-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 83.236,
+        "stdout": " 22:45:29 up 9 min,  0 users,  load average: 0.31, 0.29, 0.18\n               total        used        free      shared  buff/cache   available\nMem:            2969         171        1977           1         820        2706\nSwap:              0           0           0\nsome avg10=4.68 avg60=1.32 avg300=0.80 total=9592632\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=2.65 avg60=0.65 avg300=0.33 total=3536127\nfull avg10=2.52 avg60=0.62 avg300=0.27 total=3003821\n    PID COMMAND         STAT\n  34588 head            S\n  34587 ps              R\n  34577 bash            Ss\n  34576 systemd-run     S\n  34572 sudo            Ss\n  34571 sshd            S\n  34525 sshd            Ss\n  34472 python3         Ss\n  34419 ext4-rsv-conver I<\n  34418 jbd2/loop5-8    S\n  33476 ext4lazyinit    S\n",
+        "stderr": "Running as unit: guardian-p014-control-io-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 6ms\nCPU time consumed: 6ms\n"
+      }
+    },
+    {
+      "group": "rescue",
+      "scenario": "mixed",
+      "round": 1,
+      "workload_unit": "guardian-p014-rescue-mixed.service",
+      "workload_started_monotonic_ns": 548529471000,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-mixed-rescue-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 130.473,
+        "stdout": " 22:45:31 up 9 min,  0 users,  load average: 0.31, 0.29, 0.18\n               total        used        free      shared  buff/cache   available\nMem:            2969         194        2052           1         722        2684\nSwap:              0           0           0\nsome avg10=4.74 avg60=1.44 avg300=0.83 total=9753906\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=4.52 avg60=1.06 avg300=0.42 total=3641481\nfull avg10=4.24 avg60=0.99 avg300=0.35 total=3107690\n    PID COMMAND         STAT\n  35495 bash            R\n  35494 ps              R\n  35484 bash            Ss\n  35483 systemd-run     S\n  35479 sudo            Ss\n  35478 sshd            S\n  35432 sshd            Ss\n  35379 python3         R\n  35378 python3         R\n  35377 python3         Ss\n  35324 ext4lazyinit    S\n",
+        "stderr": "Running as unit: guardian-p014-control-mixed-rescue-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 6ms\nCPU time consumed: 6ms\n"
+      }
+    },
+    {
+      "group": "guardian",
+      "scenario": "cpu",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-cpu.service",
+      "workload_started_monotonic_ns": 549672666000,
+      "observer_unit": "guardian-p014-continuous-observer-cpu.service",
+      "observer_started_epoch_s": 1789915532.4789288,
+      "observer_finished_epoch_s": 1789915570.7467752,
+      "observer_session_seconds": 38.268,
+      "observer_command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-continuous-observer-cpu.service --slice=rescue.slice /usr/bin/bash -lc 'env PATH=/home/ubuntu/p014-fake-bin:$PATH P014_FAKE_DOCKER_STATE=/tmp/guardian-p014-fake-docker-state.json PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --config /home/ubuntu/p014-target-config.json --mode simulate --samples 36 --interval 1 --allow-unprotected --allow-action graceful_stop' > /home/ubuntu/p014-continuous-cpu.jsonl 2> /home/ubuntu/p014-continuous-cpu.stderr",
+      "observer_result": {
+        "returncode": 0,
+        "ok": true,
+        "timed_out": false,
+        "stdout": "",
+        "stderr": ""
+      },
+      "observer_stderr": "Running as unit: guardian-p014-continuous-observer-cpu.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 37.916s\nCPU time consumed: 952ms\n",
+      "records": [
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:45:32.662757Z",
+          "observed_monotonic_ns": 550225028979,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:45:33.694755Z",
+          "observed_monotonic_ns": 551255647541,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:45:34.725064Z",
+          "observed_monotonic_ns": 552287370241,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "cpu"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-cpu-target",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+              "mapping_confidence": "high",
+              "mapping_errors": [],
+              "cpu_usage_delta_usec": 2034963,
+              "cpu_contribution_percent": 100.0,
+              "lead_margin_percent": 100.0
+            },
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-cpu-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2034963,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:45:35.759496Z",
+          "observed_monotonic_ns": 553317674322,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "cpu"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-cpu-target",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+              "mapping_confidence": "high",
+              "mapping_errors": [],
+              "cpu_usage_delta_usec": 2025822,
+              "cpu_contribution_percent": 100.0,
+              "lead_margin_percent": 100.0
+            },
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-cpu-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2025822,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:45:36.793435Z",
+          "observed_monotonic_ns": 554352037984,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "cpu"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-cpu-target",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+              "mapping_confidence": "high",
+              "mapping_errors": [],
+              "cpu_usage_delta_usec": 2038671,
+              "cpu_contribution_percent": 100.0,
+              "lead_margin_percent": 100.0
+            },
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-cpu-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2038671,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:45:37.829137Z",
+          "observed_monotonic_ns": 555386002855,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_ambiguous"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target_id": null,
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target": null,
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-cpu-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2030577,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "NO_TARGET",
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_ambiguous"
+              ],
+              "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+              "target_id": null,
+              "active_resources": [
+                "memory",
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:45:38.863039Z",
+          "observed_monotonic_ns": 556421858102,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_ambiguous"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target_id": null,
+            "active_resources": [
+              "memory",
+              "cpu",
+              "io"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory",
+              "cpu",
+              "io"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target": null,
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-cpu-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2042570,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "NO_TARGET",
+              "cpu": "TARGET_CONFIRMED",
+              "io": "DEGRADED_OBSERVABILITY"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_ambiguous"
+              ],
+              "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+              "target_id": null,
+              "active_resources": [
+                "memory",
+                "cpu",
+                "io"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:45:39.896016Z",
+          "observed_monotonic_ns": 557455592037,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_ambiguous"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target_id": null,
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target": null,
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-cpu-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-cpu.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2025176,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "NO_TARGET",
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_ambiguous"
+              ],
+              "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+              "target_id": null,
+              "active_resources": [
+                "memory",
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        }
+      ],
+      "raw_record_count": 8,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-cpu-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 86.668,
+        "stdout": " 22:45:40 up 9 min,  0 users,  load average: 0.65, 0.37, 0.20\n               total        used        free      shared  buff/cache   available\nMem:            2969         193        2054           1         720        2685\nSwap:              0           0           0\nsome avg10=4.83 avg60=2.11 avg300=1.00 total=10261797\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=2.07 avg60=1.04 avg300=0.43 total=3649158\nfull avg10=1.96 avg60=0.98 avg300=0.37 total=3108998\n    PID COMMAND         STAT\n  36615 head            S\n  36614 ps              R\n  36604 bash            Ss\n  36603 systemd-run     S\n  36599 sudo            Ss\n  36598 sshd            S\n  36552 sshd            Ss\n  36375 python3         Ss\n  36374 systemd-run     S\n  36373 sudo            S\n  36369 bash            Ss\n",
+        "stderr": "Running as unit: guardian-p014-control-cpu-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 5ms\n"
+      },
+      "workload_stop": {
+        "command": "sudo systemctl stop guardian-p014-guardian-cpu.service",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 73.161,
+        "stdout": "",
+        "stderr": ""
+      },
+      "fake_identity_clear": {
+        "ok": true,
+        "path": "/tmp/guardian-p014-fake-docker-state.json"
+      },
+      "same_observer_session": true
+    },
+    {
+      "group": "guardian",
+      "scenario": "memory",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-memory.service",
+      "workload_started_monotonic_ns": 589015650000,
+      "observer_unit": "guardian-p014-continuous-observer-memory.service",
+      "observer_started_epoch_s": 1789915571.777212,
+      "observer_finished_epoch_s": 1789915611.178556,
+      "observer_session_seconds": 39.401,
+      "observer_command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-continuous-observer-memory.service --slice=rescue.slice /usr/bin/bash -lc 'env PATH=/home/ubuntu/p014-fake-bin:$PATH P014_FAKE_DOCKER_STATE=/tmp/guardian-p014-fake-docker-state.json PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --config /home/ubuntu/p014-target-config.json --mode simulate --samples 36 --interval 1 --allow-unprotected --allow-action graceful_stop' > /home/ubuntu/p014-continuous-memory.jsonl 2> /home/ubuntu/p014-continuous-memory.stderr",
+      "observer_result": {
+        "returncode": 0,
+        "ok": true,
+        "timed_out": false,
+        "stdout": "",
+        "stderr": ""
+      },
+      "observer_stderr": "Running as unit: guardian-p014-continuous-observer-memory.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 39.077s\nCPU time consumed: 1.039s\n",
+      "records": [
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:46:11.945059Z",
+          "observed_monotonic_ns": 589502758587,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:46:13.042844Z",
+          "observed_monotonic_ns": 590589432616,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:46:14.106766Z",
+          "observed_monotonic_ns": 591653305190,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-memory-target",
+              "confidence": "high",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-memory.service",
+              "memory_current_bytes": 90517504,
+              "memory_growth_bytes_per_second": 23704316.001747355,
+              "memory_growth_share_percent": 100.0,
+              "host_contribution_percent": 68.388,
+              "oom_events_delta": 0,
+              "score": 0.683883,
+              "mapping_errors": []
+            },
+            "targets_by_resource": {
+              "memory": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-memory-target",
+                "confidence": "high",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-memory.service",
+                "memory_current_bytes": 90517504,
+                "memory_growth_bytes_per_second": 23704316.001747355,
+                "memory_growth_share_percent": 100.0,
+                "host_contribution_percent": 68.388,
+                "oom_events_delta": 0,
+                "score": 0.683883,
+                "mapping_errors": []
+              }
+            },
+            "attribution_states": {
+              "memory": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:46:15.231044Z",
+          "observed_monotonic_ns": 592776903195,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-memory-target",
+              "confidence": "high",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-memory.service",
+              "memory_current_bytes": 115728384,
+              "memory_growth_bytes_per_second": 22424071.750327185,
+              "memory_growth_share_percent": 100.0,
+              "host_contribution_percent": 100.0,
+              "oom_events_delta": 0,
+              "score": 1.0,
+              "mapping_errors": []
+            },
+            "targets_by_resource": {
+              "memory": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-memory-target",
+                "confidence": "high",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-memory.service",
+                "memory_current_bytes": 115728384,
+                "memory_growth_bytes_per_second": 22424071.750327185,
+                "memory_growth_share_percent": 100.0,
+                "host_contribution_percent": 100.0,
+                "oom_events_delta": 0,
+                "score": 1.0,
+                "mapping_errors": []
+              }
+            },
+            "attribution_states": {
+              "memory": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:46:16.437381Z",
+          "observed_monotonic_ns": 593983273150,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-memory-target",
+              "confidence": "high",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-memory.service",
+              "memory_current_bytes": 140943360,
+              "memory_growth_bytes_per_second": 20902100.293281842,
+              "memory_growth_share_percent": 100.0,
+              "host_contribution_percent": 75.275,
+              "oom_events_delta": 0,
+              "score": 0.752751,
+              "mapping_errors": []
+            },
+            "targets_by_resource": {
+              "memory": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-memory-target",
+                "confidence": "high",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-memory.service",
+                "memory_current_bytes": 140943360,
+                "memory_growth_bytes_per_second": 20902100.293281842,
+                "memory_growth_share_percent": 100.0,
+                "host_contribution_percent": 75.275,
+                "oom_events_delta": 0,
+                "score": 0.752751,
+                "mapping_errors": []
+              }
+            },
+            "attribution_states": {
+              "memory": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:46:17.481330Z",
+          "observed_monotonic_ns": 595036610080,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_ambiguous"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target_id": null,
+            "active_resources": [
+              "memory",
+              "io"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory",
+              "io"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target": null,
+            "targets_by_resource": {
+              "memory": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-memory-target",
+                "confidence": "high",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-memory.service",
+                "memory_current_bytes": 149348352,
+                "memory_growth_bytes_per_second": 8051169.592795674,
+                "memory_growth_share_percent": 100.0,
+                "host_contribution_percent": 70.954,
+                "oom_events_delta": 0,
+                "score": 0.709544,
+                "mapping_errors": []
+              }
+            },
+            "attribution_states": {
+              "memory": "TARGET_CONFIRMED",
+              "io": "DEGRADED_OBSERVABILITY"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_ambiguous"
+              ],
+              "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+              "target_id": null,
+              "active_resources": [
+                "memory",
+                "io"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:46:18.602945Z",
+          "observed_monotonic_ns": 596147353608,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "target_attribution_not_confirmed"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "target_attribution_not_confirmed"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:46:19.744918Z",
+          "observed_monotonic_ns": 597287909876,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "target_attribution_not_confirmed"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "target_attribution_not_confirmed"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        }
+      ],
+      "raw_record_count": 8,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-memory-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 238.189,
+        "stdout": " 22:46:20 up 9 min,  0 users,  load average: 0.40, 0.34, 0.20\n               total        used        free      shared  buff/cache   available\nMem:            2969         332        1915           1         721        2547\nSwap:              0           0           0\nsome avg10=0.77 avg60=1.40 avg300=0.96 total=10684817\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.03 avg60=0.53 avg300=0.37 total=3674530\nfull avg10=0.03 avg60=0.50 avg300=0.32 total=3131850\n    PID COMMAND         STAT\n  38456 head            S\n  38455 ps              R\n  38445 bash            Ss\n  38444 systemd-run     S\n  38440 sudo            Ss\n  38439 sshd            S\n  38383 sshd            Ss\n  38206 python3         Ss\n  38205 systemd-run     S\n  38204 sudo            S\n  38200 bash            Ss\n",
+        "stderr": "Running as unit: guardian-p014-control-memory-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 5ms\nCPU time consumed: 6ms\n"
+      },
+      "workload_stop": {
+        "command": "sudo systemctl stop guardian-p014-guardian-memory.service",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 94.478,
+        "stdout": "",
+        "stderr": ""
+      },
+      "fake_identity_clear": {
+        "ok": true,
+        "path": "/tmp/guardian-p014-fake-docker-state.json"
+      },
+      "same_observer_session": true
+    },
+    {
+      "group": "guardian",
+      "scenario": "capacity",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-capacity.service",
+      "workload_started_monotonic_ns": 629856667000,
+      "observer_unit": "guardian-p014-continuous-observer-capacity.service",
+      "observer_started_epoch_s": 1789915612.578518,
+      "observer_finished_epoch_s": 1789915651.6824782,
+      "observer_session_seconds": 39.104,
+      "observer_command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-continuous-observer-capacity.service --slice=rescue.slice /usr/bin/bash -lc 'env PATH=/home/ubuntu/p014-fake-bin:$PATH P014_FAKE_DOCKER_STATE=/tmp/guardian-p014-fake-docker-state.json PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --config /home/ubuntu/p014-target-config.json --mode simulate --samples 36 --interval 1 --allow-unprotected --allow-action graceful_stop' > /home/ubuntu/p014-continuous-capacity.jsonl 2> /home/ubuntu/p014-continuous-capacity.stderr",
+      "observer_result": {
+        "returncode": 0,
+        "ok": true,
+        "timed_out": false,
+        "stdout": "",
+        "stderr": ""
+      },
+      "observer_stderr": "Running as unit: guardian-p014-continuous-observer-capacity.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 38.777s\nCPU time consumed: 1.024s\n",
+      "records": [
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:46:52.727172Z",
+          "observed_monotonic_ns": 630287322126,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:46:53.914148Z",
+          "observed_monotonic_ns": 631459386303,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:46:54.984888Z",
+          "observed_monotonic_ns": 632530256627,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:46:56.067557Z",
+          "observed_monotonic_ns": 633611961657,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_ambiguous"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target_id": null,
+            "active_resources": [
+              "memory",
+              "io"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory",
+              "io"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET",
+              "io": "DEGRADED_OBSERVABILITY"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_ambiguous"
+              ],
+              "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+              "target_id": null,
+              "active_resources": [
+                "memory",
+                "io"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "recovered",
+          "observed_at": "2026-09-20T14:46:57.124580Z",
+          "observed_monotonic_ns": 634670721131,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "recovered",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:46:58.304979Z",
+          "observed_monotonic_ns": 635849367303,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:46:59.499596Z",
+          "observed_monotonic_ns": 637045493639,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:47:00.581438Z",
+          "observed_monotonic_ns": 638126257505,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "target_attribution_not_confirmed"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "target_attribution_not_confirmed"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        }
+      ],
+      "raw_record_count": 8,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-capacity-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 89.319,
+        "stdout": " 22:47:00 up 10 min,  0 users,  load average: 0.20, 0.29, 0.18\n               total        used        free      shared  buff/cache   available\nMem:            2969         190        1966           1         812        2685\nSwap:              0           0           0\nsome avg10=0.69 avg60=0.96 avg300=0.89 total=11078289\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.59 avg60=0.42 avg300=0.36 total=3825639\nfull avg10=0.44 avg60=0.37 avg300=0.30 total=3264696\n    PID COMMAND         STAT\n  40557 head            S\n  40556 ps              R\n  40546 bash            Ss\n  40545 systemd-run     S\n  40541 sudo            Ss\n  40540 sshd            S\n  40494 sshd            Ss\n  40317 python3         Ss\n  40316 systemd-run     S\n  40315 sudo            S\n  40311 bash            Ss\n",
+        "stderr": "Running as unit: guardian-p014-control-capacity-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 7ms\nCPU time consumed: 7ms\n"
+      },
+      "workload_stop": {
+        "command": "sudo systemctl stop guardian-p014-guardian-capacity.service",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 71.953,
+        "stdout": "",
+        "stderr": ""
+      },
+      "fake_identity_clear": {
+        "ok": true,
+        "path": "/tmp/guardian-p014-fake-docker-state.json"
+      },
+      "same_observer_session": true
+    },
+    {
+      "group": "guardian",
+      "scenario": "io",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-io.service",
+      "workload_started_monotonic_ns": 670859222000,
+      "observer_unit": "guardian-p014-continuous-observer-io.service",
+      "observer_started_epoch_s": 1789915653.600985,
+      "observer_finished_epoch_s": 1789915693.0993438,
+      "observer_session_seconds": 39.498,
+      "observer_command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-continuous-observer-io.service --slice=rescue.slice /usr/bin/bash -lc 'env PATH=/home/ubuntu/p014-fake-bin:$PATH P014_FAKE_DOCKER_STATE=/tmp/guardian-p014-fake-docker-state.json PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --config /home/ubuntu/p014-target-config.json --mode simulate --samples 36 --interval 1 --allow-unprotected --allow-action graceful_stop' > /home/ubuntu/p014-continuous-io.jsonl 2> /home/ubuntu/p014-continuous-io.stderr",
+      "observer_result": {
+        "returncode": 0,
+        "ok": true,
+        "timed_out": false,
+        "stdout": "",
+        "stderr": ""
+      },
+      "observer_stderr": "Running as unit: guardian-p014-continuous-observer-io.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 39.098s\nCPU time consumed: 1.004s\n",
+      "records": [
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:47:33.760114Z",
+          "observed_monotonic_ns": 671318795631,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:47:34.941550Z",
+          "observed_monotonic_ns": 672485923200,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:47:36.001392Z",
+          "observed_monotonic_ns": 673546995371,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "target_attribution_not_confirmed"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "target_attribution_not_confirmed"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:47:37.097755Z",
+          "observed_monotonic_ns": 674645741840,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:47:38.267859Z",
+          "observed_monotonic_ns": 675814770296,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "target_attribution_not_confirmed"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "target_attribution_not_confirmed"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:47:39.328508Z",
+          "observed_monotonic_ns": 676876487510,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "target_attribution_not_confirmed"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "target_attribution_not_confirmed"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:47:40.500958Z",
+          "observed_monotonic_ns": 678047416551,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "target_attribution_not_confirmed"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [
+              "memory"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory"
+            ],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {
+              "memory": "NO_TARGET"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "target_attribution_not_confirmed"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [
+                "memory"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:47:41.583873Z",
+          "observed_monotonic_ns": 679125430101,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        }
+      ],
+      "raw_record_count": 8,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-io-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 106.032,
+        "stdout": " 22:47:41 up 11 min,  0 users,  load average: 0.10, 0.25, 0.18\n               total        used        free      shared  buff/cache   available\nMem:            2969         192        1955           1         821        2685\nSwap:              0           0           0\nsome avg10=0.49 avg60=0.65 avg300=0.81 total=11462182\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=1.00 avg60=0.52 avg300=0.38 total=4075724\nfull avg10=0.80 avg60=0.42 avg300=0.31 total=3476873\n    PID COMMAND         STAT\n  42917 bash            R\n  42916 ps              R\n  42906 bash            Ss\n  42905 systemd-run     R\n  42901 sudo            Ss\n  42900 sshd            S\n  42854 sshd            Ss\n  42677 python3         Ss\n  42676 systemd-run     S\n  42675 sudo            S\n  42671 bash            Ss\n",
+        "stderr": "Running as unit: guardian-p014-control-io-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 7ms\nCPU time consumed: 7ms\n"
+      },
+      "workload_stop": {
+        "command": "sudo systemctl stop guardian-p014-guardian-io.service",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 83.544,
+        "stdout": "",
+        "stderr": ""
+      },
+      "fake_identity_clear": {
+        "ok": true,
+        "path": "/tmp/guardian-p014-fake-docker-state.json"
+      },
+      "same_observer_session": true
+    },
+    {
+      "group": "guardian",
+      "scenario": "mixed",
+      "round": 1,
+      "workload_unit": "guardian-p014-guardian-mixed.service",
+      "workload_started_monotonic_ns": 712243378000,
+      "observer_unit": "guardian-p014-continuous-observer-mixed.service",
+      "observer_started_epoch_s": 1789915695.1469052,
+      "observer_finished_epoch_s": 1789915734.034842,
+      "observer_session_seconds": 38.888,
+      "observer_command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-continuous-observer-mixed.service --slice=rescue.slice /usr/bin/bash -lc 'env PATH=/home/ubuntu/p014-fake-bin:$PATH P014_FAKE_DOCKER_STATE=/tmp/guardian-p014-fake-docker-state.json PYTHONPATH=/home/ubuntu/server-resource-guardian /usr/bin/python3 -m src.guardian_observer --config /home/ubuntu/p014-target-config.json --mode simulate --samples 36 --interval 1 --allow-unprotected --allow-action graceful_stop' > /home/ubuntu/p014-continuous-mixed.jsonl 2> /home/ubuntu/p014-continuous-mixed.stderr",
+      "observer_result": {
+        "returncode": 0,
+        "ok": true,
+        "timed_out": false,
+        "stdout": "",
+        "stderr": ""
+      },
+      "observer_stderr": "Running as unit: guardian-p014-continuous-observer-mixed.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 38.597s\nCPU time consumed: 962ms\n",
+      "records": [
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:48:15.311190Z",
+          "observed_monotonic_ns": 712869571654,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "normal",
+          "observed_at": "2026-09-20T14:48:16.343785Z",
+          "observed_monotonic_ns": 713904111990,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "none",
+            "execution": "not_executed",
+            "reason_codes": [
+              "no_active_resource_risk"
+            ],
+            "target_state": "NO_TARGET",
+            "target_id": null,
+            "active_resources": [],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "normal",
+            "active_resources": [],
+            "target_state": "NO_TARGET",
+            "target": null,
+            "targets_by_resource": {},
+            "attribution_states": {},
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "none",
+              "execution": "not_executed",
+              "reason_codes": [
+                "no_active_resource_risk"
+              ],
+              "target_state": "NO_TARGET",
+              "target_id": null,
+              "active_resources": [],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:48:17.376054Z",
+          "observed_monotonic_ns": 714936026898,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-mixed-target",
+              "confidence": "high",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+              "memory_current_bytes": 102182912,
+              "memory_growth_bytes_per_second": 24426616.00624725,
+              "memory_growth_share_percent": 100.0,
+              "host_contribution_percent": 75.22,
+              "oom_events_delta": 0,
+              "score": 0.752199,
+              "mapping_errors": []
+            },
+            "targets_by_resource": {
+              "memory": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "confidence": "high",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "memory_current_bytes": 102182912,
+                "memory_growth_bytes_per_second": 24426616.00624725,
+                "memory_growth_share_percent": 100.0,
+                "host_contribution_percent": 75.22,
+                "oom_events_delta": 0,
+                "score": 0.752199,
+                "mapping_errors": []
+              },
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2035300,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "TARGET_CONFIRMED",
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "memory",
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:48:18.408115Z",
+          "observed_monotonic_ns": 715968027022,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-mixed-target",
+              "confidence": "high",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+              "memory_current_bytes": 127397888,
+              "memory_growth_bytes_per_second": 24431718.486478012,
+              "memory_growth_share_percent": 100.0,
+              "host_contribution_percent": 93.23,
+              "oom_events_delta": 0,
+              "score": 0.932303,
+              "mapping_errors": []
+            },
+            "targets_by_resource": {
+              "memory": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "confidence": "high",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "memory_current_bytes": 127397888,
+                "memory_growth_bytes_per_second": 24431718.486478012,
+                "memory_growth_share_percent": 100.0,
+                "host_contribution_percent": 93.23,
+                "oom_events_delta": 0,
+                "score": 0.932303,
+                "mapping_errors": []
+              },
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2020495,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "TARGET_CONFIRMED",
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "memory",
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:48:19.439952Z",
+          "observed_monotonic_ns": 717000030650,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-mixed-target",
+              "confidence": "high",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+              "memory_current_bytes": 152612864,
+              "memory_growth_bytes_per_second": 24436969.15085977,
+              "memory_growth_share_percent": 100.0,
+              "host_contribution_percent": 100.0,
+              "oom_events_delta": 0,
+              "score": 1.0,
+              "mapping_errors": []
+            },
+            "targets_by_resource": {
+              "memory": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "confidence": "high",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "memory_current_bytes": 152612864,
+                "memory_growth_bytes_per_second": 24436969.15085977,
+                "memory_growth_share_percent": 100.0,
+                "host_contribution_percent": 100.0,
+                "oom_events_delta": 0,
+                "score": 1.0,
+                "mapping_errors": []
+              },
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2034861,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "TARGET_CONFIRMED",
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "memory",
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "critical",
+          "observed_at": "2026-09-20T14:48:20.474262Z",
+          "observed_monotonic_ns": 718032031324,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_ambiguous"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target_id": null,
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "critical",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target": null,
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2025489,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "NO_TARGET",
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_ambiguous"
+              ],
+              "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+              "target_id": null,
+              "active_resources": [
+                "memory",
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:48:21.506277Z",
+          "observed_monotonic_ns": 719066849776,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "graceful_stop",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_simulate_only",
+              "multi_resource_target_confirmed"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "active_resources": [
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "cpu"
+            ],
+            "target_state": "TARGET_CONFIRMED",
+            "target": {
+              "kind": "container",
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "guardian-p014-mixed-target",
+              "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+              "mapping_confidence": "high",
+              "mapping_errors": [],
+              "cpu_usage_delta_usec": 2038723,
+              "cpu_contribution_percent": 100.0,
+              "lead_margin_percent": 100.0
+            },
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2038723,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "graceful_stop",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_simulate_only",
+                "multi_resource_target_confirmed"
+              ],
+              "target_state": "TARGET_CONFIRMED",
+              "target_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "active_resources": [
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        },
+        {
+          "state": "warning",
+          "observed_at": "2026-09-20T14:48:22.537892Z",
+          "observed_monotonic_ns": 720098847917,
+          "decision": {
+            "mode": "simulate",
+            "resource_kind": "multi_resource",
+            "action": "escalate",
+            "execution": "not_executed",
+            "reason_codes": [
+              "multi_resource_ambiguous"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target_id": null,
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "quality_flags": [
+              "io_stat_missing"
+            ]
+          },
+          "joint_evaluation": {
+            "state": "warning",
+            "active_resources": [
+              "memory",
+              "cpu"
+            ],
+            "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+            "target": null,
+            "targets_by_resource": {
+              "cpu": {
+                "kind": "container",
+                "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "name": "guardian-p014-mixed-target",
+                "cgroup_path": "/sys/fs/cgroup/workload.slice/guardian-p014-guardian-mixed.service",
+                "mapping_confidence": "high",
+                "mapping_errors": [],
+                "cpu_usage_delta_usec": 2025549,
+                "cpu_contribution_percent": 100.0,
+                "lead_margin_percent": 100.0
+              }
+            },
+            "attribution_states": {
+              "memory": "NO_TARGET",
+              "cpu": "TARGET_CONFIRMED"
+            },
+            "quality_flags": [
+              "io_stat_missing"
+            ],
+            "decision": {
+              "mode": "simulate",
+              "resource_kind": "multi_resource",
+              "action": "escalate",
+              "execution": "not_executed",
+              "reason_codes": [
+                "multi_resource_ambiguous"
+              ],
+              "target_state": "MULTI_RESOURCE_AMBIGUOUS",
+              "target_id": null,
+              "active_resources": [
+                "memory",
+                "cpu"
+              ],
+              "quality_flags": [
+                "io_stat_missing"
+              ]
+            }
+          }
+        }
+      ],
+      "raw_record_count": 8,
+      "control": {
+        "command": "sudo systemd-run --system --wait --pipe --collect --unit=guardian-p014-control-mixed-guardian-1.service --slice=rescue.slice /usr/bin/bash -lc 'uptime; free -m; cat /proc/pressure/cpu; cat /proc/pressure/memory; cat /proc/pressure/io; ps -eo pid,comm,stat --sort=-pid | head -n 12'",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 281.039,
+        "stdout": " 22:48:23 up 12 min,  0 users,  load average: 0.36, 0.28, 0.19\n               total        used        free      shared  buff/cache   available\nMem:            2969         323        1921           1         724        2555\nSwap:              0           0           0\nsome avg10=2.54 avg60=1.03 avg300=0.86 total=12297764\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\nsome avg10=0.51 avg60=0.40 avg300=0.36 total=4211805\nfull avg10=0.50 avg60=0.35 avg300=0.30 total=3602761\n    PID COMMAND         STAT\n  45185 head            S\n  45184 ps              R\n  45174 bash            Ss\n  45173 systemd-run     S\n  45169 sudo            Ss\n  45168 sshd            S\n  45112 sshd            Ss\n  44935 python3         Ss\n  44934 systemd-run     S\n  44933 sudo            S\n  44929 bash            Ss\n",
+        "stderr": "Running as unit: guardian-p014-control-mixed-guardian-1.service\nFinished with result: success\nMain processes terminated with: code=exited/status=0\nService runtime: 6ms\nCPU time consumed: 7ms\n"
+      },
+      "workload_stop": {
+        "command": "sudo systemctl stop guardian-p014-guardian-mixed.service",
+        "returncode": 0,
+        "ok": true,
+        "elapsed_ms": 111.59,
+        "stdout": "",
+        "stderr": ""
+      },
+      "fake_identity_clear": {
+        "ok": true,
+        "path": "/tmp/guardian-p014-fake-docker-state.json"
+      },
+      "same_observer_session": true
+    }
+  ],
+  "summary": {
+    "unprotected/cpu": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 79.011,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/memory": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 83.261,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/capacity": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 88.745,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/io": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 75.472,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "unprotected/mixed": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 72.007,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/cpu": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 87.968,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/memory": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 74.292,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/capacity": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 93.859,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/io": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 83.236,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "rescue/mixed": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 130.473,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "guardian/cpu": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 86.668,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "guardian/memory": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 238.189,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "guardian/capacity": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 89.319,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "guardian/io": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 106.032,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    },
+    "guardian/mixed": {
+      "control_count": 1,
+      "control_successes": 1,
+      "control_failures": 0,
+      "control_p95_ms": 281.039,
+      "guardian_probe_windows": 0,
+      "guardian_samples": 0,
+      "guardian_states": [],
+      "guardian_actions": []
+    }
+  },
+  "same_observer_recovery": {
+    "status": "not_observed",
+    "definition": "same Observer process emits active risk and a later recovered state after the exact workload stop",
+    "recovered_scenarios": [],
+    "by_scenario": {
+      "cpu": {
+        "same_observer_session": false,
+        "sample_count": 0,
+        "states": [],
+        "first_active_index": null,
+        "recovered_index_after_active": null,
+        "same_session_recovery": false
+      },
+      "memory": {
+        "same_observer_session": false,
+        "sample_count": 0,
+        "states": [],
+        "first_active_index": null,
+        "recovered_index_after_active": null,
+        "same_session_recovery": false
+      },
+      "capacity": {
+        "same_observer_session": false,
+        "sample_count": 0,
+        "states": [],
+        "first_active_index": null,
+        "recovered_index_after_active": null,
+        "same_session_recovery": false
+      },
+      "io": {
+        "same_observer_session": false,
+        "sample_count": 0,
+        "states": [],
+        "first_active_index": null,
+        "recovered_index_after_active": null,
+        "same_session_recovery": false
+      },
+      "mixed": {
+        "same_observer_session": false,
+        "sample_count": 0,
+        "states": [],
+        "first_active_index": null,
+        "recovered_index_after_active": null,
+        "same_session_recovery": false
+      }
+    }
+  },
+  "detection_lead": {
+    "status": "not_observed",
+    "definition": "first warning-or-critical sample minus systemd ActiveEnterTimestampMonotonic",
+    "unit": "ms",
+    "by_scenario": {}
+  },
+  "rescue_slo": {
+    "status": "measured_not_approved",
+    "metric": "read_only_control_probe_elapsed_ms",
+    "comparison": "not_evaluated_without_owner_approved_threshold",
+    "by_group_scenario": {
+      "guardian/capacity": {
+        "p95_ms": 89.319,
+        "samples": 1
+      },
+      "guardian/cpu": {
+        "p95_ms": 86.668,
+        "samples": 1
+      },
+      "guardian/io": {
+        "p95_ms": 106.032,
+        "samples": 1
+      },
+      "guardian/memory": {
+        "p95_ms": 238.189,
+        "samples": 1
+      },
+      "guardian/mixed": {
+        "p95_ms": 281.039,
+        "samples": 1
+      },
+      "rescue/capacity": {
+        "p95_ms": 93.859,
+        "samples": 1
+      },
+      "rescue/cpu": {
+        "p95_ms": 87.968,
+        "samples": 1
+      },
+      "rescue/io": {
+        "p95_ms": 83.236,
+        "samples": 1
+      },
+      "rescue/memory": {
+        "p95_ms": 74.292,
+        "samples": 1
+      },
+      "rescue/mixed": {
+        "p95_ms": 130.473,
+        "samples": 1
+      }
+    }
+  },
+  "safety": {
+    "local_disposable_vm_only": true,
+    "guardian_mode": "simulate",
+    "guardian_action_adapter_invoked": false,
+    "docker_mutation_invoked": false,
+    "production_connected": false,
+    "fixture_cleanup_only": true,
+    "synthetic_docker_identity_fixture": true,
+    "same_observer_process_per_guardian_scenario": true
+  }
+}
