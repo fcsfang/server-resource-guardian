@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 from scripts.guardian_rescue_plan import render_plan
 from scripts.guardian_rescue_probe import dry_run_plan, run_experiment, summarize
+from scripts.guardian_rescue_matrix import evaluate_matrix
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -121,6 +122,30 @@ class GuardianRescueDeploymentTests(unittest.TestCase):
             self.assertTrue(saved["safety"]["temporary_audit_write_only"])
             self.assertFalse(saved["safety"]["docker_mutation_invoked"])
             self.assertEqual(len(saved["records"]), 4)
+
+    def test_merged_matrix_fails_closed_on_missing_domain_or_evidence(self):
+        probes = {
+            name: {"attempts": 20, "successes": 20, "p95_ms": 100.0}
+            for name in (
+                "ssh_managed_session",
+                "diagnostic_read_only",
+                "docker_list_read_only",
+                "guardian_observe_once",
+            )
+        }
+        records = {scenario: dict(probes) for scenario in ("cpu", "memory", "io", "pid")}
+        result = evaluate_matrix(
+            records,
+            capacity_inode_evidence=False,
+            persistence_evidence=True,
+            rollback_evidence=False,
+        )
+        self.assertEqual(result["status"], "INCONCLUSIVE")
+        self.assertIn("scenario_missing:capacity_inode", result["reason_codes"])
+        self.assertIn("capacity_inode_evidence_missing", result["reason_codes"])
+        self.assertIn("rollback_evidence_missing", result["reason_codes"])
+        self.assertTrue(result["read_only"])
+        self.assertFalse(result["safety"]["new_threshold_experiment_created"])
 
 
 if __name__ == "__main__":

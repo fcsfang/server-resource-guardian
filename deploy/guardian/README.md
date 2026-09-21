@@ -12,6 +12,7 @@
 - `guardian-observer.service`、`guardian-broker.service`、`guardian-broker.slice`、`guardian-audit.logrotate`：既有 Observer/Broker 和审计模板；本 T11 安装默认不启用 Broker。
 - `scripts/guardian_rescue_probe.py`：默认只生成 dry-run 计划；只有显式 `--run-read-only` 才运行固定只读 Multipass 探针。
 - `scripts/guardian_rescue_plan.py`：安装、诊断、停用、回滚的非变更计划器；它不调用 systemd、Docker 或 Multipass。
+- `scripts/guardian_rescue_matrix.py`：把 CPU、内存、I/O、容量/inode、PID 和四类维护探针汇总为一个 fail-closed 只读判定；缺证据只返回 `INCONCLUSIVE`。
 
 Rescue Plane 的目标是提高“登录 → 只读诊断 → 人工控制”的可维护概率，不保证任意资源耗尽时 SSH 必然可用，也不能替代带外控制台、BMC 或云控制台。
 
@@ -59,6 +60,7 @@ Rescue Plane 的目标是提高“登录 → 只读诊断 → 人工控制”的
 ```bash
 python3 scripts/guardian_rescue_plan.py install
 python3 scripts/guardian_rescue_probe.py --output /tmp/guardian-rescue-plan.json
+python3 scripts/guardian_rescue_matrix.py --summary-csv experiments/EXP-054-2026-09-20-rescue-plane-baseline/data/summary.csv --output /tmp/guardian-rescue-matrix.json
 python3 -m unittest discover -s tests -p 'test_guardian_rescue_deployment.py'
 systemd-analyze verify deploy/guardian/rescue.slice deploy/guardian/workload.slice deploy/guardian/guardian-runtime.service
 ```
