@@ -2,6 +2,7 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 from src.guardian_config import safe_defaults, validate_config
 from src.guardian_actions import Authorization
@@ -323,6 +324,49 @@ class GuardianOrchestratorTests(unittest.TestCase):
             self.assertEqual(outcome.exit_code, 1)
             self.assertEqual(outcome.stats["coordinator_errors"], 1)
             self.assertTrue(outcome.stats["fatal_reason"].startswith("coordinator_failed:"))
+
+    def test_host_mitigation_is_preserved_when_business_probe_is_unconfigured(self):
+        before = {
+            "state": "critical_confirmed",
+            "signals": {
+                "memory": {"available_ratio_percent": 5.0},
+                "psi": {"memory": {"full": {"avg10": 2.0}}},
+                "cgroup": {"memory_events": {"oom": 0, "oom_kill": 0}},
+            },
+            "resource_evaluations": {"memory": {"risk": {"state": "critical_confirmed"}}},
+        }
+        after = {
+            "state": "recovered",
+            "signals": {
+                "memory": {"available_ratio_percent": 40.0},
+                "psi": {"memory": {"full": {"avg10": 0.0}}},
+                "cgroup": {"memory_events": {"oom": 0, "oom_kill": 0}},
+                "object_registry": {"objects": []},
+            },
+            "resource_evaluations": {"memory": {"risk": {"state": "recovered"}}},
+        }
+
+        class OneRecoverySample:
+            def sample(self):
+                return after
+
+        with tempfile.TemporaryDirectory() as temp:
+            runtime = self.build_runtime(temp, observer=OneRecoverySample(), coordinator=RecordingCoordinator())
+            verify = runtime._verification_provider(before)
+            result = verify(
+                SimpleNamespace(
+                    resource_kind="memory",
+                    target_id="abcdef123456",
+                    action="graceful_stop",
+                ),
+                SimpleNamespace(executed=True),
+            )
+
+        self.assertTrue(result.host_mitigated)
+        self.assertEqual(result.host_state, "MITIGATED")
+        self.assertFalse(result.business_recovered)
+        self.assertEqual(result.business_state, "BUSINESS_DEGRADED")
+        self.assertIn("business_health_check_not_configured", result.reason_codes)
 
 
 if __name__ == "__main__":

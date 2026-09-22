@@ -473,7 +473,14 @@ class RuntimeOrchestrator:
                     business,
                     expected_target_id=intent.target_id,
                 )
-                if latest.host_mitigated and latest.business_recovered:
+                # Host containment and business recovery are independent.  A
+                # stopped disposable target can mitigate the resource risk
+                # while business health remains unconfirmed because no probe
+                # is configured.  Once host mitigation is proven, preserve
+                # that result and hand business confirmation to the operator
+                # instead of waiting until the host window expires and
+                # overwriting MITIGATED with a timeout failure.
+                if latest.host_mitigated:
                     return latest
                 if elapsed >= self.config.recovery_max_wait_seconds:
                     return latest
