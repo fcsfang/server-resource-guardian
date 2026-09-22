@@ -72,7 +72,7 @@ class GuardianEnforceTests(unittest.TestCase):
 
         def fake_runner(command, **kwargs):
             calls.append((command, kwargs))
-            if command[:2] == ["docker", "stop"]:
+            if command[:4] == ["docker", "kill", "--signal", "TERM"]:
                 return type("Result", (), {"returncode": 0, "stdout": "stopped", "stderr": ""})()
             return type(
                 "Result",
@@ -97,7 +97,7 @@ class GuardianEnforceTests(unittest.TestCase):
         self.assertEqual(result.state, "recovered")
         self.assertTrue(result.action_result.executed)
         self.assertEqual(result.recovery.reason_codes, ("target_stopped",))
-        self.assertEqual(calls[0][0], ["docker", "stop", "--timeout", "5", "abcdef123456"])
+        self.assertEqual(calls[0][0], ["docker", "kill", "--signal", "TERM", "abcdef123456"])
         self.assertEqual(calls[1][0][:3], ["docker", "inspect", "--format"])
         self.assertFalse(calls[0][1].get("shell", False))
 

@@ -88,7 +88,12 @@ def docker_command(request: ActionRequest) -> list[str]:
     """Build an argument vector; never interpolate a target into a shell."""
 
     if request.action == "graceful_stop":
-        return ["docker", "stop", "--timeout", str(request.timeout_seconds), request.target_id]
+        # ``docker stop`` escalates to SIGKILL after its timeout.  Guardian's
+        # graceful action must never perform that implicit escalation: send a
+        # single SIGTERM and let the separate recovery verifier decide whether
+        # the target stopped within the approved window.  A target that remains
+        # running is handed to an operator; the adapter does not retry or kill.
+        return ["docker", "kill", "--signal", "TERM", request.target_id]
     if request.action == "restart":
         return ["docker", "restart", "--timeout", str(request.timeout_seconds), request.target_id]
     if request.action == "terminate":

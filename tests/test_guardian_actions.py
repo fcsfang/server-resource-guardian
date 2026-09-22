@@ -73,12 +73,14 @@ class GuardianActionTests(unittest.TestCase):
         result = DockerActionAdapter(fake_runner).execute(request, now=1000.0)
         self.assertTrue(result.executed)
         self.assertEqual(result.returncode, 0)
-        self.assertEqual(calls[0][0], ["docker", "stop", "--timeout", "30", "abcdef123456"])
+        self.assertEqual(calls[0][0], ["docker", "kill", "--signal", "TERM", "abcdef123456"])
+        self.assertNotIn("stop", calls[0][0])
+        self.assertNotIn("KILL", calls[0][0])
         self.assertFalse(calls[0][1].get("shell", False))
 
     def test_docker_adapter_converts_runner_timeout_to_failed_action_result(self):
         def timeout_runner(_command, **_kwargs):
-            raise subprocess.TimeoutExpired(["docker", "stop"], 35)
+            raise subprocess.TimeoutExpired(["docker", "kill", "--signal", "TERM"], 35)
 
         result = DockerActionAdapter(timeout_runner).execute(self.request(), now=1000.0)
         self.assertTrue(result.executed)

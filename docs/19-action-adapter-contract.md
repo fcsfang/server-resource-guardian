@@ -26,9 +26,9 @@ Broker 只接受结构化枚举，不接受 shell、命令字符串、路径删�
 ## 4. Adapter 规则
 
 - 参数数组调用，不经过 shell。
-- Docker `graceful_stop` 使用完整 container ID 和批准 timeout。
+- Docker `graceful_stop` 使用完整 container ID，且只发送一次 `SIGTERM`。批准 timeout 只是后续恢复检查的等待窗口，不得在超时后升级为 `SIGKILL`。
 - stdout/stderr 有界、脱敏；runner timeout 转换为明确失败结果。
-- adapter 不自行重试、不升级 restart/terminate、不选择其他目标。
+- adapter 不自行重试、不升级 restart/terminate/SIGKILL、不选择其他目标；目标未在等待窗口内退出时必须转人工。
 - 返回成功只表示运行时接受/完成该动作，不表示资源或业务恢复。
 
 ## 5. 状态与崩溃恢复
