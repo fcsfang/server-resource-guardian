@@ -65,6 +65,7 @@
 ### 1. 开始前检查
 
 - 负责人确认服务器确实是非生产，业务负责人确认可以进入维护窗口。
+- 在目标机运行 `python3 scripts/guardian-x86-preflight.py --output /tmp/guardian-x86-preflight.json`；结果必须为 `ready_for_observe_install: true`。该命令只读，不代表获得安装或自动动作授权。
 - 记录 Guardian、Beszel、Docker、SSH、磁盘和服务的初始状态；不读取环境变量、Token、密码、密钥、业务数据或容器卷内容。
 - 确认 SSH、带外或现场恢复方式在测试前可用。
 - 确认真实告警渠道、授权收件人和送达测试目标已经填写并获批。

@@ -11,6 +11,7 @@
 - `guardian_rescue_matrix.py`：汇总维护通道综合结果。
 - `beszel_alerts.py`：生成 Beszel 三资源告警计划或只读回读告警状态。
 - `check-repository.sh`：运行当前代码的统一回归检查。
+- `guardian-x86-preflight.py`：在获批的 x86_64 非生产主机上执行只读准入检查，不安装服务、不读取凭据、不打开自动动作。
 
 ## 历史工具
 
