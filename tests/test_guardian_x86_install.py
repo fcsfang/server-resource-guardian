@@ -17,6 +17,8 @@ class GuardianX86InstallTests(unittest.TestCase):
         self.assertIn("guardian-accept-cpu", source)
         self.assertIn("guardian-accept-memory", source)
         self.assertIn("/mnt/guardian-acceptance", source)
+        self.assertIn("--cgroup-parent workload.slice", source)
+        self.assertIn("sudo reboot", source)
         self.assertIn("不执行宿主机 `kill -9`", source)
         self.assertNotIn("docker system prune", source)
 
@@ -30,7 +32,8 @@ class GuardianX86InstallTests(unittest.TestCase):
         self.assertIn("mutations: no", result.stdout)
         self.assertIn("runtime mode: observe only", result.stdout)
         self.assertIn("automatic actions: disabled", result.stdout)
-        self.assertIn("host services: SSH, Docker, networking and login services are not modified", result.stdout)
+        self.assertIn("maintenance-resource drop-in", result.stdout)
+        self.assertIn("no fixed CPU", result.stdout)
 
     def test_apply_and_rollback_require_explicit_environment(self):
         apply_result = subprocess.run([str(SCRIPT), "--apply"], check=False, capture_output=True, text=True)
@@ -46,7 +49,7 @@ class GuardianX86InstallTests(unittest.TestCase):
         self.assertNotEqual(rollback_result.returncode, 0)
         self.assertIn("require --environment x86-observe", rollback_result.stderr)
 
-    def test_installer_keeps_actions_closed_and_does_not_reconfigure_host_services(self):
+    def test_installer_keeps_actions_closed_and_adds_reversible_rescue_policy(self):
         source = SCRIPT.read_text(encoding="utf-8")
         self.assertIn('get("mode") != "observe"', source)
         self.assertIn('get("enabled") is not False', source)
@@ -57,7 +60,9 @@ class GuardianX86InstallTests(unittest.TestCase):
         self.assertNotIn("systemctl try-restart", source)
         self.assertNotIn("systemctl restart ssh", source)
         self.assertNotIn("systemctl restart docker", source)
-        self.assertNotIn("guardian-rescue-member.conf", source)
+        self.assertIn("guardian-rescue-member.conf", source)
+        self.assertIn("rescue_min_mib", source)
+        self.assertIn("workload.slice", source)
         self.assertIn('is_managed_path "$path"', source)
 
     def test_x86_units_do_not_pin_fixed_cpu_ids(self):

@@ -53,6 +53,21 @@ def _command_ok(command: list[str], timeout: float = 5.0) -> bool:
     return result.returncode == 0
 
 
+def _command_output(command: list[str], timeout: float = 5.0) -> str | None:
+    try:
+        result = subprocess.run(
+            command,
+            stdin=subprocess.DEVNULL,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
 def evaluate(facts: Mapping[str, Any]) -> dict[str, Any]:
     checks = {
         "linux": facts.get("system") == "Linux",
@@ -62,6 +77,7 @@ def evaluate(facts: Mapping[str, Any]) -> dict[str, Any]:
         "cgroup_v2": facts.get("cgroup_v2") is True,
         "systemctl_available": facts.get("systemctl_available") is True,
         "docker_readable": facts.get("docker_readable") is True,
+        "docker_systemd_cgroup_driver": facts.get("docker_cgroup_driver") == "systemd",
         "cpu_minimum": isinstance(facts.get("cpu_count"), int) and facts["cpu_count"] >= 2,
         "memory_minimum": isinstance(facts.get("memory_bytes"), int) and facts["memory_bytes"] >= MIN_MEMORY_BYTES,
         "disk_minimum": isinstance(facts.get("disk_free_bytes"), int) and facts["disk_free_bytes"] >= MIN_DISK_BYTES,
@@ -102,6 +118,13 @@ def collect() -> dict[str, Any]:
         disk_free = shutil.disk_usage("/").free
     except OSError:
         disk_free = None
+    docker_available = shutil.which("docker") is not None
+    docker_readable = docker_available and _command_ok(["docker", "info", "--format", "{{json .ServerVersion}}"])
+    docker_cgroup_driver = (
+        _command_output(["docker", "info", "--format", "{{.CgroupDriver}}"])
+        if docker_readable
+        else None
+    )
     return {
         "system": platform.system(),
         "machine": platform.machine(),
@@ -111,7 +134,8 @@ def collect() -> dict[str, Any]:
         "pid1": _read(Path("/proc/1/comm")),
         "cgroup_v2": Path("/sys/fs/cgroup/cgroup.controllers").is_file(),
         "systemctl_available": shutil.which("systemctl") is not None,
-        "docker_readable": shutil.which("docker") is not None and _command_ok(["docker", "info", "--format", "{{json .ServerVersion}}"]),
+        "docker_readable": docker_readable,
+        "docker_cgroup_driver": docker_cgroup_driver,
         "cpu_count": os.cpu_count(),
         "memory_bytes": memory_bytes,
         "disk_free_bytes": disk_free,

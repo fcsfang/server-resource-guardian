@@ -22,6 +22,7 @@ class GuardianX86PreflightTests(unittest.TestCase):
             "cgroup_v2": True,
             "systemctl_available": True,
             "docker_readable": True,
+            "docker_cgroup_driver": "systemd",
             "cpu_count": 2,
             "memory_bytes": 2 * 1024**3,
             "disk_free_bytes": 2 * 1024**3,
@@ -53,6 +54,13 @@ class GuardianX86PreflightTests(unittest.TestCase):
             report["blockers"],
             ["docker_readable", "cpu_minimum", "memory_minimum", "disk_minimum"],
         )
+
+    def test_non_systemd_docker_cgroup_driver_blocks_rescue_admission(self):
+        facts = self.good_facts()
+        facts["docker_cgroup_driver"] = "cgroupfs"
+        report = MODULE.evaluate(facts)
+        self.assertFalse(report["ready_for_observe_install"])
+        self.assertEqual(report["blockers"], ["docker_systemd_cgroup_driver"])
 
 
 if __name__ == "__main__":

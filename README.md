@@ -82,7 +82,7 @@ sudo guardian-status
 
 - 本地主测试环境：两台相互独立的 Multipass Ubuntu 22.04 ARM64；本地维护通道验收使用新的 2 vCPU/4 GiB/20 GiB disposable VM，Docker、systemd、cgroup v2 和隔离 Beszel 可用。
 - 目标生产环境：Ubuntu 22.04 x86_64；尚未获准安装或执行压力测试。
-- 已提供 x86_64 只读准入检查和只观察安装入口，可确认环境后安装 Runtime 与 Collector；它不会开启动作。
+- 已提供 x86_64 只读准入检查和只观察安装入口，可确认环境后安装 Runtime、Collector 和按主机规格生成的维护资源域；它不会开启动作。
 - 本地结论不能直接当作 x86_64 非生产或生产结论。
 - 本地维护通道只能证明在受控边界内保留人工入口；不能保证任意系统资源、内核或根盘完全耗尽时 SSH 永远可用。
 

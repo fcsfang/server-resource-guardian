@@ -3,6 +3,7 @@
 # Install or roll back the observe-only Guardian package on Ubuntu 22.04 x86_64.
 # The default command is a non-mutating plan. Applying changes requires an
 # explicit environment marker and passes the read-only x86 admission check.
+# Apply also creates host-sized maintenance and acceptance-workload domains.
 
 set -Eeuo pipefail
 umask 0027
@@ -75,6 +76,8 @@ done
 repository=$(CDPATH= cd -- "$repository" 2>/dev/null && pwd) || die "repository does not exist: $repository"
 
 managed_units=(
+  rescue.slice
+  workload.slice
   guardian-runtime.slice
   guardian-collector.slice
   guardian-collector.service
@@ -86,6 +89,8 @@ managed_paths=(
   /usr/local/bin/guardian-status
   /etc/systemd/system/guardian-runtime.slice
   /etc/systemd/system/guardian-collector.slice
+  /etc/systemd/system/rescue.slice
+  /etc/systemd/system/workload.slice
   /etc/systemd/system/guardian-collector.service
   /etc/systemd/system/guardian-runtime.service
   /etc/tmpfiles.d/guardian.conf
@@ -99,7 +104,9 @@ Guardian x86 observe installation plan
   target: Ubuntu 22.04 x86_64 with systemd and cgroup v2
   runtime mode: observe only
   automatic actions: disabled; no Broker service is installed or enabled
-  host services: SSH, Docker, networking and login services are not modified
+  host services: existing SSH, login, logging, networking and Docker control
+    units receive a reversible maintenance-resource drop-in
+  CPU placement: no fixed CPU; reserve values are calculated from this host
   mutations: no (use --apply --environment x86-observe to apply)
 
 Would install and start:
@@ -111,6 +118,25 @@ Would preserve:
   pre-install files and service states in ${backup_root}
 EOF
 }
+
+protected_units=(
+  ssh.service
+  sshd.service
+  systemd-logind.service
+  systemd-journald.service
+  docker.service
+  containerd.service
+  systemd-networkd.service
+  systemd-resolved.service
+  NetworkManager.service
+)
+for unit in "${protected_units[@]}"; do
+  managed_paths+=("/etc/systemd/system/${unit}.d/guardian-rescue-member.conf")
+done
+managed_paths+=(
+  /etc/systemd/system/user.slice.d/guardian-rescue-member.conf
+  /etc/systemd/journald.conf.d/guardian.conf
+)
 
 if [[ "$operation" == plan ]]; then
   [[ -z "$environment" || "$environment" == x86-observe ]] || die "only x86-observe is supported"
@@ -182,6 +208,7 @@ if [[ "$operation" == rollback ]]; then
   printf 'Guardian x86 rollback completed\n'
   printf '  restored from: %s\n' "$backup_dir"
   printf '  preserved state: /etc/guardian and /var/lib/guardian\n'
+  printf '  reboot required: yes (to restore protected service cgroups)\n'
   exit 0
 fi
 
@@ -223,6 +250,22 @@ cleanup() {
 trap cleanup EXIT
 python3 "${repository}/scripts/guardian-x86-preflight.py" --output "$preflight_report" >/dev/null \
   || { cat "$preflight_report" >&2; die "x86 admission check failed"; }
+
+cpu_count=$(nproc)
+mem_kib=$(awk '/^MemTotal:/ {print $2; exit}' /proc/meminfo)
+[[ "$cpu_count" =~ ^[0-9]+$ && "$cpu_count" -ge 2 ]] || die "cannot determine host CPU count"
+[[ "$mem_kib" =~ ^[0-9]+$ && "$mem_kib" -gt 0 ]] || die "cannot determine host memory"
+mem_mib=$((mem_kib / 1024))
+rescue_min_mib=$((mem_mib / 8))
+(( rescue_min_mib < 256 )) && rescue_min_mib=256
+(( rescue_min_mib > 2048 )) && rescue_min_mib=2048
+rescue_low_mib=$((mem_mib / 4))
+(( rescue_low_mib < rescue_min_mib )) && rescue_low_mib=$rescue_min_mib
+(( rescue_low_mib > 4096 )) && rescue_low_mib=4096
+workload_high_mib=$((mem_mib * 3 / 4))
+(( workload_high_mib < 256 )) && workload_high_mib=256
+printf 'Guardian x86 host policy: cpus=%s memory=%sMiB rescue_min=%sMiB rescue_low=%sMiB workload_high=%sMiB\n' \
+  "$cpu_count" "$mem_mib" "$rescue_min_mib" "$rescue_low_mib" "$workload_high_mib"
 
 ensure_group() {
   local name=$1
@@ -300,17 +343,85 @@ install -o root -g root -m 0755 "${repository}/scripts/guardian_status.py" /usr/
 
 install -d -o root -g root -m 0755 /etc/systemd/system /etc/tmpfiles.d
 for unit in "${managed_units[@]}"; do
+  if [[ "$unit" == "rescue.slice" || "$unit" == "workload.slice" ]]; then
+    continue
+  fi
   install -o root -g root -m 0644 "${repository}/deploy/guardian-x86/${unit}" "/etc/systemd/system/${unit}"
 done
 install -o root -g root -m 0644 "${repository}/deploy/guardian-x86/guardian.tmpfiles" /etc/tmpfiles.d/guardian.conf
+
+cat > /etc/systemd/system/rescue.slice <<EOF
+[Unit]
+Description=Guardian x86 maintenance resource domain
+
+[Slice]
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=1000
+IOWeight=1000
+MemoryMin=${rescue_min_mib}M
+MemoryLow=${rescue_low_mib}M
+TasksMax=25%
+EOF
+
+cat > /etc/systemd/system/workload.slice <<EOF
+[Unit]
+Description=Guardian x86 bounded acceptance workload domain
+
+[Slice]
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=1
+IOWeight=1
+MemoryHigh=${workload_high_mib}M
+MemorySwapMax=0
+TasksMax=75%
+EOF
+
+install -d -o root -g root -m 0755 /etc/systemd/journald.conf.d
+cat > /etc/systemd/journald.conf.d/guardian.conf <<'EOF'
+[Journal]
+SystemMaxUse=200M
+RuntimeMaxUse=64M
+RateLimitIntervalSec=30s
+RateLimitBurst=200
+EOF
+
+for unit in "${protected_units[@]}"; do
+  if systemctl cat "$unit" >/dev/null 2>&1; then
+    install -d -o root -g root -m 0755 "/etc/systemd/system/${unit}.d"
+    cat > "/etc/systemd/system/${unit}.d/guardian-rescue-member.conf" <<'EOF'
+[Service]
+Slice=rescue.slice
+CPUWeight=1000
+IOWeight=1000
+EOF
+  fi
+done
+install -d -o root -g root -m 0755 /etc/systemd/system/user.slice.d
+cat > /etc/systemd/system/user.slice.d/guardian-rescue-member.conf <<EOF
+[Slice]
+CPUWeight=1000
+IOWeight=1000
+MemoryMin=${rescue_min_mib}M
+MemoryLow=${rescue_low_mib}M
+TasksMax=25%
+EOF
 
 systemd-analyze verify \
   /etc/systemd/system/guardian-runtime.slice \
   /etc/systemd/system/guardian-collector.slice \
   /etc/systemd/system/guardian-collector.service \
-  /etc/systemd/system/guardian-runtime.service
+  /etc/systemd/system/guardian-runtime.service \
+  /etc/systemd/system/rescue.slice \
+  /etc/systemd/system/workload.slice
 systemd-tmpfiles --create /etc/tmpfiles.d/guardian.conf
 systemctl daemon-reload
+systemctl reload-or-restart systemd-journald 2>/dev/null || true
 systemctl enable guardian-collector.service guardian-runtime.service
 systemctl restart guardian-collector.service
 systemctl restart guardian-runtime.service
@@ -328,5 +439,7 @@ printf '  runtime: %s (%s)\n' "$(systemctl is-active guardian-runtime.service)" 
 printf '  collector: %s (%s)\n' "$(systemctl is-active guardian-collector.service)" "$(systemctl is-enabled guardian-collector.service)"
 printf '  readiness: %s\n' "$(tr -d '\n' < /run/guardian-runtime/ready)"
 printf '  automatic actions: disabled\n'
+printf '  maintenance protection: configured for next reboot\n'
+printf '  reboot required before acceptance: yes\n'
 printf '  version: %s\n' "$deployed_version"
 printf '  rollback: sudo %s --rollback %s --environment x86-observe\n' "$0" "$backup_dir"

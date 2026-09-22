@@ -30,8 +30,17 @@ cd server-resource-guardian
 git pull --ff-only
 python3 scripts/guardian-x86-preflight.py --output /tmp/guardian-x86-preflight.json
 sudo ./scripts/install-guardian-x86.sh --apply --environment x86-observe
-sudo guardian-status
+sudo reboot
 ```
+
+等待主机重新上线后，从 `CLIENT` 重新 SSH 登录，再在 `TARGET` 执行：
+
+```bash
+sudo guardian-status
+systemctl show ssh.service systemd-logind.service systemd-journald.service docker.service -p Id -p Slice -p CPUWeight -p IOWeight
+```
+
+以上已安装的服务必须显示 `Slice=rescue.slice`。如果任何实际使用的 SSH、登录、日志、网络或 Docker 单元没有进入维护域，停止验收并先回滚或修正。
 
 必须看到 Runtime 和 Collector 正在运行、`mode=observe`、自动动作关闭、两个 Broker 关闭、Beszel 中目标机在线。
 
@@ -48,12 +57,14 @@ time ssh -o ConnectTimeout=10 "${GUARDIAN_USER}@${GUARDIAN_TARGET}" 'uptime; fre
 ```bash
 for n in 1 2 3 4 5 6; do
   docker run -d --name "guardian-accept-app-${n}" --label guardian.acceptance=true \
+    --cgroup-parent workload.slice \
     --cpus 0.20 --memory 96m --pids-limit 64 nginx:alpine
 done
 docker ps --filter label=guardian.acceptance=true
+docker inspect guardian-accept-app-1 --format '{{.HostConfig.CgroupParent}}'
 ```
 
-先确认六个应用都是 `Up`，Beszel、Guardian 和 SSH 正常。
+先确认六个应用都是 `Up`，检查结果为 `workload.slice`，Beszel、Guardian 和 SSH 正常。
 
 ## CPU 场景
 
@@ -61,6 +72,7 @@ docker ps --filter label=guardian.acceptance=true
 
 ```bash
 docker run -d --name guardian-accept-cpu --label guardian.acceptance=true \
+  --cgroup-parent workload.slice \
   --cpus "$(nproc)" --memory 128m --pids-limit 128 alpine:3.20 \
   sh -c 'for i in 1 2 3 4 5 6 7 8; do while :; do :; done & done; wait'
 ```
@@ -87,6 +99,7 @@ ssh "${GUARDIAN_USER}@${GUARDIAN_TARGET}" 'docker stop --time 20 guardian-accept
 MEM_MIB=$(awk '/MemTotal:/ {print int($2 / 1024 * 0.60)}' /proc/meminfo)
 test "$MEM_MIB" -ge 512
 docker run -d --name guardian-accept-memory --label guardian.acceptance=true \
+  --cgroup-parent workload.slice \
   --memory "${MEM_MIB}m" --memory-swap "${MEM_MIB}m" --pids-limit 64 \
   python:3.12-alpine python3 -c "import time; n=${MEM_MIB}*1024*1024*9//10; b=bytearray(n); time.sleep(900)"
 ```
@@ -111,6 +124,7 @@ AVAILABLE_KIB=$(df --output=avail /mnt/guardian-acceptance | tail -1)
 WRITE_MIB=$(( AVAILABLE_KIB * 85 / 100 / 1024 ))
 test "$WRITE_MIB" -gt 0
 docker run -d --name guardian-accept-disk --label guardian.acceptance=true \
+  --cgroup-parent workload.slice \
   --cpus 0.25 --memory 128m --pids-limit 64 \
   -v /mnt/guardian-acceptance:/acceptance alpine:3.20 \
   sh -c "dd if=/dev/zero of=/acceptance/guardian-pressure.bin bs=1M count=${WRITE_MIB}; sleep 900"
@@ -159,4 +173,4 @@ test ! -e /etc/guardian/reserve-broker.enabled
 
 同时记录 SSH 耗时、告警和恢复时间、手工停止的容器、是否 OOM、自动动作关闭证据和其他服务异常。任何场景无法新建 SSH、诊断命令不可用、误停非测试对象或自动动作开启，均判定失败。
 
-当前 x86 安装包不修改 SSH、Docker、网络和登录服务的资源分组，因此不能声称 Guardian 已为 SSH 保证专用资源。
+安装器会按实际主机内存生成维护域，并提高 SSH、登录、日志、网络、Docker 控制链和新登录会话的资源权重；不固定 CPU 核号。配置需在安装后重启才完整生效，因此本验收必须在重启后开始。这仍只是提高维护通道在资源竞争下的可用概率，不是 SSH 绝对保证。
