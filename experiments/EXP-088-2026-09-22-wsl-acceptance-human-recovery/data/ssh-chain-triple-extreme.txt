@@ -1,0 +1,35 @@
+# EXP-088 scenario 5: full SSH human-response chain under triple extreme
+# pressure started 17:37:53: cpu 8x busy-loop (all 4 cores, load 8.09)
+#   + mem_hog 3.2GiB (available 147Mi) + dd oflag=dsync (IO saturated)
+# every step a fresh SSH session from Windows client to csfang@192.168.225.53
+# raw transcript 17:38:23 - 17:39:34
+
+    0.3s  1. login+uptime                     17:38:23 up  3:20,  3 users,  load average: 8.09, 4.66, 2.45
+   0.28s  2. free                            Mem:           3.8Gi       3.7Gi        63Mi       1.8Mi       218Mi       147Mi
+   0.32s  3. kernel log (dmesg)              [Tue Sep 22 17:37:53 2026] docker0: port 9(veth5864a35) entered forwarding state
+   0.82s  4. service log (journalctl)        Sep 22 17:13:37 HCT-ZLSHKL0087W systemd[1]: Started guardian-runtime.service
+   0.38s  5. locate top-cpu proc             root 66174 47.9 0.0 1636 168 ? R 17:37 0:16 sh -c for i in 1 2 3 4 5 6 7 ...
+   0.28s  6. locate top-mem proc             guardia+ 66667 1.2 0.7 1626052 28268 ? Sl 17:38 0:00 docker stats --no-stream
+   0.34s  7. docker ps                       guardian-accept-app-1:Up 36 minutes (… 9 containers)
+  1.76s  8. docker stats (heavy)             guardian-accept-app-1:0.00%:2.555MiB / 96MiB (… all 9)
+--- decision made: stop stressors, gentlest first ---
+  20.57s  9. STOP cpu stressor               guardian-accept-cpu   (docker stop --time 20)
+  20.41s 10. STOP io stressor                guardian-accept-io
+  20.43s 11. STOP mem stressor               guardian-accept-memory
+   5.5s  12. verify recovery                 load 8.09 -> 3.63 falling
+
+# baseline (no pressure): full-diagnosis ssh 0.21s
+# per-scenario ssh x5 timings (fresh connections):
+#   1a in-domain cpu   : 0.2, 0.18, 0.19, 0.18, 0.19
+#   1b bare cpu 4-core : 0.27, 0.3, 0.26, 0.31, 0.29
+#   2c mem avail 5%    : 0.54, 0.16, 0.17, 0.17, 0.17
+#   3  disk 100% full  : 0.46, 0.21, 0.2, 0.21, 0.21
+#   4  cpu+mem extreme : 0.38, 0.28, 0.31, 0.31, 0.27
+
+# feishu alerts received in group chat during run:
+#   17:05:34 [CRITICAL] 宿主CPU: 利用率 99.9%
+#   17:10:32 [CRITICAL] 宿主内存: 可用 4.4%
+#   17:30:19 [CRITICAL] 磁盘 /mnt/guardian-acceptance: 剩余 0.5%
+#   17:31:48 [恢复]    磁盘 → 恢复正常 (94.4%)
+#   17:32:17 [CRITICAL] 宿主CPU: 利用率 99.5%
+#   17:32:19 [CRITICAL] 宿主内存: 可用 4.5%

@@ -1,0 +1,35 @@
+# EXP-088 scenario 8: observer self-damage forensics (24-hog pinned window)
+# all timestamps local (CST), sources: journalctl (gateway/runtime) + docker logs
+
+## guardian-runtime crashes (all inside the 17:59-18:09 swarm window)
+18:00:46  Main process exited, code=exited, status=1/FAILURE     -> restarted 18:03:06
+18:04:56  Killing process 79985 (python3) with signal SIGABRT   -> restarted 18:05:13
+18:08:43  Main process exited, code=exited, status=1/FAILURE     -> restarted 18:09:01
+=> 3 crashes / 12 min; cumulative observation downtime ~4.5 min
+=> NRestarts counter showed 1 only because the A-B-A `stop` at 18:13 reset it
+
+## audit-stream stale alerts (feishu gateway, the authoritative gap source)
+# window 16:40-18:25: 13 stale alerts + 13 recoveries, ALL inside 18:00-18:12
+18:00:03  WARNING 审计事件中断 >10s     18:00:07  恢复
+18:00:53  WARNING 审计事件中断 >10s     18:03:05  恢复   (hole 132s)
+18:03:16  WARNING 审计事件中断 >10s     18:05:14  恢复   (hole 118s)
+18:07:46  WARNING 审计事件中断 >10s     18:08:30  恢复   (hole 152s)
+18:08:51  WARNING 审计事件中断 >10s     18:09:03  恢复
+18:10:58  WARNING 审计事件中断 >10s     18:11:25  恢复
+# scenarios 1-6 (single-hog 45-50s OOM self-rescue cycles): ZERO stale alerts
+
+## feishu gateway itself
+# NRestarts=0 - never crashed; the 18:13 stop / 18:16 start were A-B-A actions
+# deepest collapse reading 18:16:36: 宿主内存可用 1.6% | 交换空间已用 100.0%
+
+## beszel degradation (user-observed "时断时续", confirmed)
+# agent<->hub SSH channel dropped and reconnected at 18:08:38 and 18:12:06
+# 5 error/fail lines in the 90-min window around the swarm runs
+
+## cleanup-tail OOM burst (18:22:46-18:23:15): 10 x python3 (~280MiB each)
+# killed by the kernel in 29s as the swarm was being torn down - the churn
+# edge persists until the last hog dies
+
+## method note
+# gap-analysis on events.jsonl is unreliable (copytruncate every 2 min +
+# rotation removes history); gateway journalctl is the authoritative source

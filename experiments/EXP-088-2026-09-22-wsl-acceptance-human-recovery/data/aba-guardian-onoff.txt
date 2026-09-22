@@ -1,0 +1,46 @@
+# EXP-088 scenario 7: A-B-A - does Guardian itself slow the human response channel
+# under sustained collapse (24-hog swarm, OOM churn pinned, swap 100%)?
+# ops chain: 11 steps, fresh SSH each, executed identically in all runs
+# pressure: ~24 x 280MiB holders with restart=on-failure, kernel keeps killing,
+#           restarts replace them -> system pinned at OOM churn edge
+
+# Run1  Guardian ON   17:59:21  (storm EARLY phase: 24 containers Up, kill-frenzy)
+# Run2  Guardian OFF  18:15:30  (mature phase, 8 fillers re-pinned swap to 100%)
+# Run3  Guardian ON   18:17:20  (mature phase, state matched to Run2: avail 66Mi, swap 100%, 18 Up)
+
+step                 ON_run1   OFF_run2   ON_run3
+login+uptime         20.78     1.71       2.68
+free                 10.06     0.79       2.07
+df                   10.06     0.65       3.87
+dmesg tail           15.97     0.98       1.22
+journalctl           15.49     1.25       4.86
+top-mem proc          5.63     0.36       2.14
+docker ps           733.93     0.51      21.77
+docker stats         16.79     7.16     150.15
+STOP one hog (t=5)    5.98     4.07      18.55
+verify: free          0.29     2.18       3.36
+verify: docker ps     0.30     3.50      54.06
+TOTAL               835.3     23.2      265.7
+
+# grouping (Run2 vs Run3, same mature phase):
+#   pure-shell ops (login/free/df/dmesg/journalctl/ps):
+#     OFF 4.7s total  ->  ON 16.8s  (2-4x per-op, seconds-level absolute)
+#   docker-daemon ops (ps/stats/stop):
+#     OFF 11.7s total ->  ON 190.5s (up to 21x per-op; mechanism: Collector's
+#     full docker snapshot every 2s competes with the human's daemon requests
+#     while the daemon itself is starved by OOM churn)
+#
+# confounds, stated plainly:
+#   - single pass, no repetitions; storm phase varies (Run1 vs Run3 differ 3x)
+#   - swarm restart backoff changes active-container count between runs
+#   - direction of the docker-op gap is consistent with the Collector-snapshot
+#     competition mechanism, but a multi-replicate A-B-A would be needed for
+#     statistical confidence
+#
+# interpretation:
+#   the human channel stays usable in all runs (worst single op 733s in the
+#   early-storm run completed; nothing hung indefinitely). Guardian's
+#   presence multiplies docker-daemon-side latency during collapse - an
+#   observer effect. Candidate product fix: Collector back-off (skip or slow
+#   docker snapshots when host memory PSI is high), leaving the human the
+#   whole daemon budget exactly when they need it most.

@@ -1,0 +1,39 @@
+# EXP-088 scenario 6: collapse simulation - system-wide global OOM
+# unbounded hogs (no container memory limit) -> RAM full + swap 100% + kernel OOM
+# all probes: fresh SSH from Windows client; output captured live per probe
+
+## slow squeeze (256MiB / 3s), hog2 only; 14 probes @ ~10s
+#   avail(MiB)   swap-used(MiB)   ssh-time
+t=1   3076            182           0.50s
+t=2   2305            181           0.21s
+t=3   1535            181           0.18s
+t=4    774            180           0.17s
+t=5    215            373           0.31s   <- swap filling begins
+t=6    138           1308           0.26s
+t=7    130           2047  100%     0.56s   <- COLLAPSE POINT: RAM+swap exhausted
+t=8   3376            159           0.20s   <- kernel OOM killed the hog; system self-recovered
+t=9-14 3370..3351     158           0.17-0.47s (recovered, idle)
+
+## OOM churn (restart=on-failure:20): hog killed -> container restarts -> eats again
+#   9 probes @ ~8s; one full collapse cycle ~= 45-50s
+probe1  3064    156    0.36s
+probe2  2568    156    0.17s
+probe3  1797    156    0.16s
+probe4  1285    156    0.17s
+probe5   518    156    0.17s
+probe6   191    329    0.22s
+probe7   157   1057    0.24s
+probe8   127   1796    0.21s   <- near-100% swap again
+probe9  3061    153    0.49s   <- kernel killed hog #3; self-recovered
+
+## kernel OOM kill list (global, CONSTRAINT_NONE)
+# 17:43:53 python3 anon-rss 2017024kB  (burst hog1)
+# 17:43:58 python3 anon-rss 3561592kB  (burst hog2)
+# 17:47:06 python3 anon-rss 3516960kB  (slow squeeze hog2)
+# 17:50:39 python3 anon-rss 3517264kB  (churn hog2)
+# (+ 17:14:42 cgroup-level OOM: dd page-cache, scenario 3)
+
+## collateral damage: NONE
+# NRestarts=0 for guardian-runtime, guardian-collector, feishu-gateway, ssh
+# chronyd invoked oom-killer twice as an innocent allocator (survived)
+# all OOM victims were the stress hogs themselves (oom_score picks the largest)
