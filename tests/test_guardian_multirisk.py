@@ -68,6 +68,19 @@ class GuardianMultiRiskTests(unittest.TestCase):
         self.assertEqual(result["target_state"], "MULTI_RESOURCE_AMBIGUOUS")
         self.assertEqual(result["decision"]["action"], "escalate")
 
+    def test_host_risk_without_target_stays_visible_but_cannot_act(self):
+        result = build_joint_decision(
+            {"memory": resource("memory", "critical", attribution_state="NO_TARGET")},
+            mode="simulate",
+            simulate_action="graceful_stop",
+            protected=False,
+            allowed_actions=["graceful_stop"],
+        )
+        self.assertEqual(result["state"], "critical")
+        self.assertEqual(result["target_state"], "NO_TARGET")
+        self.assertEqual(result["decision"]["action"], "escalate")
+        self.assertEqual(result["decision"]["execution"], "not_executed")
+
     def test_degraded_channel_escalates_joint_event(self):
         result = build_joint_decision(
             {

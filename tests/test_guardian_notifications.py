@@ -55,6 +55,36 @@ def guardian_event(
 
 
 class GuardianNotificationTests(unittest.TestCase):
+    def test_critical_host_risk_without_target_still_builds_notification(self):
+        source = {
+            "event_id": "host-risk-no-target",
+            "observed_at": "2026-09-22T00:00:00Z",
+            "observed_monotonic_ns": 1_000_000_000,
+            "host_id": "host-local",
+            "state": "critical",
+            "resource_evaluations": {
+                "memory": {"risk": {"state": "critical"}},
+            },
+            "joint_evaluation": {
+                "active_resources": ["memory"],
+                "target_state": "NO_TARGET",
+                "target": None,
+            },
+            "decision": {
+                "mode": "simulate",
+                "action": "escalate",
+                "execution": "not_executed",
+                "target_state": "NO_TARGET",
+                "reason_codes": ["target_attribution_not_confirmed"],
+                "quality_flags": [],
+            },
+            "evidence": {"config_digest": "digest-local"},
+        }
+        payload = build_notification_event(source)
+        self.assertEqual(payload["severity"], "critical")
+        self.assertFalse(payload["target"]["present"])
+        self.assertEqual(payload["action_context"]["planned_action"], "escalate")
+
     def test_disabled_channel_is_explicitly_fail_closed(self):
         dispatcher = NotificationDispatcher(DisabledNotificationSink(), max_attempts=2)
         result = dispatcher.dispatch(guardian_event(), now_monotonic_ns=1_000_000_000)

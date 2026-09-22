@@ -165,6 +165,26 @@ class GuardianDiskTests(unittest.TestCase):
         self.assertEqual(result["state"], "degraded_observability")
         self.assertIn("capacity_mount_statvfs_missing", result["quality_flags"])
 
+    def test_critical_free_space_is_host_alert_without_writer_attribution(self):
+        policy = DiskCapacityPolicy(
+            critical_free_percent=10,
+            critical_inode_free_percent=1,
+            critical_for_seconds=1,
+            required_samples=2,
+        )
+        evaluator = DiskCapacityRiskEvaluator(policy)
+        evaluator.evaluate(disk_sample(free_blocks=50, free_inodes=500), now=0)
+        candidate = evaluator.evaluate(
+            disk_sample(free_blocks=5, free_inodes=500, observed_ns=2_000_000_000),
+            now=1,
+        )
+        self.assertEqual(candidate["candidate_state"], "critical")
+        result = evaluator.evaluate(
+            disk_sample(free_blocks=5, free_inodes=500, observed_ns=3_100_000_000),
+            now=2.1,
+        )
+        self.assertEqual(result["state"], "critical")
+
     def test_io_evaluator_separates_pressure_from_capacity_and_requires_dwell(self):
         policy = IoPolicy(
             warning_psi_some_avg10=1,

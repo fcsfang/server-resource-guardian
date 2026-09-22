@@ -10,7 +10,13 @@ from typing import Any, Callable, Mapping
 
 
 STATUS_SCHEMA = "guardian.status.v1"
-ALERT_STATES = {"warning", "critical"}
+ALERT_STATES = {
+    "warning",
+    "critical",
+    "critical_confirmed",
+    "escalated",
+    "degraded_observability",
+}
 DEFAULT_UNIT = "guardian-runtime.service"
 DEFAULT_CONFIG = Path("/etc/guardian/guardian.json")
 DEFAULT_READINESS = Path("/run/guardian-runtime/ready")

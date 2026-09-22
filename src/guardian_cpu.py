@@ -438,7 +438,13 @@ class CpuRiskEvaluator:
         self._previous_cgroup_stat = dict(cgroup_stat)
 
         candidate = "normal"
-        if len(critical_support) >= 2 or "cpu_psi_full_critical" in critical_support:
+        direct_host_critical = {
+            "cpu_utilization_critical",
+            "cpu_psi_full_critical",
+            "scheduler_delay_critical",
+            "cpu_load_critical",
+        }
+        if direct_host_critical.intersection(critical_support):
             candidate = "critical"
         elif warning_signals or critical_support:
             candidate = "warning"

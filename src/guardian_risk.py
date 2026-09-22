@@ -8,6 +8,12 @@ from typing import Any, Mapping
 from .guardian_config import GuardianConfig, safe_defaults
 
 
+ATTRIBUTION_ONLY_QUALITY_FLAGS = {
+    "container_collector_degraded",
+    "docker_observation_unavailable",
+}
+
+
 def _number(value: Any) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
@@ -98,11 +104,15 @@ class CompositeRiskEvaluator:
         if isinstance(quality, Mapping):
             raw_flags = quality.get("flags", [])
             if isinstance(raw_flags, list):
-                quality_flags.extend(str(flag) for flag in raw_flags if flag)
+                quality_flags.extend(
+                    str(flag)
+                    for flag in raw_flags
+                    if flag and str(flag) not in ATTRIBUTION_ONLY_QUALITY_FLAGS
+                )
             else:
                 quality_flags.append("observation_quality_flags_invalid")
-            if quality.get("status") != "ok":
-                quality_flags.append("observation_quality_status_missing")
+            if quality.get("status") != "ok" and not raw_flags:
+                quality_flags.append("observation_quality_degraded_without_flags")
         else:
             quality_flags.append("observation_quality_missing")
 
@@ -172,10 +182,6 @@ class CompositeRiskEvaluator:
         if psi_memory is None or psi_some is None or psi_full is None:
             quality_flags.append("memory_psi_missing")
 
-        docker = observation.get("docker") if isinstance(observation.get("docker"), Mapping) else {}
-        if docker.get("available") is False:
-            quality_flags.append("docker_observation_unavailable")
-
         warning_signals: list[str] = []
         critical_support: list[str] = []
         if available_ratio is None:
@@ -214,15 +220,11 @@ class CompositeRiskEvaluator:
         candidate = "normal"
         if hard_critical:
             candidate = "critical"
-        elif (low_available_critical and critical_support) or len(critical_support) >= 2:
+        elif low_available_critical or len(critical_support) >= 2:
             candidate = "critical"
         elif warning_signals or (
             available_ratio is not None and available_ratio <= warning_threshold
         ):
-            candidate = "warning"
-        elif low_available_critical:
-            # Low headroom alone is not enough for a critical action, but it
-            # remains an observable warning condition.
             candidate = "warning"
         elif baseline:
             candidate = "normal"

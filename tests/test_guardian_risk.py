@@ -90,11 +90,27 @@ class CompositeRiskEvaluatorTests(unittest.TestCase):
         self.assertIn("memory_growth_critical", result["signal_summary"]["critical_support"])
         self.assertIn("memory_psi_full_critical", result["signal_summary"]["critical_support"])
 
-    def test_low_headroom_without_support_is_warning_not_critical(self):
+    def test_low_headroom_without_support_is_critical_host_risk(self):
         evaluator = CompositeRiskEvaluator(test_config())
         result = evaluator.evaluate(observation(available_ratio=5.0), now=0.0)
-        self.assertEqual(result["candidate_state"], "warning")
+        self.assertEqual(result["candidate_state"], "critical")
         self.assertNotIn("memory_psi_full_critical", result["signal_summary"]["critical_support"])
+
+    def test_missing_docker_attribution_does_not_mask_host_memory_risk(self):
+        evaluator = CompositeRiskEvaluator(test_config(critical_for=0.1))
+        first = observation(available_ratio=5.0)
+        first["docker"]["available"] = False
+        first["quality"] = {"status": "degraded", "flags": ["docker_observation_unavailable"]}
+        evaluator.evaluate(first, now=0.0)
+        second = observation(available_ratio=5.0, monotonic_ns=2_000_000_000)
+        second["docker"]["available"] = False
+        second["quality"] = {
+            "status": "degraded",
+            "flags": ["docker_observation_unavailable", "container_collector_degraded"],
+        }
+        result = evaluator.evaluate(second, now=0.2)
+        self.assertEqual(result["state"], "critical")
+        self.assertNotIn("docker_observation_unavailable", result["quality_flags"])
 
     def test_counter_reset_fails_closed(self):
         evaluator = CompositeRiskEvaluator(test_config())

@@ -59,6 +59,7 @@ Guardian 在 Ubuntu 服务器上持续运行，长期观察 CPU、内存和磁�
 - [x] 采集服务只返回容器身份、状态和资源数据，不能停止、重启或删除容器。
 - [x] 将现有资源排名、保护名单和模拟计划接入持续运行服务。
 - [x] 在 Beszel 或 Guardian 状态页展示候选容器、保护原因和模拟建议。
+- [x] 宿主机 CPU、内存或磁盘达到危险线后独立告警；找不到容器时保留危险状态，但不生成可执行动作。
 - [x] 完成一次里程碑演示：产生风险、列出候选、给出建议、真实动作数为零。
 
 2026-09-21 已完成受控真实 CPU 压力下的本地统一演示：在 `guardian-t11-matrix` 上创建一个带 `local-disposable` 语义的临时压力容器，连续服务通过真实 Collector 读取数据，CPU 达到 100%，压力容器贡献约 99.998%，归因状态为 `TARGET_CONFIRMED`。展示投影将其列为第一候选，同时明确展示受保护的 Beszel 控制面；模拟计划为 `graceful_stop`，执行状态为 `not_executed`，真实动作数为零。演示后仅清理该临时压力容器，既有 Beszel 容器保持 healthy，Guardian Runtime/Collector 保持 active。该证据只覆盖本地 disposable VM，不等于生产保证。

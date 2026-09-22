@@ -9,6 +9,43 @@ from src.guardian_status import build_status, exit_code, format_status
 
 
 class GuardianStatusTests(unittest.TestCase):
+    def test_status_counts_non_actionable_risk_states_as_alerts(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            config = root / "guardian.json"
+            readiness = root / "ready"
+            audit = root / "events.jsonl"
+            collector_socket = root / "collector.sock"
+            collector_socket.touch()
+            config.write_text(json.dumps({"agent": {"mode": "observe"}, "actions": {"enabled": False}}), encoding="utf-8")
+            readiness.write_text("runtime:ready:observe\n", encoding="utf-8")
+            audit.write_text(
+                "\n".join(
+                    json.dumps({"state": state, "observed_at": f"2026-09-22T00:00:0{index}Z"})
+                    for index, state in enumerate(("degraded_observability", "escalated", "critical_confirmed"))
+                ) + "\n",
+                encoding="utf-8",
+            )
+
+            def runner(command, **kwargs):
+                value = "active" if command[1] == "is-active" else "enabled"
+                if command[2] in {"guardian-broker.service", "guardian-reserve-broker.service"}:
+                    value = "inactive" if command[1] == "is-active" else "static"
+                return subprocess.CompletedProcess(command, 0, value + "\n", "")
+
+            value = build_status(
+                config_path=config,
+                readiness_path=readiness,
+                audit_path=audit,
+                collector_socket=collector_socket,
+                runner=runner,
+            )
+            self.assertEqual(value["recent_alerts"]["recent_alert_count"], 3)
+            self.assertEqual(
+                [item["state"] for item in value["recent_alerts"]["recent_alerts"]],
+                ["degraded_observability", "escalated", "critical_confirmed"],
+            )
+
     def test_build_status_reports_healthy_observe_runtime_and_closed_broker(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -146,6 +146,22 @@ class CpuRiskEvaluatorTests(unittest.TestCase):
         )
         self.assertEqual(recovered["state"], "normal")
 
+    def test_sustained_critical_utilization_is_a_host_alert_without_attribution(self):
+        evaluator = CpuRiskEvaluator(
+            CpuPolicy(critical_for_seconds=1, required_samples=2)
+        )
+        evaluator.evaluate(cpu_sample(total_ticks=1000, idle_ticks=100, observed_ns=0), now=0)
+        candidate = evaluator.evaluate(
+            cpu_sample(total_ticks=1200, idle_ticks=100, observed_ns=1_000_000_000),
+            now=1,
+        )
+        self.assertEqual(candidate["candidate_state"], "critical")
+        result = evaluator.evaluate(
+            cpu_sample(total_ticks=1400, idle_ticks=100, observed_ns=2_100_000_000),
+            now=2.1,
+        )
+        self.assertEqual(result["state"], "critical")
+
     def test_missing_cpu_signal_is_degraded_and_never_critical(self):
         evaluator = CpuRiskEvaluator(CpuPolicy(required_samples=1))
         result = evaluator.evaluate(

@@ -550,7 +550,7 @@ class DiskCapacityRiskEvaluator:
             mount_results.append(row)
 
         candidate = "normal"
-        if "disk_capacity_time_to_full_critical" in critical_support or len(critical_support) >= 2:
+        if critical_support:
             candidate = "critical"
         elif warning_signals or critical_support:
             candidate = "warning"
