@@ -219,9 +219,12 @@ def main() -> None:
     while True:
         try:
             st = audit_path.stat()
-            if st.st_ino != last_inode:  # logrotate: reopen from the end
+            if st.st_ino != last_inode:  # logrotate create: reopen from the end
                 last_inode, offset = st.st_ino, st.st_size
                 print("audit file rotated; re-opened", flush=True)
+            if st.st_size < offset:  # logrotate copytruncate: reread from start
+                offset = 0
+                print("audit file truncated (copytruncate); rereading", flush=True)
             if st.st_size > offset:
                 with open(audit_path, "r", encoding="utf-8", errors="replace") as f:
                     f.seek(offset)

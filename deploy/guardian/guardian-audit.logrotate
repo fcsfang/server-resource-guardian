@@ -7,5 +7,5 @@
     missingok
     notifempty
     copytruncate
-    su guardian guardian
+    su guardian guardian-shared
 }
