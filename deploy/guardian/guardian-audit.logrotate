@@ -1,5 +1,8 @@
+# NOTE: rotation is driven by guardian-logrotate.timer (every 2 minutes),
+# NOT by the daily logrotate.timer -- audit grows ~165MB/h at 2s sampling,
+# which overflows the 100MiB fail-closed budget long before a daily pass.
+# 'size' alone is the trigger; do not combine with daily/hourly.
 /var/lib/guardian/runtime/audit/events.jsonl {
-    daily
     rotate 7
     size 50M
     compress

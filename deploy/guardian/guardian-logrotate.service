@@ -1,0 +1,10 @@
+[Unit]
+Description=Rotate Guardian audit log (size-based, high frequency check)
+# Pairs with guardian-audit.logrotate in /etc/logrotate.d/ and
+# guardian-logrotate.timer. Kept separate from the system-wide daily
+# logrotate pass because the audit stream can overflow its fail-closed
+# budget within ~35 minutes at 2s sampling.
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/logrotate /etc/logrotate.d/guardian-audit
