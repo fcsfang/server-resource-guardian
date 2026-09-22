@@ -1,0 +1,22 @@
+[Unit]
+Description=Guardian Feishu alert gateway (read-only audit tailer, message-only)
+Documentation=file:///opt/server-resource-guardian/deploy/guardian/README.md
+After=guardian-runtime.service
+Wants=guardian-runtime.service
+
+[Service]
+Type=simple
+User=guardian
+SupplementaryGroups=guardian-shared
+ExecStart=/usr/bin/python3 /opt/server-resource-guardian/scripts/feishu_alert_gateway.py --config /etc/guardian/feishu.json --audit /var/lib/guardian/runtime/audit/events.jsonl
+Restart=on-failure
+RestartSec=5s
+# Message-only gateway: no Docker access, no action path, no broker socket.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadOnlyPaths=/var/lib/guardian /etc/guardian
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
