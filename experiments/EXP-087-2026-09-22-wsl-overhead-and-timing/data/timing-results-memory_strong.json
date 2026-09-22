@@ -1,0 +1,1172 @@
+{
+  "schema": "guardian.exp087.timing.v1",
+  "results": [
+    {
+      "scenario": "memory_strong",
+      "round": 1,
+      "unit": "guardian-perf-memory_strong-r1",
+      "t0_monotonic_ns": 2075497956000,
+      "pressure_ended_naturally": true,
+      "rows": [
+        {
+          "mono_ns": 2079938743664,
+          "mem_avail_pct": 42.542,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 833267,
+          "cpu_idle_ticks": 727125,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2079938743664,
+          "mem_avail_pct": 42.542,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 833267,
+          "cpu_idle_ticks": 727125,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2086992091101,
+          "mem_avail_pct": 42.349,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_warning"
+          ],
+          "candidate_state": "warning",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 836139,
+          "cpu_idle_ticks": 728522,
+          "cpu_util_pct": 51.36,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2086992091101,
+          "mem_avail_pct": 42.349,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_warning"
+          ],
+          "candidate_state": "warning",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 836139,
+          "cpu_idle_ticks": 728522,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2094041927480,
+          "mem_avail_pct": 42.57,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 839008,
+          "cpu_idle_ticks": 729919,
+          "cpu_util_pct": 51.31,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2094041927480,
+          "mem_avail_pct": 42.57,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 839008,
+          "cpu_idle_ticks": 729919,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2101085089189,
+          "mem_avail_pct": 37.617,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 841877,
+          "cpu_idle_ticks": 731316,
+          "cpu_util_pct": 51.31,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2101085089189,
+          "mem_avail_pct": 37.617,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 841877,
+          "cpu_idle_ticks": 731316,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2108139015723,
+          "mem_avail_pct": 37.628,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 844739,
+          "cpu_idle_ticks": 732703,
+          "cpu_util_pct": 51.54,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2108139015723,
+          "mem_avail_pct": 37.628,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 844739,
+          "cpu_idle_ticks": 732703,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2115189944019,
+          "mem_avail_pct": 42.357,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 847618,
+          "cpu_idle_ticks": 734101,
+          "cpu_util_pct": 51.44,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2115189944019,
+          "mem_avail_pct": 42.357,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 847618,
+          "cpu_idle_ticks": 734101,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2122239798031,
+          "mem_avail_pct": 83.346,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 850455,
+          "cpu_idle_ticks": 736223,
+          "cpu_util_pct": 25.2,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2122239798031,
+          "mem_avail_pct": 83.346,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 850455,
+          "cpu_idle_ticks": 736223,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2129288334345,
+          "mem_avail_pct": 83.342,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 853261,
+          "cpu_idle_ticks": 739018,
+          "cpu_util_pct": 0.39,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2129288334345,
+          "mem_avail_pct": 83.342,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 853261,
+          "cpu_idle_ticks": 739018,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2136325859714,
+          "mem_avail_pct": 83.615,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 856097,
+          "cpu_idle_ticks": 741833,
+          "cpu_util_pct": 0.74,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2136325859714,
+          "mem_avail_pct": 83.615,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 856097,
+          "cpu_idle_ticks": 741833,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2143431085010,
+          "mem_avail_pct": 83.379,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_warning"
+          ],
+          "candidate_state": "warning",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 858921,
+          "cpu_idle_ticks": 744645,
+          "cpu_util_pct": 0.42,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2143431085010,
+          "mem_avail_pct": 83.379,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_warning"
+          ],
+          "candidate_state": "warning",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 858921,
+          "cpu_idle_ticks": 744645,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2150486987892,
+          "mem_avail_pct": 83.38,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 861737,
+          "cpu_idle_ticks": 747454,
+          "cpu_util_pct": 0.25,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2150486987892,
+          "mem_avail_pct": 83.38,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 861737,
+          "cpu_idle_ticks": 747454,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2157536166271,
+          "mem_avail_pct": 83.382,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 864555,
+          "cpu_idle_ticks": 750264,
+          "cpu_util_pct": 0.28,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2157536166271,
+          "mem_avail_pct": 83.382,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 864555,
+          "cpu_idle_ticks": 750264,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2164586006677,
+          "mem_avail_pct": 83.35,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 867372,
+          "cpu_idle_ticks": 753069,
+          "cpu_util_pct": 0.43,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2164586006677,
+          "mem_avail_pct": 83.35,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 867372,
+          "cpu_idle_ticks": 753069,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2171630007173,
+          "mem_avail_pct": 83.39,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 870188,
+          "cpu_idle_ticks": 755877,
+          "cpu_util_pct": 0.28,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2171630007173,
+          "mem_avail_pct": 83.39,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 870188,
+          "cpu_idle_ticks": 755877,
+          "phase": "recovery"
+        }
+      ],
+      "first_breach": {
+        "mem_warn": null,
+        "mem_crit": null,
+        "cpu_warn": null,
+        "cpu_crit": null,
+        "risk_change": null
+      },
+      "recovery": {
+        "mono_ns": 2122239798031,
+        "risk_state": "normal"
+      },
+      "raw_rows_path": "/home/csfang/guardian-src/experiments/EXP-087-2026-09-22-wsl-overhead-and-timing/data/timing-memory_strong-r1-rows.jsonl"
+    },
+    {
+      "scenario": "memory_strong",
+      "round": 2,
+      "unit": "guardian-perf-memory_strong-r2",
+      "t0_monotonic_ns": 2180804880000,
+      "pressure_ended_naturally": true,
+      "rows": [
+        {
+          "mono_ns": 2185736345330,
+          "mem_avail_pct": 42.446,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 875882,
+          "cpu_idle_ticks": 760105,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2185736345330,
+          "mem_avail_pct": 42.446,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 875882,
+          "cpu_idle_ticks": 760105,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2192822114772,
+          "mem_avail_pct": 42.449,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 878753,
+          "cpu_idle_ticks": 761500,
+          "cpu_util_pct": 51.41,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2192822114772,
+          "mem_avail_pct": 42.449,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 878753,
+          "cpu_idle_ticks": 761500,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2199862048642,
+          "mem_avail_pct": 42.534,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 881620,
+          "cpu_idle_ticks": 762890,
+          "cpu_util_pct": 51.52,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2199862048642,
+          "mem_avail_pct": 42.534,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 881620,
+          "cpu_idle_ticks": 762890,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2206923224257,
+          "mem_avail_pct": 37.343,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 884498,
+          "cpu_idle_ticks": 764288,
+          "cpu_util_pct": 51.42,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2206923224257,
+          "mem_avail_pct": 37.343,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 884498,
+          "cpu_idle_ticks": 764288,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2213984174530,
+          "mem_avail_pct": 42.249,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 887356,
+          "cpu_idle_ticks": 765688,
+          "cpu_util_pct": 51.01,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2213984174530,
+          "mem_avail_pct": 42.249,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 887356,
+          "cpu_idle_ticks": 765688,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2221030085346,
+          "mem_avail_pct": 42.416,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 890179,
+          "cpu_idle_ticks": 767093,
+          "cpu_util_pct": 50.23,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2221030085346,
+          "mem_avail_pct": 42.416,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 890179,
+          "cpu_idle_ticks": 767093,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2228080292760,
+          "mem_avail_pct": 83.533,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 892988,
+          "cpu_idle_ticks": 769316,
+          "cpu_util_pct": 20.86,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2228080292760,
+          "mem_avail_pct": 83.533,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 892988,
+          "cpu_idle_ticks": 769316,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2235123189024,
+          "mem_avail_pct": 83.49,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 895802,
+          "cpu_idle_ticks": 772120,
+          "cpu_util_pct": 0.36,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2235123189024,
+          "mem_avail_pct": 83.49,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 895802,
+          "cpu_idle_ticks": 772120,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2242179248877,
+          "mem_avail_pct": 83.491,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 898614,
+          "cpu_idle_ticks": 774927,
+          "cpu_util_pct": 0.18,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2242179248877,
+          "mem_avail_pct": 83.491,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 898614,
+          "cpu_idle_ticks": 774927,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2249228087782,
+          "mem_avail_pct": 83.493,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 901432,
+          "cpu_idle_ticks": 777737,
+          "cpu_util_pct": 0.28,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2249228087782,
+          "mem_avail_pct": 83.493,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 901432,
+          "cpu_idle_ticks": 777737,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2256269181577,
+          "mem_avail_pct": 83.551,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 904245,
+          "cpu_idle_ticks": 780540,
+          "cpu_util_pct": 0.36,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2256269181577,
+          "mem_avail_pct": 83.551,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 904245,
+          "cpu_idle_ticks": 780540,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2263314262415,
+          "mem_avail_pct": 83.557,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 907061,
+          "cpu_idle_ticks": 783350,
+          "cpu_util_pct": 0.21,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2263314262415,
+          "mem_avail_pct": 83.557,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 907061,
+          "cpu_idle_ticks": 783350,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2270366294272,
+          "mem_avail_pct": 83.553,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 909880,
+          "cpu_idle_ticks": 786163,
+          "cpu_util_pct": 0.21,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2270366294272,
+          "mem_avail_pct": 83.553,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 909880,
+          "cpu_idle_ticks": 786163,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2277418284040,
+          "mem_avail_pct": 83.54,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 912698,
+          "cpu_idle_ticks": 788974,
+          "cpu_util_pct": 0.25,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2277418284040,
+          "mem_avail_pct": 83.54,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 912698,
+          "cpu_idle_ticks": 788974,
+          "phase": "recovery"
+        }
+      ],
+      "first_breach": {
+        "mem_warn": null,
+        "mem_crit": null,
+        "cpu_warn": null,
+        "cpu_crit": null,
+        "risk_change": null
+      },
+      "recovery": {
+        "mono_ns": 2228080292760,
+        "risk_state": "normal"
+      },
+      "raw_rows_path": "/home/csfang/guardian-src/experiments/EXP-087-2026-09-22-wsl-overhead-and-timing/data/timing-memory_strong-r2-rows.jsonl"
+    },
+    {
+      "scenario": "memory_strong",
+      "round": 3,
+      "unit": "guardian-perf-memory_strong-r3",
+      "t0_monotonic_ns": 2286080030000,
+      "pressure_ended_naturally": true,
+      "rows": [
+        {
+          "mono_ns": 2284462205063,
+          "mem_avail_pct": 83.465,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 915518,
+          "cpu_idle_ticks": 791700,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2284462205063,
+          "mem_avail_pct": 83.465,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 915518,
+          "cpu_idle_ticks": 791700,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2291504700542,
+          "mem_avail_pct": 42.451,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 918388,
+          "cpu_idle_ticks": 793096,
+          "cpu_util_pct": 51.36,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2291504700542,
+          "mem_avail_pct": 42.451,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 918388,
+          "cpu_idle_ticks": 793096,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2298587487458,
+          "mem_avail_pct": 42.373,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 921259,
+          "cpu_idle_ticks": 794493,
+          "cpu_util_pct": 51.34,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2298587487458,
+          "mem_avail_pct": 42.373,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 921259,
+          "cpu_idle_ticks": 794493,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2305637307517,
+          "mem_avail_pct": 42.441,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 924124,
+          "cpu_idle_ticks": 795890,
+          "cpu_util_pct": 51.24,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2305637307517,
+          "mem_avail_pct": 42.441,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 924124,
+          "cpu_idle_ticks": 795890,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2312686364250,
+          "mem_avail_pct": 37.159,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 926996,
+          "cpu_idle_ticks": 797284,
+          "cpu_util_pct": 51.46,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2312686364250,
+          "mem_avail_pct": 37.159,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [
+            "memory_growth_critical"
+          ],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 926996,
+          "cpu_idle_ticks": 797284,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2319741260319,
+          "mem_avail_pct": 39.575,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 929865,
+          "cpu_idle_ticks": 798678,
+          "cpu_util_pct": 51.41,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2319741260319,
+          "mem_avail_pct": 39.575,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 929865,
+          "cpu_idle_ticks": 798678,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2326795343915,
+          "mem_avail_pct": 42.378,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 932734,
+          "cpu_idle_ticks": 800075,
+          "cpu_util_pct": 51.31,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2326795343915,
+          "mem_avail_pct": 42.378,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 932734,
+          "cpu_idle_ticks": 800075,
+          "phase": "pressure"
+        },
+        {
+          "mono_ns": 2333838430307,
+          "mem_avail_pct": 83.556,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 935559,
+          "cpu_idle_ticks": 802393,
+          "cpu_util_pct": 17.95,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2333838430307,
+          "mem_avail_pct": 83.556,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 935559,
+          "cpu_idle_ticks": 802393,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2340879485880,
+          "mem_avail_pct": 83.547,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 938372,
+          "cpu_idle_ticks": 805191,
+          "cpu_util_pct": 0.53,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2340879485880,
+          "mem_avail_pct": 83.547,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 938372,
+          "cpu_idle_ticks": 805191,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2347925401804,
+          "mem_avail_pct": 83.736,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 941192,
+          "cpu_idle_ticks": 807993,
+          "cpu_util_pct": 0.64,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2347925401804,
+          "mem_avail_pct": 83.736,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 941192,
+          "cpu_idle_ticks": 807993,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2354982425102,
+          "mem_avail_pct": 83.671,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 944011,
+          "cpu_idle_ticks": 810803,
+          "cpu_util_pct": 0.32,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2354982425102,
+          "mem_avail_pct": 83.671,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 944011,
+          "cpu_idle_ticks": 810803,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2362035463332,
+          "mem_avail_pct": 83.727,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 946826,
+          "cpu_idle_ticks": 813611,
+          "cpu_util_pct": 0.25,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2362035463332,
+          "mem_avail_pct": 83.727,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 946826,
+          "cpu_idle_ticks": 813611,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2369078819972,
+          "mem_avail_pct": 83.626,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 949642,
+          "cpu_idle_ticks": 816415,
+          "cpu_util_pct": 0.43,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2369078819972,
+          "mem_avail_pct": 83.626,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 949642,
+          "cpu_idle_ticks": 816415,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2376122413963,
+          "mem_avail_pct": 83.472,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 952459,
+          "cpu_idle_ticks": 819219,
+          "cpu_util_pct": 0.46,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2376122413963,
+          "mem_avail_pct": 83.472,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 952459,
+          "cpu_idle_ticks": 819219,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2383169851417,
+          "mem_avail_pct": 83.501,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 955273,
+          "cpu_idle_ticks": 822027,
+          "cpu_util_pct": 0.21,
+          "phase": "recovery"
+        },
+        {
+          "mono_ns": 2383169851417,
+          "mem_avail_pct": 83.501,
+          "swap_used_pct": 0.107,
+          "risk_state": "normal",
+          "risk_reasons": [],
+          "candidate_state": "normal",
+          "top_state": "degraded_observability",
+          "cpu_total_ticks": 955273,
+          "cpu_idle_ticks": 822027,
+          "phase": "recovery"
+        }
+      ],
+      "first_breach": {
+        "mem_warn": null,
+        "mem_crit": null,
+        "cpu_warn": null,
+        "cpu_crit": null,
+        "risk_change": null
+      },
+      "recovery": {
+        "mono_ns": 2333838430307,
+        "risk_state": "normal"
+      },
+      "raw_rows_path": "/home/csfang/guardian-src/experiments/EXP-087-2026-09-22-wsl-overhead-and-timing/data/timing-memory_strong-r3-rows.jsonl"
+    }
+  ]
+}

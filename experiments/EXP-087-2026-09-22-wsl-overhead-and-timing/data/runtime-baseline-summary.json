@@ -1,0 +1,51 @@
+{
+  "source": "runtime-baseline.tsv",
+  "bytes_considered": 5279,
+  "truncated": false,
+  "rows_read": 180,
+  "invalid_rows": 0,
+  "epoch": {
+    "samples": 180,
+    "first": 1790057936.241,
+    "last": 1790058831.373,
+    "duration_seconds": 895.132
+  },
+  "metrics": {
+    "rss_kib": {
+      "samples": 180,
+      "min": 29216.0,
+      "p50": 29768.0,
+      "p95": 29792.0,
+      "p99": 29796.0,
+      "max": 29796.0,
+      "mean": 29590.778
+    },
+    "cpu_percent": {
+      "samples": 179,
+      "min": 0.0,
+      "p50": 0.2,
+      "p95": 0.401,
+      "p99": 0.401,
+      "max": 0.601,
+      "mean": 0.244
+    },
+    "fds": {
+      "samples": 180,
+      "min": 3.0,
+      "p50": 3.0,
+      "p95": 4.0,
+      "p99": 4.0,
+      "max": 4.0,
+      "mean": 3.289
+    },
+    "threads": {
+      "samples": 180,
+      "min": 3.0,
+      "p50": 3.0,
+      "p95": 3.0,
+      "p99": 3.0,
+      "max": 3.0,
+      "mean": 3.0
+    }
+  }
+}
