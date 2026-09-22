@@ -1,0 +1,16 @@
+[Unit]
+Description=Guardian collector resource domain
+Documentation=https://github.com/fcsfang/server-resource-guardian
+
+[Slice]
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=100
+IOWeight=100
+MemoryMin=16M
+MemoryLow=32M
+MemoryHigh=192M
+MemoryMax=256M
+TasksMax=128

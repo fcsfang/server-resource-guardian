@@ -1,0 +1,16 @@
+[Unit]
+Description=Guardian observe runtime resource domain
+Documentation=https://github.com/fcsfang/server-resource-guardian
+
+[Slice]
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=500
+IOWeight=500
+MemoryMin=32M
+MemoryLow=64M
+MemoryHigh=384M
+MemoryMax=512M
+TasksMax=256

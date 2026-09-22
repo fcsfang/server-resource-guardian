@@ -23,8 +23,8 @@ class GuardianX86PreflightTests(unittest.TestCase):
             "systemctl_available": True,
             "docker_readable": True,
             "cpu_count": 2,
-            "memory_bytes": 4 * 1024**3,
-            "disk_free_bytes": 20 * 1024**3,
+            "memory_bytes": 2 * 1024**3,
+            "disk_free_bytes": 2 * 1024**3,
             "broker_marker_present": False,
             "reserve_broker_marker_present": False,
         }

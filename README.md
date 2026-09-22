@@ -52,6 +52,20 @@ README.md → ROADMAP.md → PROGRESS.md → 当前功能涉及的源码/技术�
 
 不要从 `experiments/`、旧汇报材料或历史编号反推下一步任务。
 
+## x86_64 下载部署
+
+Ubuntu 22.04 x86_64 可以从 GitHub 下载后安装只观察版本：
+
+```bash
+git clone https://github.com/fcsfang/server-resource-guardian.git
+cd server-resource-guardian
+./scripts/install-guardian-x86.sh
+sudo ./scripts/install-guardian-x86.sh --apply --environment x86-observe
+sudo guardian-status
+```
+
+第一条脚本命令只显示计划，第二条才安装。安装器会先执行只读环境检查，保持自动动作关闭，并输出精确回滚命令。完整说明见 [deploy/guardian-x86/README.md](deploy/guardian-x86/README.md)。
+
 ## 主要目录
 
 | 目录 | 用途 |
@@ -68,7 +82,7 @@ README.md → ROADMAP.md → PROGRESS.md → 当前功能涉及的源码/技术�
 
 - 本地主测试环境：两台相互独立的 Multipass Ubuntu 22.04 ARM64；本地维护通道验收使用新的 2 vCPU/4 GiB/20 GiB disposable VM，Docker、systemd、cgroup v2 和隔离 Beszel 可用。
 - 目标生产环境：Ubuntu 22.04 x86_64；尚未获准安装或执行压力测试。
-- 已提供 x86_64 非生产只读准入检查，可在获批主机上一次确认架构、Ubuntu、systemd、cgroup v2、Docker 可读性和最低资源；它不安装服务或开启动作。
+- 已提供 x86_64 只读准入检查和只观察安装入口，可确认环境后安装 Runtime 与 Collector；它不会开启动作。
 - 本地结论不能直接当作 x86_64 非生产或生产结论。
 - 本地维护通道只能证明在受控边界内保留人工入口；不能保证任意系统资源、内核或根盘完全耗尽时 SSH 永远可用。
 

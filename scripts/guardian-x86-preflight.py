@@ -13,8 +13,8 @@ from pathlib import Path
 from typing import Any, Mapping
 
 
-MIN_MEMORY_BYTES = 4 * 1024**3
-MIN_DISK_BYTES = 20 * 1024**3
+MIN_MEMORY_BYTES = 2 * 1024**3
+MIN_DISK_BYTES = 2 * 1024**3
 
 
 def _os_release(path: Path = Path("/etc/os-release")) -> dict[str, str]:
