@@ -34,6 +34,10 @@ sudo guardian-status
 
 Beszel 保持独立：Guardian 不修改已有 Beszel。CPU、内存和磁盘的平台告警继续在 Beszel 中配置和查看。
 
+## 仿生产整体验收
+
+安装后按 [PRODUCTION-LIKE-ACCEPTANCE.md](PRODUCTION-LIKE-ACCEPTANCE.md) 执行“多应用 + CPU/内存/独立测试盘 + 外部新 SSH + 人工温和停止 + 恢复确认”验收。全程保持 Guardian 只观察，只操作本次创建的测试容器。
+
 ## 升级
 
 在仓库中拉取经过确认的新版本，然后重复执行同一条安装命令。安装器先备份当前程序、服务文件及原服务状态，再替换程序并重启 Guardian，不重启服务器和业务容器。
