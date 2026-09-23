@@ -1140,6 +1140,7 @@ def _finalize_observer_event(
     snapshot_dir: str | None,
     snapshot_all: bool,
     audit_file: str | None,
+    pressure_decision: "Mapping[str, Any] | None" = None,
 ) -> dict[str, Any]:
     """Add runtime health and bounded local evidence before coordination."""
 
@@ -1167,8 +1168,29 @@ def _finalize_observer_event(
             gate["execution_allowed"] = False
             gate["reason_codes"].append("snapshot_capacity_exhausted")
     if audit_file:
+        # Under pressure the audit payload is slimmed before the size check so
+        # the fail-closed budget stays available for host-risk evidence.
+        persist_event = event
+        if pressure_decision is not None:
+            gate_state = pressure_decision.get("state")
+            if gate_state in {"degraded", "suspended"}:
+                from .guardian_pressure_gate import PressureDecision, slim_audit_event
+
+                persist_event = slim_audit_event(
+                    event,
+                    PressureDecision(
+                        state=gate_state,
+                        available_bytes=pressure_decision.get("available_bytes"),
+                        total_bytes=pressure_decision.get("total_bytes"),
+                        available_ratio=pressure_decision.get("available_ratio"),
+                        psi_full_avg10=pressure_decision.get("psi_full_avg10"),
+                        reason_codes=tuple(pressure_decision.get("reason_codes") or ()),
+                        transition=pressure_decision.get("transition"),
+                        normal_samples=pressure_decision.get("normal_samples", 0),
+                    ),
+                )
         audit_written = append_audit(
-            event,
+            persist_event,
             Path(audit_file),
             max_total_bytes=config.audit_max_total_bytes,
         )

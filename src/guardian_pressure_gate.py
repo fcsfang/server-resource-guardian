@@ -192,6 +192,53 @@ class PressureGate:
         return now - last_collection >= interval * DEGRADED_COLLECTION_MULTIPLIER
 
 
+def slim_audit_event(event: dict[str, Any], decision: PressureDecision) -> dict[str, Any]:
+    """Return the event to persist, slimmed per the pressure decision.
+
+    Under host memory pressure the audit stream itself becomes part of the
+    problem: a full event carries detailed resource evaluations and raw
+    signals (~46KB at 2s sampling, ~165MB/h), which the failing host can
+    barely flush. Fidelity drops with pressure but the host risk state and
+    the gate decision itself are never dropped - the alerting path must keep
+    working exactly when everything else degrades. The written event states
+    its own fidelity so later readers know what was compressed away.
+    """
+
+    fidelity = "full"
+    if decision.state == SUSPENDED:
+        fidelity = "minimal"
+    elif decision.state == DEGRADED:
+        fidelity = "summary"
+    if fidelity == "full":
+        event["audit_fidelity"] = fidelity
+        return event
+
+    slim = {
+        "schema": event.get("schema"),
+        "event_id": event.get("event_id"),
+        "sample_id": event.get("sample_id"),
+        "observed_at": event.get("observed_at"),
+        "observed_monotonic_ns": event.get("observed_monotonic_ns"),
+        "host_id": event.get("host_id"),
+        "state": event.get("state"),
+        "audit_fidelity": fidelity,
+        "risk": event.get("risk"),
+        "decision": event.get("decision"),
+        "pressure_gate": decision.as_dict(),
+        "emergency_shedding": event.get("emergency_shedding"),
+        "evidence": event.get("evidence"),
+        "slimmed": {
+            "dropped": [
+                key
+                for key in ("signals", "resource_evaluations", "joint_evaluation", "object_attribution", "object_candidates", "presentation", "target_attribution", "runtime_result")
+                if key in event
+            ],
+            "reason": f"audit_fidelity_{fidelity}_under_pressure",
+        },
+    }
+    return slim
+
+
 __all__ = [
     "DEGRADED",
     "MIN_DEGRADED_INTERVAL_SECONDS",
@@ -200,4 +247,5 @@ __all__ = [
     "PressureDecision",
     "PressureGate",
     "SUSPENDED",
+    "slim_audit_event",
 ]

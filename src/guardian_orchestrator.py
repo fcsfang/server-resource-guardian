@@ -372,18 +372,34 @@ class RuntimeOrchestrator:
         return False
 
     def _producer_loop(self) -> None:
+        # One immediate "degraded" notice per gate transition: when the gate
+        # first enters degraded/suspended, the alerting path must hear about
+        # it within one sample instead of staying silent for seconds.
+        announced_gate_state: str | None = None
         while not self.stop_event.is_set():
             try:
+                gate_decision_dict: dict[str, Any] | None = None
                 with self._observer_lock:
                     event = self.observer.sample()
                 if not isinstance(event, dict):
                     raise ValueError("observer_event_mapping_required")
+                # Read the gate's own decision (the runtime_collector closure
+                # evaluated it inside sample(); the freshest copy lives on
+                # the observation's collector metadata).
+                collector_meta = (
+                    event.get("signals", {}).get("collector", {})
+                    if isinstance(event.get("signals"), Mapping)
+                    else {}
+                )
+                if isinstance(collector_meta, Mapping) and isinstance(collector_meta.get("pressure_gate"), Mapping):
+                    gate_decision_dict = dict(collector_meta["pressure_gate"])
                 _finalize_observer_event(
                     event,
                     config=self.config,
                     snapshot_dir=self.snapshot_dir,
                     snapshot_all=self.snapshot_all,
                     audit_file=str(self.audit_file) if self.audit_file is not None else None,
+                    pressure_decision=gate_decision_dict,
                 )
                 with self._lock:
                     self._stats.sampled += 1
