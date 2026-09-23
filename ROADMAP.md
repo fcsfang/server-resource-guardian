@@ -32,8 +32,8 @@ A future benefit comparison should use a representative disposable x86_64 non-pr
 
 ## Current closeout sequence
 
-1. **Repository reduction:** retain supported product code, deployment assets, tests, compact lab tools, and summary evidence; keep raw probe streams out of the repository. Verify links, imports, shell syntax, compilation, and the full test suite.
-2. **Docker business-object loop:** make one local ARM64 web image available offline in `guardian-t11-lite`; create two disposable labeled web replicas in `workload.slice`; authorize exactly one full container ID; send exactly one TERM; verify audit, host mitigation, stopped-target state, and surviving-replica HTTP health separately; then restore observe-only configuration and remove the fixtures.
+1. **Repository reduction — complete:** retain supported product code, deployment assets, tests, compact lab tools, and summary evidence; keep raw probe streams out of the repository. Links, imports, shell syntax, compilation, and the full test suite pass.
+2. **Docker business-object loop — complete locally:** one ARM64 web image was transferred offline into `guardian-t11-lite`; two disposable replicas ran in `workload.slice`; one exact full container ID received one authorized TERM; audit, host mitigation, target exit, and surviving-replica HTTP health were verified separately; observe-only configuration and fixture cleanup were restored.
 3. **SSH benefit boundary:** keep the local result as an explicit inconclusive boundary. Resume only when the representative disposable x86_64 prerequisite is available; otherwise close with no rescue-advantage claim and require out-of-band recovery.
 
 ## Exit criteria

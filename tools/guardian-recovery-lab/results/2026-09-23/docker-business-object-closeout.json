@@ -1,0 +1,70 @@
+{
+  "experiment": "docker-business-object-closeout",
+  "date": "2026-09-23",
+  "primary_product_outcome": "one explicitly authorized TERM-only stop with audit",
+  "environment": {
+    "vm": "guardian-t11-lite",
+    "production_host": false,
+    "architecture": "arm64",
+    "image": "ghcr.io/basketikun/infinite-canvas:latest",
+    "image_id": "sha256:77cf7f702ac94bcc89a405086b4acebc1a78a99c1a5ef653820398ddd6e18d28",
+    "image_source": "offline transfer from the local Docker cache"
+  },
+  "fixtures": {
+    "target": "guardian-closeout-web-a",
+    "surviving_replica": "guardian-closeout-web-b",
+    "cgroup_parent": "workload.slice",
+    "target_memory_before_stop": "194.7 MiB",
+    "target_identity_matches": 1
+  },
+  "authorization": {
+    "environment": "local-disposable",
+    "action": "graceful_stop",
+    "exact_full_target_id": "51c6c934e2d1631205160eb45362da1ab98f9b6a3f4af96f82c21bb94dc81d07",
+    "approval_id": "guardian-closeout-51c6c934e2d1-1790155093",
+    "root_only_file_mode": "0600",
+    "short_lived": true
+  },
+  "action_result": {
+    "incident_id": "rescue-13eac50d-bd8c-44bb-8c8e-106e4aa4367a",
+    "method": "docker",
+    "signal": "TERM",
+    "execution": "term_sent",
+    "target_exit_code": 0,
+    "target_oom_killed": false,
+    "second_signal_sent": false,
+    "retry_used": false,
+    "escalation": "none"
+  },
+  "host_mitigation": {
+    "available_bytes_before": 1509666816,
+    "available_bytes_after": 1714110464,
+    "available_bytes_delta": 204443648,
+    "verification_state": "recovered",
+    "reason_codes": [
+      "target_stopped_and_memory_improved"
+    ]
+  },
+  "business_health": {
+    "surviving_replica_http_status": 200,
+    "surviving_replica_state": "running",
+    "target_state": "exited",
+    "interpretation": "service availability was retained by the independent replica; this does not prove automatic recovery of the stopped target"
+  },
+  "control_plane_after": {
+    "guardian_runtime": "active",
+    "guardian_collector": "active",
+    "ssh": "active",
+    "docker": "active",
+    "guardian_mode": "observe",
+    "actions_enabled": false,
+    "actionable_set_size": 0
+  },
+  "cleanup": {
+    "fixture_containers_removed": true,
+    "transferred_image_removed": true,
+    "temporary_authorization_removed": true,
+    "observe_only_config_restored": true
+  },
+  "product_decision": "The local Docker target path is no longer blocked by registry access. Guardian completed one exact, audited, TERM-only disposable-container stop and verified host mitigation separately from surviving-replica health. This remains local safety evidence, not production readiness."
+}

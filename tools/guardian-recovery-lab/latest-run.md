@@ -18,6 +18,10 @@ One allowlisted systemd fixture was identity-checked, matched to a root-only sin
 
 The workload slice reaches `MemoryHigh` throttling before cgroup OOM. One cleanup calibration showed TERM remaining pending above `MemoryHigh`; temporarily raising the limit allowed exit, but Guardian verification now only observes and reports that condition. It never changes the limit or sends a second signal.
 
-## Next evidence
+## Docker business-object closeout
 
-Complete one offline-image, two-replica Docker web fixture loop. Report host mitigation and surviving-replica HTTP health separately. The SSH advantage remains blocked until a representative disposable x86_64 environment is available.
+An ARM64 nginx image was transferred from the local Docker cache because the VM registry path had timed out. Two disposable replicas ran in `workload.slice`; the target held about 194.7 MiB and the peer remained independently healthy.
+
+One exact full container ID matched one fresh identity, one allowlist entry, and one root-only short-lived authorization. Guardian sent one TERM through Docker. The target exited with code 0 without OOM, available memory increased by 204,443,648 bytes, the peer continued returning HTTP 200, and verification recorded `recovered` with `escalation=none`. Observe-only configuration was restored and the authorization, containers, and transferred image were removed.
+
+This closes the local Docker action path. The remaining product gap is the SSH advantage, which stays blocked until a representative disposable x86_64 environment is available.

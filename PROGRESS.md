@@ -8,7 +8,7 @@ Updated: 2026-09-23
 | --- | --- | --- |
 | Alerting and observation | Runtime, read-only Collector, CPU/memory/disk risk paths, status output, and Beszel integration remain in the supported tree. | Implemented locally; not production-validated |
 | External operator access | Fresh SSH diagnosis passed under bounded pressure and during a real OOM storm on `guardian-t11-lite`. Guardian-off did not fail repeatably, so no Guardian advantage can be measured there. | Functional path passed; benefit unproven |
-| Authorized mitigation | A disposable systemd fixture completed one allowlisted, single-use, TERM-only action with audit and host recovery verification. | Safety boundary passed; Docker business object pending |
+| Authorized mitigation | A disposable Docker web target completed one exact, single-use, TERM-only action with audit. Host memory recovery and surviving-replica HTTP health were verified separately. | Local Docker loop passed; not production-validated |
 
 ## Repository closeout
 
@@ -24,9 +24,10 @@ The completed Guardian-off search generated real OOM churn but still retained fr
 
 The bounded rescue CLI and action helper are installed and exercise the intended safety rules: read-only diagnosis does not require Docker; an action requires one exact full ID, fresh identity, allowlist membership, a root-only short-lived authorization, and explicit confirmation; verification waits only for natural exit and never escalates to KILL.
 
+The Docker closeout used an ARM64 nginx image transferred from the local cache, avoiding the blocked registry. Two disposable replicas ran in `workload.slice`. Guardian sent one TERM to the exact allowlisted target; it exited with code 0 and was not OOM-killed. Available memory increased by 204,443,648 bytes, the independent replica continued returning HTTP 200, and audit verification reported `recovered` with `escalation=none`. The temporary authorization, containers, image, and action-enabled configuration were removed or restored afterward.
+
 ## Current blockers and decisions
 
-- **Docker business-object evidence:** the VM previously had no local image and Docker Hub timed out. The approved closeout route is offline transfer of an existing local ARM64 nginx image, followed by the exact two-replica TERM-only loop in the roadmap.
 - **SSH rescue advantage:** a representative disposable x86_64 environment is not currently available. Until it is, the product claim remains best-effort operator access, not a rescue guarantee or measured advantage.
 - **Production:** no production connection, credential access, installation, pressure, or action is authorized.
 
@@ -38,3 +39,4 @@ The bounded rescue CLI and action helper are installed and exercise the intended
 - [MemoryHigh cleanup boundary](tools/guardian-recovery-lab/results/2026-09-23/memoryhigh-cleanup-boundary.json)
 - [Bounded workload result](tools/guardian-recovery-lab/results/2026-09-23/oom-churn-boundary-r1.json)
 - [Systemd fixture authorized-action audit](tools/guardian-recovery-lab/results/2026-09-23/guardian-authorized-fixture-audit.jsonl)
+- [Docker business-object closeout](tools/guardian-recovery-lab/results/2026-09-23/docker-business-object-closeout.json)
