@@ -128,6 +128,7 @@ class Evaluator:
             "memory": ResourceKey("memory", "宿主内存", confirm),
             "swap": ResourceKey("swap", "交换空间", confirm),
             "cpu": ResourceKey("cpu", "宿主CPU", confirm),
+            "gate": ResourceKey("gate", "压力门控", confirm),
             "stale": ResourceKey("stale", "Guardian观测流", confirm),
         }
         self.disk_keys: dict[str, ResourceKey] = {}
@@ -144,6 +145,18 @@ class Evaluator:
         self.last_event_wall = time.time()
         s = ev.get("signals", {})
         mem = s.get("memory", {})
+
+        # Gate-state visibility: a pressure_gate block (present on slimmed
+        # events and on blocked-collection observations) means the stream is
+        # degraded BY DESIGN. Report each transition once, and stop flagging
+        # stale while the gate keeps the stream alive in degraded modes.
+        gate = ev.get("pressure_gate") or (ev.get("evidence", {}) or {}).get("pressure_gate_transition")
+        if isinstance(gate, dict) and gate.get("state") in (WARNING, CRITICAL, "normal"):
+            state = gate.get("state")
+            gate_level = {"normal": OK, WARNING: WARNING, CRITICAL: CRITICAL}.get(state, OK)
+            transition = gate.get("transition") or ""
+            detail = f"压力门控 {transition or state}"
+            fired += self._collect(self.keys["gate"], gate_level, detail)
 
         avail = mem.get("available_ratio_percent")
         if avail is not None:
@@ -185,6 +198,11 @@ class Evaluator:
     def check_stale(self, threshold_s: float) -> list[tuple[str, str, str, ResourceKey]]:
         level = WARNING if (time.time() - self.last_event_wall) > threshold_s else OK
         return self._collect(self.keys["stale"], level, f"审计事件中断 >{threshold_s:.0f}s")
+
+    @property
+    def gate_degraded(self) -> bool:
+        """True while the pressure gate holds the stream in a degraded mode."""
+        return self.keys["gate"].level in (WARNING, CRITICAL)
 
     def _collect(self, key: ResourceKey, level: str, detail: str) -> list[tuple[str, str, str, ResourceKey]]:
         change = key.propose(level, detail)
@@ -251,13 +269,20 @@ def main() -> None:
                             print(f"sent: {text}", flush=True)
                         except Exception as e:  # noqa: BLE001 - keep gateway alive
                             print(f"send failed: {e}", flush=True)
-            for _key, old, new, rk in evaluator.check_stale(args.stale_seconds):
-                text = message_text(rk, old, new)
-                try:
-                    client.send(text)
-                    print(f"sent: {text}", flush=True)
-                except Exception as e:  # noqa: BLE001
-                    print(f"send failed: {e}", flush=True)
+            # stale detection is suppressed while the gate holds the stream in
+            # a degraded mode: fewer slimmed events are EXPECTED then, and a
+            # wide interval there is the designed behavior, not a dead stream.
+            if not evaluator.gate_degraded:
+                for _key, old, new, rk in evaluator.check_stale(args.stale_seconds):
+                    text = message_text(rk, old, new)
+                    try:
+                        client.send(text)
+                        print(f"sent: {text}", flush=True)
+                    except Exception as e:  # noqa: BLE001
+                        print(f"send failed: {e}", flush=True)
+            elif evaluator.keys["stale"].level == WARNING:
+                # gate recovered to live streaming while stale was flagged
+                evaluator.last_event_wall = time.time()
         except FileNotFoundError:
             print("audit file missing; waiting", flush=True)
         time.sleep(args.poll)

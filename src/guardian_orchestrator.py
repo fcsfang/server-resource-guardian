@@ -393,6 +393,19 @@ class RuntimeOrchestrator:
                 )
                 if isinstance(collector_meta, Mapping) and isinstance(collector_meta.get("pressure_gate"), Mapping):
                     gate_decision_dict = dict(collector_meta["pressure_gate"])
+                    # First observation in a new gate state gets a visible
+                    # marker so the notification path can distinguish
+                    # "degraded by design" from "stream died".
+                    new_state = gate_decision_dict.get("state")
+                    transition = gate_decision_dict.get("transition")
+                    if new_state != announced_gate_state:
+                        announced_gate_state = new_state if isinstance(new_state, str) else None
+                        if transition:
+                            event.setdefault("evidence", {})["pressure_gate_transition"] = {
+                                "transition": transition,
+                                "state": new_state,
+                                "announced_at": event.get("observed_at"),
+                            }
                 _finalize_observer_event(
                     event,
                     config=self.config,
