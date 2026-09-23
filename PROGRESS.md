@@ -8,7 +8,7 @@ Updated: 2026-09-23
 | --- | --- | --- |
 | Alerting and observation | Runtime, read-only Collector, CPU/memory/disk risk paths, status output, and Beszel integration remain in the supported tree. | Implemented locally; not production-validated |
 | External operator access | Fresh SSH diagnosis passed under bounded pressure and during a real OOM storm on `guardian-t11-lite`. Guardian-off did not fail repeatably, so no Guardian advantage can be measured there. | Functional path passed; benefit unproven |
-| Authorized mitigation | A disposable Docker web target completed one exact, single-use, TERM-only action with audit. Host memory recovery and surviving-replica HTTP health were verified separately. | Local Docker loop passed; not production-validated |
+| Authorized mitigation | A disposable Docker web target completed one exact, single-use, TERM-only action with audit. Host memory recovery and surviving-replica HTTP health were verified separately. This validates the safety mechanics only (one target, one signal, static authorization); the roadmap outcome-3 target is the full mitigation loop (dynamic identity, multi-target, verified escalation, business-health confirmation), which is not yet implemented. | Safety mechanics validated; full loop not implemented |
 
 ## Repository closeout
 

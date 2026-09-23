@@ -1,12 +1,12 @@
 # Server Resource Guardian
 
-Guardian helps administrators see dangerous CPU, memory, or disk pressure, retain a practical path for SSH diagnosis and manual recovery, and perform one explicitly authorized graceful stop with an audit record.
+Guardian helps administrators see dangerous CPU, memory, or disk pressure, retain a practical path for SSH diagnosis and manual recovery, and - inside an explicit authorization boundary - assist them through a complete mitigation loop against the pressure source: dynamic target identity, verified escalation, and separate host and business-health recovery confirmation, with every step audited.
 
 ## Product boundaries
 
 - Beszel provides monitoring, history, display, and alerts. It never triggers host actions.
-- Guardian is observe-only by default. A stop requires one exact allowlisted target, short-lived authorization, identity revalidation, and an audit record.
-- Guardian sends TERM at most once. It does not send KILL, retry another target, reboot a host, or delete business data.
+- Guardian is observe-only by default. Any action requires an explicit authorization boundary (scope of targets and permitted escalation), identity revalidation, and an audit record. Today's implemented slice of outcome 3 is the single-target TERM path; the full loop (multi-target, verified escalation, business-health confirmation) is the roadmap target.
+- Guardian never sends KILL automatically, never reboots a host, and never deletes business data. Escalation beyond the granted boundary requires new authorization.
 - Same-host protection cannot guarantee SSH through kernel, device, network, power, or severe root-filesystem failure. Production recovery still needs an out-of-band console.
 
 ## Repository map

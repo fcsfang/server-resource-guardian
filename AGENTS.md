@@ -1,6 +1,6 @@
 # Project Context
 
-Guardian exists to alert on dangerous CPU, memory, or disk pressure; preserve administrators' SSH, diagnostic, and manual recovery access as far as practical; and, only with explicit authorization, gracefully stop at most one permitted target with an audit record.
+Guardian exists to alert on dangerous CPU, memory, or disk pressure; preserve administrators' SSH, diagnostic, and manual recovery access as far as practical; and, only within an explicit authorization boundary, assist them through a complete mitigation loop against the pressure source - dynamic target identity, verified escalation, separate host and business-health recovery confirmation, every step audited.
 
 ## Safety
 

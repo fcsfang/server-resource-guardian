@@ -6,7 +6,7 @@ Guardian is evaluated on exactly three outcomes:
 
 1. Timely and correct CPU, memory, and disk alerts.
 2. A usable external SSH, diagnosis, and manual-stop path at a defined pressure boundary.
-3. One explicitly authorized TERM-only stop of an allowlisted target, with audit and separate host/business recovery results.
+3. Within an explicit authorization boundary, assist the administrator through a complete mitigation loop against the pressure source: identify affected targets by dynamic identity (labels and ownership, not a static allowlist), act on one or more of them with verified escalation (signal, wait, confirm effect, escalate only within the granted boundary), and confirm recovery separately on the host and on business health. Every step is audited and attributable; nothing runs automatically without authorization.
 
 Native Linux controls own accounting, isolation, reclaim, and enforcement. Beszel owns monitoring and alert delivery. Guardian owns interpretation, target eligibility, authorization, one bounded request, audit, and verification.
 
