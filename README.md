@@ -1,99 +1,54 @@
 # Server Resource Guardian
 
-Guardian 是一个服务器资源保护服务。它配合 Beszel 长期观察 CPU、内存和磁盘，在服务器即将失去响应前告警、保留人工维护机会，并在明确授权后停止一个允许处理的异常容器。
+Guardian helps administrators see dangerous CPU, memory, or disk pressure, retain a practical path for SSH diagnosis and manual recovery, and perform one explicitly authorized graceful stop with an audit record.
 
-更新时间：2026-09-22
+## Product boundaries
 
-## 项目要交付什么
+- Beszel provides monitoring, history, display, and alerts. It never triggers host actions.
+- Guardian is observe-only by default. A stop requires one exact allowlisted target, short-lived authorization, identity revalidation, and an audit record.
+- Guardian sends TERM at most once. It does not send KILL, retry another target, reboot a host, or delete business data.
+- Same-host protection cannot guarantee SSH through kernel, device, network, power, or severe root-filesystem failure. Production recovery still needs an out-of-band console.
 
-最终产品需要完成三件事：
+## Repository map
 
-1. **及时告警**：CPU、内存或磁盘出现危险时，第一版在 Beszel 页面和告警历史中展示；后续接入飞书主动推送管理员。
-2. **保留人工维护入口**：资源紧张时，尽可能让管理员仍能登录、查看状态并手工处理。
-3. **有限自动止损**：自动模式开启后，只从明确允许处理的容器中选择资源占用最高者，最多温和停止一个，并分别记录宿主机风险是否缓解和业务健康是否确认。
+| Path | Purpose |
+| --- | --- |
+| `src/` | Runtime, read-only collection, risk interpretation, authorization, audit, and recovery verification |
+| `scripts/` | Installation and operator entry points |
+| `deploy/` | systemd and deployment assets |
+| `config/` | Credential-free configuration examples and schema |
+| `tests/` | Product and deployment regression tests |
+| `tools/guardian-recovery-lab/` | Disposable-lab probes and compact acceptance evidence |
+| `docs/` | Current architecture and safety contracts |
 
-项目不承诺消除所有宕机，也不默认杀宿主机进程、强制终止容器、重启服务器或删除文件。
+Historical experiments and presentation assets were removed during the 2026-09-23 repository reduction. Git history remains the archive; deleted research artifacts are not task sources.
 
-## 当前进度
+## Start here
 
-项目按三个里程碑推进，唯一计划见 [ROADMAP.md](ROADMAP.md)。
+Read [ROADMAP.md](ROADMAP.md) for the acceptance contract and [PROGRESS.md](PROGRESS.md) for the current verified state. Do not infer production readiness from old experiments or a local VM result.
 
-| 里程碑 | 用户能得到什么 | 当前状态 |
-| --- | --- | --- |
-| 一：看得见、进得去 | Beszel 三资源告警、Guardian 常驻运行、人工维护通道 | 本地版本完成；Beszel 页面告警和 SSH 均已验收 |
-| 二：找得到、能建议 | 安全读取容器数据、列出高占用容器、模拟建议 | 已完成本地统一演示；生产未验证 |
-| 三：能止损、有记录 | CPU 真实温和停止、内存/磁盘安全恢复、恢复检查、完整日志 | 本地功能完成；CPU、内存止损和磁盘应急恢复均已验收 |
+## Development verification
 
-目前不能声称 Guardian 已经上线或可以保护生产服务器。详细、通俗的当前状态见 [PROGRESS.md](PROGRESS.md)。
-
-## 技术方案
-
-```text
-Beszel：监控、图表、告警
-   │
-   └── 管理员查看
-
-Guardian：本地判断风险、选择候选、记录结果
-   │
-   ├── 人工维护通道：提高 SSH、诊断和容器控制可用性
-   ├── 只读容器采集：读取身份和资源，不允许执行动作
-   └── 独立动作服务：默认关闭，授权后最多温和停止一个容器
-```
-
-Beszel 告警不能直接触发动作。Guardian 主服务也不应直接拥有 Docker 管理权限。当前版本由管理员在 Beszel 中查看告警；飞书只作为后续通知出口，不参与判断或执行动作。
-
-## 从哪里开始
-
-新接手的人员或 Agent 只需要读取：
-
-```text
-README.md → ROADMAP.md → PROGRESS.md → 当前功能涉及的源码/技术文档
-```
-
-不要从 `experiments/`、旧汇报材料或历史编号反推下一步任务。
-
-## x86_64 下载部署
-
-Ubuntu 22.04 x86_64 可以从 GitHub 下载后安装只观察版本：
+Use a virtual environment and install the single development dependency:
 
 ```bash
-git clone https://github.com/fcsfang/server-resource-guardian.git
-cd server-resource-guardian
+python3 -m venv .venv
+. .venv/bin/activate
+python3 -m pip install -r requirements-dev.txt
+pytest -q
+python3 -m compileall -q src scripts tools/guardian-recovery-lab
+git diff --check
+```
+
+## Installation
+
+The x86_64 installer defaults to a read-only plan. Applying it is limited to an explicitly authorized non-production Ubuntu host:
+
+```bash
 ./scripts/install-guardian-x86.sh
+python3 scripts/guardian-x86-preflight.py
 sudo ./scripts/install-guardian-x86.sh --apply --environment x86-observe
 sudo guardian-status
 ```
 
-第一条脚本命令只显示计划，第二条才安装。安装器会先执行只读环境检查，保持自动动作关闭，并输出精确回滚命令。完整说明见 [deploy/guardian-x86/README.md](deploy/guardian-x86/README.md)。
-
-## 主要目录
-
-| 目录 | 用途 |
-| --- | --- |
-| `src/` | Guardian 源代码 |
-| `deploy/` | 本地和后续服务器安装配置 |
-| `config/` | 无凭据的配置样例 |
-| `tests/` | 自动化回归测试 |
-| `scripts/` | 当前安装、检查和演示工具；历史工具不参与任务调度 |
-| `docs/` | 架构、安全和功能参考 |
-| `experiments/` | 历史证据档案，不是路线文件 |
-
-## 当前环境
-
-- 本地主测试环境：两台相互独立的 Multipass Ubuntu 22.04 ARM64；本地维护通道验收使用新的 2 vCPU/4 GiB/20 GiB disposable VM，Docker、systemd、cgroup v2 和隔离 Beszel 可用。
-- 目标生产环境：Ubuntu 22.04 x86_64；尚未获准安装或执行压力测试。
-- 已提供 x86_64 只读准入检查和只观察安装入口，可确认环境后安装 Runtime、Collector 和按主机规格生成的维护资源域；它不会开启动作。
-- 本地结论不能直接当作 x86_64 非生产或生产结论。
-- 本地维护通道只能证明在受控边界内保留人工入口；不能保证任意系统资源、内核或根盘完全耗尽时 SSH 永远可用。
-
-## 安全约束
-
-- 默认模式是只观察，不执行真实动作。
-- 真实动作只允许本地可丢弃容器，并需要本次明确授权。
-- Beszel、Guardian 和维护通道对象默认进入保护配置；“不在保护名单”不等于“允许停止”。
-- 允许处理名单默认为空；没有明确名单、一次性授权和身份确认时，只告警，不执行动作。
-- 宿主机 CPU、内存或磁盘达到危险线时，即使找不到具体容器也必须显示告警；无法归因只会阻止自动动作。
-- 对象变化、记录失败或授权失效时，只告警，不执行动作。
-- 不提交密码、Token、`.env`、生产原始日志或运行数据库。
-
-协作和汇报规则见 [AGENTS.md](AGENTS.md) 与 [CONTRIBUTING.md](CONTRIBUTING.md)。
+See [deploy/guardian-x86/README.md](deploy/guardian-x86/README.md) for effects and rollback.

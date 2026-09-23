@@ -1,9 +1,5 @@
 # Guardian 持久状态、授权与崩溃恢复
 
-更新时间：2026-09-20
-
-状态：`LOCAL-MVP-IMPLEMENTED`
-
 ## 1. 解决的问题
 
 旧版 Guardian 的冷却和失败熔断主要在内存对象或 JSON ledger 中。进程崩溃、两个执行进程并发或动作前后审计写失败时，无法可靠回答：
@@ -44,18 +40,12 @@ INTENT_RECORDED → EXECUTION_STARTED → SUCCEEDED / FAILED / PLANNED
 
 真实 Docker executor 现在必须同时提供持久 `--ledger-file` 和 `--state-db`；缺少任一项在调用执行器前拒绝。`mock` 仍用于纯计划测试。
 
-## 4. 验收证据
+## 4. 安全边界
 
-- [`tests/test_guardian_state.py`](../tests/test_guardian_state.py)：capability 一次消费、冲突/过期、幂等、并发单赢家、审计失败前置、崩溃 reconciliation、持久冷却和 Controller 集成。
-- [`tests/test_guardian_enforce.py`](../tests/test_guardian_enforce.py)：Docker 路径必须启用持久状态库；fake executor/timeout/recovery 测试不连接真实 Docker。
-- [`EXP-032`](../experiments/EXP-032-2026-09-20-durable-state-and-recovery/record.md)：宿主机和 Multipass 临时隔离结果。
+- Production capability issuance, key protection, and multi-party approval are not defined.
+- SQLite is local to one host; it is not a multi-host coordinator.
+- A stored intent or audit record does not prove a workload or business service recovered.
 
-## 5. 尚未完成的边界
-
-- capability 的生产发行者、密钥保护和多方审批尚未定义；当前只接受显式 `local-disposable` 授权对象。
-- SQLite 是单机本地状态，不是多主机共享协调器；生产安装路径、权限、备份和磁盘满策略必须在非生产环境复核。
-- Docker 动作、业务 probe 和生产 enforce 均未因本任务自动开启；当前实验只用 mock/fake executor。
-
-## 6. 回滚
+## 5. 恢复
 
 不传 `--state-db` 时，`mock` 计划路径仍可运行；真实 Docker executor 会安全拒绝启动。删除或移走状态库不会触发动作，但会丢失冷却/意图历史，因此生产不得用删除数据库作为恢复手段。

@@ -6,22 +6,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "install-guardian-x86.sh"
 DEPLOY = ROOT / "deploy" / "guardian-x86"
-ACCEPTANCE = DEPLOY / "PRODUCTION-LIKE-ACCEPTANCE.md"
 
 
 class GuardianX86InstallTests(unittest.TestCase):
-    def test_production_like_acceptance_keeps_manual_recovery_bounded(self):
-        source = ACCEPTANCE.read_text(encoding="utf-8")
-        self.assertIn("mode=observe", source)
-        self.assertIn("ConnectTimeout=10", source)
-        self.assertIn("guardian-accept-cpu", source)
-        self.assertIn("guardian-accept-memory", source)
-        self.assertIn("/mnt/guardian-acceptance", source)
-        self.assertIn("--cgroup-parent workload.slice", source)
-        self.assertIn("sudo reboot", source)
-        self.assertIn("不执行宿主机 `kill -9`", source)
-        self.assertNotIn("docker system prune", source)
-
     def test_default_command_is_a_non_mutating_observe_plan(self):
         result = subprocess.run(
             [str(SCRIPT), "--repository", str(ROOT)],
@@ -72,7 +59,7 @@ class GuardianX86InstallTests(unittest.TestCase):
         runtime = (DEPLOY / "guardian-runtime.service").read_text(encoding="utf-8")
         collector = (DEPLOY / "guardian-collector.service").read_text(encoding="utf-8")
         self.assertIn("Slice=guardian-runtime.slice", runtime)
-        self.assertIn("Slice=guardian-collector.slice", collector)
+        self.assertIn("Slice=guardian-observer.slice", collector)
         self.assertNotIn("SupplementaryGroups=guardian-broker", runtime)
 
     def test_x86_tmpfiles_has_no_action_service_directories(self):

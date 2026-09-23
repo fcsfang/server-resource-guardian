@@ -73,12 +73,15 @@ class UnixSocketCollectorClient:
         if not isinstance(data, Mapping):
             raise CollectorUnavailable("collector_data_missing")
         result = dict(data)
-        result["collector"] = {
+        collector_meta = data.get("collector") if isinstance(data.get("collector"), Mapping) else {}
+        collector_meta = dict(collector_meta)
+        collector_meta.update({
             "status": response.get("status"),
             "errors": list(response.get("errors") or []),
             "read_only": response.get("read_only") is True,
             "mutation_commands": list(response.get("mutation_commands") or []),
-        }
+        })
+        result["collector"] = collector_meta
         return result
 
 

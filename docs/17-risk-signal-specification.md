@@ -1,9 +1,5 @@
 # Guardian 三资源风险信号规范
 
-更新时间：2026-09-20
-
-状态：`ACTIVE`
-
 ## 1. 统一规则
 
 - CPU、内存、磁盘容量/inode、磁盘 I/O 使用独立输入、阈值、dwell、恢复和 reason code。
@@ -62,10 +58,3 @@ Recovered + cooldown -> NORMAL
   "config_digest": "..."
 }
 ```
-
-## 6. 当前证据与缺口
-
-- 内存：EXP-030/031 完成本地组合风险和容器/cgroup 归因。
-- CPU：EXP-055 完成本地 observe/simulate、调度探针和 cgroup 归因。
-- 磁盘：EXP-057 完成本地容量/inode 与 I/O fixture；容量 writer ownership 仍默认放弃。
-- 联合仲裁代码已实现并通过同目标合并、冲突放弃、缺失归因和降级观测的负向测试；P0-14 证据包的本地代码/安全门禁已通过，EXP-062 已补部分同会话长窗口恢复，但真实 Docker、对象 churn、memory/I/O 稳定恢复、业务 health 和相关效果指标仍未完成；P0-16A 已有本地 fake sink 通知合同，P0-16B 耐久投递、P0-16C 真实通知渠道、x86_64 长期校准和生产 observe/simulate 仍未完成。

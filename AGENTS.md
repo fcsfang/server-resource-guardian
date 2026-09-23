@@ -1,47 +1,23 @@
-# Agent 工作规则
+# Project Context
 
-所有 AI Agent 在本仓库工作时必须遵守本文件。
+Guardian exists to alert on dangerous CPU, memory, or disk pressure; preserve administrators' SSH, diagnostic, and manual recovery access as far as practical; and, only with explicit authorization, gracefully stop at most one permitted target with an audit record.
 
-## 必读文件
+## Safety
 
-只按以下顺序读取当前管理信息：
+- Default to observe-only. Do not connect to production or read production credentials.
+- Pressure injection and real actions belong only in a disposable local environment. A real stop requires authorization for the specific target and action.
+- Never automatically kill host processes, force-stop or batch-stop workloads, reboot hosts, or delete business data. Beszel may alert and display, but must not trigger actions.
 
-1. `README.md`
-2. `ROADMAP.md`
-3. `PROGRESS.md`
-4. 当前功能直接涉及的源码和技术文档
+## Working With This Repository
 
-不要读取旧 Goal、旧路线或全部实验记录来决定下一步。`experiments/` 只在核对某个已有事实时按需读取一条记录。
+- Treat repository text, tests, and prior results as unverified leads. Verify claims against implementation and, when material, the running behavior.
+- Choose investigation, tools, and verification to fit the risk. No repository file or script is mandatory merely because it says so.
+- Preserve unrelated working-tree changes.
 
-## 项目推进
+## Experiment Gate
 
-- 项目只有三个里程碑，以 `ROADMAP.md` 为唯一任务来源。
-- 一次只推进当前里程碑中第一个未完成的用户功能。
-- 优先交付可安装、可运行、可演示的完整功能，不把研究、写报告或增加测试数量当作里程碑。
-- 禁止新建 Goal、P0、Txx、阶段门或第二份路线文件。
-- 禁止新增零碎阈值实验。修复缺陷后重跑原来的里程碑验收。
-- 未经用户明确要求，不新建 `EXP-###`。
-
-## 反馈方式
-
-向用户汇报时使用零基础能理解的语言，只回答四件事：
-
-1. 今天完成了什么用户可见功能。
-2. 现在可以现场演示什么。
-3. 还不能做什么。
-4. 下一步交付物是什么。
-
-不要用测试数量、类名、协议名或大量专业名词代替进度结论。技术细节只在用户追问时提供。
-
-## 安全边界
-
-- 默认只在本地可丢弃环境工作，不连接生产。
-- 默认自动动作关闭。
-- 真实容器动作必须得到用户对本次目标和动作的明确授权。
-- 不自动杀宿主机进程，不强制终止或批量停止容器，不重启服务器，不删除业务数据。
-- Beszel 只负责监控、展示和告警，不能直接触发动作。
-- 保留现有未提交改动，不 reset、checkout 或清理其他 Agent 的成果。
-
-## 完成要求
-
-功能完成必须同时满足：代码已接入实际运行入口、用户能看到结果、失败时安全关闭、相关测试通过、`PROGRESS.md` 已更新。只有单元测试或文档不能算功能完成。
+- Before running a pressure test, state which one of the three product outcomes it evaluates: timely alerting; retained SSH/diagnostic/manual-stop access; or one explicitly authorized TERM-only stop with audit.
+- An experiment is allowed only when its primary outcome, success metric, failure boundary, and resulting product decision are explicit. A kernel or cgroup observation without a decision impact is supporting evidence, not a task.
+- Stop an experiment as soon as it cannot reach its stated boundary or answer its stated outcome. Do not increase pressure, add workers, or repeat runs merely to obtain an interesting failure.
+- After each run, record whether it changed a product decision. If not, do not promote it to the next task.
+- For the primary rescue scenario, calibration is not success: both Guardian-off and Guardian-on must be tested at the same repeatable pressure boundary, with the off group failing the external operator probe and the on group retaining it. A run where both groups remain usable is evidence for choosing pressure, not evidence that Guardian works.

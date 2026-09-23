@@ -79,7 +79,7 @@ managed_units=(
   rescue.slice
   workload.slice
   guardian-runtime.slice
-  guardian-collector.slice
+  guardian-observer.slice
   guardian-collector.service
   guardian-runtime.service
 )
@@ -87,8 +87,12 @@ managed_units=(
 managed_paths=(
   "$install_root"
   /usr/local/bin/guardian-status
+  /usr/local/bin/guardian-rescue
+  /usr/local/sbin/guardian-rescue-action
   /etc/systemd/system/guardian-runtime.slice
+  # Retained for rollback manifests produced by older installer versions.
   /etc/systemd/system/guardian-collector.slice
+  /etc/systemd/system/guardian-observer.slice
   /etc/systemd/system/rescue.slice
   /etc/systemd/system/workload.slice
   /etc/systemd/system/guardian-collector.service
@@ -215,10 +219,12 @@ fi
 required_files=(
   scripts/guardian-x86-preflight.py
   scripts/guardian_status.py
+  scripts/guardian_rescue.py
+  scripts/guardian_rescue_action.py
   config/guardian.example.json
   deploy/guardian-x86/guardian.tmpfiles
   deploy/guardian-x86/guardian-runtime.slice
-  deploy/guardian-x86/guardian-collector.slice
+  deploy/guardian-x86/guardian-observer.slice
   deploy/guardian-x86/guardian-runtime.service
   deploy/guardian-x86/guardian-collector.service
   src/guardian_orchestrator.py
@@ -340,6 +346,8 @@ deployed_version=$(git -C "$repository" rev-parse HEAD 2>/dev/null || printf 'so
 printf '%s\n' "$deployed_version" > "$install_root/DEPLOYED_VERSION"
 chown -R root:root "$install_root"
 install -o root -g root -m 0755 "${repository}/scripts/guardian_status.py" /usr/local/bin/guardian-status
+install -o root -g root -m 0755 "${repository}/scripts/guardian_rescue.py" /usr/local/bin/guardian-rescue
+install -o root -g root -m 0755 "${repository}/scripts/guardian_rescue_action.py" /usr/local/sbin/guardian-rescue-action
 
 install -d -o root -g root -m 0755 /etc/systemd/system /etc/tmpfiles.d
 for unit in "${managed_units[@]}"; do
@@ -414,7 +422,7 @@ EOF
 
 systemd-analyze verify \
   /etc/systemd/system/guardian-runtime.slice \
-  /etc/systemd/system/guardian-collector.slice \
+  /etc/systemd/system/guardian-observer.slice \
   /etc/systemd/system/guardian-collector.service \
   /etc/systemd/system/guardian-runtime.service \
   /etc/systemd/system/rescue.slice \

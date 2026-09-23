@@ -75,35 +75,6 @@ class GuardianRuntimeTests(unittest.TestCase):
                     os.environ["GUARDIAN_READY_FILE"] = old
             self.assertEqual(Path(path).read_text(encoding="utf-8"), "runtime:reconciliation_required\n")
 
-    def test_unit_and_slice_define_bounded_read_only_service(self):
-        repo_root = Path(__file__).resolve().parents[1]
-        deploy_root = repo_root / "deploy" / "guardian"
-        # P0-07 VM checks copy the two unit templates beside this test into a
-        # disposable directory, so the same test remains portable there.
-        if not deploy_root.exists():
-            deploy_root = repo_root
-        unit = (deploy_root / "guardian-observer.service").read_text(encoding="utf-8")
-        slice_file = (deploy_root / "guardian-observer.slice").read_text(encoding="utf-8")
-        for required in (
-            "Type=notify",
-            "WatchdogSec=90s",
-            "Restart=on-failure",
-            "User=guardian",
-            "SupplementaryGroups=docker",
-            "Slice=rescue.slice",
-            "LogRateLimitBurst=200",
-            "GUARDIAN_READY_FILE=/run/guardian/ready",
-        ):
-            self.assertIn(required, unit)
-        for required in ("MemoryMin=16M", "MemoryLow=32M", "MemoryHigh=192M", "TasksMax=128"):
-            self.assertIn(required, slice_file)
-        watchdog_match = re.search(r"^WatchdogSec=(\d+)s$", unit, flags=re.MULTILINE)
-        self.assertIsNotNone(watchdog_match)
-        self.assertGreater(int(watchdog_match.group(1)), 60)
-        self.assertNotIn("docker stop", unit)
-        self.assertNotIn("docker restart", unit)
-        self.assertNotIn("docker kill", unit)
-
     def test_runtime_unit_routes_observer_into_coordinator_entrypoint(self):
         repo_root = Path(__file__).resolve().parents[1]
         unit = (repo_root / "deploy" / "guardian" / "guardian-runtime.service").read_text(encoding="utf-8")

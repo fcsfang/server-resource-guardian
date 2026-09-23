@@ -1,11 +1,10 @@
 """Continuous in-process Guardian runtime.
 
 The runtime is deliberately a small supervisory layer around the existing
-Observer and Coordinator.  It owns the bounded hand-off queue, shutdown
-semantics, readiness/watchdog signals and durable startup construction.  It
-does not contain a second policy engine and it never creates a real action
-adapter: the local runtime uses the Coordinator's fake adapter until a later
-task supplies an independent broker.
+Observer and Coordinator. It owns the bounded hand-off queue, shutdown
+semantics, readiness/watchdog signals and durable startup construction. It
+does not contain a second policy engine. Enforce mode delegates actions to the
+local Broker; observe and simulate modes use the fake adapter.
 """
 
 from __future__ import annotations
@@ -36,6 +35,7 @@ from .guardian_emergency_shedding import emergency_shedding_policy_from_config
 from .guardian_notification_outbox import DurableNotificationOutbox, NotificationOutboxError
 from .guardian_notifications import DisabledNotificationSink
 from .guardian_observer import ObserverSampler, _finalize_observer_event, append_audit, collect_observation
+from .guardian_pressure_gate import SUSPENDED, PressureGate
 from .guardian_recovery import (
     BusinessRecoveryObservation,
     BusinessRecoveryPolicy,
@@ -120,6 +120,7 @@ class RuntimeOrchestrator:
         reserve_broker_socket: str | Path = "/run/guardian-reserve-broker/reserve.sock",
         collector_socket: str | Path = "/run/guardian-collector/collector.sock",
         authorization_file: str | Path | None = None,
+        pressure_gate: PressureGate | None = None,
         observer: Any | None = None,
         coordinator: Any | None = None,
         result_callback: Callable[[Mapping[str, Any]], None] | None = None,
@@ -154,6 +155,8 @@ class RuntimeOrchestrator:
         self.broker_socket = str(broker_socket)
         self.broker_timeout_seconds = float(broker_timeout_seconds)
         self.collector_socket = str(collector_socket)
+        self.pressure_gate = pressure_gate or PressureGate()
+        self._last_collector_collection: float | None = None
         self.authorization_file = Path(authorization_file) if authorization_file is not None else (
             Path(config.authorization_file) if config.authorization_file else None
         )
@@ -172,12 +175,45 @@ class RuntimeOrchestrator:
         self._result_callback = result_callback
 
         if observer is None:
-            collector_client = UnixSocketCollectorClient(self.collector_socket)
+            collector_client = UnixSocketCollectorClient(self.collector_socket, timeout_seconds=1.0)
 
             def runtime_collector(**kwargs: Any) -> dict[str, Any]:
+                decision = self.pressure_gate.evaluate()
+                now = time.monotonic()
+                interval_seconds = interval if interval is not None else config.interval_seconds
+                if decision.state == SUSPENDED or not self.pressure_gate.should_collect(
+                    now=now,
+                    last_collection=self._last_collector_collection,
+                    interval_seconds=interval_seconds,
+                ):
+                    reason = "pressure_gate_suspended" if decision.state == SUSPENDED else "pressure_gate_degraded"
+                    blocked = {
+                        "docker": {"available": False, "error": reason, "containers": []},
+                        "object_registry": {"status": "unavailable", "objects": [], "errors": [reason]},
+                        "collector": {
+                            "status": "degraded",
+                            "read_only": True,
+                            "mutation_commands": [],
+                            "stale": True,
+                            "pressure_gate": decision.as_dict(),
+                        },
+                    }
+                    return collect_observation(**kwargs, container_collector=lambda: blocked)
+
+                def collect_containers() -> dict[str, Any]:
+                    collected = collector_client.snapshot()
+                    collector_meta = collected.get("collector") if isinstance(collected.get("collector"), Mapping) else {}
+                    collected["collector"] = {
+                        **collector_meta,
+                        "pressure_gate": decision.as_dict(),
+                        "stale": False,
+                    }
+                    self._last_collector_collection = now
+                    return collected
+
                 return collect_observation(
                     **kwargs,
-                    container_collector=collector_client.snapshot,
+                    container_collector=collect_containers,
                 )
 
             self.observer = ObserverSampler(

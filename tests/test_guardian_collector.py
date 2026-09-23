@@ -7,6 +7,7 @@ from pathlib import Path
 
 from src.guardian_collector_client import UnixSocketCollectorClient
 from src.guardian_collector_service import CollectorServer, ReadOnlyCollector
+from src.guardian_pressure_gate import PressureGate
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -70,6 +71,34 @@ class GuardianCollectorTests(unittest.TestCase):
                 + b"\n"
             )
 
+    def test_pressure_gate_skips_docker_queries_under_critical_memory(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            proc = root / "proc"
+            (proc / "pressure").mkdir(parents=True)
+            (proc / "meminfo").write_text("MemTotal: 4096000 kB\nMemAvailable: 50000 kB\n", encoding="utf-8")
+            (proc / "pressure" / "memory").write_text(
+                "some avg10=0.00 avg60=0.00 avg300=0.00 total=0\n"
+                "full avg10=30.00 avg60=0.00 avg300=0.00 total=0\n",
+                encoding="utf-8",
+            )
+            calls = []
+
+            def runner(command, **_kwargs):
+                calls.append(command)
+                raise AssertionError("docker must not be queried while pressure is suspended")
+
+            collector = ReadOnlyCollector(
+                runner=runner,
+                proc_root=proc,
+                pressure_gate=PressureGate(proc_root=proc),
+            )
+            result = collector.snapshot()
+            self.assertEqual(result["status"], "degraded")
+            self.assertEqual(calls, [])
+            self.assertEqual(result["data"]["docker"]["error"], "pressure_gate_suspended")
+            self.assertEqual(result["data"]["collector"]["pressure_gate"]["state"], "suspended")
+
     def test_client_reads_one_snapshot_from_unix_socket(self):
         with tempfile.TemporaryDirectory() as temp:
             socket_path = Path(temp) / "collector.sock"
@@ -100,6 +129,16 @@ class GuardianCollectorTests(unittest.TestCase):
                 thread.join(timeout=1)
             self.assertTrue(value["collector"]["read_only"])
             self.assertEqual(value["docker"]["containers"], [])
+
+    def test_disconnected_client_does_not_crash_collector_send_path(self):
+        class ClosedChannel:
+            def sendall(self, _payload):
+                raise BrokenPipeError("client closed")
+
+        CollectorServer._send(
+            ClosedChannel(),
+            {"schema": "guardian.container_collector.response.v1", "status": "ok"},
+        )
 
     def test_systemd_boundary_keeps_docker_access_in_collector_only(self):
         collector = (ROOT / "deploy" / "guardian" / "guardian-collector.service").read_text(encoding="utf-8")

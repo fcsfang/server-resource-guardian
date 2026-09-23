@@ -1,0 +1,66 @@
+{
+  "experiment": "memoryhigh-cleanup-boundary",
+  "date": "2026-09-23",
+  "vm": {
+    "name": "guardian-t11-lite",
+    "cpu": 2,
+    "memory_mib": 2048,
+    "disk_gib": 8,
+    "kernel": "5.15.0-191-generic",
+    "systemd": "249.11-0ubuntu3.22",
+    "cgroup": "v2"
+  },
+  "baseline": {
+    "rescue_slice": {
+      "allowed_cpus": "0",
+      "memory_min": 536870912,
+      "memory_low": 805306368,
+      "tasks_max": 1024
+    },
+    "workload_slice": {
+      "allowed_cpus": "1",
+      "memory_high": 469762048,
+      "memory_max": 536870912,
+      "memory_swap_max": 0,
+      "tasks_max": 256
+    }
+  },
+  "control": {
+    "workload_bytes": 419430400,
+    "memory_current": 423792640,
+    "term_elapsed_ms": 1103,
+    "result": "term_completed_without_high_pressure"
+  },
+  "boundary": {
+    "workload_bytes": 471859200,
+    "memory_current": 476274688,
+    "parent_memory_high": 469762048,
+    "parent_memory_max": 536870912,
+    "parent_memory_events_high_delta_during_term_wait": 31892,
+    "term_wait_ms_before_rescue": 31901,
+    "term_result_before_rescue": "still_running",
+    "rescue_memory_high": 536870912,
+    "term_elapsed_ms_after_rescue": 1170,
+    "result": "term_completed_after_temporary_memory_high_raise"
+  },
+  "restored": {
+    "memory_high": 469762048,
+    "memory_max": 536870912,
+    "memory_swap_max": 0,
+    "memory_current": 1052672,
+    "tasks_current": 0,
+    "services": {
+      "guardian-runtime": "active",
+      "guardian-collector": "active",
+      "ssh": "active",
+      "systemd-logind": "active",
+      "docker": "active"
+    }
+  },
+  "safety": {
+    "kill_signal_used": false,
+    "oom_churn_run": false,
+    "authorized_stop_run": false,
+    "production_host": false
+  }
+}

@@ -1,9 +1,5 @@
 # Guardian Action Broker 与 Adapter 契约
 
-更新时间：2026-09-20
-
-状态：`ACTIVE`
-
 ## 1. 当前产品动作面
 
 v2 自动路径的唯一候选变更动作是对明确 `actionable_set` 对象执行一次 `graceful_stop`。仓库保留的 `restart`/`terminate` adapter 是历史原型代码；它们不得因代码存在而进入当前自动策略或生产准入。

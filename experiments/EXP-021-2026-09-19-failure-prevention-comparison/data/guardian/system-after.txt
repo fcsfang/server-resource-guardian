@@ -1,2 +1,0 @@
-docker_running=0
-system_state=

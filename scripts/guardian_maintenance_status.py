@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import subprocess
 
+RESOURCE_DOMAINS = ("rescue.slice", "workload.slice", "guardian-observer.slice")
+
 
 def run(*args: str) -> str:
     result = subprocess.run(args, capture_output=True, text=True, check=False)
@@ -20,7 +22,7 @@ def main() -> int:
     for unit in ("guardian-runtime.service", "guardian-collector.service", "ssh.service", "systemd-logind.service", "docker.service", "containerd.service"):
         print(f"{unit}: {run('/usr/bin/systemctl', 'is-active', unit)} / {run('/usr/bin/systemctl', 'is-enabled', unit)}")
     print("\n[Resource domains]")
-    for unit in ("rescue.slice", "workload.slice", "guardian-runtime.slice", "guardian-collector.slice"):
+    for unit in RESOURCE_DOMAINS:
         print(f"{unit}: {run('/usr/bin/systemctl', 'show', unit, '-p', 'Slice', '-p', 'AllowedCPUs', '-p', 'EffectiveCPUs', '-p', 'MemoryMin', '-p', 'MemoryLow', '-p', 'MemoryHigh', '-p', 'MemoryMax', '-p', 'MemorySwapMax', '-p', 'TasksMax')}")
     print("\n[Maintenance shell]")
     print("The SSH session must additionally inspect its own user-UID slice.")

@@ -1,9 +1,5 @@
 # Guardian 两层恢复判断
 
-更新时间：2026-09-20
-
-状态：`LOCAL-MVP-IMPLEMENTED`
-
 ## 1. 语义拆分
 
 一次处置动作后，不能用“容器停止”直接宣称业务恢复。Guardian 现在把结果拆为两个独立层：
@@ -35,8 +31,8 @@
 - 目标 ID 不一致、健康状态不达标和恢复窗口超时均输出 `BUSINESS_DEGRADED`。
 - 恢复判断只产出状态和审计结果，不自动升级到 restart/terminate。
 
-## 4. 证据与限制
+## 4. 限制
 
-- 纯函数和 Controller 集成测试见 [`EXP-033`](../experiments/EXP-033-2026-09-20-two-layer-recovery/record.md)。
-- 当前 probe 是注入式接口和 fixture，不代表真实业务健康检查已经获得 owner 授权。
-- 当前指标阈值是本地校准默认值，尚未完成 x86_64、长跑和生产复核。
+- A successful stop or host resource improvement does not prove business recovery.
+- A business probe must be explicitly configured and authorized by the service owner.
+- Local observations do not establish x86_64 or production behavior.

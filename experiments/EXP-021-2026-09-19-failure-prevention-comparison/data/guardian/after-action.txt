@@ -1,6 +1,0 @@
-enforce_iteration=4
-enforce_returncode=0
-post_mem_available_kb=3624616
-post_service_alive=1
-post_health_response=health-ok
-post_target_state=exited/0

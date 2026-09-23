@@ -83,11 +83,12 @@ required_files=(
   "src/guardian_collector_client.py"
   "src/guardian_collector_service.py"
   "scripts/guardian_status.py"
+  "scripts/guardian_rescue.py"
+  "scripts/guardian_rescue_action.py"
   "config/guardian.example.json"
   "deploy/guardian/guardian-runtime.service"
-  "deploy/guardian/guardian-runtime.slice"
   "deploy/guardian/guardian-collector.service"
-  "deploy/guardian/guardian-collector.slice"
+  "deploy/guardian/guardian-observer.slice"
   "deploy/guardian/guardian-broker.slice"
   "deploy/guardian/guardian-broker.service"
   "deploy/guardian/guardian-reserve-broker.service"
@@ -112,8 +113,7 @@ done
 managed_units=(
   rescue.slice
   workload.slice
-  guardian-runtime.slice
-  guardian-collector.slice
+  guardian-observer.slice
   guardian-broker.slice
   guardian-collector.service
   guardian-runtime.service
@@ -242,19 +242,9 @@ if mode != "observe" or actions_enabled is not False:
     raise SystemExit("guardian config must remain observe-only with actions disabled")
 PY
 
-mkdir -p "$install_root"
-if [[ "$repository" != "$install_root" ]]; then
-  tar --exclude=.git --exclude=__pycache__ --exclude='*.pyc' -C "$repository" -cf - . | tar -C "$install_root" -xf -
-fi
-chown -R root:root "$install_root"
-install -o root -g root -m 0755 "${repository}/scripts/guardian_status.py" /usr/local/bin/guardian-status
-install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_status.py" /usr/local/sbin/guardian-maintenance-status
-install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_pressure.py" /usr/local/sbin/guardian-maintenance-pressure
-install -o root -g root -m 0755 "${repository}/scripts/guardian_reserve_space.py" /usr/local/sbin/guardian-reserve-space
-install -o root -g root -m 0755 "${repository}/scripts/guardian-release-emergency-space" /usr/local/sbin/guardian-release-emergency-space
-install -o root -g root -m 0755 "${repository}/scripts/guardian-status-emergency-space" /usr/local/sbin/guardian-status-emergency-space
-install -o root -g root -m 0755 "${repository}/scripts/guardian-create-emergency-space" /usr/local/sbin/guardian-create-emergency-space
-
+maintenance_uid=$(id -u "$maintenance_user")
+user_slice_dropin_dir="/etc/systemd/system/user-${maintenance_uid}.slice.d"
+user_slice_parent_dropin_dir="/etc/systemd/system/user.slice.d"
 timestamp=$(date -u +%Y%m%dT%H%M%SZ)
 backup_dir="${backup_root}/${timestamp}"
 backup_created=false
@@ -269,9 +259,38 @@ backup_if_present() {
 for unit in "${managed_units[@]}"; do
   backup_if_present "/etc/systemd/system/${unit}"
 done
+for path in \
+  /usr/local/bin/guardian-status \
+  /usr/local/bin/guardian-rescue \
+  /usr/local/sbin/guardian-rescue-action \
+  /usr/local/sbin/guardian-maintenance-status \
+  /usr/local/sbin/guardian-maintenance-pressure \
+  /usr/local/sbin/guardian-reserve-space \
+  /usr/local/sbin/guardian-release-emergency-space \
+  /usr/local/sbin/guardian-status-emergency-space \
+  /usr/local/sbin/guardian-create-emergency-space; do
+  backup_if_present "$path"
+done
 backup_if_present /etc/tmpfiles.d/guardian.conf
 backup_if_present /etc/systemd/journald.conf.d/guardian.conf
 backup_if_present /etc/sudoers.d/guardian-maintenance
+backup_if_present "${user_slice_dropin_dir}/guardian-maintenance.conf"
+backup_if_present "${user_slice_parent_dropin_dir}/guardian-maintenance-user-slice.conf"
+
+mkdir -p "$install_root"
+if [[ "$repository" != "$install_root" ]]; then
+  tar --exclude=.git --exclude=__pycache__ --exclude='*.pyc' -C "$repository" -cf - . | tar -C "$install_root" -xf -
+fi
+chown -R root:root "$install_root"
+install -o root -g root -m 0755 "${repository}/scripts/guardian_status.py" /usr/local/bin/guardian-status
+install -o root -g root -m 0755 "${repository}/scripts/guardian_rescue.py" /usr/local/bin/guardian-rescue
+install -o root -g root -m 0755 "${repository}/scripts/guardian_rescue_action.py" /usr/local/sbin/guardian-rescue-action
+install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_status.py" /usr/local/sbin/guardian-maintenance-status
+install -o root -g root -m 0755 "${repository}/scripts/guardian_maintenance_pressure.py" /usr/local/sbin/guardian-maintenance-pressure
+install -o root -g root -m 0755 "${repository}/scripts/guardian_reserve_space.py" /usr/local/sbin/guardian-reserve-space
+install -o root -g root -m 0755 "${repository}/scripts/guardian-release-emergency-space" /usr/local/sbin/guardian-release-emergency-space
+install -o root -g root -m 0755 "${repository}/scripts/guardian-status-emergency-space" /usr/local/sbin/guardian-status-emergency-space
+install -o root -g root -m 0755 "${repository}/scripts/guardian-create-emergency-space" /usr/local/sbin/guardian-create-emergency-space
 
 install -d -o root -g root -m 0755 /etc/systemd/system
 for unit in "${managed_units[@]}"; do
@@ -282,8 +301,6 @@ install -o root -g root -m 0644 "${repository}/deploy/guardian/guardian.tmpfiles
 install -d -o root -g root -m 0755 /etc/systemd/journald.conf.d
 install -o root -g root -m 0644 "${repository}/deploy/guardian/guardian-journald.conf" /etc/systemd/journald.conf.d/guardian.conf
 
-maintenance_uid=$(id -u "$maintenance_user")
-user_slice_dropin_dir="/etc/systemd/system/user-${maintenance_uid}.slice.d"
 install -d -o root -g root -m 0755 "$user_slice_dropin_dir"
 cat > "${user_slice_dropin_dir}/guardian-maintenance.conf" <<'EOF'
 [Slice]
@@ -295,6 +312,13 @@ MemoryLow=256M
 TasksMax=256
 EOF
 chmod 0644 "${user_slice_dropin_dir}/guardian-maintenance.conf"
+install -d -o root -g root -m 0755 "$user_slice_parent_dropin_dir"
+cat > "${user_slice_parent_dropin_dir}/guardian-maintenance-user-slice.conf" <<'EOF'
+[Slice]
+MemoryMin=128M
+MemoryLow=256M
+EOF
+chmod 0644 "${user_slice_parent_dropin_dir}/guardian-maintenance-user-slice.conf"
 
 install -d -o root -g root -m 0755 /etc/systemd/system
 for unit in "${protected_units[@]}"; do
@@ -305,15 +329,14 @@ for unit in "${protected_units[@]}"; do
 done
 
 install -d -o root -g root -m 0755 /etc/sudoers.d
-printf '%s ALL=(root) NOPASSWD: /usr/local/sbin/guardian-maintenance-status, /usr/local/sbin/guardian-maintenance-pressure, /usr/local/sbin/guardian-release-emergency-space, /usr/local/sbin/guardian-status-emergency-space, /usr/local/sbin/guardian-create-emergency-space\n' "$maintenance_user" > /etc/sudoers.d/guardian-maintenance
+printf '%s ALL=(root) NOPASSWD: /usr/local/bin/guardian-rescue stop *, /usr/local/bin/guardian-rescue verify *, /usr/local/sbin/guardian-rescue-action *, /usr/local/sbin/guardian-maintenance-status, /usr/local/sbin/guardian-maintenance-pressure, /usr/local/sbin/guardian-release-emergency-space, /usr/local/sbin/guardian-status-emergency-space, /usr/local/sbin/guardian-create-emergency-space\n' "$maintenance_user" > /etc/sudoers.d/guardian-maintenance
 chmod 0440 /etc/sudoers.d/guardian-maintenance
 visudo -cf /etc/sudoers.d/guardian-maintenance >/dev/null
 
 systemd-analyze verify \
   /etc/systemd/system/rescue.slice \
   /etc/systemd/system/workload.slice \
-  /etc/systemd/system/guardian-runtime.slice \
-  /etc/systemd/system/guardian-collector.slice \
+  /etc/systemd/system/guardian-observer.slice \
   /etc/systemd/system/guardian-broker.slice \
   /etc/systemd/system/guardian-collector.service \
   /etc/systemd/system/guardian-runtime.service \

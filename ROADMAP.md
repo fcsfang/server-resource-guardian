@@ -1,145 +1,41 @@
-# Guardian 上线路线
+# Guardian Acceptance Roadmap
 
-更新时间：2026-09-22
+## Product outcomes
 
-这是项目唯一的执行路线。项目只使用三个里程碑，不再使用 Goal、P0、Txx 等多层编号。
+Guardian is evaluated on exactly three outcomes:
 
-## 最终交付
+1. Timely and correct CPU, memory, and disk alerts.
+2. A usable external SSH, diagnosis, and manual-stop path at a defined pressure boundary.
+3. One explicitly authorized TERM-only stop of an allowlisted target, with audit and separate host/business recovery results.
 
-Guardian 在 Ubuntu 服务器上持续运行，长期观察 CPU、内存和磁盘：
+Native Linux controls own accounting, isolation, reclaim, and enforcement. Beszel owns monitoring and alert delivery. Guardian owns interpretation, target eligibility, authorization, one bounded request, audit, and verification.
 
-1. 危险出现时，第一版在 Beszel 页面和告警历史中展示；后续通过飞书主动推送管理员。
-2. 资源紧张时，尽可能保留管理员登录、查看和手工停止容器的能力。
-3. 自动模式开启后，只从明确允许处理的容器中选择资源占用最高者，最多温和停止一个，并记录全过程。
+## Experiment decision gate
 
-本地版本完成后，先进入获批的非生产服务器验证；生产自动模式不在本地版本中默认开启。
+Before a pressure run, record its primary product outcome, success metric, failure boundary, and the product decision it can change. Kernel, cgroup, or OOM observations alone are supporting evidence. Stop a run when it cannot reach the declared product boundary; do not add workers merely to produce a more dramatic failure.
 
----
+## Operator-access acceptance contract
 
-## 里程碑一：看得见、进得去
+The external probe opens a fresh SSH connection for every sample and records transport, authentication, shell startup, diagnosis, `guardian-rescue status`, and `guardian-rescue top` separately.
 
-### 用户最终能看到什么
+A Guardian-off failure boundary is repeatable only when two independent runs use identical host state, pressure, cadence, and timeout, each collect at least 20 probes, and each has at least 20% complete-probe failures or timeouts with the failing stage identified. One isolated timeout is calibration noise, not a boundary.
 
-- Guardian 开机后自动运行，不需要手工执行 Python 命令。
-- Beszel 能显示并告警 CPU、内存和磁盘风险。
-- 资源紧张时，管理员仍能尽量登录服务器、查看状态和手工停止指定容器。
-- 一个简单命令能回答：Guardian 是否运行、最近是否告警、自动动作是否关闭。
+A matched Guardian-on result passes only when the same boundary and probe sequence are used in two independent runs, at least 95% of complete probes succeed in each run, no two consecutive probes fail, and successful complete probes have P95 latency no greater than the two-second operator SLO.
 
-### 当前状态：本地版本完成；Beszel 页面告警和真实 SSH 均已验收
+If a representative disposable environment cannot reproduce the off boundary, stop the route and report that no in-band SSH advantage was established. Do not weaken the boundary to manufacture a pass.
 
-- [x] 本地维护通道已完成安装、重启、停用恢复、回滚和一次完整外部 SSH 验收。
-- [x] CPU、内存、I/O、磁盘容量和进程数压力下，本地维护探针全部通过。
-- [x] Beszel 已配置 CPU、内存、磁盘三类本地告警规则。
-- [x] 在隔离的本地 Beszel 环境完成三类告警的触发和恢复展示，避免误发真实邮件。
-- [x] 把 Guardian 安装流程收敛成一次可重复执行的本地安装，并确认重启后持续运行。
-- [x] 提供面向管理员的简单状态命令和一页操作说明。
-- [x] 完成一次里程碑演示：告警可见、Guardian 在线、维护入口可用、自动动作关闭；新 disposable VM 的压力对象受 CPU、内存和任务数边界限制。
+## Environment contract
 
-当前版本以 Beszel 平台内告警为交付边界。飞书主动推送是后续升级项，不阻塞 x86_64 非生产只观察验证；接入飞书后仍只能发送通知，不能触发 Guardian 动作。
+The SSH comparison requires a disposable cgroup-v2/systemd host, an external probe client, a working out-of-band console, fixed host sizing, fixed workload images, and saved effective cgroup values. The current 2-vCPU/2-GiB `guardian-t11-lite` VM is suitable for functional and safety checks, but its completed boundary search did not make external SSH fail repeatably. No additional pressure tuning is scheduled on that VM.
 
-### 完成标准
+A future benefit comparison should use a representative disposable x86_64 non-production host or VM with the same kernel/control configuration intended for deployment. No production connection or credential access is authorized.
 
-在一台全新的本地 Ubuntu 虚拟机上，可以按照一份说明完成安装；重启后 Guardian 和 Beszel 仍正常；制造受控资源压力后能看到告警，并能完成登录、查看和手工处置演示。
+## Current closeout sequence
 
----
+1. **Repository reduction:** retain supported product code, deployment assets, tests, compact lab tools, and summary evidence; keep raw probe streams out of the repository. Verify links, imports, shell syntax, compilation, and the full test suite.
+2. **Docker business-object loop:** make one local ARM64 web image available offline in `guardian-t11-lite`; create two disposable labeled web replicas in `workload.slice`; authorize exactly one full container ID; send exactly one TERM; verify audit, host mitigation, stopped-target state, and surviving-replica HTTP health separately; then restore observe-only configuration and remove the fixtures.
+3. **SSH benefit boundary:** keep the local result as an explicit inconclusive boundary. Resume only when the representative disposable x86_64 prerequisite is available; otherwise close with no rescue-advantage claim and require out-of-band recovery.
 
-## 里程碑二：找得到、能建议
+## Exit criteria
 
-### 用户最终能看到什么
-
-- Guardian 能列出当前 CPU、内存或磁盘占用最高的容器。
-- 重要容器会明确标为“禁止处理”。
-- 无法确认目标时只告警，不猜测、不执行动作。
-- 模拟模式会说明“如果允许自动处理，将停止哪个容器以及为什么”，但不会真的停止。
-
-### 当前状态：已完成本地统一演示；生产未验证
-
-- [x] 实现独立的只读容器采集服务。
-- [x] Guardian 主服务不再直接拥有 Docker 管理权限。
-- [x] 采集服务只返回容器身份、状态和资源数据，不能停止、重启或删除容器。
-- [x] 将现有资源排名、保护名单和模拟计划接入持续运行服务。
-- [x] 在 Beszel 或 Guardian 状态页展示候选容器、保护原因和模拟建议。
-- [x] 宿主机 CPU、内存或磁盘达到危险线后独立告警；找不到容器时保留危险状态，但不生成可执行动作。
-- [x] 完成一次里程碑演示：产生风险、列出候选、给出建议、真实动作数为零。
-
-2026-09-21 已完成受控真实 CPU 压力下的本地统一演示：在 `guardian-t11-matrix` 上创建一个带 `local-disposable` 语义的临时压力容器，连续服务通过真实 Collector 读取数据，CPU 达到 100%，压力容器贡献约 99.998%，归因状态为 `TARGET_CONFIRMED`。展示投影将其列为第一候选，同时明确展示受保护的 Beszel 控制面；模拟计划为 `graceful_stop`，执行状态为 `not_executed`，真实动作数为零。演示后仅清理该临时压力容器，既有 Beszel 容器保持 healthy，Guardian Runtime/Collector 保持 active。该证据只覆盖本地 disposable VM，不等于生产保证。
-
-### 完成标准
-
-本地压力出现后，管理员能看到风险类型、资源占用最高的容器、哪些对象受保护，以及 Guardian 的模拟建议；关闭采集服务或制造数据缺失时，Guardian 必须只告警。
-
----
-
-## 里程碑三：能止损、有记录
-
-### 用户最终能看到什么
-
-- 在自动模式获得明确授权后，Guardian 最多温和停止一个允许处理的测试容器。
-- 停止前再次确认风险和容器身份，避免处理已经变化的对象。
-- 停止后检查资源是否恢复；没有恢复就停止继续操作并通知人工。
-- Beszel 或 Guardian 页面能看到告警、选择、动作和恢复结果。
-
-### 当前状态：本地功能完成；CPU、内存止损和磁盘应急恢复均已验收
-
-2026-09-22 在 `guardian-t11-matrix` 完成一次统一的本地 disposable 自动止损验收：真实 CPU 压力容器被连续采样确认，Guardian 经过一次性授权、动作前 Collector 复核和独立 Broker 重验证后，仅执行一次 `graceful_stop`；审计记录为 `execution=REAL`、`action_completed`、`target_stopped`，并记录宿主机资源 `MITIGATED`。由于没有真实业务健康检查，业务状态记录为“恢复待人工确认”，不能把测试容器停止当作业务恢复。目标随后已清理，4 个既有 Beszel 容器保持 healthy；安装态已恢复为 `observe`，Broker 关闭且 socket 消失。该证据只覆盖本地 disposable VM，不等于非生产或生产保证。
-
-- [x] 把告警、目标选择、授权、温和停止和恢复检查接入同一个持续服务的代码主链。
-- [x] 默认保持自动动作关闭；`enforce` 需要绝对路径的一次性授权文件，仍只允许本地可丢弃容器和受配置约束的动作。
-- [x] 完成一次从真实压力开始的本地自动止损演示。
-- [x] 完成安装、升级、停用、回滚和故障处理说明。
-- [x] 执行一次最终整体验收，不再拆成多个小实验。
-- [x] 内存风险已接入连续 Runtime 的 observe/simulate 主链；默认无真实动作。
-- [x] 磁盘容量风险已接入 Guardian 自有预留空间恢复主链；无写入者证据时不停止容器。
-- [x] 常驻 Runtime 已接入默认关闭的固定作用域预留恢复边界；不放宽 Runtime 权限，不连接 Docker。
-- [x] 预留恢复的 root-only 授权消费、固定执行槽、部分成功和通知持久化已纳入本地版本。
-- [x] 在本地 disposable VM 重新安装最新代码并完成一次最终整体验收；验收后恢复 observe、自动动作关闭、两个 Broker 关闭和预留空间 ready。
-- [x] 提供 x86_64 非生产只读准入检查命令，不读取凭据、不安装服务、不开启自动动作。
-- [x] 提供从 GitHub 下载后可执行的 x86_64 只观察安装、升级和回滚入口；不修改 SSH、Docker、网络或登录服务，不安装动作 Broker。
-- [x] 完成一次短时真实内存止损：连续风险和目标身份复核通过后，仅向唯一允许目标发送一次 `SIGTERM`，目标以退出码 0 停止，无 OOM/SIGKILL，宿主机可用内存恢复，4 个 Beszel 容器保持 healthy。
-
-本地已经完成 CPU 和内存的受控单容器止损、Guardian 自有预留空间的固定范围恢复、保护对象展示、root-only 审计和默认关闭的自动动作。内存验收期间发现并修正两个问题：`graceful_stop` 现在只发送一次 `SIGTERM`，超时只转人工；宿主机风险缓解和业务恢复分开记录，缺少业务健康检查不会再把已缓解的宿主机误报为恢复失败。磁盘当前只释放 Guardian 自有预留空间并转人工，不是磁盘写入根因自动清理。真实业务恢复、x86_64 非生产和生产环境仍未验证。
-
-### 完成标准
-
-在本地可丢弃环境中，真实压力触发告警，Guardian 正确选择唯一允许处理的容器，温和停止一次，记录资源恢复或未恢复结果；任何失败都不会继续处理第二个对象。
-
----
-
-## 开发顺序
-
-严格按照以下顺序推进：
-
-1. 完成里程碑一的剩余功能并演示。
-2. 完成里程碑二的全部功能并演示。
-3. 完成里程碑三的全部功能和最终验收。
-4. 在 x86_64 服务器运行只读准入检查，安装只观察版本和按主机规格生成的维护资源域；重启后按 `deploy/guardian-x86/PRODUCTION-LIKE-ACCEPTANCE.md` 完成多应用、外部新 SSH、人工处置和恢复的整体验收。
-5. 非生产通过后接入飞书主动通知，并验证授权接收人实际收到告警和恢复消息。
-6. 另行评审生产只观测部署；生产自动模式需要单独审批。
-
-不能因为某个局部测试有趣或某个参数还可以优化，就跳过当前里程碑。
-
-下一步不再做新的本地压力实验。x86_64 下载、只读准入、只观察安装、升级和回滚入口已经交付；下一步是在目标 x86_64 服务器执行安装并核对开机运行、Beszel 页面和现有业务健康。飞书主动通知在 x86 验证后接入，不阻塞当前推进。
-
-## 测试规则
-
-- 开发中只运行与当前功能直接相关的单元测试和一次短时联调。
-- 每个里程碑只保留一次面向用户结果的整体验收。
-- 缺陷修复后重跑同一个验收，不新建新的实验编号。
-- 在三个里程碑完成前，不做新的阈值研究、长时间压力研究或相似场景补证。
-- `experiments/` 里的旧记录是历史证据，不是后续任务来源。
-
-## 永远不会自动执行的动作
-
-- 不自动杀宿主机任意进程。
-- 不自动强制终止、批量停止或重启容器。
-- 不自动重启服务器。
-- 不自动删除日志、容器数据或业务文件。
-- 不允许 Beszel、网页、远程 Agent 或大模型直接触发执行动作。
-
-## 对外表达
-
-在里程碑三完成前，只能说“正在建设本地可运行版本”。
-
-三个里程碑全部完成并通过本地真实维护通道验收后，可以说“本地可演示版本完成，准备申请非生产服务器验证”。
-
-只有非生产验证和正式审批完成后，才能讨论生产部署；不能声称保证服务器永不宕机或保证 SSH 永远可用。
+The current closeout is complete when the repository is clean and reproducibly tested, the disposable Docker loop has an auditable outcome without forced escalation, and the SSH claim is either supported by the contract above or explicitly closed as unproven. Local evidence never establishes production readiness.

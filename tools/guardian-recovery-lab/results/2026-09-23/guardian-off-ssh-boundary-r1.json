@@ -1,0 +1,29 @@
+{
+  "experiment": "guardian-off-ssh-boundary-r1",
+  "vm": "guardian-t11-lite",
+  "purpose": "Find a repeatable external SSH operator failure boundary before any Guardian-on comparison.",
+  "guardian_off_setup": {
+    "runtime": "inactive",
+    "collector": "inactive",
+    "rescue_allowed_cpus": "0-1",
+    "rescue_memory_min": 0,
+    "rescue_memory_low": 0,
+    "pressure_slice": "system.slice",
+    "known_residual": "user-1001.slice retained static MemoryMin=128MiB and MemoryLow=256MiB"
+  },
+  "runs": [
+    {"name":"cpu4","pressure":"stress-ng --cpu 4 --timeout 20s","probe_timeout_seconds":2,"rounds":16,"ok":16,"failed":0},
+    {"name":"mem3x500","pressure":"stress-ng --vm 3 --vm-bytes 500M --vm-keep --cpu 2 --timeout 20s","probe_timeout_seconds":2,"rounds":18,"ok":18,"failed":0},
+    {"name":"resident4x400","pressure":"pressure.py --memory-mib 400 --memory-workers 4 --cpu-workers 4 --duration 60","probe_timeout_seconds":2,"rounds":15,"ok":15,"failed":0,"minimum_mem_available_mib":94},
+    {"name":"resident4x400_cpu16","pressure":"pressure.py --memory-mib 400 --memory-workers 4 --cpu-workers 16 --duration 60","probe_timeout_seconds":2,"rounds":15,"ok":15,"failed":0,"minimum_mem_available_mib":76},
+    {"name":"resident4x400_timeout500ms","pressure":"same as resident4x400_cpu16","probe_timeout_seconds":0.5,"rounds":10,"ok":10,"failed":0,"elapsed_ms_range":[206.06,265.273]}
+  ],
+  "invalid_attempt": {
+    "pressure":"pressure.py --memory-mib 450 --memory-workers 4 --cpu-workers 2 --duration 60",
+    "result":"pressure_unit_oom_killed_before_external_probe",
+    "ssh_boundary_evidence":"none"
+  },
+  "conclusion":"No repeatable Guardian-off SSH failure boundary was found within bounded, observable pressure on the 2-vCPU/2-GiB lite VM. Do not run a Guardian-on comparison against these runs. A larger or more representative disposable baseline is required.",
+  "restored": {"runtime":"active","collector":"active","rescue_allowed_cpus":"0","rescue_memory_min":536870912,"rescue_memory_low":805306368},
+  "production_host": false
+}

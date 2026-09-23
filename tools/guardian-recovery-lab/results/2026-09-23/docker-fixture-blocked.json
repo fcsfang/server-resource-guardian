@@ -1,0 +1,12 @@
+{
+  "experiment": "docker-authorized-stop-prerequisite",
+  "vm": "guardian-t11-lite",
+  "outcome": "blocked",
+  "reason": "docker_image_pull_network_timeout",
+  "command": "docker pull busybox:1.36",
+  "error": "registry-1.docker.io connection timed out",
+  "product_impact": "No Docker business-object stop or business-health recovery claim can be made from this VM run.",
+  "guardian_config_restored": true,
+  "automatic_actions_enabled": false,
+  "production_host": false
+}

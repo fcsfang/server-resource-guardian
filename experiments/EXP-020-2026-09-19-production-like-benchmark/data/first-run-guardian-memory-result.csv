@@ -1,2 +1,0 @@
-state,action_result_returncode,recovery_state,recovery_reasons,breaker
-failed,0,failed,target_force_killed,False

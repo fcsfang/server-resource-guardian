@@ -1,2 +1,0 @@
-server_pid=8940
-server_oom_score_adj=1000

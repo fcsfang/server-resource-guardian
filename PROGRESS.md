@@ -1,47 +1,40 @@
-# 当前进度
+# Current Verified State
 
-更新时间：2026-09-22
+Updated: 2026-09-23
 
-这份文件只回答：现在能做什么、还不能做什么、下一步做什么。历史过程保存在 Git 和 `experiments/`，不再作为任务来源。
+## Product status
 
-## 现在能做什么
+| Outcome | Current evidence | Status |
+| --- | --- | --- |
+| Alerting and observation | Runtime, read-only Collector, CPU/memory/disk risk paths, status output, and Beszel integration remain in the supported tree. | Implemented locally; not production-validated |
+| External operator access | Fresh SSH diagnosis passed under bounded pressure and during a real OOM storm on `guardian-t11-lite`. Guardian-off did not fail repeatably, so no Guardian advantage can be measured there. | Functional path passed; benefit unproven |
+| Authorized mitigation | A disposable systemd fixture completed one allowlisted, single-use, TERM-only action with audit and host recovery verification. | Safety boundary passed; Docker business object pending |
 
-- 在新的本地 Ubuntu 虚拟机中安装 Guardian，并让它开机自动运行。
-- 用 `guardian-status` 看懂 Guardian 是否正常、是否只读观察、最近风险、保护对象，以及自动动作和 Broker 是否关闭。
-- 通过真实 SSH 登录维护账号，在 CPU、内存、磁盘接近危险和混合压力下仍能完成状态查看、只读 Docker 查询、Beszel 健康检查和基础网络/磁盘诊断。
-- Beszel 隔离实例健康，Guardian 和只读 Collector 健康；CPU、内存、磁盘监控入口已存在。
-- 当前版本已经在 Beszel 页面和告警历史中展示 CPU、内存和磁盘告警；管理员需要打开 Beszel 查看。飞书主动推送留到非生产验证后的升级阶段。
-- 风险状态已与容器归因分开：只要宿主机 CPU、内存或磁盘持续达到危险线，即使容器数据缺失或找不到具体对象，Guardian 仍会明确记录危险并生成告警。
-- 无法归因时的动作结果固定为“转人工、未执行”；不会猜测容器，也不会因此把宿主机风险显示为正常。
-- 本地保护域已明确：Guardian、Beszel、SSH、登录会话、Docker、containerd、日志和网络维护链路使用维护 CPU；压力对象使用另一个 CPU，并受内存、任务数和交换空间上限约束。
-- 本地预留了 Guardian 自己的应急空间；只有匹配自身清单的预留文件才允许释放，不会删除业务文件、容器数据或日志。
-- 默认允许处理名单为空，自动动作关闭；没有明确授权和身份确认时只告警，不执行动作。
-- 已完成一次本地受控真实止损闭环。停止测试容器只证明宿主机风险得到缓解；没有真实业务健康检查时，业务恢复仍显示为“待人工确认”。
-- 内存风险的观察、模拟和授权执行主链已完成真实本地验收：Guardian 复核持续风险和目标身份后，自动向唯一允许容器发送一次 `SIGTERM`；容器以退出码 0 停止，没有 OOM 或强杀，宿主机可用内存恢复。
-- 磁盘容量风险已经接入 Guardian 自有预留空间的安全恢复主链；默认关闭，只能释放自己的固定预留文件，无法确认写入源时不会停止容器。
-- 常驻 Guardian 用户没有预留目录和预留授权状态库的读写权限；需要执行时只能通过默认关闭、只接受固定动作和固定路径的 root 边界。授权消费、固定执行槽和结果审计写入独立 root-only 状态库。
-- x86_64 非生产只读准入检查已可运行，会检查架构、Ubuntu 22.04、systemd、cgroup v2、Docker 可读性、最低资源和动作入口关闭状态。
-- x86_64 只观察安装入口已完成：支持从 GitHub 下载后安装、重复升级和按备份回滚。安装器根据实际内存计算保护值，不固定 CPU 核；在重启后将 SSH、登录、日志、网络、Docker 控制链和新登录会话纳入高权重维护域。所有改动都进入安装备份和回滚清单。
+## Repository closeout
 
-## 还不能做什么
+The 2026-09-23 reduction removes historical experiments, duplicate research notes, old presentation assets, obsolete demos, and superseded implementation paths. Git history remains the archive. The supported tree keeps the running product, deployment assets, current specifications, tests, the bounded rescue entry, and compact evidence summaries.
 
-- 不能把本地虚拟机结果当作 x86_64 非生产或生产保证。
-- x86_64 安装包尚未在目标服务器现场执行，因此还不能声称目标机已经部署成功。
-- 不能保证任意内核、网络、设备或根盘完全耗尽时 SSH 一定可用。
-- 不能自动判断真实业务是否恢复，也不能把测试容器停止称为业务恢复。
-- 不能在没有明确名单、授权和身份确认时自动停止容器；Broker 当前关闭。
-- 尚未连接生产服务器，也没有读取或保存生产凭据。
-- 当前没有飞书主动推送；管理员不打开 Beszel 时不会收到外部消息。
-- 内存止损验收后已恢复 `observe`，自动动作关闭，Broker inactive 且无 marker；4 个 Beszel 容器保持 healthy。
+The current source compiles, Markdown contains no broken local links, shell scripts pass syntax checks, and the full regression suite passes. Raw SSH JSONL streams are local lab artifacts; only compact decision-bearing summaries belong in Git.
 
-## 当前结论
+## Local lab facts
 
-本地功能已完成：CPU、内存和磁盘风险均进入同一常驻主链，宿主机风险与容器归因已解耦，找不到目标只会阻止动作、不会隐藏告警。只读采集、保护对象、技术上的短期精确授权、执行前复核、最多一个目标、恢复检查、通知持久化和审计已接通。`graceful_stop` 只发送一次正常退出信号，超时不强杀、不重试、不选第二个目标。用户对本地可丢弃验收已给予持续业务授权，后续不再重复询问；但系统内部仍为每个完整容器 ID 生成短期、可消费一次的技术授权，不放宽保护边界。磁盘当前只能释放 Guardian 自有预留空间，不会删除业务数据。本地版本仍不是生产版本。
+`guardian-t11-lite` is an ARM64 Ubuntu 22.04 disposable VM with 2 vCPUs, 2 GiB RAM, 8 GiB disk, systemd, cgroup v2, and Docker. Keep it stopped when not in use.
 
-当前版本的通知边界已经确定为 Beszel 平台内告警。飞书主动推送不再阻塞 x86_64 非生产验证；后续接入时只负责发送消息，不能触发自动动作。
+The completed Guardian-off search generated real OOM churn but still retained fresh SSH diagnosis. It did not meet the repeatable failure contract in [ROADMAP.md](ROADMAP.md), so the local SSH boundary route is closed as inconclusive. No further pressure escalation is justified on this VM.
 
-## 下一步唯一交付物
+The bounded rescue CLI and action helper are installed and exercise the intended safety rules: read-only diagnosis does not require Docker; an action requires one exact full ID, fresh identity, allowlist membership, a root-only short-lived authorization, and explicit confirmation; verification waits only for natural exit and never escalates to KILL.
 
-在目标 x86_64 服务器从 GitHub 下载最新版本，先运行只读准入检查，再执行只观察安装；随后按 `deploy/guardian-x86/PRODUCTION-LIKE-ACCEPTANCE.md` 完成多应用压力、外部新 SSH、人工温和停止和恢复确认。全过程保持自动动作关闭。
+## Current blockers and decisions
 
-详细任务只看 [ROADMAP.md](ROADMAP.md)，不要从历史实验编号中领取工作。
+- **Docker business-object evidence:** the VM previously had no local image and Docker Hub timed out. The approved closeout route is offline transfer of an existing local ARM64 nginx image, followed by the exact two-replica TERM-only loop in the roadmap.
+- **SSH rescue advantage:** a representative disposable x86_64 environment is not currently available. Until it is, the product claim remains best-effort operator access, not a rescue guarantee or measured advantage.
+- **Production:** no production connection, credential access, installation, pressure, or action is authorized.
+
+## Evidence index
+
+- [Current compact lab summary](tools/guardian-recovery-lab/latest-run.md)
+- [Guardian-off SSH boundary search](tools/guardian-recovery-lab/results/2026-09-23/guardian-off-ssh-boundary-r1.json)
+- [Multi-process OOM storm](tools/guardian-recovery-lab/results/2026-09-23/guardian-off-multiprocess-storm-r1.json)
+- [MemoryHigh cleanup boundary](tools/guardian-recovery-lab/results/2026-09-23/memoryhigh-cleanup-boundary.json)
+- [Bounded workload result](tools/guardian-recovery-lab/results/2026-09-23/oom-churn-boundary-r1.json)
+- [Systemd fixture authorized-action audit](tools/guardian-recovery-lab/results/2026-09-23/guardian-authorized-fixture-audit.jsonl)

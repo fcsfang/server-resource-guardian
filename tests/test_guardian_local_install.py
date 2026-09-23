@@ -44,6 +44,13 @@ class GuardianLocalInstallTests(unittest.TestCase):
         self.assertNotIn("systemctl enable guardian-broker.service", source)
         self.assertNotIn("systemctl enable guardian-reserve-broker.service", source)
 
+    def test_maintenance_memory_protection_is_allocated_through_user_slice_ancestors(self):
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn('user_slice_parent_dropin_dir="/etc/systemd/system/user.slice.d"', source)
+        self.assertIn('MemoryMin=128M\nMemoryLow=256M', source)
+        self.assertIn('backup_if_present "${user_slice_parent_dropin_dir}/guardian-maintenance-user-slice.conf"', source)
+        self.assertIn('backup_if_present "${user_slice_dropin_dir}/guardian-maintenance.conf"', source)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,4 +1,0 @@
-running_containers=0
-               total        used        free      shared  buff/cache   available
-Mem:            3910         225        3326           1         358        3538
-Swap:              0           0           0

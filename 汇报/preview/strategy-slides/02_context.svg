@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Times New Roman, SimSun, Songti SC" font-size="24" data-pptx-page-role="content">
-<rect id="bg" data-pptx-role="background" width="1280" height="720" fill="#FFFFFF" />
-<g fill="#181818" id="heading" data-pptx-bounds="64 35 1152 117"><text x="64" y="64" font-size="18" fill="#BC4733">任务背景</text><text x="64" y="137" font-size="42" font-weight="bold">保护目标与待确认条件</text></g>
-<line id="title-rule" data-pptx-role="decoration" x1="64" y1="163" x2="1216" y2="163" stroke="#DADADA" stroke-width="2" /><rect id="title-accent" data-pptx-role="decoration" x="64" y="161" width="64" height="4" fill="#BC4733" />
-
-<g fill="#181818" id="problem" data-pptx-bounds="64 215 1152 115"><rect x="52" y="215" width="6" height="115" fill="#BC4733" /><text x="64" y="245" font-weight="bold" fill="#BC4733">任务起点</text><text x="64" y="301" font-size="32">公司服务器曾出现资源占用过高、影响生产的情况。</text></g>
-<line id="rule-1" data-pptx-role="decoration" x1="64" y1="354" x2="1216" y2="354" stroke="#DADADA" />
-<g fill="#181818" id="goal" data-pptx-bounds="64 393 1152 204"><rect x="52" y="393" width="6" height="204" fill="#BC4733" /><text x="64" y="421" font-weight="bold" fill="#BC4733">需要达到的保护目标</text><text x="64" y="477" font-size="32" font-weight="bold">自动监测服务器资源占用，及时发现并处理危机。</text><text x="64" y="538" font-size="28">必要时重启服务或终止进程，尽量避免宕机影响生产。</text><text x="64" y="590" font-size="18" fill="#666666">先核对故障证据、业务优先级与允许动作；再判断现成策略是否满足需求。</text></g>
-<g id="footer" data-pptx-role="footer" data-pptx-bounds="64 673 1152 27" font-size="16" fill="#666666"><text x="64" y="694">服务器资源保护 · 技术调研　｜　策略优先版</text><text x="1216" y="694" text-anchor="end">02</text></g></svg>

@@ -1,0 +1,76 @@
+{
+  "experiment": "oom-churn-boundary-r1",
+  "date": "2026-09-23",
+  "vm": "guardian-t11-lite",
+  "parameters": {
+    "duration_seconds": 20,
+    "cpu_workers": 2,
+    "memory_workers": 5,
+    "memory_mib": 360,
+    "boundary_retry_memory_workers": 2,
+    "boundary_retry_memory_mib": 450
+  },
+  "baseline_system_slice": {
+    "minimum_available_kib": 1323512,
+    "stress_unit": "completed",
+    "stress_exit_status": 0,
+    "memory_events_delta": {
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0
+    },
+    "ssh": "active",
+    "guardian_runtime": "active",
+    "guardian_collector": "active"
+  },
+  "workload_slice": {
+    "initial_parameters": {
+      "allowed_cpus": "1",
+      "memory_high": 469762048,
+      "memory_max": 536870912,
+      "memory_swap_max": 0,
+      "tasks_max": 256
+    },
+    "360m_run": {
+      "peak_memory_current": 433958912,
+      "stress_unit": "completed",
+      "memory_events_delta": {
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0
+      },
+      "ssh": "active",
+      "guardian_runtime": "active",
+      "guardian_collector": "active"
+    },
+    "450m_boundary_run": {
+      "peak_memory_current": 496529408,
+      "parent_memory_events_high_delta": 4026,
+      "stress_unit_state_at_18_seconds": "active",
+      "term_signal": "not_sent_unit_naturally_disappeared_before_console_cleanup",
+      "memory_events_delta": {
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0
+      },
+      "ssh": "active",
+      "guardian_runtime": "active",
+      "guardian_collector": "active"
+    },
+    "restored_parameters": {
+      "memory_high": 469762048,
+      "memory_max": 536870912,
+      "memory_swap_max": 0,
+      "memory_current": 4096,
+      "tasks_current": 0
+    }
+  },
+  "conclusion": "The bounded workload repeatedly reaches MemoryHigh throttling before cgroup OOM. This is not an OOM-churn result and does not establish a Guardian rescue advantage.",
+  "safety": {
+    "kill_signal_used": false,
+    "authorized_stop_run": false,
+    "production_host": false
+  }
+}

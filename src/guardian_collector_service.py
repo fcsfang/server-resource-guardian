@@ -16,6 +16,7 @@ import signal
 import socket
 import stat
 import subprocess
+import time
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
@@ -27,6 +28,7 @@ from .guardian_collector_client import (
     MAX_RESPONSE_BYTES,
 )
 from .guardian_observer import collect_docker_stats
+from .guardian_pressure_gate import SUSPENDED, PressureGate
 
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
@@ -77,13 +79,76 @@ class ReadOnlyCollector:
         runner: CommandRunner = subprocess.run,
         proc_root: Path = Path("/proc"),
         cgroup_root: Path = Path("/sys/fs/cgroup"),
+        identity_cache_path: Path | None = None,
+        pressure_gate: PressureGate | None = None,
     ) -> None:
         self.runner = runner
         self.proc_root = proc_root
         self.cgroup_root = cgroup_root
+        self.identity_cache_path = identity_cache_path or Path(
+            os.environ.get("GUARDIAN_RESCUE_IDENTITY_CACHE", "/var/lib/guardian/shared/rescue-identities.json")
+        )
+        self.pressure_gate = pressure_gate or PressureGate(proc_root=proc_root)
+        self._last_collection_monotonic: float | None = None
+
+    def _write_identity_cache(self, objects: list[Mapping[str, Any]]) -> None:
+        entries = []
+        observed_at = time.time()
+        for item in objects[:256]:
+            stable_id = item.get("id")
+            cgroup_path = item.get("cgroup_path")
+            if not isinstance(stable_id, str) or not stable_id or not isinstance(cgroup_path, str) or not cgroup_path.startswith("/"):
+                continue
+            name = item.get("name")
+            entries.append(
+                {
+                    "stable_id": stable_id,
+                    "name": name if isinstance(name, str) and name else None,
+                    "cgroup_path": cgroup_path,
+                    "cgroup_inode": item.get("cgroup_inode"),
+                    "observed_at": observed_at,
+                }
+            )
+        payload = {
+            "schema": "guardian.rescue-identities.v1",
+            "version": 1,
+            "observed_at": observed_at,
+            "entries": entries,
+        }
+        path = self.identity_cache_path
+        temporary = path.with_name(f".{path.name}.tmp-{os.getpid()}")
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            temporary.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n", encoding="utf-8")
+            os.chmod(temporary, 0o640)
+            os.replace(temporary, path)
+        except (OSError, ValueError):
+            try:
+                temporary.unlink()
+            except OSError:
+                pass
 
     def snapshot(self) -> dict[str, Any]:
+        decision = self.pressure_gate.evaluate()
+        now = time.monotonic()
+        if decision.state == SUSPENDED or not self.pressure_gate.should_collect(
+            now=now,
+            last_collection=self._last_collection_monotonic,
+            interval_seconds=1.0,
+        ):
+            reason = "pressure_gate_suspended" if decision.state == SUSPENDED else "pressure_gate_degraded"
+            return _response(
+                "degraded",
+                data={
+                    "docker": {"available": False, "error": reason, "containers": []},
+                    "object_registry": {"status": "unavailable", "objects": [], "errors": [reason]},
+                    "collector": {"pressure_gate": decision.as_dict(), "stale": True},
+                },
+                errors=[reason],
+                error=reason,
+            )
         docker = collect_docker_stats(self.runner)
+        self._last_collection_monotonic = now
         if docker.get("available") is False:
             return _response(
                 "unavailable",
@@ -96,11 +161,18 @@ class ReadOnlyCollector:
             cgroup_root=self.cgroup_root,
             runner=self.runner,
         )
+        objects = registry.get("objects")
+        if isinstance(objects, list):
+            self._write_identity_cache([item for item in objects if isinstance(item, Mapping)])
         errors = list(registry.get("errors") or [])
         status = "ok" if registry.get("status") == "ok" else "degraded"
         return _response(
             status,
-            data={"docker": docker, "object_registry": registry},
+            data={
+                "docker": docker,
+                "object_registry": registry,
+                "collector": {"pressure_gate": decision.as_dict(), "stale": False},
+            },
             errors=errors,
         )
 
@@ -152,7 +224,12 @@ class CollectorServer:
         encoded = (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
         if len(encoded) > MAX_RESPONSE_BYTES:
             encoded = json.dumps(_response("unavailable", error="collector_response_too_large"), separators=(",", ":")).encode("utf-8") + b"\n"
-        channel.sendall(encoded)
+        try:
+            channel.sendall(encoded)
+        except (BrokenPipeError, ConnectionResetError, OSError):
+            # A bounded client may time out while Docker is still unwinding.
+            # The disconnected client must not take down the Collector loop.
+            return
 
     def serve_forever(self) -> None:
         server = self._bind()

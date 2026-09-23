@@ -1,0 +1,14 @@
+[Unit]
+Description=Guardian x86 low-priority observer resource domain
+Documentation=https://github.com/fcsfang/server-resource-guardian
+
+[Slice]
+CPUAccounting=true
+IOAccounting=true
+MemoryAccounting=true
+TasksAccounting=true
+CPUWeight=20
+IOWeight=20
+MemoryHigh=192M
+MemoryMax=256M
+TasksMax=128

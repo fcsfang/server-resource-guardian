@@ -1,5 +1,0 @@
-scenario,state,action,execution,reasons,candidate_count
-baseline,normal,none,not_applicable,,0
-fleet-normal,normal,none,not_applicable,,12
-normal-pressure,normal,none,not_applicable,,15
-churn,normal,none,not_applicable,,15

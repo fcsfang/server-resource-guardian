@@ -294,6 +294,7 @@ def collect_observation(
         },
         "docker": docker,
         "object_registry": object_registry,
+        "collector": collector_meta if container_collector is not None else {"status": "direct"},
         "cpu": cpu,
         "disk": disk,
         "quality": {

@@ -49,6 +49,14 @@ def _systemctl(operation: str, unit: str, runner: Callable[..., Any]) -> str:
     return value or f"error:{result.returncode}"
 
 
+def _path_exists(path: Path) -> bool | None:
+    """Return None when the caller cannot inspect a protected path."""
+    try:
+        return path.exists()
+    except OSError:
+        return None
+
+
 def _read_json(path: Path) -> tuple[Mapping[str, Any] | None, str | None]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -225,9 +233,13 @@ def build_status(
     protected_units = protection.get("systemd_units", []) if isinstance(protection, Mapping) else []
     protected_labels = protection.get("container_labels", []) if isinstance(protection, Mapping) else []
     automatic_actions = "disabled" if mode == "observe" and actions_enabled is False else "enabled_or_unknown"
-    broker_closed = broker_active == "inactive" and not broker_marker.exists() and not broker_socket.exists()
-    reserve_broker_closed = reserve_broker_active == "inactive" and not reserve_broker_marker.exists() and not reserve_broker_socket.exists()
-    collector_socket_present = collector_socket.exists()
+    broker_marker_present = _path_exists(broker_marker)
+    broker_socket_present = _path_exists(broker_socket)
+    reserve_marker_present = _path_exists(reserve_broker_marker)
+    reserve_socket_present = _path_exists(reserve_broker_socket)
+    broker_closed = broker_active == "inactive" and broker_marker_present is False and broker_socket_present is False
+    reserve_broker_closed = reserve_broker_active == "inactive" and reserve_marker_present is False and reserve_socket_present is False
+    collector_socket_present = _path_exists(collector_socket)
     collector_online = collector_active == "active" and collector_socket_present
     ready = runtime_active == "active" and readiness == "runtime:ready:observe"
     overall = "healthy" if ready and automatic_actions == "disabled" and broker_closed and reserve_broker_closed and collector_online else "degraded"
@@ -248,15 +260,15 @@ def build_status(
         "broker": {
             "active": broker_active,
             "enabled": broker_enabled,
-            "marker_present": broker_marker.exists(),
-            "socket_present": broker_socket.exists(),
+            "marker_present": broker_marker_present,
+            "socket_present": broker_socket_present,
             "closed": broker_closed,
         },
         "reserve_broker": {
             "active": reserve_broker_active,
             "enabled": reserve_broker_enabled,
-            "marker_present": reserve_broker_marker.exists(),
-            "socket_present": reserve_broker_socket.exists(),
+            "marker_present": reserve_marker_present,
+            "socket_present": reserve_socket_present,
             "closed": reserve_broker_closed,
         },
         "collector": {

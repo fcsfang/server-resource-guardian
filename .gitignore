@@ -7,6 +7,9 @@ snapshots/
 reports/*
 !reports/.gitkeep
 experiments/*/raw/
+tools/guardian-recovery-lab/latest-protected-probe.jsonl
+tools/guardian-recovery-lab/results/**/*.jsonl
+!tools/guardian-recovery-lab/results/**/guardian-authorized-fixture-audit.jsonl
 dist/
 build/
 .playwright-cli/

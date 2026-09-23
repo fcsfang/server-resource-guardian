@@ -1,0 +1,34 @@
+{
+  "experiment": "guardian-off-multiprocess-storm-r1",
+  "vm": "guardian-t11-lite",
+  "purpose": "Test a multi-process memory/CPU/I/O OOM storm before any Guardian-on comparison.",
+  "model": {
+    "memory_services": 20,
+    "memory_mib_each": 120,
+    "cpu_services": 8,
+    "io_services": 2,
+    "io_each_mib": 8,
+    "restart_policy": "systemd Restart=always",
+    "slice": "system.slice",
+    "guardian_runtime": "inactive",
+    "guardian_collector": "inactive"
+  },
+  "observed_boundary": {
+    "memory_available_mib": 46,
+    "system_slice_oom_kill_counter_after_run": 197,
+    "ssh_probe_timeout_2_seconds": {"rounds": 15, "ok": 15, "failed": 0},
+    "ssh_probe_timeout_0_5_seconds": {"rounds": 10, "ok": 10, "failed": 0},
+    "diagnostic_stages": ["shell", "memory", "services", "guardian-status"],
+    "operator_channel_result": "still_available"
+  },
+  "calibration": {
+    "same_storm_at_16_memory_services_timeout_0_5_seconds": [
+      {"rounds": 10, "ok": 9, "failed": 1},
+      {"rounds": 10, "ok": 10, "failed": 0}
+    ],
+    "interpretation": "one timeout was not repeatable and is not a failure boundary"
+  },
+  "conclusion": "The complex storm model produced real OOM churn, but this 2-vCPU/2-GiB VM still accepted fresh SSH diagnosis. No Guardian-on comparison is justified until a representative baseline or explicit operator-latency SLO is chosen.",
+  "restored": {"guardian_runtime":"active","guardian_collector":"active","rescue_memory_min":536870912,"rescue_memory_low":805306368},
+  "production_host": false
+}

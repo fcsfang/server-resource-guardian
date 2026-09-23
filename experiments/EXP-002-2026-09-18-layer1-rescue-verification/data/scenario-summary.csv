@@ -1,6 +1,0 @@
-scenario,ssh_avg_s,ssh_diag_ms,container_cpu_pct,container_mem,system_load_1m,system_mem_pct,swap_used_mb,oom_killed,docker_stop_ms,rescue_chain_ok,notes
-S0_baseline,0.21,157,N/A,N/A,0.01,5.9,13,false,N/A,yes,Normal reference values
-S1_cpu_nolimit,0.31,291,803.78,16.96MiB,1.93,5.9,13,false,12516,yes,CPU 8 cores saturated; SSH +48% slower than baseline but functional
-S2_cpu_limit_2,0.15,206,196.22,16.18MiB,3.22,5.9,13,false,10481,yes,CPU capped at 2 cores; SSH response identical to baseline
-S3_mem_nolimit,0.24,198,399.24,2.48GiB,3.49,28.8,496,false,10450,yes,Memory stress 2.48GB; swap increased 13->496MB; SSH still responsive
-S4_mem_limit_512m,0.37,321,330.75,512MiB(capped),2.25,16.8,988,true,10772,yes,OOM killed stress inside container; host had more free memory than S3

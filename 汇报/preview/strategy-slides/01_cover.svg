@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Times New Roman, SimSun, Songti SC" font-size="24" data-pptx-page-role="cover">
-<rect id="bg" data-pptx-role="background" width="1280" height="720" fill="#FFFFFF"/>
-<g id="heading" data-pptx-bounds="64 68 1152 275" fill="#181818"><text x="64" y="99" font-size="18" fill="#BC4733">技术调研 / 方案选型</text><text x="64" y="226" font-size="64" font-weight="bold">服务器资源保护</text><text x="64" y="312" font-size="42">现成策略优先，按缺口补充开发</text></g>
-<line id="rule" data-pptx-role="decoration" x1="64" y1="382" x2="1216" y2="382" stroke="#DADADA" stroke-width="2"/><rect id="accent" data-pptx-role="decoration" x="64" y="380" width="100" height="4" fill="#BC4733"/>
-<g id="route" data-pptx-bounds="64 425 1152 184" fill="#181818"><text x="64" y="457" font-size="28">先比较：内存、CPU、磁盘与跨资源治理</text><text x="64" y="516" font-size="28">再判断：配置现成方案，还是补充观测、定位与处置</text><text x="64" y="587" font-size="18" fill="#666666">面向现有 Docker 服务器的候选方案研究；尚未部署或完成故障验证。</text></g>
-<g id="footer" data-pptx-role="footer" data-pptx-bounds="64 673 1152 27" font-size="16" fill="#666666"><text x="64" y="694">服务器资源保护 · 技术调研　｜　策略优先版</text><text x="1216" y="694" text-anchor="end">01</text></g></svg>

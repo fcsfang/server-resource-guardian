@@ -1,10 +1,4 @@
-"""Strict, fail-closed configuration for the Guardian prototype.
-
-The runtime format is JSON so the first productionization step does not add a
-YAML dependency. ``config/guardian.example.yaml`` remains a historical
-discussion sample; ``config/guardian.example.json`` is the canonical local
-sample for this schema.
-"""
+"""Strict, fail-closed JSON configuration for Guardian."""
 
 from __future__ import annotations
 
@@ -216,6 +210,10 @@ class GuardianConfig:
     @property
     def allowed_actions(self) -> tuple[str, ...]:
         return tuple(self._value["actions"]["allow"])
+
+    @property
+    def actions_enabled(self) -> bool:
+        return bool(self._value["actions"]["enabled"])
 
     @property
     def authorization_file(self) -> str | None:

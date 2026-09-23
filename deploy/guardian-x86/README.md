@@ -1,70 +1,20 @@
-# x86_64 部署
+# Ubuntu x86_64 Observe Install
 
-本目录是 Ubuntu 22.04 x86_64 的 Guardian 只观察部署包。它不使用本地虚拟机的固定 CPU 编号，而是根据实际主机规格生成可回滚的维护资源配置。它不安装或启用自动动作服务。
-
-## 下载与安装
+This installer supports Ubuntu 22.04 x86_64 with systemd and cgroup v2. It installs the Runtime and read-only Collector; automatic actions remain disabled. The repository has not established production readiness or a general SSH-rescue guarantee.
 
 ```bash
-git clone https://github.com/fcsfang/server-resource-guardian.git
-cd server-resource-guardian
-
-# 只显示计划，不改系统
 ./scripts/install-guardian-x86.sh
-
-# 可选：单独运行只读环境检查
-python3 scripts/guardian-x86-preflight.py --output /tmp/guardian-x86-preflight.json
-
-# 安装只观察版本
-sudo ./scripts/install-guardian-x86.sh --apply --environment x86-observe
-
-# 查看结果
-sudo guardian-status
-```
-
-安装程序会自动再次执行环境检查。只有 Linux x86_64、Ubuntu 22.04、systemd、cgroup v2、Docker 可读、至少 2 vCPU、2 GiB 内存和 2 GiB 根盘可用空间全部通过时才会继续。
-
-成功后的关键结果：
-
-- `guardian-runtime.service` 与 `guardian-collector.service` 为 `active`、`enabled`；
-- readiness 为 `runtime:ready:observe`；
-- 自动动作关闭，允许处理名单为空；
-- 动作 Broker 和磁盘预留 Broker 均未安装、未启用；
-- `/opt/server-resource-guardian/DEPLOYED_VERSION` 记录部署版本；
-- 命令结尾打印本次备份位置和精确回滚命令。
-
-Beszel 保持独立：Guardian 不修改已有 Beszel。CPU、内存和磁盘的平台告警继续在 Beszel 中配置和查看。
-
-安装器会按实际内存生成可回滚的维护资源域和验收负载域，不固定 CPU 核号。SSH、登录、日志、网络和 Docker 控制单元会获得更高权重；验收压力容器必须显式使用 `--cgroup-parent workload.slice`。为避免安装时重启 SSH、网络或 Docker，维护域在安装后下一次主机重启完整生效，仿生产验收必须在重启后执行。
-
-## 仿生产整体验收
-
-安装后按 [PRODUCTION-LIKE-ACCEPTANCE.md](PRODUCTION-LIKE-ACCEPTANCE.md) 执行“多应用 + CPU/内存/独立测试盘 + 外部新 SSH + 人工温和停止 + 恢复确认”验收。全程保持 Guardian 只观察，只操作本次创建的测试容器。
-
-## 升级
-
-在仓库中拉取经过确认的新版本，然后重复执行同一条安装命令。安装器先备份当前程序、服务文件及原服务状态，再替换程序并重启 Guardian，不重启服务器和业务容器。
-
-```bash
-git pull --ff-only
+python3 scripts/guardian-x86-preflight.py
 sudo ./scripts/install-guardian-x86.sh --apply --environment x86-observe
 sudo guardian-status
 ```
 
-## 回滚
+The default command only prints a plan. Applying requires the explicit `x86-observe` environment marker and passes the installer admission checks. Collector runs in `guardian-observer.slice`; Runtime runs in `guardian-runtime.slice`.
 
-使用安装成功时打印的备份目录：
+The installer prints a backup path. Roll back with that exact path:
 
 ```bash
-sudo ./scripts/install-guardian-x86.sh \
-  --rollback /var/backups/guardian-x86-installer/<安装时间> \
-  --environment x86-observe
+sudo ./scripts/install-guardian-x86.sh --rollback /var/backups/guardian-x86-installer/<timestamp> --environment x86-observe
 ```
 
-回滚只恢复安装器管理的程序和服务文件，并恢复安装前的启用/运行状态。`/etc/guardian`、`/var/lib/guardian`、审计和快照会保留，避免丢失排障证据。
-
-## 当前边界
-
-- 该入口只安装观察、只读采集和维护资源保护，不开放自动停止容器。
-- Collector 的服务账号可以读取 Docker socket，但对外只提供固定快照操作；Guardian Runtime 本身不属于 Docker 组。
-- 无 Beszel 时 Guardian 仍可本地观察并通过 `guardian-status` 查看，但不会凭空创建 Beszel 页面。
-- 首次 x86 现场安装后仍需核对开机恢复、Beszel 页面和现有业务健康。
+Rollback restores installer-managed files and recorded service states. Review the generated plan and host effects before applying; local test results are not production validation.
