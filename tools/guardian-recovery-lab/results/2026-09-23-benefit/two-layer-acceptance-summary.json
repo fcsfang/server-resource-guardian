@@ -14,7 +14,8 @@
   "layer1": {
     "idle_baseline": {"r1": "20/20", "r2": "20/20", "elapsed_ms_range": "[119.5, 162.2]", "failure_stages": []},
     "collapse_guardian_on": {"r1": "10/20", "r2": "9/20", "aggregate": "19/40 (52.5% entry failure)", "failure_stages": ["transport (all 19)"], "elapsed_ms_range": "[188.9, 8446.5]", "pressure": "pinned 24x280MiB swarm, 15 OOM kills, swap 100%"},
-    "collapse_guardian_off": {"r1": "PENDING", "r2": "PENDING", "note": "same form, guardian fully stopped; r1 tail shows ok@2309ms (elevated), r2 already has transport timeouts"}
+    "collapse_guardian_off": {"r1": "9/20", "r2": "10/20", "aggregate": "19/40 (52.5% entry failure)", "failure_stages": ["transport (all 19)"], "elapsed_ms_range": "[160.2, 6321.7]", "pressure": "same pinned form, RAM free 48Mi, swap 100%"},
+    "attribution": "on 19/40 == off 19/40, symmetric, all transport-stage: entry failure under pinned collapse is VM-memory-pressure TCP-accept stall, independent of Guardian; process-level OOM defense cannot reach it. Contract requirement 'on must not lower entry rate' met."
   },
   "layer2": {
     "guardian_off_blind": {
@@ -27,7 +28,8 @@
     "guardian_on_new_build": {"r1": "PENDING", "r2": "PENDING", "expect": "gate active: docker-side steps <=1.5x off-baseline; slimmed audit keeps stream alive"}
   },
   "incidents": [
-    {"time": "20:08-20:26", "what": "WSL vsock channel died (0x8007274c) during swarm ramp; wsl --shutdown + service restart recovered; experiment restarted in two segments", "lesson": "long collapse scripts must self-contain per segment and persist data before any cross-VM communication"}
+    {"time": "20:08-20:26", "what": "WSL vsock channel died (0x8007274c) during swarm ramp; wsl --shutdown + service restart recovered; experiment restarted in two segments", "lesson": "long collapse scripts must self-contain per segment and persist data before any cross-VM communication"},
+    {"time": "21:15-21:40", "what": "channel died again repeatedly during off-control wind-down and layer-2 start; two VM resets; layer-2 new-build run 1 did not complete", "lesson": "the pinned form kills the management transport itself - reproduced across two nights; strongest evidence for the out-of-band console requirement"}
   ],
   "product_decision": "PENDING"
 }
