@@ -16,13 +16,26 @@ Before a pressure run, record its primary product outcome, success metric, failu
 
 ## Operator-access acceptance contract
 
-The external probe opens a fresh SSH connection for every sample and records transport, authentication, shell startup, diagnosis, `guardian-rescue status`, and `guardian-rescue top` separately.
+Outcome 2 is measured as two separated layers, because they fail in different ways and need different defenses. Both layers are evaluated under a declared collapse pressure form (the pinned-OOM churn model in `tools/collapse-pressure-model/`); a form that only produces periodic self-rescue does not exercise this contract.
 
-A Guardian-off failure boundary is repeatable only when two independent runs use identical host state, pressure, cadence, and timeout, each collect at least 20 probes, and each has at least 20% complete-probe failures or timeouts with the failing stage identified. One isolated timeout is calibration noise, not a boundary.
+**Layer 1 — entry capability (can the operator get in at all?).**
+The external probe opens a fresh SSH connection for every sample and records transport, authentication, PAM/logind, shell startup, and first diagnostic command as separate stages, with the failing stage identified on any failure.
 
-A matched Guardian-on result passes only when the same boundary and probe sequence are used in two independent runs, at least 95% of complete probes succeed in each run, no two consecutive probes fail, and successful complete probes have P95 latency no greater than the two-second operator SLO.
+- Metric: entry success rate over at least 20 probes per run, two independent runs per configuration.
+- Pass line: entry rate >= 95% in every run, no two consecutive entry failures, and no failure in the same stage across both runs (a stage that fails repeatedly is a defect, not noise).
+- Guardian-on must not lower the entry rate compared with Guardian-off on the same host, pressure form, and cadence.
+- Every entry failure must name its stage; defenses (rescue.slice isolation, OOMScoreAdjust, journald/logind placement) are added to eliminate the failing stage, and the run is repeated after each defense.
 
-If a representative disposable environment cannot reproduce the off boundary, stop the route and report that no in-band SSH advantage was established. Do not weaken the boundary to manufacture a pass.
+**Layer 2 — in-session task time (once in, how fast is the job done?).**
+The operator task is: locate the pressure source, stop it gently, verify host recovery. Guardian contributes a notification lead (alert delivered while the operator walks to the terminal), a one-shot locate command (`guardian-rescue top`), and an observation budget that must not compete with the operator.
+
+- Metric: MTTA - pressure start to task completion, split into notification lead time (MTTD) and in-session execution time (MTTI); plus per-stage latency of the ops chain.
+- Pass line: Guardian-on MTTA <= 50% of Guardian-off MTTA on the same form, with Guardian-on MTTD <= 10s and MTTI P95 <= 5s; the observer effect is bounded when the pressure gate is active - docker-side operator steps at most 1.5x the Guardian-off baseline.
+- A Guardian-on result may not claim an advantage from a run where the notification channel was down; notification-channel liveness under collapse (>= 1 status message within 60s of entering a degraded state) is itself a pass condition.
+
+**Reporting rule.** Both layers are always reported together: an entry-rate-only claim hides the task-time problem; a task-time-only claim presumes entry. If Layer 1 cannot be made to fail on a given host class, report entry as "no boundary found on this class" and evaluate Layer 2 time-to-completion as the benefit metric instead - do not weaken the pressure form to manufacture a Layer 1 failure.
+
+The historical 2-second operator SLO is superseded by the two-layer metrics above.
 
 ## Environment contract
 
@@ -34,7 +47,7 @@ A future benefit comparison should use a representative disposable x86_64 non-pr
 
 1. **Repository reduction — complete:** retain supported product code, deployment assets, tests, compact lab tools, and summary evidence; keep raw probe streams out of the repository. Links, imports, shell syntax, compilation, and the full test suite pass.
 2. **Docker business-object loop — complete locally:** one ARM64 web image was transferred offline into `guardian-t11-lite`; two disposable replicas ran in `workload.slice`; one exact full container ID received one authorized TERM; audit, host mitigation, target exit, and surviving-replica HTTP health were verified separately; observe-only configuration and fixture cleanup were restored.
-3. **SSH benefit boundary:** keep the local result as an explicit inconclusive boundary. Resume only when the representative disposable x86_64 prerequisite is available; otherwise close with no rescue-advantage claim and require out-of-band recovery.
+3. **Operator-access two-layer acceptance:** under the pinned-collapse model, measure Layer 1 (entry rate, stage-attributed failures) and Layer 2 (MTTA split into notification lead and in-session execution) for Guardian-off vs -on; add entry defenses (OOMScoreAdjust for sshd/Guardian units) where a stage fails; close outcome 2 with both layers reported, or keep it open with the exact missing prerequisite named.
 
 ## Exit criteria
 
