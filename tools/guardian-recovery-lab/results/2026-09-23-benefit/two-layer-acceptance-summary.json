@@ -1,0 +1,33 @@
+# Layer-1/2 acceptance summary skeleton (filled as data lands)
+# contract: ROADMAP.md Operator-access acceptance contract (eb2e7b2)
+
+{
+  "experiment": "outcome-2-two-layer-acceptance-r1",
+  "date": "2026-09-23",
+  "contract": "ROADMAP two-layer (Layer 1 entry rate / Layer 2 MTTA)",
+  "environment": {
+    "host": "WSL2 Ubuntu 26.04 x86_64, 4 vCPU / 3.8GiB + 2GiB swap",
+    "guardian_build": "753a454 (pressure_gate + audit slimming + OOM defense + gateway degraded-mode)",
+    "pressure_model": "tools/collapse-pressure-model: 24x280MiB holder swarm, restart=on-failure",
+    "client": "in-WSL loopback SSH (csfang key); external-CLIENT probes complement from Windows"
+  },
+  "layer1": {
+    "idle_baseline": {"r1": "20/20", "r2": "20/20", "elapsed_ms_range": "[119.5, 162.2]", "failure_stages": []},
+    "collapse_guardian_on": {"r1": "PENDING", "r2": "PENDING", "note": "collapse windows also exercise the OOM defense (sshd -1000, runtime -900, collector/gateway -800)"},
+    "collapse_guardian_off": {"note": "yesterday's multi-process storm evidence (t11-lite): 35/35 probes passed at 46MiB available; WSL pinned-collapse off-run covered by ben_a_r* ops chain (entry always succeeded)"}
+  },
+  "layer2": {
+    "guardian_off_blind": {
+      "r1": {"mtta_s": 1106.04, "target_correct": false, "note": "blind locate picked a 96Mi control app (wrong target)"},
+      "r2": {"mtta_s": 1160.08, "target_correct": false, "note": "stats snapshot incomplete under churn; target name unresolved (283.3MiB)"}
+    },
+    "guardian_on_old_build": {
+      "r1": {"mttd_s": 41.0, "mtti_s": 0.37, "target": "docker-ff8c003d... (exact container id)", "note": "MTTD from journalctl; identity_confidence=low because collector identity cache stale under collapse"}
+    },
+    "guardian_on_new_build": {"r1": "PENDING", "r2": "PENDING", "expect": "gate active: docker-side steps <=1.5x off-baseline; slimmed audit keeps stream alive"}
+  },
+  "incidents": [
+    {"time": "20:08-20:26", "what": "WSL vsock channel died (0x8007274c) during swarm ramp; wsl --shutdown + service restart recovered; experiment restarted in two segments", "lesson": "long collapse scripts must self-contain per segment and persist data before any cross-VM communication"}
+  ],
+  "product_decision": "PENDING"
+}
