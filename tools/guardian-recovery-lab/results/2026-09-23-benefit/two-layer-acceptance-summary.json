@@ -13,8 +13,8 @@
   },
   "layer1": {
     "idle_baseline": {"r1": "20/20", "r2": "20/20", "elapsed_ms_range": "[119.5, 162.2]", "failure_stages": []},
-    "collapse_guardian_on": {"r1": "PENDING", "r2": "PENDING", "note": "collapse windows also exercise the OOM defense (sshd -1000, runtime -900, collector/gateway -800)"},
-    "collapse_guardian_off": {"note": "yesterday's multi-process storm evidence (t11-lite): 35/35 probes passed at 46MiB available; WSL pinned-collapse off-run covered by ben_a_r* ops chain (entry always succeeded)"}
+    "collapse_guardian_on": {"r1": "10/20", "r2": "9/20", "aggregate": "19/40 (52.5% entry failure)", "failure_stages": ["transport (all 19)"], "elapsed_ms_range": "[188.9, 8446.5]", "pressure": "pinned 24x280MiB swarm, 15 OOM kills, swap 100%"},
+    "collapse_guardian_off": {"r1": "PENDING", "r2": "PENDING", "note": "same form, guardian fully stopped; r1 tail shows ok@2309ms (elevated), r2 already has transport timeouts"}
   },
   "layer2": {
     "guardian_off_blind": {
