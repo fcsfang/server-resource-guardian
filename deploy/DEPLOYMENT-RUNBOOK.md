@@ -104,18 +104,24 @@ sudo journalctl -u feishu-gateway --since "-2 min" --no-pager | grep sent
 - `sudo bash tools/guardian-recovery-lab/layer1-smoke.sh`(如果这是 WSL/有 SSH 探针环境的实验室主机):两分钟防御栈全检
 - 把 `guardian-deploy-verify` 挂 cron(每天一次):指纹漂移第一时间发现
 
-## 强烈建议:给管理员配 SSH 密钥(内存风暴下的入口保命)
+## 内存风暴下的管理入口(实测数据修正版)
 
-T1 内存压力实测(SHKD010W,17GB hog 压到可用 8-10%):**密码认证登录 0/10 失败,风暴后自动恢复** — 密码认证的 PAM 链路在内存压力下 fork/PAM 插件超时。密钥认证路径更短(无 PAM 密码插件、无交互提示),是风暴中最可能存活的入口。部署 Guardian 的主机应给至少一名管理员配好密钥:
+深压实验(SHKD010W,可用内存压到 0.8%)实测三件事,重要性从高到低:
+
+**1. 开全新的外部登录,不要复用卡死的会话。** 已建立的 SSH 会话在可用内存 <2% 时新开 channel 会饿死超时(实测);而外部**全新登录**(哪怕密码认证)在 0.8% 可用时 100% 成功。手工救援的第一反应是开新终端,不是在卡死的窗口里重试。
+
+**2. 认证方式是次要变量。** 主机内的 ssh 子进程(哪怕密钥认证)在 <3.2% 时全灭(fork 失败);外部新登录(哪怕密码)全过。决定存活的是登录动作从哪里发起,不是密钥还是密码。
+
+**3. 密钥仍是值得配的预防措施**(无 PAM 密码插件、路径更短),但 1GB admin_reserve(sysctl,安装脚本已部署)才是唯一**硬保证**的入口保命线 — 它给 root 登录链路保留 128MB 物理内存,这是内核级的,不依赖任何用户态进程活着。
 
 ```bash
-# 在管理员自己的工作机上(没有密钥就先生成: ssh-keygen -t ed25519)
+# 管理员密钥(在工作机上执行)
 ssh-copy-id admin-user@服务器IP
 # 验证
 ssh -o BatchMode=yes admin-user@服务器IP 'echo key-login-ok'
 ```
 
-判定证据:tools/guardian-recovery-lab/results/2026-09-24-triple-resource/ 与 2026-09-24 服务器功能测试记录(T1)。
+**警告(深压实测)**:earlyoom 的 10% 水位防线在"持续分配 + 滚热工作集"压力形态下会被击穿(earlyoom 自身被饿死,系统可进入内核活锁直至失联)。它是概率性缓解,不是保证。证据:tools/guardian-recovery-lab/results/2026-09-24-shkd010w-functional/deep-storm-wedge-incident.md
 
 ## 三条命令总结
 
