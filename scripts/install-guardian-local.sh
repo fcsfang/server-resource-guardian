@@ -277,6 +277,14 @@ backup_if_present /etc/sudoers.d/guardian-maintenance
 backup_if_present "${user_slice_dropin_dir}/guardian-maintenance.conf"
 backup_if_present "${user_slice_parent_dropin_dir}/guardian-maintenance-user-slice.conf"
 
+# Install the unit files this installer validates, enables, and restarts.
+# Without this the verify/enable/restart steps below fail with "Unit ... not
+# found" on any host that does not already carry a manual deployment (caught
+# by the first real-server drill, 2026-09-24).
+for unit in "${managed_units[@]}"; do
+  install -o root -g root -m 0644 "${repository}/deploy/guardian/${unit}" "/etc/systemd/system/${unit}"
+done
+
 mkdir -p "$install_root"
 if [[ "$repository" != "$install_root" ]]; then
   tar --exclude=.git --exclude=__pycache__ --exclude='*.pyc' -C "$repository" -cf - . | tar -C "$install_root" -xf -

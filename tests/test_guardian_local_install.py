@@ -51,6 +51,20 @@ class GuardianLocalInstallTests(unittest.TestCase):
         self.assertIn('backup_if_present "${user_slice_parent_dropin_dir}/guardian-maintenance-user-slice.conf"', source)
         self.assertIn('backup_if_present "${user_slice_dropin_dir}/guardian-maintenance.conf"', source)
 
+    def test_script_actually_installs_the_unit_files_it_verifies(self):
+        # Regression for the first real-server drill (2026-09-24): the script
+        # verified, enabled, and restarted 8 unit files but never copied them
+        # to /etc/systemd/system - every host without a pre-existing manual
+        # deployment failed with "Unit guardian-collector.service not found".
+        # Each managed unit must have an install line from deploy/guardian/.
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn(
+            'install -o root -g root -m 0644 "${repository}/deploy/guardian/${unit}" "/etc/systemd/system/${unit}"',
+            source,
+        )
+        # ... and the loop must cover the units it later enables
+        self.assertIn('for unit in "${managed_units[@]}"; do', source)
+
 
 if __name__ == "__main__":
     unittest.main()
