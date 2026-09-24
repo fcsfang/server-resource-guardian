@@ -277,8 +277,14 @@ fi
 # ------------------------------------------------------------------ smoke --
 if [[ "$apply" == true ]]; then
   step "post-setup smoke"
-  if [[ -f "${REPOSITORY}/scripts/guardian-smoke" ]]; then
-    "${REPOSITORY}/scripts/guardian-smoke" --skip-probes || true
+  # Prefer the installed copy on PATH; fall back to bash (the repo copy may
+  # lack the exec bit when the repo arrived on a host without git's mode bits).
+  if command -v guardian-smoke >/dev/null 2>&1; then
+    guardian-smoke --skip-probes || true
+  elif [[ -f "${REPOSITORY}/scripts/guardian-smoke" ]]; then
+    bash "${REPOSITORY}/scripts/guardian-smoke" --skip-probes || true
+  else
+    echo "guardian-smoke not available - run install-guardian-local.sh --apply first"
   fi
 fi
 

@@ -299,6 +299,8 @@ install -o root -g root -m 0755 "${repository}/scripts/guardian_reserve_space.py
 install -o root -g root -m 0755 "${repository}/scripts/guardian-release-emergency-space" /usr/local/sbin/guardian-release-emergency-space
 install -o root -g root -m 0755 "${repository}/scripts/guardian-status-emergency-space" /usr/local/sbin/guardian-status-emergency-space
 install -o root -g root -m 0755 "${repository}/scripts/guardian-create-emergency-space" /usr/local/sbin/guardian-create-emergency-space
+# the standing health check belongs on PATH so the drill's step 3 works
+install -o root -g root -m 0755 "${repository}/scripts/guardian-smoke" /usr/local/sbin/guardian-smoke
 
 # --- build manifest: record what this deployment is, file by file ---
 # Captures the source commit (or "untarred-worktree" when git is absent) and
@@ -356,6 +358,7 @@ system_targets = [
     "/usr/local/sbin/guardian-release-emergency-space",
     "/usr/local/sbin/guardian-status-emergency-space",
     "/usr/local/sbin/guardian-create-emergency-space",
+    "/usr/local/sbin/guardian-smoke",
     "/etc/tmpfiles.d/guardian.conf",
     "/etc/systemd/journald.conf.d/guardian.conf",
     "/etc/sudoers.d/guardian-maintenance",
