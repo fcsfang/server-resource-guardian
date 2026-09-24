@@ -1,0 +1,62 @@
+{
+  "schema": "guardian.functional-test-summary.v1",
+  "host": "SHKD010W",
+  "host_specs": {"cpus": 8, "memory_gib": 23.7, "disk_gb": 468, "os": "Ubuntu 22.04 (kernel-level LXD/container host)", "role": "dedicated test server", "business_containers": ["beszel-agent", "agp-nginx", "agp-litellm", "agp-litellm-db", "agp-redis", "codex-access-only-test"]},
+  "date": "2026-09-24",
+  "deployment_changes_before_tests": [
+    "emergency reserve 256M -> 1G (release+create drill)",
+    "earlyoom avoid += litellm,postgres,redis-server,nginx,agent,beszel (business protection)",
+    "AllowedCPUs unpinned on rescue.slice/workload.slice/user-1007.slice (8C host; WSL-era pinning wasted 6 cores)",
+    "transport-defense sysctl + oom shields + user balance verified live"
+  ],
+  "tests": [
+    {
+      "id": "T1",
+      "name": "memory pressure (17GB hog -> available 8-10%)",
+      "outcomes": {
+        "timely_alerting": {"verdict": "pass", "evidence": "CRITICAL alert 17:05:58 (avail 8.9%), WARNING 17:06:49, recovery 17:07:54 (~193s + kill summary); 33 messages, zero loss"},
+        "ssh_entry_survival": {"verdict": "FAIL", "evidence": "password-auth loopback probes 0/10 during storm (PAM chain under pressure); auto-recovered after; key-auth recommendation added to runbook"},
+        "recovery_message": {"verdict": "pass", "evidence": "duration + kill summary present"}
+      },
+      "side_findings": [
+        "earlyoom killed 31 processes: hog python3 spawns x15, VSCode code x10 (auto-revived), corplink x4 (self-healed), litellm spawn_main worker x1 (gap 3)",
+        "business containers all healthy, RestartCount=0"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "CPU pressure (8 spinners, 100% for 90s)",
+      "outcomes": {
+        "timely_alerting": {"verdict": "pass", "evidence": "CRITICAL ~15s after saturation (config critical_for_seconds=10 + sampling); recovery ~90s matched the actual window; state machine correct through a spinner-died-early false recovery"},
+        "object_identification": {"verdict": "FAIL", "evidence": "guardian-rescue top returned workload_slice_missing - a real hog never lives in workload.slice (gap 2)"},
+        "ssh_entry_survival": {"verdict": "pass", "evidence": "password-auth probes 5/5 during saturation"}
+      },
+      "cross_validation": "runtime audit-stream tick-delta, top, and alert text all agree (peak 100.0%)"
+    },
+    {
+      "id": "T3",
+      "name": "disk capacity (fill to 15% free warning line, 283G written)",
+      "outcomes": {
+        "timely_alerting": {"verdict": "pass", "evidence": "CRITICAL at 50.6% used (mid-layer) 17:20:21; WARNING at 14.4% free 17:25:18 (180s debounce exact); recovery 17:30:08 (~289s)"},
+        "reserve_release_drill": {"verdict": "pass", "evidence": "guardian-release-emergency-space returned +1073741824 bytes (72.456G -> 73.530G free, exact), manifest cleanup complete, 1G reserve recreated after"},
+        "boundary_respected": {"verdict": "pass", "evidence": "fill stopped at warning line; full-fill explicitly not pursued (no decision value)"}
+      }
+    }
+  ],
+  "gaps_fixed_after_tests": [
+    {"id": 1, "gap": "SSH password auth fails under memory storm", "fix": "runbook section: admins must install SSH keys (commit 01e04ee)"},
+    {"id": 2, "gap": "rescue top cannot name host-level hogs", "fix": "guardian-rescue top --host mode (/proc two-tick sampling); verified live on server: spinner named first (12.3% cpu); tests 322->325"},
+    {"id": 3, "gap": "earlyoom avoid misses container subprocess names", "fix": "avoid += spawn_main; applied live; template updated"}
+  ],
+  "final_state": {
+    "smoke": "SMOKE PASS all checks green (15/15)",
+    "deploy_verify": "92 files, commit 01e04ee lineage",
+    "reserve": "1G ready",
+    "services": "runtime/collector/gateway/earlyoom all active",
+    "business_containers": "6/6 healthy",
+    "disk": "352G free (baseline)",
+    "memory": "19.9G available (baseline)"
+  },
+  "messages_total_sent_during_tests": 43,
+  "product_verdict": "alerting pipeline production-grade on this host class; entry-path (SSH) needs key deployment before real production; host-level identification now closed by --host mode"
+}
