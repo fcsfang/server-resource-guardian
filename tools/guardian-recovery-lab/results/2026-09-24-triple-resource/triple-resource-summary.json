@@ -1,0 +1,50 @@
+{
+  "experiment": "triple-resource-pinned-r1",
+  "date": "2026-09-24",
+  "contract": "Outcome 2 layer 1 (entry >=95%) + ops-chain observer bound (<=1.5x off)",
+  "form": {
+    "cpu": "4x python spin (1/vCPU, 900s)",
+    "memory": "24x280MiB holder swarm, restart=on-failure (6.7GiB demand vs 3.8+2GiB)",
+    "disk": "dd 1GiB fdatasync loop (900s)",
+    "host": "WSL2 Ubuntu 26.04, 4 vCPU / 3.8GiB + 2GiB swap"
+  },
+  "defended": {
+    "stack": "earlyoom -m 10 + admin_reserve 128MB + swappiness 10 + oom_score shields + pressure gate + gateway v2",
+    "probes_r1": {"ok": 19, "total": 20, "ms_range": [279.7, 1036.5], "fail_stages": {"transport": 1}},
+    "probes_r2": {"ok": 19, "total": 20, "ms_range": [253.8, 1147.5], "fail_stages": {"transport": 1}},
+    "idle_probes": {"ok": 10, "total": 10, "ms_range": [136.5, 486.4]},
+    "ops_chain_r2_s": {"login_uptime": 0.085, "free": 0.045, "df": 0.012, "dmesg": 0.02, "journalctl": 0.601, "ps": 0.033, "docker_ps": 0.405, "docker_stats": 2.69, "docker_stop": 3.706, "verify_free": 2.031, "verify_ps": 0.035},
+    "docker_side_total_s": 6.8,
+    "psi_pinned": {"cpu_some": 40.18, "cpu_full": 0.0, "io_some": 13.35, "io_full": 0.54, "mem_some": 19.53, "mem_full": 9.9},
+    "earlyoom_kills": {"r1": 1, "r2": 161, "r2_dd_share": 119},
+    "kernel_oom": "hogs + 1x UID-1000 user systemd (defect 2)",
+    "alerts": "CPU 98.1% CRITICAL [16e944b9], mem 0.8% CRITICAL + swap 100% CRITICAL [f10ee2c0], gate degraded-mode [496dca81] - all delivered in-window",
+    "host_down": false
+  },
+  "baseline": {
+    "stack": "OFF: earlyoom stopped, admin_reserve 8MB, swappiness 60, guardian off (sshd -1000 retained)",
+    "probes": {"ok": 8, "total": 20, "ms_range": [1381.8, 3615.3], "fail_stages": {"transport": 12}, "max_timeout_ms": 7489.4},
+    "ops_chain_s": {"docker_ps": 17.78, "docker_stats": 241.29, "journalctl": 6.21, "dmesg": 0.198},
+    "psi_pinned": {"cpu_some": 73.27, "cpu_full": 0.0, "io_some": 25.15, "io_full": 0.73, "mem_some": 61.06, "mem_full": 45.31},
+    "kernel_oom": 8,
+    "host_down": false
+  },
+  "comparison": {
+    "entry_rate": "8/20 (40%) vs 19/20 (95%) - 2.4x gap; pass line met only with the stack",
+    "success_latency": "1381-3615ms vs 253-1147ms - ~3.3x slower undefended",
+    "docker_stats": "241.3s vs 2.69s - 90x",
+    "psi_mem_full": "45.3 vs 9.9 - the grind the stack removes",
+    "note": "undefended triple form lands BELOW the memory-only baseline (52.5%): pageouts compete with the fdatasync storm for the same disk bandwidth, deepening the swap-grind lockout"
+  },
+  "verdicts": {
+    "layer1_entry": "PASS at the line (95% both runs, defended)",
+    "observer_bound": "PASS (docker-side 6.8s = 0.58x off-baseline 11.7s)",
+    "host_survival": "PASS (no down in either arm; full recovery after cleanup)",
+    "alerting_liveness": "PASS (CRITICAL for all three resources + gate-mode delivered)"
+  },
+  "defects": [
+    {"id": 1, "what": "earlyoom vs respawn-style pressure: dd loop respawned after each kill; 119 earlyoom kills in one window were all dd", "disposition": "not a product defect - earlyoom does not address respawn sources; recorded as target-3 requirement (identify respawn-type pressure source, prompt loop-breaking)"},
+    {"id": 2, "what": "kernel OOM killed UID-1000 user systemd (oom_score_adj=100, WSL default) while hogs (adj 0) were alive", "disposition": "FIXED: user@.service drop-in OOMScoreAdjust=0; verified live adj 100->0; control-plane shields unchanged"}
+  ],
+  "product_decision": "The memory-only defense stack covers the lethal axis of the triple form (only memory reaches PSI-full; CPU/IO queue but never block). No CPU- or disk-side component needed for entry capability. Triple form added to the reusable pressure kit."
+}

@@ -51,6 +51,19 @@ bash emergency_cleanup.sh
 | 单点周期自救(1 个 unbounded hog)| 内核每 45-50s 杀一次最大进程 | **零异常**(有喘息周期)| SSH 0.17-0.56s |
 | **Swarm 钉死(本模型)** | 死一个顶一个,内核无喘息 | runtime 崩溃 3 次/12min,审计 13 次中断,Beszel 断续 | SSH 秒级但诊断 5-21s,docker 类 150-733s,盲找 18-19 分钟 |
 
+## 三资源形态(2026-09-24 验证,新增)
+
+在 Swarm 钉死基础上叠加 CPU 与磁盘压力(CPU 4×spin 每核一个 + dd 1GiB fdatasync 循环),
+形成"三资源同时爆满"形态。两轮防御臂 + 一轮基线臂实测:
+
+- **防御栈在位:进入能力 19/20×2(95%),docker 侧 ops 6.8s(0.58× off 基线),宿主不宕机**
+- **基线(栈全关):进入能力 8/20(40%),docker_stats 241s,PSI-mem full 45.3** — 比内存-only
+  基线(52.5%)更糟:换页与 fdatasync 抢同一条磁盘带宽,swap 碾轧被进一步加深
+- **机制结论:三资源中只有内存达到 PSI-full(杀进程级);CPU/IO 只排队不封死** —
+  内核 full: cpu 0.0 / io ~0.5 / mem 9.9(防御),故内存侧防御栈覆盖了三资源形态的致命轴
+- 复现脚本模式见 `results/2026-09-24-triple-resource/`(cpu_spin.py +
+  disk_churn.sh + ben_swarm.sh 三段启动,330s 看门狗保证清理与栈还原)
+
 ## 收益对照已有数据(2026-09-23,A2/B1 轮)
 
 - 无 Guardian 盲找:1106s / 1160s,两次无法可靠指认真凶(一次误指 96Mi 无辜应用)
