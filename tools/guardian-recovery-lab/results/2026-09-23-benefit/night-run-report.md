@@ -9,8 +9,8 @@
 | 2b | gate 状态转换即时标记 | ✅ 完成 | 753a454(与 3 合并)|
 | 3 | 网关适配(gate 识别 + 降级期抑制 stale) | ✅ 完成 | 753a454 |
 | 4 | WSL 升级 753a454 + 回归 294 通过 + rescue ok | ✅ 完成 | 部署态 |
-| 5 | 双层验收 | 🔄 进行中(层 1:**钉死形态下首次打出可重复失败边界** — on 52.5% transport 失败;off 对照运行中;层 2 待跑)| results/2026-09-23-benefit/ |
-| 6 | 全部推送 + 晨报 | 🔄 随任务 5 收尾 | — |
+| 5 | 双层验收 | ✅ 完成 — 层 1:钉死形态失败根因定位(swap-grind lockout)+ 4 层硬化解决(40/40 + 20/20,通过线 ≥95%);层 2:MTTA 42s vs 盲找 1106-1160s(~26x)、MTTD ~5-9s、MTTI 0.07s、观察者效应 0.70x、通知活性 ✓ — 六条 pass line 全部达成 | two-layer-acceptance-summary.json(最终版)|
+| 6 | 全部推送 + 晨报 | ✅ 完成 | 382d483(层 1)/ c3e9d56(网关 v2)/ 2ceff9b(验收收口)|
 
 ## 重要事件(次日复核要点)
 
@@ -19,10 +19,10 @@
 3. reserve_broker/collector 的两次"测试失败"经三次归因验证均为**测试顺序依赖 + stash 暂态**，非真实回归；最终全量 294 通过。
 4. 层 2 已有数据：off 盲找 1106/1160s(两次找不准目标)vs old-build on ≈41s+0.37s;new-build 数字待段 1 完成。
 
-## 待晨间决定项
+## 待晨间决定项 — 已全部解决(2026-09-24 补记)
 
-- **层 1 结论已闭环**:on 19/40 = off 19/40(完全对称，全 transport 层)— 钉死形态的进入失败与 Guardian 无关，是 VM 内存压力堵塞 TCP accept 层，低于一切进程级防御。契约"on 不得降低进入率"满足。**层 1 判定：此形态下进入能力不可保(该主机级别)，Guardian 无罪也无功，收益主张全部转移到层 2。**
-- 层 2 新版 run 1 因 WSL 通道反复故障(0x8007274c,4 次通道死亡 + 3 次 VM 复位)未在夜跑完成 — **这是唯一未竟项**。补跑方式(通道稳定后):`bash /mnt/c/.../task5_l2_new.sh 1` + `2`,或直接用 collapse-pressure-model 工具包复现。**注意:风暴后 restart 策略会让容器复生,清理时必须先 `docker update --restart=no` 再 rm(final_sweep2.sh 的做法)。**
-- 环境已完全恢复:0 容器、0 hog、3.45Gi 可用、Guardian 三件套 active。
-- 晨间需决定:(a) 接受"WSL 上钉死形态不可进"为该主机级别结论，层 2 数据足以支撑产品主张;(b) 在原生 Linux(x86 disposable)上复测钉死形态的层 1(排除 WSL vsock 特有因素);(c) 深挖传输层保底(cgroup 内存硬保底给内核线程)。
-- 通道故障的教训(已入 incidents):钉死形态会杀死管理传输本身 — 连续两晚复现，说明这不是偶发；它同时是"带外入口必要性"的最强论据。
+- **层 1 已反转**:夜间"不可保"结论是未找到根因时的诚实判定。晨间定向搜索锁定真凶(swap-grind lockout:内核 OOM killer 出手前碾轧 swap 数十秒冻结 TCP accept),userspace 早杀(earlyoom @10% available)彻底消除 — 40/40 + v2 栈复验 20/20。原三选项中 (b) 的 x86 原生复测保留为跨平台确认项(机制已理解,属确认非探索)。
+- **层 2 已收口**:new-build run 完成(MTTD ~5-9s、MTTI 0.07s),顺带发现并修复网关三缺陷(send-stall + copytruncate 吞事件链、消息无 event_id、gate 无独立可见性)— 网关 v2(c3e9d56),风暴中 CRITICAL 送达验证 [9012f08f]。
+- **观察者效应已消**:EXP-088 的 21 倍劣化在 gate 激活下反转 — docker 侧操作 8.15s vs off 基线 11.7s = 0.70x(通过线 ≤1.5x)。
+- 六条 pass line 全部 PASS,两层验收 JSON 已填终值并推送(2ceff9b)。环境终态:0 容器 0 hog、3.1Gi 可用、四服务 active、earlyoom 完整参数生效。
+- 剩余项:目标三(完整处置闭环)未启动;x86 原生终验待环境。
