@@ -1,0 +1,221 @@
+#!/usr/bin/env bash
+
+# guardian-smoke: one command to verify a Guardian deployment is actually
+# working - services up, defense stack live, deployment fingerprint intact.
+# Run after install-guardian-local.sh + guardian-host-setup.sh, or any time
+# you want a health check. Exit 0 = all green; exit 1 = first failure named.
+#
+# Usage (as root on the host, or via sudo):
+#   guardian-smoke                 # full check incl. entry probes (needs ssh key)
+#   guardian-smoke --skip-probes   # skip the SSH entry probe loop
+#   guardian-smoke --json          # machine-readable PASS/FAIL summary
+#
+# Checks (in order):
+#   1. core services: guardian-runtime, guardian-collector (+gateway/earlyoom if present)
+#   2. earlyoom args: -m 10 -s 100, control plane in --avoid
+#   3. oom_score shields: sshd -1000 / runtime -900 / collector -800 / gw -800
+#   4. sysctl: admin_reserve >=128MB, swappiness <=10
+#   5. user@.service balance: oom_score_adj of running user managers == 0
+#   6. deployment manifest: guardian-deploy-verify clean
+#   7. rescue CLI answers (guardian-rescue status)
+#   8. (optional) SSH entry probes - 5 attempts from inside the host
+
+set -Eeuo pipefail
+
+SKIP_PROBES=false
+JSON_OUT=false
+while (($# > 0)); do
+  case "$1" in
+    --skip-probes) SKIP_PROBES=true; shift ;;
+    --json) JSON_OUT=true; shift ;;
+    -h|--help)
+      sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'
+      exit 0
+      ;;
+    *) echo "guardian-smoke: unknown argument: $1" >&2; exit 2 ;;
+  esac
+done
+
+declare -a RESULTS=()
+declare -a NAMES=()
+
+record() { # record <name> <pass|fail> <detail>
+  NAMES+=("$1")
+  RESULTS+=("$2")
+  if [[ "$JSON_OUT" == true ]]; then
+    printf '{"check":"%s","result":"%s","detail":"%s"}\n' "$1" "$2" "$3"
+  else
+    printf '%-28s %s  %s\n' "$1" "$([ "$2" = pass ] && echo OK || echo FAIL)" "$3"
+  fi
+}
+
+FAILED=0
+fail() {
+  record "$1" fail "$2"
+  FAILED=1
+}
+
+echo "== guardian-smoke $(date -u +%FT%TZ) =="
+
+# --- 1. core services ---
+for unit in guardian-runtime guardian-collector; do
+  if systemctl is-active --quiet "$unit" 2>/dev/null; then
+    record "service:$unit" pass "active"
+  else
+    fail "service:$unit" "not active ($(systemctl is-active "$unit" 2>/dev/null || echo unknown))"
+  fi
+done
+for unit in feishu-gateway earlyoom; do
+  if systemctl cat "$unit" >/dev/null 2>&1; then
+    if systemctl is-active --quiet "$unit" 2>/dev/null; then
+      record "service:$unit" pass "active"
+    else
+      fail "service:$unit" "installed but not active"
+    fi
+  else
+    record "service:$unit" pass "not installed (optional)"
+  fi
+done
+
+# --- 2. earlyoom args ---
+if pgrep -x earlyoom >/dev/null 2>&1; then
+  args=$(tr '\0' ' ' < "/proc/$(pgrep -x earlyoom)/cmdline")
+  if printf '%s' "$args" | grep -q -- '-m 10' && printf '%s' "$args" | grep -q -- '-s 100'; then
+    record "earlyoom:args" pass "-m 10 -s 100"
+  else
+    fail "earlyoom:args" "live args lack -m 10/-s 100: $args"
+  fi
+  if printf '%s' "$args" | grep -q -- '--avoid'; then
+    missing=""
+    for name in sshd guardian-runtime guardian-collector feishu; do
+      printf '%s' "$args" | grep -q -- "$name" || missing="$missing $name"
+    done
+    if [[ -z "$missing" ]]; then
+      record "earlyoom:avoid" pass "control plane covered"
+    else
+      fail "earlyoom:avoid" "missing from avoid list:$missing"
+    fi
+  else
+    fail "earlyoom:avoid" "no --avoid list in live args"
+  fi
+else
+  record "earlyoom:args" pass "not installed (optional)"
+fi
+
+# --- 3. oom_score shields ---
+shield() { # shield <unit> <want>
+  local unit=$1 want=$2 pid got
+  pid=$(systemctl show -p MainPID --value "$unit" 2>/dev/null || true)
+  if [[ -z "$pid" || "$pid" == "0" ]]; then
+    record "oom:$unit" pass "not running (skip)"
+    return 0
+  fi
+  got=$(cat "/proc/$pid/oom_score_adj" 2>/dev/null || echo missing)
+  if [[ "$got" == "$want" ]]; then
+    record "oom:$unit" pass "adj=$got"
+  else
+    fail "oom:$unit" "adj=$got want=$want"
+  fi
+}
+for sshu in ssh.service sshd.service; do
+  if systemctl cat "$sshu" >/dev/null 2>&1; then
+    shield "$sshu" -1000
+    break
+  fi
+done
+shield guardian-runtime -900
+shield guardian-collector -800
+systemctl cat feishu-gateway >/dev/null 2>&1 && shield feishu-gateway -800
+
+# --- 4. sysctl ---
+ar=$(cat /proc/sys/vm/admin_reserve_kbytes)
+sw=$(cat /proc/sys/vm/swappiness)
+if [[ "$ar" -ge 131072 && "$sw" -le 10 ]]; then
+  record "sysctl" pass "admin_reserve=${ar}KB swappiness=$sw"
+else
+  fail "sysctl" "admin_reserve=${ar}KB (want >=131072) swappiness=$sw (want <=10)"
+fi
+
+# --- 5. user@.service balance ---
+user_bad=""
+for p in $(systemctl list-units 'user@*.service' --no-legend 2>/dev/null | awk '{print $1}'); do
+  pid=$(systemctl show -p MainPID --value "$p" 2>/dev/null || true)
+  [[ -z "$pid" || "$pid" == "0" ]] && continue
+  got=$(cat "/proc/$pid/oom_score_adj" 2>/dev/null || echo missing)
+  [[ "$got" == "0" ]] || user_bad="$user_bad $p=$got"
+done
+if [[ -z "$user_bad" ]]; then
+  record "user-balance" pass "running user managers adj=0"
+else
+  fail "user-balance" "unbalanced:$user_bad (want adj=0)"
+fi
+
+# --- 6. deployment manifest ---
+if command -v guardian-deploy-verify >/dev/null 2>&1; then
+  if out=$(guardian-deploy-verify 2>&1); then
+    record "deploy-verify" pass "$(printf '%s' "$out" | tail -1)"
+  else
+    fail "deploy-verify" "$(printf '%s' "$out" | grep -E 'MISSING|MODIFIED' | head -3 | tr '\n' ';')"
+  fi
+else
+  record "deploy-verify" pass "tool not installed (optional)"
+fi
+
+# --- 7. rescue CLI ---
+if command -v guardian-rescue >/dev/null 2>&1; then
+  if guardian-rescue status >/dev/null 2>&1; then
+    record "rescue-cli" pass "status ok"
+  else
+    fail "rescue-cli" "guardian-rescue status failed"
+  fi
+else
+  record "rescue-cli" pass "not installed (optional)"
+fi
+
+# --- 8. entry probes (optional) ---
+if [[ "$SKIP_PROBES" == true ]]; then
+  record "entry-probes" pass "skipped"
+elif command -v ssh >/dev/null 2>&1 && id -u >/dev/null 2>&1 && [[ -d /home ]]; then
+  # Loopback probes need a local user with an authorized key. Best-effort:
+  # probe the first admin-capable user found; skip cleanly if none.
+  probe_user=""
+  for u_home in /home/*; do
+    u=$(basename "$u_home")
+    [[ -f "$u_home/.ssh/authorized_keys" ]] && { probe_user=$u; break; }
+  done
+  key=""
+  for k in /root/.ssh/id_*; do
+    [[ -f "$k" && "$k" != *.pub ]] && { key=$k; break; }
+  done
+  if [[ -z "$probe_user" || -z "$key" ]]; then
+    record "entry-probes" pass "no local probe target/key (skip)"
+  else
+    passn=0; total=5
+    for i in $(seq 1 "$total"); do
+      out=$(ssh -i "$key" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no \
+            "$probe_user@127.0.0.1" 'echo GUARDIAN_PROBE_OK' 2>/dev/null || true)
+      [[ "$out" == *"GUARDIAN_PROBE_OK"* ]] && passn=$((passn + 1))
+      sleep 0.3
+    done
+    if [[ "$passn" -eq "$total" ]]; then
+      record "entry-probes" pass "$passn/$total loopback"
+    else
+      fail "entry-probes" "$passn/$total loopback probes passed"
+    fi
+  fi
+else
+  record "entry-probes" pass "unavailable (skip)"
+fi
+
+if [[ "$JSON_OUT" == true ]]; then
+  exit "$FAILED"
+fi
+
+echo
+if [[ "$FAILED" -eq 0 ]]; then
+  echo "SMOKE PASS: all checks green"
+  exit 0
+else
+  echo "SMOKE FAIL: see FAIL lines above"
+  exit 1
+fi

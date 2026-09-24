@@ -2,6 +2,29 @@
 
 This package is for an Ubuntu disposable host. The installer defaults to a plan; applying requires `--apply --environment local-disposable` and leaves automatic actions disabled.
 
+## Quick start (three commands)
+
+```bash
+sudo bash scripts/install-guardian-local.sh   --apply --environment local-disposable  # core: runtime + collector + rescue boundaries
+sudo bash scripts/guardian-host-setup.sh      --apply --environment local-disposable  # defense stack + Feishu gateway
+sudo guardian-smoke                                                                    # verify everything is actually live
+```
+
+`guardian-host-setup.sh` installs the host-level defense stack and the alert
+gateway in one idempotent pass: earlyoom with the validated trigger
+(`-m 10 -s 100`, control plane in `--avoid`, including the packaged-unit
+ExecStart override), the transport-defense sysctl, the oom_score shields
+(sshd -1000 / collector+gateway -800), the user@.service OOM balance, and the
+Feishu gateway unit with the systemd-journal membership its kill watcher
+needs. It never restarts sshd and never touches `guardian.json` or the
+brokers. See `deploy/DEPLOYMENT-RUNBOOK.md` for the step-by-step drill
+manual (Chinese) including the Feishu credentials bootstrap.
+
+Both scripts default to a non-mutating plan; every step can be skipped
+individually (`--skip earlyoom,sysctl,...`). `guardian-smoke` also works as a
+standing health check: services, earlyoom args, live oom_score values,
+sysctl, user-session balance, build-manifest drift, and the rescue CLI.
+
 ```bash
 bash scripts/install-guardian-local.sh
 sudo bash scripts/install-guardian-local.sh --apply --environment local-disposable
