@@ -26,6 +26,38 @@ DEFAULT_BROKER_SOCKET = Path("/run/guardian-broker/broker.sock")
 DEFAULT_RESERVE_BROKER_MARKER = Path("/etc/guardian/reserve-broker.enabled")
 DEFAULT_RESERVE_BROKER_SOCKET = Path("/run/guardian-reserve-broker/reserve.sock")
 DEFAULT_COLLECTOR_SOCKET = Path("/run/guardian-collector/collector.sock")
+DEFAULT_BUILD_MANIFEST = Path("/etc/guardian/build-manifest.json")
+
+
+def _build_info(manifest_path: Path = DEFAULT_BUILD_MANIFEST) -> dict[str, Any]:
+    """Read the installer's build manifest; report freshness without touching state.
+
+    deployment_matches is None when there is nothing to compare (manifest
+    missing) or the comparison tool is unavailable - the caller renders that
+    as an explicit "unknown", never as a silent pass.
+    """
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"manifest_present": False, "commit": None, "built_at": None, "deployment_matches": None}
+    matches: bool | None
+    try:
+        result = subprocess.run(
+            ["guardian-deploy-verify", "--manifest", str(manifest_path)],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+        matches = result.returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        matches = None
+    return {
+        "manifest_present": True,
+        "commit": manifest.get("commit"),
+        "built_at": manifest.get("built_at"),
+        "deployment_matches": matches,
+    }
 
 
 def _systemctl(operation: str, unit: str, runner: Callable[..., Any]) -> str:
@@ -212,6 +244,7 @@ def build_status(
     collector_socket: Path = DEFAULT_COLLECTOR_SOCKET,
     unit: str = DEFAULT_UNIT,
     runner: Callable[..., Any] = subprocess.run,
+    manifest_path: Path = DEFAULT_BUILD_MANIFEST,
 ) -> dict[str, Any]:
     config, config_error = _read_json(config_path)
     mode = config.get("agent", {}).get("mode") if config else None
@@ -278,6 +311,7 @@ def build_status(
             "online": collector_online,
         },
         "config": {"path": str(config_path), "error": config_error},
+        "build": _build_info(manifest_path),
         "protection": {
             "systemd_units": len(protected_units) if isinstance(protected_units, list) else 0,
             "container_labels": len(protected_labels) if isinstance(protected_labels, list) else 0,
@@ -302,6 +336,12 @@ def format_status(value: Mapping[str, Any]) -> str:
             for item in protected_candidates[:5]
             if isinstance(item, Mapping)
         ) or "none"
+    build = value.get("build") or {}
+    if not build.get("manifest_present"):
+        build_text = "no manifest (installed before build tracking)"
+    else:
+        state = {True: "matches", False: "DRIFT DETECTED", None: "verify-unavailable"}[build.get("deployment_matches")]
+        build_text = f"commit={build.get('commit') or 'unknown'} built={build.get('built_at') or 'unknown'} verify={state}"
     return "\n".join(
         (
             f"Guardian: {value['overall']}",
@@ -315,6 +355,8 @@ def format_status(value: Mapping[str, Any]) -> str:
             f"Reserve recovery: state={alerts.get('action', {}).get('reserve_recovery', {}).get('state') if isinstance(alerts.get('action', {}).get('reserve_recovery'), dict) else 'none'}, execution={alerts.get('action', {}).get('reserve_recovery', {}).get('execution') if isinstance(alerts.get('action', {}).get('reserve_recovery'), dict) else 'none'}",
             f"Protection: units={value['protection']['systemd_units']}, labels={value['protection']['container_labels']}, protected candidates={len(protected_candidates)}",
             f"Protected candidates: {protected_text}",
+            f"Config: {value['config']['path']}",
+            f"Build: {build_text}",
             f"Collector: {'online (read-only container data)' if value['collector']['online'] else 'review_required'}",
             f"Broker: {'closed (no automatic action path)' if value['broker']['closed'] else 'review_required'}",
             f"Reserve recovery boundary: {'closed (no automatic reserve release)' if value['reserve_broker']['closed'] else 'review_required'}",

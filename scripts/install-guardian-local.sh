@@ -292,10 +292,99 @@ install -o root -g root -m 0755 "${repository}/scripts/guardian-release-emergenc
 install -o root -g root -m 0755 "${repository}/scripts/guardian-status-emergency-space" /usr/local/sbin/guardian-status-emergency-space
 install -o root -g root -m 0755 "${repository}/scripts/guardian-create-emergency-space" /usr/local/sbin/guardian-create-emergency-space
 
-install -d -o root -g root -m 0755 /etc/systemd/system
-for unit in "${managed_units[@]}"; do
-  install -o root -g root -m 0644 "${repository}/deploy/guardian/${unit}" "/etc/systemd/system/${unit}"
-done
+# --- build manifest: record what this deployment is, file by file ---
+# Captures the source commit (or "untarred-worktree" when git is absent) and
+# sha256 fingerprints of every file the installer owns: the install-root copy
+# plus the system locations it writes. guardian-deploy-verify reconciles the
+# deployed system against this manifest; drift names the changed files.
+git_commit=$(git -C "$repository" rev-parse HEAD 2>/dev/null || echo "no-git-worktree")
+manifest_deploy_dir=/etc/guardian
+install -d -o root -g root -m 0755 "$manifest_deploy_dir"
+python3 - "$repository" "$install_root" "$git_commit" "$manifest_deploy_dir/build-manifest.json" <<'PY'
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+repository = Path(sys.argv[1])
+install_root = Path(sys.argv[2])
+commit = sys.argv[3]
+manifest_path = Path(sys.argv[4])
+
+def digest(path: Path) -> str | None:
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError:
+        return None
+
+files: dict[str, str] = {}
+
+# 1) the installed source tree, from the install root (what will actually run).
+# scripts/ is excluded here: every script that matters is installed to
+# /usr/local/{bin,sbin} and fingerprinted there; the install-root copy is a
+# build artifact and can legitimately differ in line endings, so tracking
+# both would produce false-positive drift.
+for base in ("src", "config", "deploy"):
+    root = install_root / base
+    if not root.is_dir():
+        continue
+    for path in sorted(root.rglob("*")):
+        if not path.is_file() or "__pycache__" in path.parts or path.suffix == ".pyc":
+            continue
+        d = digest(path)
+        if d:
+            files[str(path.relative_to(install_root))] = d
+
+# 2) the system locations the installer writes (the real deployed state)
+system_targets = [
+    "/usr/local/bin/guardian-status",
+    "/usr/local/bin/guardian-rescue",
+    "/usr/local/sbin/guardian-rescue-action",
+    "/usr/local/sbin/guardian-maintenance-status",
+    "/usr/local/sbin/guardian-maintenance-pressure",
+    "/usr/local/sbin/guardian-reserve-space",
+    "/usr/local/sbin/guardian-release-emergency-space",
+    "/usr/local/sbin/guardian-status-emergency-space",
+    "/usr/local/sbin/guardian-create-emergency-space",
+    "/etc/tmpfiles.d/guardian.conf",
+    "/etc/systemd/journald.conf.d/guardian.conf",
+    "/etc/sudoers.d/guardian-maintenance",
+]
+for unit in ("rescue.slice", "workload.slice", "guardian-observer.slice",
+             "guardian-broker.slice", "guardian-collector.service",
+             "guardian-runtime.service", "guardian-broker.service",
+             "guardian-reserve-broker.service"):
+    system_targets.append(f"/etc/systemd/system/{unit}")
+
+for target in system_targets:
+    path = Path(target)
+    d = digest(path)
+    if d:
+        files[target.lstrip("/")] = d
+
+# 3) the verification tool itself (installed copy is authoritative)
+verify_tool = repository / "scripts" / "guardian-deploy-verify"
+if verify_tool.is_file():
+    d = digest(verify_tool)
+    if d:
+        files["scripts/guardian-deploy-verify"] = d
+
+manifest = {
+    "schema": "guardian.build-manifest.v1",
+    "commit": commit,
+    "built_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "install_root": str(install_root),
+    "file_count": len(files),
+    "files": files,
+}
+manifest_path.write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+print(f"build manifest: {len(files)} files fingerprinted -> {manifest_path}")
+PY
+chmod 0644 "${manifest_deploy_dir}/build-manifest.json"
+
+install -o root -g root -m 0755 "${repository}/scripts/guardian-deploy-verify" /usr/local/sbin/guardian-deploy-verify
 install -d -o root -g root -m 0755 /etc/tmpfiles.d
 install -o root -g root -m 0644 "${repository}/deploy/guardian/guardian.tmpfiles" /etc/tmpfiles.d/guardian.conf
 install -d -o root -g root -m 0755 /etc/systemd/journald.conf.d

@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+# guardian-deploy-verify: reconcile the deployed Guardian files against the
+# build manifest recorded by the installer (build-manifest.json). Any drift -
+# a modified, missing, or extra managed file - exits non-zero and names the
+# files. Exit 0 means the deployment is exactly what the manifest recorded.
+#
+# Usage: guardian-deploy-verify [--manifest PATH] [--install-root PATH]
+# Designed for cron: silent on success, prints drift lines on failure.
+
+set -Eeuo pipefail
+
+MANIFEST=/etc/guardian/build-manifest.json
+INSTALL_ROOT=/opt/server-resource-guardian
+
+usage() {
+  cat <<'EOF'
+Usage:
+  guardian-deploy-verify [--manifest PATH] [--install-root PATH]
+
+Recomputes sha256 fingerprints of the deployed Guardian files and compares
+them with the build manifest the installer wrote. Drift (modified, missing,
+or extra managed file) is listed and the exit code is 1.
+EOF
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --manifest)
+      (($# >= 2)) || { echo "guardian-deploy-verify: --manifest requires a value" >&2; exit 2; }
+      MANIFEST=$2
+      shift 2
+      ;;
+    --install-root)
+      (($# >= 2)) || { echo "guardian-deploy-verify: --install-root requires a value" >&2; exit 2; }
+      INSTALL_ROOT=$2
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "guardian-deploy-verify: unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+[[ -r "$MANIFEST" ]] || { echo "guardian-deploy-verify: manifest missing or unreadable: $MANIFEST" >&2; exit 1; }
+
+python3 - "$MANIFEST" "$INSTALL_ROOT" <<'PY'
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+manifest_path, install_root = Path(sys.argv[1]), Path(sys.argv[2])
+try:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+except (OSError, ValueError) as exc:
+    print(f"guardian-deploy-verify: cannot read manifest: {exc}", file=sys.stderr)
+    raise SystemExit(1)
+
+files = manifest.get("files")
+if not isinstance(files, dict) or not files:
+    print("guardian-deploy-verify: manifest has no files section", file=sys.stderr)
+    raise SystemExit(1)
+
+# Absolute system paths (etc/..., usr/...) are anchored at /, not at the
+# install root; repo-relative paths (src/..., scripts/...) hang off the root.
+def resolve(rel: str) -> Path:
+    first = rel.split("/", 1)[0]
+    if first in ("etc", "usr", "var", "run"):
+        return Path("/") / rel
+    return install_root / rel
+
+drift = []
+for rel, recorded in sorted(files.items()):
+    path = resolve(rel)
+    if not path.is_file():
+        drift.append(f"MISSING  {rel}")
+        continue
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if digest != recorded:
+        drift.append(f"MODIFIED {rel}")
+
+if drift:
+    print("guardian-deploy-verify: DRIFT DETECTED against build manifest")
+    print(f"  manifest: {manifest_path}")
+    print(f"  recorded commit: {manifest.get('commit', 'unknown')}")
+    for line in drift:
+        print(f"  {line}")
+    raise SystemExit(1)
+
+print("guardian-deploy-verify: OK - deployment matches build manifest")
+print(f"  commit: {manifest.get('commit', 'unknown')} built {manifest.get('built_at', 'unknown')}")
+print(f"  files verified: {len(files)}")
+PY

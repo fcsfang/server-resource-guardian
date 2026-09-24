@@ -5,7 +5,7 @@ import threading
 import unittest
 from pathlib import Path
 
-from src.guardian_collector_client import UnixSocketCollectorClient
+from src.guardian_collector_client import CollectorUnavailable, UnixSocketCollectorClient
 from src.guardian_collector_service import CollectorServer, ReadOnlyCollector
 from src.guardian_pressure_gate import PressureGate
 
@@ -123,7 +123,19 @@ class GuardianCollectorTests(unittest.TestCase):
                     break
                 threading.Event().wait(0.01)
             try:
-                value = UnixSocketCollectorClient(socket_path).snapshot()
+                # connect can transiently fail with ECONNREFUSED in the
+                # window between path creation and listen(); retry briefly
+                last_error = None
+                for _ in range(10):
+                    try:
+                        value = UnixSocketCollectorClient(socket_path).snapshot()
+                        last_error = None
+                        break
+                    except CollectorUnavailable as exc:
+                        last_error = exc
+                        threading.Event().wait(0.05)
+                if last_error is not None:
+                    raise last_error
             finally:
                 server.close()
                 thread.join(timeout=1)

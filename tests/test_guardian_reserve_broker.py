@@ -81,10 +81,11 @@ class GuardianReserveBrokerTests(unittest.TestCase):
         )
         thread = threading.Thread(target=server.serve_forever)
         thread.start()
-        for _ in range(100):
-            if socket_path.exists():
-                break
-            time.sleep(0.01)
+        # The broker has a small per-process concurrency budget; a probe
+        # connection would consume it and the real client would be denied
+        # with reserve_broker_concurrency_limit. Give the server thread a
+        # beat to reach its accept loop before handing the client back.
+        time.sleep(0.1)
         auth = Authorization(**authorization)
         client = ReserveRecoveryBrokerClient(socket_path, timeout_seconds=2)
         return server, thread, client, auth, config_path, runner, state
@@ -147,23 +148,34 @@ class GuardianReserveBrokerTests(unittest.TestCase):
             thread = threading.Thread(target=server.serve_forever)
             thread.start()
             try:
-                for _ in range(100):
-                    if socket_path.exists():
+                # bind() creates the socket file before listen(), and before
+                # bind() the file does not exist at all; a client racing that
+                # window gets FileNotFoundError (mapped by the client to
+                # reserve_broker_unavailable) or ECONNREFUSED (mapped to
+                # reserve_broker_connection_failed). Retry the release until
+                # the server answers. No probe connection: the broker's
+                # per-process concurrency budget is tiny and a probe would
+                # consume it, turning into reserve_broker_concurrency_limit.
+                response = None
+                deadline = time.time() + 2.0
+                while time.time() < deadline:
+                    auth = Authorization(
+                        approval_id="approval",
+                        environment="local-disposable",
+                        target_id="/var/lib/guardian/reserve",
+                        action=RESERVE_ACTION,
+                        expires_at=time.time() + 60,
+                    )
+                    response = ReserveRecoveryBrokerClient(socket_path).release(
+                        incident_id="disabled-incident",
+                        authorization=auth,
+                        config_digest="unused",
+                        mount_point="/",
+                    )
+                    codes = set(response.get("reason_codes", []))
+                    if not codes & {"reserve_broker_unavailable", "reserve_broker_connection_failed"}:
                         break
-                    time.sleep(0.01)
-                auth = Authorization(
-                    approval_id="approval",
-                    environment="local-disposable",
-                    target_id="/var/lib/guardian/reserve",
-                    action=RESERVE_ACTION,
-                    expires_at=time.time() + 60,
-                )
-                response = ReserveRecoveryBrokerClient(socket_path).release(
-                    incident_id="disabled-incident",
-                    authorization=auth,
-                    config_digest="unused",
-                    mount_point="/",
-                )
+                    time.sleep(0.05)
             finally:
                 server.stop()
                 thread.join(timeout=2)
