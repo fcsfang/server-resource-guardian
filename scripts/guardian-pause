@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# guardian-pause: temporarily stop/start the whole Guardian observability
+# stack with one command. This is a MAINTENANCE action, not a safety feature:
+# while paused, no alerting, no rescue visibility, no Feishu messages.
+# earlyoom is intentionally NOT touched - it is a platform-level safety net
+# owned by the host admin and must keep running (stop it separately if a
+# specific experiment requires that).
+#
+# Usage:
+#   guardian-pause off    # stop runtime + collector + gateway
+#   guardian-pause on     # start them again and verify readiness
+#   guardian-pause        # show current state
+#
+# Both directions are idempotent and safe to re-run. Nothing is disabled -
+# units stay enabled, so a reboot brings the full stack back automatically.
+
+set -Eeuo pipefail
+
+UNITS=(guardian-collector.service guardian-runtime.service feishu-gateway.service)
+READY=/run/guardian-runtime/ready
+
+state_line() {
+  printf 'runtime=%s collector=%s gateway=%s\n' \
+    "$(systemctl is-active guardian-runtime.service 2>/dev/null)" \
+    "$(systemctl is-active guardian-collector.service 2>/dev/null)" \
+    "$(systemctl is-active feishu-gateway.service 2>/dev/null)"
+}
+
+case "${1:-state}" in
+  state)
+    echo "guardian: $(state_line)"
+    systemctl is-enabled guardian-runtime.service >/dev/null 2>&1 \
+      && echo "boot: enabled (stack returns on reboot)" \
+      || echo "boot: disabled"
+    ;;
+  off)
+    systemctl stop "${UNITS[@]}" 2>/dev/null || true
+    echo "guardian paused: $(state_line)"
+    echo "(audit stream preserved at /var/lib/guardian/runtime/audit/; no messages while paused)"
+    ;;
+  on)
+    systemctl start guardian-collector.service guardian-runtime.service \
+      2>/dev/null || systemctl try-restart guardian-collector.service
+    sleep 2
+    systemctl start feishu-gateway.service 2>/dev/null || true
+    # wait up to 10s for the runtime readiness marker
+    ready=unknown
+    for _ in $(seq 1 10); do
+      if [[ -s "$READY" ]]; then ready=$(tr -d '\n' < "$READY"); break; fi
+      sleep 1
+    done
+    echo "guardian resumed: $(state_line)"
+    echo "readiness: ${ready:-missing-after-10s}"
+    # ready marker reads "runtime:ready:<mode>"; any ready:* form is fine
+    [[ "$ready" == runtime:ready:* ]] || { echo "WARNING: runtime not ready - check: journalctl -u guardian-runtime -n 20"; exit 1; }
+    ;;
+  *)
+    echo "usage: guardian-pause [on|off|state]" >&2
+    exit 2
+    ;;
+esac

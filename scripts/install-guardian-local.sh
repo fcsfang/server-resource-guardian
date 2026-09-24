@@ -301,6 +301,8 @@ install -o root -g root -m 0755 "${repository}/scripts/guardian-status-emergency
 install -o root -g root -m 0755 "${repository}/scripts/guardian-create-emergency-space" /usr/local/sbin/guardian-create-emergency-space
 # the standing health check belongs on PATH so the drill's step 3 works
 install -o root -g root -m 0755 "${repository}/scripts/guardian-smoke" /usr/local/sbin/guardian-smoke
+# one-command pause/resume of the whole observability stack
+install -o root -g root -m 0755 "${repository}/scripts/guardian-pause" /usr/local/sbin/guardian-pause
 
 # --- build manifest: record what this deployment is, file by file ---
 # Captures the source commit (or "untarred-worktree" when git is absent) and
@@ -359,6 +361,7 @@ system_targets = [
     "/usr/local/sbin/guardian-status-emergency-space",
     "/usr/local/sbin/guardian-create-emergency-space",
     "/usr/local/sbin/guardian-smoke",
+    "/usr/local/sbin/guardian-pause",
     "/etc/tmpfiles.d/guardian.conf",
     "/etc/systemd/journald.conf.d/guardian.conf",
     "/etc/sudoers.d/guardian-maintenance",
