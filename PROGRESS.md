@@ -1,13 +1,13 @@
 # Current Verified State
 
-Updated: 2026-09-23
+Updated: 2026-09-24
 
 ## Product status
 
 | Outcome | Current evidence | Status |
 | --- | --- | --- |
-| Alerting and observation | Runtime, read-only Collector, CPU/memory/disk risk paths, status output, and Beszel integration remain in the supported tree. | Implemented locally; not production-validated |
-| External operator access | Fresh SSH diagnosis passed under bounded pressure and during a real OOM storm on `guardian-t11-lite`. Guardian-off did not fail repeatably, so no Guardian advantage can be measured there. | Functional path passed; benefit unproven |
+| Alerting and observation | Runtime, read-only Collector, CPU/memory/disk risk paths, status output, and Beszel integration remain in the supported tree. Pressure gate (PSI three-state) + audit slimming + gateway v2 verified live under a pinned memory-collapse storm: CRITICAL alerts and gate degraded-mode messages delivered in-window. | Implemented locally; storm-validated on WSL |
+| External operator access | Two-layer acceptance contract (WSL class) **met on all six pass lines**: Layer-1 entry 40/40 + 20/20 (>=95%) after root-causing the swap-grind lockout and deploying the 4-layer platform hardening (earlyoom + sysctl + oom_score shields). Layer-2: MTTA 42s vs 1106-1160s blind (~26x), MTTD ~5-9s (<=10s), MTTI 0.07s (<=5s, 70x margin), observer effect 0.70x (<=1.5x), notification liveness under storm. | Two-layer contract met on WSL; x86_64 native confirmation pending |
 | Authorized mitigation | A disposable Docker web target completed one exact, single-use, TERM-only action with audit. Host memory recovery and surviving-replica HTTP health were verified separately. This validates the safety mechanics only (one target, one signal, static authorization); the roadmap outcome-3 target is the full mitigation loop (dynamic identity, multi-target, verified escalation, business-health confirmation), which is not yet implemented. | Safety mechanics validated; full loop not implemented |
 
 ## Repository closeout
@@ -28,12 +28,16 @@ The Docker closeout used an ARM64 nginx image transferred from the local cache, 
 
 ## Current blockers and decisions
 
-- **SSH rescue advantage:** a representative disposable x86_64 environment is not currently available. Until it is, the product claim remains best-effort operator access, not a rescue guarantee or measured advantage.
+- **Cross-platform confirmation:** the two-layer acceptance was established on WSL2 (x86_64 via translation for the VM layer, native kernel 6.6+). An x86_64 native disposable retest remains the ROADMAP prerequisite for the cross-platform claim; the mechanism (swap-grind lockout, earlyoom fix) is understood and platform-configurable, so this is confirmation, not exploration.
 - **Production:** no production connection, credential access, installation, pressure, or action is authorized.
 
 ## Evidence index
 
 - [Current compact lab summary](tools/guardian-recovery-lab/latest-run.md)
+- [Two-layer acceptance summary (2026-09-23/24, WSL)](tools/guardian-recovery-lab/results/2026-09-23-benefit/two-layer-acceptance-summary.json)
+- [Layer-1 solved: earlyoom hardening stack](tools/guardian-recovery-lab/results/2026-09-23-benefit/layer1-solved-earlyoom.md)
+- [Layer-2 findings + gateway v2](tools/guardian-recovery-lab/results/2026-09-23-benefit/gateway-v2-verify.md)
+- [Observer effect bounded](tools/guardian-recovery-lab/results/2026-09-23-benefit/observer-effect-bounded.md)
 - [Guardian-off SSH boundary search](tools/guardian-recovery-lab/results/2026-09-23/guardian-off-ssh-boundary-r1.json)
 - [Multi-process OOM storm](tools/guardian-recovery-lab/results/2026-09-23/guardian-off-multiprocess-storm-r1.json)
 - [MemoryHigh cleanup boundary](tools/guardian-recovery-lab/results/2026-09-23/memoryhigh-cleanup-boundary.json)

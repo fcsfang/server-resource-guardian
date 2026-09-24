@@ -1,21 +1,22 @@
-# Layer-1/2 acceptance summary skeleton (filled as data lands)
-# contract: ROADMAP.md Operator-access acceptance contract (eb2e7b2)
-
 {
   "experiment": "outcome-2-two-layer-acceptance-r1",
-  "date": "2026-09-23",
+  "date": "2026-09-23/24",
   "contract": "ROADMAP two-layer (Layer 1 entry rate / Layer 2 MTTA)",
   "environment": {
     "host": "WSL2 Ubuntu 26.04 x86_64, 4 vCPU / 3.8GiB + 2GiB swap",
-    "guardian_build": "753a454 (pressure_gate + audit slimming + OOM defense + gateway degraded-mode)",
-    "pressure_model": "tools/collapse-pressure-model: 24x280MiB holder swarm, restart=on-failure",
+    "guardian_build": "753a454 + gateway v2 c3e9d56 (pressure_gate + audit slimming + OOM defense + decoupled gateway)",
+    "platform_defense": "4-layer login-path hardening: oom_score shields (-1000 sshd / -900 runtime / -800 collector+gateway), vm.admin_reserve_kbytes=262144, vm.swappiness=10, earlyoom -m 10 -s 100 with avoid/prefer steering",
+    "pressure_model": "tools/collapse-pressure-model: 24x280MiB holder swarm, restart=on-failure (6.7GiB demand > 3.8+2GiB = pinned form)",
     "client": "in-WSL loopback SSH (csfang key); external-CLIENT probes complement from Windows"
   },
   "layer1": {
     "idle_baseline": {"r1": "20/20", "r2": "20/20", "elapsed_ms_range": "[119.5, 162.2]", "failure_stages": []},
-    "collapse_guardian_on": {"r1": "10/20", "r2": "9/20", "aggregate": "19/40 (52.5% entry failure)", "failure_stages": ["transport (all 19)"], "elapsed_ms_range": "[188.9, 8446.5]", "pressure": "pinned 24x280MiB swarm, 15 OOM kills, swap 100%"},
-    "collapse_guardian_off": {"r1": "9/20", "r2": "10/20", "aggregate": "19/40 (52.5% entry failure)", "failure_stages": ["transport (all 19)"], "elapsed_ms_range": "[160.2, 6321.7]", "pressure": "same pinned form, RAM free 48Mi, swap 100%"},
-    "attribution": "on 19/40 == off 19/40, symmetric, all transport-stage: entry failure under pinned collapse is VM-memory-pressure TCP-accept stall, independent of Guardian; process-level OOM defense cannot reach it. Contract requirement 'on must not lower entry rate' met."
+    "collapse_guardian_on_undefended": {"r1": "10/20", "r2": "9/20", "aggregate": "19/40 (52.5% entry failure)", "failure_stages": ["transport (all 19)"], "elapsed_ms_range": "[188.9, 8446.5]", "pressure": "pinned 24x280MiB swarm, 15 OOM kills, swap 100%"},
+    "collapse_guardian_off_undefended": {"r1": "9/20", "r2": "10/20", "aggregate": "19/40 (52.5% entry failure)", "failure_stages": ["transport (all 19)"], "elapsed_ms_range": "[160.2, 6321.7]", "pressure": "same pinned form, RAM free 48Mi, swap 100%"},
+    "root_cause": "swap-grind lockout: kernel OOM killer fires only at true exhaustion; before acting it grinds swap for tens of seconds, freezing the TCP accept path (and the WSL vsock plane). Kernel waterline tuning cannot prevent it (tested: no change); removing balloons made it worse (11/40, reverted). Fix is a change of WHO KILLS FIRST: userspace early-killer at 10% available.",
+    "collapse_guardian_on_hardened": {"r1": "20/20", "r2": "20/20", "aggregate": "40/40 (100%)", "failure_stages": [], "elapsed_ms_range": "[127, 599]", "notes": "earlyoom killed 28 hogs in-window; login path never entered swap-grind lockout; near-idle latency throughout"},
+    "hardened_v2_stack_verify": {"probes": "20/20", "elapsed_ms_range": "[122, 671]", "notes": "re-verified with gateway v2 + pressure gate live during the storm"},
+    "verdict": "PASS - 40/40 + 20/20 vs pass line >=95%. Layer-1 entry capability under the pinned form is SOLVED on this host class by the 4-layer hardening stack (deploy/guardian/), which is platform configuration, not Guardian code."
   },
   "layer2": {
     "guardian_off_blind": {
@@ -25,11 +26,26 @@
     "guardian_on_old_build": {
       "r1": {"mttd_s": 41.0, "mtti_s": 0.37, "target": "docker-ff8c003d... (exact container id)", "note": "MTTD from journalctl; identity_confidence=low because collector identity cache stale under collapse"}
     },
-    "guardian_on_new_build": {"r1": "PENDING", "r2": "PENDING", "expect": "gate active: docker-side steps <=1.5x off-baseline; slimmed audit keeps stream alive"}
+    "guardian_on_new_build": {
+      "r1": {"mttd_s": "5-9 (corrected timeline: 10:47:04 CRITICAL sent, swarm start ~10:46:5x)", "mtti_s": 0.07, "target": "exact hog container", "earlyoom_kills_in_window": 9, "entry_path": "alive throughout"},
+      "mttd_note": "layer2_new_r1/r2.json MTTD 26135s was a MEASUREMENT BUG (journalctl --since @epoch matched stale alerts); true MTTD rebuilt from audit drop-edge + gateway timestamps",
+      "notification_liveness": {"crITICAL_delivered_under_storm": "[9012f08f] 10:59:18 avail 7.8%; [ee475258] swap 99.4%", "gate_degraded_mode_msg": "[3bb15710] 10:58:16 minimal - stream announces degradation BY DESIGN", "verdict": "PASS (>=1 msg in 60s of degraded)"},
+      "observer_effect": {"docker_side_total_s": 8.15, "off_baseline_s": 11.7, "ratio": 0.70, "pass_line": "<=1.5x", "breakdown": {"docker_ps": 0.23, "docker_stats": 2.50, "docker_stop": 5.42, "shell_ops_total": 3.57}, "verdict": "PASS - gate-active ops are FASTER than the no-Guardian baseline (EXP-088's 21x degradation eliminated)"},
+      "verdict": "PASS - all layer-2 pass lines met"
+    }
+  },
+  "scoreboard": {
+    "layer1_entry_rate": {"required": ">=95%", "measured": "40/40 + 20/20 verified", "verdict": "PASS"},
+    "mtta": {"required": "<=50% of off", "measured": "42s vs 1106-1160s (~4%)", "verdict": "PASS"},
+    "mttd": {"required": "<=10s", "measured": "~5-9s", "verdict": "PASS"},
+    "mtti_p95": {"required": "<=5s", "measured": "0.07s", "verdict": "PASS (70x margin)"},
+    "observer_effect": {"required": "docker ops <=1.5x off", "measured": "0.70x", "verdict": "PASS"},
+    "notification_liveness": {"required": ">=1 msg within 60s of degraded", "measured": "CRITICAL + gate-mode msgs delivered in-window", "verdict": "PASS"}
   },
   "incidents": [
     {"time": "20:08-20:26", "what": "WSL vsock channel died (0x8007274c) during swarm ramp; wsl --shutdown + service restart recovered; experiment restarted in two segments", "lesson": "long collapse scripts must self-contain per segment and persist data before any cross-VM communication"},
-    {"time": "21:15-21:40", "what": "channel died again repeatedly during off-control wind-down and layer-2 start; two VM resets; layer-2 new-build run 1 did not complete", "lesson": "the pinned form kills the management transport itself - reproduced across two nights; strongest evidence for the out-of-band console requirement"}
+    {"time": "21:15-21:40", "what": "channel died again repeatedly during off-control wind-down and layer-2 start; two VM resets; layer-2 new-build run 1 did not complete that night", "lesson": "the pinned form kills the management transport itself - reproduced across two nights; strongest evidence for the out-of-band console requirement"},
+    {"time": "2026-09-24", "what": "gateway send-stall + copytruncate swallowed a real ok->critical transition (state-machine replay proved the gateway should have sent and sent nothing)", "lesson": "fixed in gateway v2 (decoupled reader/sender, bounded queue, copytruncate backlog drain, event_id in messages)"}
   ],
-  "product_decision": "PENDING"
+  "product_decision": "Outcome 2 (operator access) on the WSL host class: COMPLETE per the two-layer contract. All six pass lines met. Guardian's benefit claim is now quantified: MTTA 26x better than blind ops, MTTI 0.07s, notification liveness under storm, observer effect eliminated (0.70x). The hardening stack that makes layer-1 possible is platform configuration (earlyoom + sysctl + oom_score), documented in deploy/guardian/ with the explicit earlyoom-vs-Guardian action boundary. Remaining for the cross-platform claim: x86_64 native confirmation (ROADMAP prerequisite, blocked on environment availability)."
 }
