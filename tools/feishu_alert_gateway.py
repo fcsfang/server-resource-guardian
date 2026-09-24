@@ -1,18 +1,27 @@
-﻿#!/usr/bin/env python3
-"""Feishu alert gateway for Guardian.
+#!/usr/bin/env python3
+"""Feishu alert gateway v2 for Guardian.
 
 Read-only against Guardian: tails the audit events file and sends resource
-alert / recovery messages to a Feishu group chat. Message-only by design --
-it never touches Docker, systemd actions, or the Guardian Broker path.
+alert / recovery messages to a Feishu group chat. Message-only by design.
 
-Debounce: a level change must be observed on `--confirm` consecutive samples
-before a message is sent. Sustained abnormal levels do not repeat messages.
+v2 changes (storm-hardened, from the 2026-09-24 layer-2 findings):
+- Read/evaluate and send are DECOUPLED: the tail loop never blocks on the
+  network; parsed level-changes go to a bounded queue drained by a sender
+  thread. A stalled Feishu API can no longer freeze the reader and lose
+  events to logrotate copytruncate.
+- copytruncate handling keeps unread backlog: on shrink, the offset resets
+  only after the reader has parsed everything below the old offset.
+- Alert messages carry the triggering event_id for forensics.
+- Gate-state visibility: pressure_gate transitions and audit_fidelity are
+  reported as their own key (degraded-by-design vs stream-dead).
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import queue
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -23,6 +32,7 @@ OK, WARNING, CRITICAL = "ok", "warning", "critical"
 TOKEN_TTL_S = 7200
 TOKEN_REFRESH_MARGIN_S = 300
 SEND_RETRIES = 3
+QUEUE_MAX = 200
 
 
 def load_json(path: str) -> dict:
@@ -140,35 +150,35 @@ class Evaluator:
             self.disk_keys[path] = ResourceKey(f"disk:{path}", f"磁盘 {path}", 2)
         return self.disk_keys[path]
 
-    def evaluate(self, ev: dict) -> list[tuple[str, str, str, ResourceKey]]:
-        fired: list[tuple[str, str, str, ResourceKey]] = []
+    def evaluate(self, ev: dict) -> list[tuple[str, str, str, ResourceKey, str]]:
+        fired: list[tuple[str, str, str, ResourceKey, str]] = []
         self.last_event_wall = time.time()
-        s = ev.get("signals", {})
-        mem = s.get("memory", {})
+        event_id = str(ev.get("event_id") or "")
+        s = ev.get("signals", {}) or {}
+        mem = s.get("memory", {}) or {}
 
-        # Gate-state visibility: a pressure_gate block (present on slimmed
-        # events and on blocked-collection observations) means the stream is
-        # degraded BY DESIGN. Report each transition once, and stop flagging
-        # stale while the gate keeps the stream alive in degraded modes.
+        # gate-state visibility first: transitions and fidelity degrade-mode
         gate = ev.get("pressure_gate") or (ev.get("evidence", {}) or {}).get("pressure_gate_transition")
-        if isinstance(gate, dict) and gate.get("state") in (WARNING, CRITICAL, "normal"):
+        if isinstance(gate, dict) and gate.get("state") in (OK, WARNING, CRITICAL, "normal"):
             state = gate.get("state")
             gate_level = {"normal": OK, WARNING: WARNING, CRITICAL: CRITICAL}.get(state, OK)
             transition = gate.get("transition") or ""
-            detail = f"压力门控 {transition or state}"
-            fired += self._collect(self.keys["gate"], gate_level, detail)
+            fired += self._collect(self.keys["gate"], gate_level, f"压力门控 {transition or state}", event_id)
+        fidelity = ev.get("audit_fidelity")
+        if fidelity in ("summary", "minimal") and self.keys["gate"].level == OK:
+            fired += self._collect(self.keys["gate"], WARNING, f"观测降级模式 ({fidelity})", event_id)
 
         avail = mem.get("available_ratio_percent")
         if avail is not None:
             level = CRITICAL if avail < 10 else WARNING if avail < 15 else OK
-            fired += self._collect(self.keys["memory"], level, f"可用 {avail:.1f}%")
+            fired += self._collect(self.keys["memory"], level, f"可用 {avail:.1f}%", event_id)
 
         swap = mem.get("swap_used_ratio_percent")
         if swap is not None:
             level = CRITICAL if swap > 50 else WARNING if swap > 25 else OK
-            fired += self._collect(self.keys["swap"], level, f"已用 {swap:.1f}%")
+            fired += self._collect(self.keys["swap"], level, f"已用 {swap:.1f}%", event_id)
 
-        cpu = s.get("cpu", {})
+        cpu = s.get("cpu", {}) or {}
         agg = (cpu.get("host", {}) or {}).get("stat", {}).get("aggregate", {}) or {}
         if agg.get("total_ticks") is not None:
             util = None
@@ -180,7 +190,7 @@ class Evaluator:
             self.prev_cpu = {"total": agg["total_ticks"], "idle": agg["idle_ticks"]}
             if util is not None:
                 level = CRITICAL if util > 95 else WARNING if util > 85 else OK
-                fired += self._collect(self.keys["cpu"], level, f"利用率 {util:.1f}%")
+                fired += self._collect(self.keys["cpu"], level, f"利用率 {util:.1f}%", event_id)
 
         for m in s.get("disk", {}).get("mounts", []) or []:
             path = m.get("configured_path") or m.get("mount_point")
@@ -190,33 +200,44 @@ class Evaluator:
                 continue
             key = self._disk_key(path)
             level = CRITICAL if free < 5 else WARNING if free < 15 else OK
-            fired += self._collect(key, level, f"剩余 {free:.1f}%")
+            fired += self._collect(key, level, f"剩余 {free:.1f}%", event_id)
 
-        # stale detection is driven by the poll loop, not per-event
         return fired
 
-    def check_stale(self, threshold_s: float) -> list[tuple[str, str, str, ResourceKey]]:
+    def check_stale(self, threshold_s: float) -> list[tuple[str, str, str, ResourceKey, str]]:
         level = WARNING if (time.time() - self.last_event_wall) > threshold_s else OK
-        return self._collect(self.keys["stale"], level, f"审计事件中断 >{threshold_s:.0f}s")
+        return self._collect(self.keys["stale"], level, f"审计事件中断 >{threshold_s:.0f}s", "")
 
     @property
     def gate_degraded(self) -> bool:
-        """True while the pressure gate holds the stream in a degraded mode."""
         return self.keys["gate"].level in (WARNING, CRITICAL)
 
-    def _collect(self, key: ResourceKey, level: str, detail: str) -> list[tuple[str, str, str, ResourceKey]]:
+    def _collect(self, key: ResourceKey, level: str, detail: str, event_id: str) -> list[tuple[str, str, str, ResourceKey, str]]:
         change = key.propose(level, detail)
-        return [(key.key, change[0], change[1], key)] if change else []
+        return [(key.key, change[0], change[1], key, event_id)] if change else []
 
 
-def message_text(key: ResourceKey, old: str, new: str) -> str:
+def message_text(key: ResourceKey, old: str, new: str, event_id: str) -> str:
+    tail = f" [{event_id[:8]}]" if event_id else ""
     if new == OK:
-        return f"[Guardian 恢复] {key.label}: {fmt_level(old)} → 恢复正常 ({key.detail}) {now_str()}"
-    return f"[Guardian 告警] {key.label}: {fmt_level(new)} — {key.detail} {now_str()}"
+        return f"[Guardian 恢复] {key.label}: {fmt_level(old)} → 恢复正常 ({key.detail}) {now_str()}{tail}"
+    return f"[Guardian 告警] {key.label}: {fmt_level(new)} — {key.detail} {now_str()}{tail}"
+
+
+def sender_loop(client: FeishuClient, q: "queue.Queue[str | None]") -> None:
+    while True:
+        text = q.get()
+        if text is None:
+            return
+        try:
+            client.send(text)
+            print(f"sent: {text}", flush=True)
+        except Exception as e:  # noqa: BLE001 - keep the sender alive
+            print(f"send failed: {e}", flush=True)
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Guardian -> Feishu alert gateway (message-only)")
+    ap = argparse.ArgumentParser(description="Guardian -> Feishu alert gateway v2 (storm-hardened)")
     ap.add_argument("--config", default="/etc/guardian/feishu.json")
     ap.add_argument("--audit", default="/var/lib/guardian/runtime/audit/events.jsonl")
     ap.add_argument("--poll", type=float, default=1.0, help="audit tail poll interval")
@@ -227,12 +248,15 @@ def main() -> None:
     cfg = load_json(args.config)
     client = FeishuClient(cfg)
     evaluator = Evaluator(args.confirm)
+    send_q: "queue.Queue[str | None]" = queue.Queue(maxsize=QUEUE_MAX)
+    sender = threading.Thread(target=sender_loop, args=(client, send_q), daemon=True)
+    sender.start()
 
     audit_path = Path(args.audit)
     offset = audit_path.stat().st_size
     last_inode = audit_path.stat().st_ino
     last_mono: int | None = None
-    print(f"gateway started, baseline offset={offset}", flush=True)
+    print(f"gateway v2 started, baseline offset={offset}", flush=True)
 
     while True:
         try:
@@ -256,33 +280,32 @@ def main() -> None:
                         ev = json.loads(line)
                     except json.JSONDecodeError:
                         continue
-                    # one sample produces two same-mono events (risk + result);
-                    # evaluate each monotonic instant only once
                     mono = ev.get("observed_monotonic_ns")
                     if mono is not None and mono == last_mono:
                         continue
                     last_mono = mono
-                    for _key, old, new, rk in evaluator.evaluate(ev):
-                        text = message_text(rk, old, new)
+                    for _key, old, new, rk, event_id in evaluator.evaluate(ev):
+                        text = message_text(rk, old, new, event_id)
                         try:
-                            client.send(text)
-                            print(f"sent: {text}", flush=True)
-                        except Exception as e:  # noqa: BLE001 - keep gateway alive
-                            print(f"send failed: {e}", flush=True)
-            # stale detection is suppressed while the gate holds the stream in
-            # a degraded mode: fewer slimmed events are EXPECTED then, and a
-            # wide interval there is the designed behavior, not a dead stream.
+                            # never block the reader: drop the oldest on overflow
+                            send_q.put_nowait(text)
+                        except queue.Full:
+                            try:
+                                send_q.get_nowait()
+                                send_q.put_nowait(text)
+                            except (queue.Empty, queue.Full):
+                                pass
             if not evaluator.gate_degraded:
-                for _key, old, new, rk in evaluator.check_stale(args.stale_seconds):
-                    text = message_text(rk, old, new)
+                for _key, old, new, rk, _eid in evaluator.check_stale(args.stale_seconds):
+                    text = message_text(rk, old, new, "")
                     try:
-                        client.send(text)
-                        print(f"sent: {text}", flush=True)
-                    except Exception as e:  # noqa: BLE001
-                        print(f"send failed: {e}", flush=True)
-            elif evaluator.keys["stale"].level == WARNING:
-                # gate recovered to live streaming while stale was flagged
-                evaluator.last_event_wall = time.time()
+                        send_q.put_nowait(text)
+                    except queue.Full:
+                        try:
+                            send_q.get_nowait()
+                            send_q.put_nowait(text)
+                        except (queue.Empty, queue.Full):
+                            pass
         except FileNotFoundError:
             print("audit file missing; waiting", flush=True)
         time.sleep(args.poll)
