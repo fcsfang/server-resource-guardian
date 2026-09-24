@@ -8,6 +8,9 @@ Documentation=https://github.com/fcsfang/server-resource-guardian
 # is the workload CPU. MemoryMin/MemoryLow and TasksMax protect the rescue
 # domain from the bounded workload fixture; they cannot defeat kernel-wide,
 # device-wide, or root-filesystem failure.
+# MemoryMin is also the per-cgroup TCP-socket protection: kernel 6.6+ charges
+# socket buffers to the owning cgroup, so this floor keeps the maintenance
+# path's TCP allocations out of global reclaim (ROADMAP outcome 2, layer 1).
 CPUAccounting=true
 IOAccounting=true
 MemoryAccounting=true
