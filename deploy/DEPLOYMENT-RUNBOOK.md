@@ -104,6 +104,19 @@ sudo journalctl -u feishu-gateway --since "-2 min" --no-pager | grep sent
 - `sudo bash tools/guardian-recovery-lab/layer1-smoke.sh`(如果这是 WSL/有 SSH 探针环境的实验室主机):两分钟防御栈全检
 - 把 `guardian-deploy-verify` 挂 cron(每天一次):指纹漂移第一时间发现
 
+## 强烈建议:给管理员配 SSH 密钥(内存风暴下的入口保命)
+
+T1 内存压力实测(SHKD010W,17GB hog 压到可用 8-10%):**密码认证登录 0/10 失败,风暴后自动恢复** — 密码认证的 PAM 链路在内存压力下 fork/PAM 插件超时。密钥认证路径更短(无 PAM 密码插件、无交互提示),是风暴中最可能存活的入口。部署 Guardian 的主机应给至少一名管理员配好密钥:
+
+```bash
+# 在管理员自己的工作机上(没有密钥就先生成: ssh-keygen -t ed25519)
+ssh-copy-id admin-user@服务器IP
+# 验证
+ssh -o BatchMode=yes admin-user@服务器IP 'echo key-login-ok'
+```
+
+判定证据:tools/guardian-recovery-lab/results/2026-09-24-triple-resource/ 与 2026-09-24 服务器功能测试记录(T1)。
+
 ## 三条命令总结
 
 ```bash

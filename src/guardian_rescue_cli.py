@@ -442,6 +442,133 @@ def top_document(
     }
 
 
+def host_top_document(
+    *,
+    proc_root: Path = DEFAULT_PROC_ROOT,
+    interval_seconds: float = 0.5,
+    limit: int = 10,
+    sleep: Callable[[float], None] = time.sleep,
+    clock: Callable[[], float] = time.monotonic,
+) -> dict[str, Any]:
+    """Host-level process top: the CPU/memory hogs among ALL processes.
+
+    Rationale (T2 finding on the first dedicated test server): a real CPU
+    hog - a runaway process, a business bug - never lives in
+    workload.slice, so the cgroup-scoped top cannot name it. This view
+    samples /proc directly (read-only, two ticks, per-process CPU delta).
+    It complements, never replaces, the workload-cgroup top.
+    """
+
+    interval = float(interval_seconds)
+    if not 0 <= interval <= 2:
+        raise ValueError("interval_seconds_out_of_bounds")
+    if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 100:
+        raise ValueError("limit_out_of_bounds")
+
+    def sample() -> dict[int, dict[str, Any]]:
+        procs: dict[int, dict[str, Any]] = {}
+        try:
+            entries = sorted(
+                (p for p in proc_root.iterdir() if p.name.isdigit()),
+                key=lambda p: int(p.name),
+            )
+        except (PermissionError, OSError):
+            return procs
+        for proc_dir in entries[:8192]:
+            stat_text = _read_text(proc_dir / "stat")
+            if stat_text is None:
+                continue
+            # comm can contain spaces/parens: split after the closing paren
+            close = stat_text.rfind(")")
+            if close < 0:
+                continue
+            comm = stat_text[stat_text.find("(") + 1 : close]
+            fields = stat_text[close + 2 :].split()
+            # fields[11] = utime, fields[12] = stime (0-indexed after state)
+            if len(fields) < 14:
+                continue
+            try:
+                utime, stime = int(fields[11]), int(fields[12])
+            except ValueError:
+                continue
+            rss_pages = None
+            if len(fields) > 21:
+                try:
+                    rss_pages = int(fields[21])
+                except ValueError:
+                    rss_pages = None
+            try:
+                uid_text = (proc_dir / "").owner if False else None
+            except Exception:
+                uid_text = None
+            procs[int(proc_dir.name)] = {
+                "name": comm,
+                "cpu_ticks": utime + stime,
+                "rss_bytes": rss_pages * 4096 if rss_pages is not None else None,
+            }
+        return procs
+
+    page_size = 4096
+    try:
+        import os
+
+        page_size = os.sysconf("SC_PAGE_SIZE")
+    except (ValueError, OSError, AttributeError):
+        pass
+
+    first_at = clock()
+    first = sample()
+    if interval:
+        sleep(interval)
+    second_at = clock()
+    second = sample()
+    elapsed = max(second_at - first_at, 0.001)
+    cpu_count = max(_cpu_count(proc_root), 1)
+
+    boot_ticks = None  # ticks since boot are absolute; delta is what matters
+    objects: list[dict[str, Any]] = []
+    for pid, current in second.items():
+        previous = first.get(pid)
+        if previous is None:
+            continue  # process started mid-sample: cannot delta it
+        usage_delta = max(current["cpu_ticks"] - previous["cpu_ticks"], 0)
+        cpu_percent = round(usage_delta / (elapsed * _clock_ticks_per_second() * cpu_count) * 100, 2)
+        objects.append(
+            {
+                "pid": pid,
+                "name": current["name"],
+                "cpu_percent": cpu_percent,
+                "memory_current_bytes": current["rss_bytes"],
+                "read_only": True,
+            }
+        )
+    objects.sort(
+        key=lambda item: (
+            -(item.get("cpu_percent") or 0),
+            -(item.get("memory_current_bytes") or 0),
+            item.get("pid") or 0,
+        )
+    )
+    return {
+        "schema": TOP_SCHEMA,
+        "mode": "host",
+        "status": "ok" if objects else "empty",
+        "read_only": True,
+        "reason_codes": [],
+        "interval_seconds": round(elapsed, 3),
+        "objects": objects[:limit],
+    }
+
+
+def _clock_ticks_per_second() -> float:
+    import os
+
+    try:
+        return float(os.sysconf("SC_CLK_TCK"))
+    except (ValueError, OSError, AttributeError):
+        return 100.0
+
+
 def format_status(value: Mapping[str, Any]) -> str:
     host = value.get("host") if isinstance(value.get("host"), Mapping) else {}
     memory = host.get("memory") if isinstance(host.get("memory"), Mapping) else {}
@@ -487,6 +614,12 @@ def main(argv: list[str] | None = None) -> int:
     top_parser.add_argument("--json", action="store_true")
     top_parser.add_argument("--limit", type=int, default=10)
     top_parser.add_argument("--interval", type=float, default=0.2)
+    top_parser.add_argument(
+        "--host",
+        action="store_true",
+        help="host-level process view: CPU/memory hogs among ALL processes "
+        "(a real hog never lives in workload.slice; T2 finding)",
+    )
     stop_parser = subparsers.add_parser("stop", help="request one authorized graceful stop")
     stop_parser.add_argument("--target-id", required=True)
     stop_parser.add_argument("--authorization-file", required=True)
@@ -510,9 +643,19 @@ def main(argv: list[str] | None = None) -> int:
         value = status_document()
         print(json.dumps(value, ensure_ascii=False, indent=2) if args.json else format_status(value))
     else:
-        value = top_document(interval_seconds=args.interval, limit=args.limit)
+        if args.host:
+            value = host_top_document(interval_seconds=args.interval, limit=args.limit)
+        else:
+            value = top_document(interval_seconds=args.interval, limit=args.limit)
         print(json.dumps(value, ensure_ascii=False, indent=2) if args.json else format_top(value))
     return 0
 
 
-__all__ = ["format_status", "format_top", "main", "status_document", "top_document"]
+__all__ = [
+    "format_status",
+    "format_top",
+    "host_top_document",
+    "main",
+    "status_document",
+    "top_document",
+]

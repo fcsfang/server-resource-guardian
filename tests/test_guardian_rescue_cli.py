@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from src.guardian_rescue_cli import status_document, top_document
+from src.guardian_rescue_cli import host_top_document, status_document, top_document
 from src.guardian_collector_service import ReadOnlyCollector
 
 
@@ -128,6 +128,80 @@ class GuardianRescueCliTests(unittest.TestCase):
         self.assertEqual(item["stable_id"], "a" * 64)
         self.assertEqual(item["identity_confidence"], "high")
         self.assertFalse(item["actionable"])
+
+    def _make_host_proc_entry(self, pid: int, name: str, utime: int, stime: int, rss_pages: int) -> None:
+        d = self.proc / str(pid)
+        d.mkdir(exist_ok=True)
+        # /proc/<pid>/stat: "pid (comm) state f1 f2 ...". The reader splits
+        # after the paren, so the split list is [state, f1, f2, ...] and
+        # reader index i = kernel field i+3. utime (kernel 14) -> i 11,
+        # stime (15) -> 12, rss (24) -> 21. Inside `fields` (which the
+        # helper joins after "S "), fields[k] lands at reader index k+1:
+        # utime -> fields[10], stime -> fields[11], rss -> fields[20].
+        fields = ["0"] * 30
+        fields[10] = str(utime)
+        fields[11] = str(stime)
+        fields[20] = str(rss_pages)
+        (d / "stat").write_text(f"{pid} ({name}) S " + " ".join(fields) + "\n", encoding="utf-8")
+
+    def test_host_top_names_hogs_across_all_processes(self):
+        # T2 finding: a real CPU hog never lives in workload.slice, so the
+        # cgroup top cannot name it. --host samples /proc directly.
+        self._make_host_proc_entry(500, "hog", 1000, 0, 2000)   # spins
+        self._make_host_proc_entry(501, "idle-proc", 10, 2, 50)
+        value = host_top_document(
+            proc_root=self.proc,
+            interval_seconds=0,  # zero interval: both samples identical, delta 0
+            limit=5,
+        )
+        self.assertEqual(value["mode"], "host")
+        self.assertEqual(value["status"], "ok")
+        names = [o["name"] for o in value["objects"]]
+        self.assertIn("hog", names)
+        self.assertIn("idle-proc", names)
+        hog = next(o for o in value["objects"] if o["name"] == "hog")
+        # rss is pages * the runtime page size (4K on x86_64, 16K on some ARM)
+        import os as _os
+
+        page = _os.sysconf("SC_PAGE_SIZE")
+        self.assertEqual(hog["memory_current_bytes"], 2000 * page)
+        self.assertTrue(value["read_only"])
+
+    def test_host_top_orders_by_cpu_delta(self):
+        # first sample: hog has used 100 ticks; second: 300 (idle: 10 -> 10).
+        # With a nonzero interval the delta must rank the hog first.
+        self._make_host_proc_entry(600, "spinner", 100, 0, 100)
+        self._make_host_proc_entry(601, "sleeper", 10, 0, 900)
+        # emulate two samples by patching sleep to re-write the stat files
+        def advance(_seconds: float) -> None:
+            self._make_host_proc_entry(600, "spinner", 300, 0, 100)  # +200 ticks
+            self._make_host_proc_entry(601, "sleeper", 10, 0, 900)   # +0
+
+        value = host_top_document(
+            proc_root=self.proc,
+            interval_seconds=0.2,
+            sleep=advance,
+            limit=5,
+        )
+        self.assertEqual(value["objects"][0]["name"], "spinner")
+        self.assertGreater(value["objects"][0]["cpu_percent"], 0)
+        self.assertEqual(value["objects"][1]["name"], "sleeper")
+
+    def test_host_top_never_includes_mid_sample_processes(self):
+        # a pid present only in the second sample has no delta - excluded
+        self._make_host_proc_entry(700, "existing", 50, 0, 10)
+        def spawn_midway(_seconds: float) -> None:
+            self._make_host_proc_entry(701, "newcomer", 500, 0, 100)  # huge first read
+
+        value = host_top_document(
+            proc_root=self.proc,
+            interval_seconds=0.2,
+            sleep=spawn_midway,
+            limit=5,
+        )
+        names = [o["name"] for o in value["objects"]]
+        self.assertIn("existing", names)
+        self.assertNotIn("newcomer", names)
 
     def test_collector_writes_redacted_identity_cache(self):
         cache = self.root / "cache" / "rescue-identities.json"
